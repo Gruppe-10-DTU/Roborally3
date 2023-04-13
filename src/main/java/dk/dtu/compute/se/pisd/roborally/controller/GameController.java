@@ -45,23 +45,14 @@ public class GameController {
      * @param space the space to which the current player should move
      */
     public void moveCurrentPlayerToSpace(@NotNull Space space)  {
-        // TODO Assignment V1: method should be implemented by the students:
-        //   - the current player should be moved to the given space
-        //     (if it is free()
-        //   - and the current player should be set to the player
-        //     following the current player
-        //   - the counter of moves in the game should be increased by one
-        //     if the player is moved
-
-        if (space != null && space.board == board) {
+        if(space.getPlayer() == null){
             Player currentPlayer = board.getCurrentPlayer();
-            if (currentPlayer != null && space.getPlayer() == null) {
+            if(!currentPlayer.getSpace().equals(space)) {
+                board.setStep(board.getStep() + 1);
                 currentPlayer.setSpace(space);
-                int playerNumber = (board.getPlayerNumber(currentPlayer) + 1) % board.getPlayersNumber();
-                board.setCurrentPlayer(board.getPlayer(playerNumber));
+                board.setCurrentPlayer(board.getPlayer((board.getPlayerNumber(currentPlayer) + 1) % board.getPlayersNumber()));
             }
         }
-
     }
 
     // XXX: V2
@@ -204,39 +195,39 @@ public class GameController {
         }
     }
 
-    // TODO: V2
+    /**
+     * @author Asbjørn Nielsen
+     * @param player
+     * Moves the player forwards.
+     */
     public void moveForward(@NotNull Player player) {
-        Space space = player.getSpace();
-        if (player != null && player.board == board && space != null) {
-            Heading heading = player.getHeading();
-            Space target = board.getNeighbour(space, heading);
-            if (target != null) {
-                // XXX note that this removes an other player from the space, when there
-                //     is another player on the target. Eventually, this needs to be
-                //     implemented in a way so that other players are pushed away!
-                target.setPlayer(player);
-            }
+        if(board.getNeighbour(player.getSpace(),player.getHeading()) != null) {
+            player.setSpace(board.getNeighbour(player.getSpace(), player.getHeading()));
         }
     }
 
-    // TODO: V2
+    /**
+     * @author Asbjørn Nielsen
+     * @param player
+     * Moves the player forwards twice.
+     */
     public void fastForward(@NotNull Player player) {
         moveForward(player);
         moveForward(player);
     }
 
-    // TODO: V2
+    /**
+     * @author Asbjørn Nielsen
+     * @param player
+     * Turns the aforementioned player one nook to the right
+     */
     public void turnRight(@NotNull Player player) {
-        if (player != null && player.board == board) {
-            player.setHeading(player.getHeading().next());
-        }
+        player.setHeading(player.getHeading().next());
     }
 
-    // TODO: V2
+    // TODO Assignment V2
     public void turnLeft(@NotNull Player player) {
-        if (player != null && player.board == board) {
-            player.setHeading(player.getHeading().prev());
-        }
+        player.setHeading(player.getHeading().prev());
     }
 
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
