@@ -220,14 +220,27 @@ public class GameController {
         if(board.getNeighbour(player.getSpace(),player.getHeading()) != null) {
             if(board.getNeighbour(player.getSpace(),player.getHeading()).getPlayer() != null){
                 Player ppush =  board.getPlayer(board.getPlayerNumber(board.getNeighbour(player.getSpace(),player.getHeading()).getPlayer()));
-                ppush.setSpace(board.getNeighbour(ppush.getSpace(),ppush.getHeading()));
-                player.setSpace(board.getNeighbour(player.getSpace(),player.getHeading()));
+                pushRobot(player,ppush);
             }else {
                 player.setSpace(board.getNeighbour(player.getSpace(), player.getHeading()));
             }
         }
     }
-
+    public void pushRobot(@NotNull Player pushing, @NotNull Player pushed){
+        Heading oH = pushed.getHeading();
+        int pcount = 0;
+        if(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer() != null){
+            pcount++;
+            pushed.setHeading(pushing.getHeading());
+            pushRobot(pushed,board.getPlayer(board.getPlayerNumber(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer())));
+            pushing.setSpace(board.getNeighbour(pushing.getSpace(), pushing.getHeading()));
+        }
+        else {
+            pushed.setSpace(board.getNeighbour(pushed.getSpace(), pushing.getHeading()));
+            pushing.setSpace(board.getNeighbour(pushing.getSpace(), pushing.getHeading()));
+        }
+        pushed.setHeading(oH);
+    }
     /**
      * @author Asbjørn Nielsen
      * @param player
@@ -264,6 +277,7 @@ public class GameController {
         }
 
     }
+
         /**
          * A method called when no corresponding controller operation is implemented yet. This
          * should eventually be removed.
