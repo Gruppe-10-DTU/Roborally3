@@ -228,9 +228,7 @@ public class GameController {
     }
     public void pushRobot(@NotNull Player pushing, @NotNull Player pushed){
         Heading oH = pushed.getHeading();
-        int pcount = 0;
         if(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer() != null){
-            pcount++;
             pushed.setHeading(pushing.getHeading());
             pushRobot(pushed,board.getPlayer(board.getPlayerNumber(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer())));
             pushing.setSpace(board.getNeighbour(pushing.getSpace(), pushing.getHeading()));
