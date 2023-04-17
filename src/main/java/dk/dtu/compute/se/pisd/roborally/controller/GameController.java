@@ -218,7 +218,13 @@ public class GameController {
      */
     public void moveForward(@NotNull Player player) {
         if(board.getNeighbour(player.getSpace(),player.getHeading()) != null) {
-            player.setSpace(board.getNeighbour(player.getSpace(), player.getHeading()));
+            if(board.getNeighbour(player.getSpace(),player.getHeading()).getPlayer() != null){
+                Player ppush =  board.getPlayer(board.getPlayerNumber(board.getNeighbour(player.getSpace(),player.getHeading()).getPlayer()));
+                ppush.setSpace(board.getNeighbour(ppush.getSpace(),ppush.getHeading()));
+                player.setSpace(board.getNeighbour(player.getSpace(),player.getHeading()));
+            }else {
+                player.setSpace(board.getNeighbour(player.getSpace(), player.getHeading()));
+            }
         }
     }
 

@@ -210,5 +210,4 @@ public class Board extends Subject {
                 ", Step: " + getStep();
     }
 
-
 }
