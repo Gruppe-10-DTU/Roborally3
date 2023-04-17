@@ -226,6 +226,14 @@ public class GameController {
             }
         }
     }
+
+
+    /**
+     * @author Asbjørn Nielsen
+     * @param pushing The robot who is doing the pushing
+     * @param pushed The pushed robot
+     * Pushes a row of robots.
+     */
     public void pushRobot(@NotNull Player pushing, @NotNull Player pushed){
         Heading oH = pushed.getHeading();
         if(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer() != null){
