@@ -30,10 +30,8 @@ import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
 import javafx.application.Platform;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceDialog;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -74,13 +72,26 @@ public class AppController implements Observer {
                 }
             }
 
+
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
             Board board = new Board(8,8);
             gameController = new GameController(board);
             int no = result.get();
             for (int i = 0; i < no; i++) {
-                Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
+
+
+                TextInputDialog nameDialog = new TextInputDialog("Player" + (i+1));
+                nameDialog.setTitle("Player name");
+                nameDialog.setHeaderText("Select player name");
+                Optional<String> resultName = nameDialog.showAndWait();
+
+                String entered = "Player" + (i+1);
+                if (resultName.isPresent()) {
+                    entered = resultName.get();
+                }
+
+                Player player = new Player(board, PLAYER_COLORS.get(i), entered);
                 board.addPlayer(player);
                 player.setSpace(board.getSpace(i % board.width, i));
             }
