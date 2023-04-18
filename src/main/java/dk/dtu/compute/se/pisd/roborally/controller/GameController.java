@@ -198,6 +198,12 @@ public class GameController {
                 case FAST_FORWARD:
                     this.fastForward(player);
                     break;
+                case REVERSE:
+                    this.reverse(player);
+                    break;
+                case UTURN:
+                    this.uTurn(player);
+                    break;
                 default:
                     // DO NOTHING (for now)
             }
@@ -227,6 +233,11 @@ public class GameController {
         }
     }
 
+    public void reverse(@NotNull Player player){
+        player.setHeading(player.getHeading().prev().prev());
+        moveForward(player);
+        player.setHeading(player.getHeading().prev().prev());
+    }
 
     /**
      * @author Asbjørn Nielsen
@@ -269,6 +280,10 @@ public class GameController {
     // TODO Assignment V2
     public void turnLeft(@NotNull Player player) {
         player.setHeading(player.getHeading().prev());
+    }
+
+    public void uTurn(@NotNull Player player){
+        player.setHeading(player.getHeading().prev().prev());
     }
 
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
