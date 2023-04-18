@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElements.BoardElement;
 
 import java.util.EnumSet;
 
@@ -39,7 +40,7 @@ public class Space extends Subject {
     public final int y;
 
     private Player player;
-
+    private BoardElement boardElement;
     private EnumSet<Heading> walls;
 
     public Space(Board board, int x, int y) {
