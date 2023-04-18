@@ -24,8 +24,6 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-
 /**
  * ...
  *
@@ -49,7 +47,7 @@ public class GameController {
     public void moveCurrentPlayerToSpace(@NotNull Space space)  {
         if(space.getPlayer() == null){
             Player currentPlayer = board.getCurrentPlayer();
-            if(!currentPlayer.getSpace().equals(space)) {
+            if(!currentPlayer.getSpace().equals(space) || !space.hasWall(currentPlayer.getHeading())) {
                 board.setStep(board.getStep() + 1);
                 currentPlayer.setSpace(space);
                 board.setCurrentPlayer(board.getPlayer((board.getPlayerNumber(currentPlayer) + 1) % board.getPlayersNumber()));
@@ -222,16 +220,16 @@ public class GameController {
     /**
      * @author Asbjørn Nielsen
      * @param player
-     * Moves the player forwards.
+     * Moves the player forwards, if the target space don't have a wall.
      */
     public void moveForward(@NotNull Player player) {
-        if(board.getNeighbour(player.getSpace(),player.getHeading()) != null) {
-            if(board.getNeighbour(player.getSpace(),player.getHeading()).getPlayer() != null){
-                Player ppush =  board.getPlayer(board.getPlayerNumber(board.getNeighbour(player.getSpace(),player.getHeading()).getPlayer()));
-                pushRobot(player,ppush);
-            }
+        Space space = board.getNeighbour(player.getSpace(),player.getHeading());
+        if(space != null && !space.hasWall(player.getHeading())) {
             player.setSpace(board.getNeighbour(player.getSpace(), player.getHeading()));
+            Player ppush = board.getPlayer(board.getPlayerNumber(board.getNeighbour(player.getSpace(),player.getHeading()).getPlayer()));
+            pushRobot(player,ppush);
         }
+        player.setSpace(board.getNeighbour(player.getSpace(), player.getHeading()));
     }
 
     public void reverse(@NotNull Player player){
@@ -292,7 +290,6 @@ public class GameController {
         }
 
     }
-
         /**
          * A method called when no corresponding controller operation is implemented yet. This
          * should eventually be removed.
