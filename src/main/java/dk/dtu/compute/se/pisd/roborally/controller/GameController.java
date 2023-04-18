@@ -24,6 +24,8 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+
 /**
  * ...
  *
@@ -227,9 +229,8 @@ public class GameController {
             if(board.getNeighbour(player.getSpace(),player.getHeading()).getPlayer() != null){
                 Player ppush =  board.getPlayer(board.getPlayerNumber(board.getNeighbour(player.getSpace(),player.getHeading()).getPlayer()));
                 pushRobot(player,ppush);
-            }else {
-                player.setSpace(board.getNeighbour(player.getSpace(), player.getHeading()));
             }
+            player.setSpace(board.getNeighbour(player.getSpace(), player.getHeading()));
         }
     }
 
@@ -246,17 +247,10 @@ public class GameController {
      * Pushes a row of robots.
      */
     public void pushRobot(@NotNull Player pushing, @NotNull Player pushed){
-        Heading oH = pushed.getHeading();
         if(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer() != null){
-            pushed.setHeading(pushing.getHeading());
-            pushRobot(pushed,board.getPlayer(board.getPlayerNumber(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer())));
-            pushing.setSpace(board.getNeighbour(pushing.getSpace(), pushing.getHeading()));
+            pushRobot(pushing,board.getPlayer(board.getPlayerNumber(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer())));
         }
-        else {
-            pushed.setSpace(board.getNeighbour(pushed.getSpace(), pushing.getHeading()));
-            pushing.setSpace(board.getNeighbour(pushing.getSpace(), pushing.getHeading()));
-        }
-        pushed.setHeading(oH);
+        pushed.setSpace(board.getNeighbour(pushed.getSpace(),pushing.getHeading()));
     }
     /**
      * @author Asbjørn Nielsen
