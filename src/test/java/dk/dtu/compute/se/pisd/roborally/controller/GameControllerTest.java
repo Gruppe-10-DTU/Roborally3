@@ -72,5 +72,14 @@ class GameControllerTest {
         Assertions.assertEquals(pusher,board.getSpace(1,1).getPlayer(), "Player "+ pusher.getName() + " should be space (1,1)");
         Assertions.assertEquals(pushed,board.getSpace(2,1).getPlayer(), "Player " + pushed.getName() + " should be space (2,1)");
     }
+    @Test
+    void uTurn(){
+        Board board = gameController.board;
+        Player TimmyTurner = board.getCurrentPlayer();
 
+        Assertions.assertEquals(TimmyTurner.getHeading(),Heading.SOUTH, "Player " + TimmyTurner.getName() + " Should be facing south by default");
+        gameController.uTurn(TimmyTurner);
+        Assertions.assertEquals(TimmyTurner.getHeading(),Heading.NORTH, "Player " + TimmyTurner.getName() + " Should be facing north after a u-turn");
+
+    }
 }

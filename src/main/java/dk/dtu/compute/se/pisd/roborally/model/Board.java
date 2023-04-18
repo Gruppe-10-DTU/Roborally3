@@ -187,10 +187,10 @@ public class Board extends Subject {
                 y = (y + 1) % height;
                 break;
             case WEST:
-                x = (x - 1) % width;
+                x = (x + width - 1) % width;
                 break;
             case NORTH:
-                y = (y - 1) % height;
+                y = (y + height - 1) % height;
                 break;
             case EAST:
                 x = (x + 1) % width;
