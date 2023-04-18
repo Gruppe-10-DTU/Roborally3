@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.EnumSet;
+
 class GameControllerTest {
 
     private final int TEST_WIDTH = 8;
@@ -57,6 +59,20 @@ class GameControllerTest {
         Assertions.assertEquals(current, board.getSpace(0, 1).getPlayer(), "Player " + current.getName() + " should beSpace (0,1)!");
         Assertions.assertEquals(Heading.SOUTH, current.getHeading(), "Player 0 should be heading SOUTH!");
         Assertions.assertNull(board.getSpace(0, 0).getPlayer(), "Space (0,0) should be empty!");
+    }
+
+    @Test
+    void moveForwardWithWall() {
+        Board board = gameController.board;
+        Player current = board.getCurrentPlayer();
+        board.getNeighbour(current.getSpace(), current.getHeading()).setWalls(EnumSet.range(Heading.SOUTH, Heading.EAST));
+
+        gameController.moveForward(current);
+
+        Assertions.assertNotEquals(current, board.getSpace(0, 1).getPlayer(), "Player " + current.getName() + " not have moved!");
+        Assertions.assertEquals(current, board.getSpace(0,0).getPlayer(), "Player 0 should be at Space(0,0)");
+
+        Assertions.assertEquals(Heading.SOUTH, current.getHeading(), "Player 0 should be heading SOUTH!");
     }
 
 }

@@ -53,12 +53,14 @@ public class Space extends Subject {
     }
 
     public boolean hasWall(Heading heading){
+        if (walls == null){
+            return false;
+        }
         return switch (heading) {
             case NORTH -> walls.contains(Heading.SOUTH);
             case SOUTH -> walls.contains(Heading.NORTH);
             case EAST -> walls.contains(Heading.WEST);
             case WEST -> walls.contains(Heading.EAST);
-            default -> false;
         };
     }
 

@@ -47,7 +47,7 @@ public class GameController {
     public void moveCurrentPlayerToSpace(@NotNull Space space)  {
         if(space.getPlayer() == null){
             Player currentPlayer = board.getCurrentPlayer();
-            if(!currentPlayer.getSpace().equals(space)) {
+            if(!currentPlayer.getSpace().equals(space) || !space.hasWall(currentPlayer.getHeading())) {
                 board.setStep(board.getStep() + 1);
                 currentPlayer.setSpace(space);
                 board.setCurrentPlayer(board.getPlayer((board.getPlayerNumber(currentPlayer) + 1) % board.getPlayersNumber()));
@@ -214,10 +214,11 @@ public class GameController {
     /**
      * @author Asbjørn Nielsen
      * @param player
-     * Moves the player forwards.
+     * Moves the player forwards, if the target space don't have a wall.
      */
     public void moveForward(@NotNull Player player) {
-        if(board.getNeighbour(player.getSpace(),player.getHeading()) != null) {
+        Space space = board.getNeighbour(player.getSpace(),player.getHeading());
+        if(space != null && !space.hasWall(player.getHeading())) {
             player.setSpace(board.getNeighbour(player.getSpace(), player.getHeading()));
         }
     }
