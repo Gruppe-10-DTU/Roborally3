@@ -1,5 +1,6 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
@@ -57,6 +58,19 @@ class GameControllerTest {
         Assertions.assertEquals(current, board.getSpace(0, 1).getPlayer(), "Player " + current.getName() + " should beSpace (0,1)!");
         Assertions.assertEquals(Heading.SOUTH, current.getHeading(), "Player 0 should be heading SOUTH!");
         Assertions.assertNull(board.getSpace(0, 0).getPlayer(), "Space (0,0) should be empty!");
+    }
+
+    @Test
+    void pushRobot(){
+        Board board = gameController.board;
+        Player pusher = board.getCurrentPlayer();
+        Player pushed = board.getPlayer(1);
+        gameController.moveForward(pusher);
+        pusher.setHeading(Heading.EAST);
+        gameController.moveForward(pusher);
+
+        Assertions.assertEquals(pusher,board.getSpace(1,1).getPlayer(), "Player "+ pusher.getName() + " should be space (1,1)");
+        Assertions.assertEquals(pushed,board.getSpace(2,1).getPlayer(), "Player " + pushed.getName() + " should be space (2,1)");
     }
 
 }
