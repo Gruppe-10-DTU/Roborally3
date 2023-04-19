@@ -24,8 +24,10 @@ package dk.dtu.compute.se.pisd.roborally.model;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import org.jetbrains.annotations.NotNull;
 
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
 
@@ -57,6 +59,7 @@ public class Board extends Subject {
 
     private boolean stepMode;
 
+
     public Board(int width, int height, @NotNull String boardName) {
         this.boardName = boardName;
         this.width = width;
@@ -69,7 +72,10 @@ public class Board extends Subject {
             }
         }
         this.stepMode = false;
+        priorityAntenna = new PriorityAntenna(spaces[0][4]);
     }
+
+    private PriorityAntenna priorityAntenna;
 
     public Board(int width, int height) {
         this(width, height, "defaultboard");
@@ -115,6 +121,20 @@ public class Board extends Subject {
         } else {
             return null;
         }
+    }
+
+    public PriorityQueue<Player> calculatePlayerOrder() {
+        PriorityQueue<Player> playerOrder = new PriorityQueue<>();
+
+        Space start = priorityAntenna.getSpace();
+
+        for (Player player : players) {
+            Space playerSpace = player.getSpace();
+            player.setPriority(Math.abs((playerSpace.x - start.x) + (playerSpace.y - start.y)));
+            playerOrder.add(player);
+        }
+
+        return playerOrder;
     }
 
     public Player getCurrentPlayer() {
