@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElement.BoardElementType;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -259,13 +260,34 @@ public class GameController {
         }
 
     }
-        /**
-         * A method called when no corresponding controller operation is implemented yet. This
-         * should eventually be removed.
-         */
-        public void notImplemented() {
-            // XXX just for now to indicate that the actual method is not yet implemented
-            assert false;
+
+    public void activateBoard(){
+        for (BoardElementType boardElementType: BoardElementType.values()
+             ) {
+            switch (boardElementType){
+                case LASER -> fireLaser();
+                default -> {
+                    for (Player player : board.getPlayers()) {
+                        if(player.getSpace().getBoardElement().getBoardElementType() == boardElementType){
+                            player.getSpace().getBoardElement().action(player);
+                        }
+                    }
+                }
+            }
         }
+    }
+
+    private void fireLaser() {
+    }
+
+
+    /**
+     * A method called when no corresponding controller operation is implemented yet. This
+     * should eventually be removed.
+     */
+    public void notImplemented() {
+        // XXX just for now to indicate that the actual method is not yet implemented
+        assert false;
+    }
 
 }

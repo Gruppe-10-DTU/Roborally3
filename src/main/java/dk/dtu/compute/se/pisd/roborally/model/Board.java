@@ -71,6 +71,10 @@ public class Board extends Subject {
         this.stepMode = false;
     }
 
+    public List<Player> getPlayers(){
+        return players;
+    }
+
     public Board(int width, int height) {
         this(width, height, "defaultboard");
     }

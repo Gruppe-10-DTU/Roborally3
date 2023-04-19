@@ -22,7 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElements.BoardElement;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElement.BoardElement;
 
 import java.util.EnumSet;
 
@@ -83,6 +83,10 @@ public class Space extends Subject {
             }
             notifyChange();
         }
+    }
+
+    public BoardElement getBoardElement(){
+        return this.boardElement;
     }
 
     void playerChanged() {
