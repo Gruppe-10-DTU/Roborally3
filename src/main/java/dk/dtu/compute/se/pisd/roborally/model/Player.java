@@ -44,6 +44,7 @@ public class Player extends Subject {
 
     private Space space;
     private Heading heading = SOUTH;
+    private CmdCardDeck deck;
 
     private CommandCardField[] program;
     private CommandCardField[] cards;
@@ -52,7 +53,7 @@ public class Player extends Subject {
         this.board = board;
         this.name = name;
         this.color = color;
-
+        this.deck = new CmdCardDeck();
         this.space = null;
 
         program = new CommandCardField[NO_REGISTERS];
@@ -133,4 +134,11 @@ public class Player extends Subject {
         return cards[i];
     }
 
+    public CommandCard drawCard() {
+        return this.deck.drawCard();
+    }
+
+    public void discardCard(CommandCard card) {
+        this.deck.discard(card);
+    }
 }
