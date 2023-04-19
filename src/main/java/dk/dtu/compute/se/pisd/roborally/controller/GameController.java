@@ -24,6 +24,8 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.EnumSet;
+
 /**
  * ...
  *
@@ -225,11 +227,13 @@ public class GameController {
     public void moveForward(@NotNull Player player) {
         Space space = board.getNeighbour(player.getSpace(),player.getHeading());
         if(space != null && !space.hasWall(player.getHeading())) {
-            player.setSpace(board.getNeighbour(player.getSpace(), player.getHeading()));
-            Player ppush = board.getPlayer(board.getPlayerNumber(board.getNeighbour(player.getSpace(),player.getHeading()).getPlayer()));
-            pushRobot(player,ppush);
+            if(space.getPlayer() != null){
+                pushRobot(player,space.getPlayer());
+            }
+            if(space.getPlayer() == null) {
+                player.setSpace(board.getNeighbour(player.getSpace(), player.getHeading()));
+            }
         }
-        player.setSpace(board.getNeighbour(player.getSpace(), player.getHeading()));
     }
 
     public void reverse(@NotNull Player player){
@@ -248,8 +252,13 @@ public class GameController {
         if(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer() != null){
             pushRobot(pushing,board.getPlayer(board.getPlayerNumber(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer())));
         }
-        pushed.setSpace(board.getNeighbour(pushed.getSpace(),pushing.getHeading()));
+        if(!board.getNeighbour(pushed.getSpace(),pushing.getHeading()).hasWall(pushing.getHeading())){
+            if(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer() == null) {
+                pushed.setSpace(board.getNeighbour(pushed.getSpace(), pushing.getHeading()));
+            }
+        }
     }
+
     /**
      * @author Asbjørn Nielsen
      * @param player
