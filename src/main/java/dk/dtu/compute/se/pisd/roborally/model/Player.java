@@ -32,7 +32,7 @@ import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
  * @author Ekkart Kindler, ekki@dtu.dk
  *
  */
-public class Player extends Subject {
+public class Player extends Subject implements Comparable<Player> {
 
     final public static int NO_REGISTERS = 5;
     final public static int NO_CARDS = 8;
@@ -43,6 +43,7 @@ public class Player extends Subject {
     private String color;
 
     private Space space;
+    private int priority;
     private Heading heading = SOUTH;
 
     private CommandCardField[] program;
@@ -133,4 +134,16 @@ public class Player extends Subject {
         return cards[i];
     }
 
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    @Override
+    public int compareTo(@NotNull Player o) {
+        return Integer.compare(this.priority, o.priority);
+    }
 }
