@@ -45,23 +45,14 @@ public class GameController {
      * @param space the space to which the current player should move
      */
     public void moveCurrentPlayerToSpace(@NotNull Space space)  {
-        // TODO Assignment V1: method should be implemented by the students:
-        //   - the current player should be moved to the given space
-        //     (if it is free()
-        //   - and the current player should be set to the player
-        //     following the current player
-        //   - the counter of moves in the game should be increased by one
-        //     if the player is moved
-
-        if (space != null && space.board == board) {
+        if(space.getPlayer() == null){
             Player currentPlayer = board.getCurrentPlayer();
-            if (currentPlayer != null && space.getPlayer() == null) {
+            if(!currentPlayer.getSpace().equals(space)) {
+                board.setStep(board.getStep() + 1);
                 currentPlayer.setSpace(space);
-                int playerNumber = (board.getPlayerNumber(currentPlayer) + 1) % board.getPlayersNumber();
-                board.setCurrentPlayer(board.getPlayer(playerNumber));
+                board.setCurrentPlayer(board.getPlayer((board.getPlayerNumber(currentPlayer) + 1) % board.getPlayersNumber()));
             }
         }
-
     }
 
     // XXX: V2
@@ -148,28 +139,37 @@ public class GameController {
                 CommandCard card = currentPlayer.getProgramField(step).getCard();
                 if (card != null) {
                     Command command = card.command;
+                    if (command.isInteractive()) {
+                        board.setPhase(Phase.PLAYER_INTERACTION);
+                        return;
+                    }
                     executeCommand(currentPlayer, command);
                 }
-                int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
-                if (nextPlayerNumber < board.getPlayersNumber()) {
-                    board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
+                    incrementStep(step);
+
                 } else {
-                    step++;
-                    if (step < Player.NO_REGISTERS) {
-                        makeProgramFieldsVisible(step);
-                        board.setStep(step);
-                        board.setCurrentPlayer(board.getPlayer(0));
-                    } else {
-                        startProgrammingPhase();
-                    }
+                    // this should not happen
+                    assert false;
                 }
             } else {
                 // this should not happen
                 assert false;
             }
+    }
+
+    public void incrementStep(int step){
+        int nextPlayerNumber = board.getPlayerNumber(board.getCurrentPlayer()) + 1;
+        if (nextPlayerNumber < board.getPlayersNumber()) {
+            board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
         } else {
-            // this should not happen
-            assert false;
+            step++;
+            if (step < Player.NO_REGISTERS) {
+                makeProgramFieldsVisible(step);
+                board.setStep(step);
+                board.setCurrentPlayer(board.getPlayer(0));
+            } else {
+                startProgrammingPhase();
+            }
         }
     }
 
@@ -199,39 +199,46 @@ public class GameController {
         }
     }
 
-    // TODO: V2
+    public void executeCommandOptionAndContinue(Command command){
+        board.setPhase(Phase.ACTIVATION);
+        executeCommand(board.getCurrentPlayer(), command);
+        incrementStep(board.getStep());
+
+    }
+
+    /**
+     * @author Asbjørn Nielsen
+     * @param player
+     * Moves the player forwards.
+     */
     public void moveForward(@NotNull Player player) {
-        Space space = player.getSpace();
-        if (player != null && player.board == board && space != null) {
-            Heading heading = player.getHeading();
-            Space target = board.getNeighbour(space, heading);
-            if (target != null) {
-                // XXX note that this removes an other player from the space, when there
-                //     is another player on the target. Eventually, this needs to be
-                //     implemented in a way so that other players are pushed away!
-                target.setPlayer(player);
-            }
+        if(board.getNeighbour(player.getSpace(),player.getHeading()) != null) {
+            player.setSpace(board.getNeighbour(player.getSpace(), player.getHeading()));
         }
     }
 
-    // TODO: V2
+    /**
+     * @author Asbjørn Nielsen
+     * @param player
+     * Moves the player forwards twice.
+     */
     public void fastForward(@NotNull Player player) {
         moveForward(player);
         moveForward(player);
     }
 
-    // TODO: V2
+    /**
+     * @author Asbjørn Nielsen
+     * @param player
+     * Turns the aforementioned player one nook to the right
+     */
     public void turnRight(@NotNull Player player) {
-        if (player != null && player.board == board) {
-            player.setHeading(player.getHeading().next());
-        }
+        player.setHeading(player.getHeading().next());
     }
 
-    // TODO: V2
+    // TODO Assignment V2
     public void turnLeft(@NotNull Player player) {
-        if (player != null && player.board == board) {
-            player.setHeading(player.getHeading().prev());
-        }
+        player.setHeading(player.getHeading().prev());
     }
 
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
@@ -244,15 +251,15 @@ public class GameController {
         } else {
             return false;
         }
-    }
 
-    /**
-     * A method called when no corresponding controller operation is implemented yet. This
-     * should eventually be removed.
-     */
-    public void notImplemented() {
-        // XXX just for now to indicate that the actual method is not yet implemented
-        assert false;
     }
+        /**
+         * A method called when no corresponding controller operation is implemented yet. This
+         * should eventually be removed.
+         */
+        public void notImplemented() {
+            // XXX just for now to indicate that the actual method is not yet implemented
+            assert false;
+        }
 
 }
