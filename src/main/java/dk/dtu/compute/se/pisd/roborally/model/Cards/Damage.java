@@ -20,7 +20,6 @@ public enum Damage {
         this.cardAmount = cardAmount;
     }
 
-
     public int getAmount(){
         return this.cardAmount;
     }
