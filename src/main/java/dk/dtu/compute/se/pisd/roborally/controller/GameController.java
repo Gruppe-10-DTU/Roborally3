@@ -146,6 +146,10 @@ public class GameController {
             if(card != null) {
                 switch (card.getType()) {
                     case "Command":
+                        if (((CommandCard) card).command.isInteractive()) {
+                            board.setPhase(Phase.PLAYER_INTERACTION);
+                            return;
+                        }
                         executeCommand(currentPlayer, ((CommandCard) card).command);
                         break;
                     case "Damage":
@@ -192,10 +196,6 @@ public class GameController {
 
     // XXX: V2
     private void executeCommand(@NotNull Player player, Command command) {
-        if (command.isInteractive()) {
-            board.setPhase(Phase.PLAYER_INTERACTION);
-            return;
-        }
         if (player != null && player.board == board && command != null) {
             // XXX This is a very simplistic way of dealing with some basic cards and
             //     their execution. This should eventually be done in a more elegant way
