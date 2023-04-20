@@ -35,20 +35,22 @@ public enum Command {
 
     // This is a very simplistic way of realizing different commands.
 
-    FORWARD("Fwd"),
-    REVERSE("Reverse"),
-    RIGHT("Turn Right"),
-    LEFT("Turn Left"),
-    UTURN("U-Turn"),
-    FAST_FORWARD("Fast Fwd"),
+    FORWARD("Fwd", 6),
+    REVERSE("Reverse",1),
+    RIGHT("Turn Right",1),
+    LEFT("Turn Left",1),
+    UTURN("U-Turn",1),
+    FAST_FORWARD("Fast Fwd",6),
 
     // XXX Assignment P3
-    OPTION_LEFT_RIGHT("Left OR Right", LEFT, RIGHT);
+    OPTION_LEFT_RIGHT("Left OR Right",1, LEFT, RIGHT);
 
 
 
 
     final public String displayName;
+
+    final int cardAmount;
 
     // XXX Assignment P3
     // Command(String displayName) {
@@ -59,8 +61,9 @@ public enum Command {
 
     final private List<Command> options;
 
-    Command(String displayName, Command... options) {
+    Command(String displayName,int cardAmount, Command... options) {
         this.displayName = displayName;
+        this.cardAmount = cardAmount;
         this.options = Collections.unmodifiableList(Arrays.asList(options));
     }
 
@@ -71,5 +74,7 @@ public enum Command {
     public List<Command> getOptions() {
         return options;
     }
-
+    public int getAmount(){
+        return this.cardAmount;
+    }
 }
