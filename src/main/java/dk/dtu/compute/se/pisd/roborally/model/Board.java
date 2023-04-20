@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElement.Checkpoint;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -56,6 +57,15 @@ public class Board extends Subject {
     private int step = 0;
 
     private boolean stepMode;
+    private Checkpoint wincondition;
+
+    public Checkpoint getWincondition() {
+        return wincondition;
+    }
+
+    public void setWincondition(Checkpoint wincondition) {
+        this.wincondition = wincondition;
+    }
 
     public Board(int width, int height, @NotNull String boardName) {
         this.boardName = boardName;

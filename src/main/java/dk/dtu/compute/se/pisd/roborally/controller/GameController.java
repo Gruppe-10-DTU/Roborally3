@@ -22,7 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.model.*;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElement.BoardElementType;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElement.BoardActionType;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -213,15 +213,25 @@ public class GameController {
     }
 
     /**
+     * @author Nilas
+     * @param player The player to be moved
+     * @param heading The way the player is moving
+     * Moves the player one step in a specific direction
+     */
+    public void movePlayer(@NotNull Player player, Heading heading){
+        Space space = board.getNeighbour(player.getSpace(),heading);
+        if(space != null && !space.hasWall(heading)) {
+            player.setSpace(board.getNeighbour(player.getSpace(), heading));
+        }
+    }
+
+    /**
      * @author Asbjørn Nielsen
      * @param player
      * Moves the player forwards, if the target space don't have a wall.
      */
     public void moveForward(@NotNull Player player) {
-        Space space = board.getNeighbour(player.getSpace(),player.getHeading());
-        if(space != null && !space.hasWall(player.getHeading())) {
-            player.setSpace(board.getNeighbour(player.getSpace(), player.getHeading()));
-        }
+        movePlayer(player, player.getHeading());
     }
 
     /**
@@ -262,17 +272,11 @@ public class GameController {
     }
 
     public void activateBoard(){
-        for (BoardElementType boardElementType: BoardElementType.values()
+        for (BoardActionType boardActionType : BoardActionType.values()
              ) {
-            switch (boardElementType){
+            switch (boardActionType){
                 case LASER -> fireLaser();
-                default -> {
-                    for (Player player : board.getPlayers()) {
-                        if(player.getSpace().getBoardElement().getBoardElementType() == boardElementType){
-                            player.getSpace().getBoardElement().action(player);
-                        }
-                    }
-                }
+
             }
         }
     }

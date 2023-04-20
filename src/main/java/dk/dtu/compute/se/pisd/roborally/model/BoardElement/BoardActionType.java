@@ -1,9 +1,9 @@
 package dk.dtu.compute.se.pisd.roborally.model.BoardElement;
 
-public enum BoardElementType {
+public enum BoardActionType {
     FASTCONVEYORBELT,
     CONVEYORBELT,
     LASER,
     GEAR,
-    ANTENNA;
+    CHECKPOINT;
 }
