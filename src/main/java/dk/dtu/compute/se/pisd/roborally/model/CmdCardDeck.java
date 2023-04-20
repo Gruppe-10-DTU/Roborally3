@@ -32,7 +32,7 @@ public class CmdCardDeck {
         }
     }
     private void generateDeck(){
-        int[] composition = {6,1, 1, 6,1};
+        int[] composition = {6, 1, 1, 1, 1, 6, 1};
         int type = 0;
         for (Command value : Command.values()) {
             for(int i = 0; i < composition[type]; i++){
