@@ -24,6 +24,8 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.EnumSet;
+
 /**
  * ...
  *
@@ -47,7 +49,7 @@ public class GameController {
     public void moveCurrentPlayerToSpace(@NotNull Space space)  {
         if(space.getPlayer() == null){
             Player currentPlayer = board.getCurrentPlayer();
-            if(!currentPlayer.getSpace().equals(space)) {
+            if(!currentPlayer.getSpace().equals(space) || !space.hasWall(currentPlayer.getHeading())) {
                 board.setStep(board.getStep() + 1);
                 currentPlayer.setSpace(space);
                 board.setCurrentPlayer(board.getPlayer((board.getPlayerNumber(currentPlayer) + 1) % board.getPlayersNumber()));
@@ -66,24 +68,21 @@ public class GameController {
             if (player != null) {
                 for (int j = 0; j < Player.NO_REGISTERS; j++) {
                     CommandCardField field = player.getProgramField(j);
+                    player.discardCard(field.getCard());
                     field.setCard(null);
                     field.setVisible(true);
                 }
                 for (int j = 0; j < Player.NO_CARDS; j++) {
                     CommandCardField field = player.getCardField(j);
-                    field.setCard(generateRandomCommandCard());
-                    field.setVisible(true);
+                    if(field.getCard() == null) {
+                        field.setCard(player.drawCard());
+                        field.setVisible(true);
+                    }
                 }
             }
         }
     }
 
-    // XXX: V2
-    private CommandCard generateRandomCommandCard() {
-        Command[] commands = Command.values();
-        int random = (int) (Math.random() * commands.length);
-        return new CommandCard(commands[random]);
-    }
 
     // XXX: V2
     public void finishProgrammingPhase() {
@@ -216,6 +215,12 @@ public class GameController {
                 case FAST_FORWARD:
                     this.fastForward(player);
                     break;
+                case REVERSE:
+                    this.reverse(player);
+                    break;
+                case UTURN:
+                    this.uTurn(player);
+                    break;
                 default:
                     // DO NOTHING (for now)
             }
@@ -232,11 +237,40 @@ public class GameController {
     /**
      * @author Asbjørn Nielsen
      * @param player
-     * Moves the player forwards.
+     * Moves the player forwards, if the target space don't have a wall.
      */
     public void moveForward(@NotNull Player player) {
-        if(board.getNeighbour(player.getSpace(),player.getHeading()) != null) {
-            player.setSpace(board.getNeighbour(player.getSpace(), player.getHeading()));
+        Space space = board.getNeighbour(player.getSpace(),player.getHeading());
+        if(space != null && !space.hasWall(player.getHeading())) {
+            if(space.getPlayer() != null){
+                pushRobot(player,space.getPlayer());
+            }
+            if(space.getPlayer() == null) {
+                player.setSpace(board.getNeighbour(player.getSpace(), player.getHeading()));
+            }
+        }
+    }
+
+    public void reverse(@NotNull Player player){
+        player.setHeading(player.getHeading().prev().prev());
+        moveForward(player);
+        player.setHeading(player.getHeading().prev().prev());
+    }
+
+    /**
+     * @author Asbjørn Nielsen
+     * @param pushing The robot who is doing the pushing
+     * @param pushed The pushed robot
+     * Pushes a row of robots.
+     */
+    public void pushRobot(@NotNull Player pushing, @NotNull Player pushed){
+        if(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer() != null){
+            pushRobot(pushing,board.getPlayer(board.getPlayerNumber(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer())));
+        }
+        if(!board.getNeighbour(pushed.getSpace(),pushing.getHeading()).hasWall(pushing.getHeading())){
+            if(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer() == null) {
+                pushed.setSpace(board.getNeighbour(pushed.getSpace(), pushing.getHeading()));
+            }
         }
     }
 
@@ -262,6 +296,10 @@ public class GameController {
     // TODO Assignment V2
     public void turnLeft(@NotNull Player player) {
         player.setHeading(player.getHeading().prev());
+    }
+
+    public void uTurn(@NotNull Player player){
+        player.setHeading(player.getHeading().prev().prev());
     }
 
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {

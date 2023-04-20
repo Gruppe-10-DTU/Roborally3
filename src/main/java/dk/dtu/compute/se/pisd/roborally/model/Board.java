@@ -38,7 +38,6 @@ import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
  *
  */
 public class Board extends Subject {
-
     public final int width;
 
     public final int height;
@@ -223,16 +222,16 @@ public class Board extends Subject {
         int y = space.y;
         switch (heading) {
             case SOUTH:
-                y = (y + 1);
+                y = (y + 1) % height;
                 break;
             case WEST:
-                x = (x - 1);
+                x = (x + width - 1) % width;
                 break;
             case NORTH:
-                y = (y - 1);
+                y = (y + height - 1) % height;
                 break;
             case EAST:
-                x = (x + 1);
+                x = (x + 1) % width;
                 break;
         }
 
@@ -248,6 +247,5 @@ public class Board extends Subject {
                 ", Player = " + getCurrentPlayer().getName() +
                 ", Step: " + getStep();
     }
-
 
 }
