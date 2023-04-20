@@ -6,10 +6,10 @@ import java.util.List;
 
 public enum Damage {
 
-    SPAM("SPAM", 20),
-    TROJANHORSE("Trojan Horse",18),
-    WORM("WORM",18),
-    VIRUS("VIRUS",18);
+    SPAM("Spam", 20),
+    TROJAN_HORSE("Trojan Horse",18),
+    WORM("Worm",18),
+    VIRUS("Virus",18);
 
     final public String displayName;
 
