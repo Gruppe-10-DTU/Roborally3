@@ -6,11 +6,11 @@ import java.util.ArrayList;
  *
  * @author Philip Astrup Cramer
  */
-public class CmdCardDeck {
+public class PlayerCardDeck {
     private ArrayList<CommandCard> deck;
     private ArrayList<CommandCard> discards;
 
-    public CmdCardDeck(){
+    public PlayerCardDeck(){
         this.deck = new ArrayList<>();
         this.discards = new ArrayList<>();
         generateDeck();
