@@ -22,6 +22,9 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.model.Cards.CmdCardDeck;
+import dk.dtu.compute.se.pisd.roborally.model.Cards.CommandCard;
+import dk.dtu.compute.se.pisd.roborally.model.Cards.CommandCardField;
 import org.jetbrains.annotations.NotNull;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
