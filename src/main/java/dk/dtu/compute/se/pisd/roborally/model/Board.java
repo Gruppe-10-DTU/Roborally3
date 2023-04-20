@@ -131,9 +131,7 @@ public class Board extends Subject {
      * calculates the player priority and adds them to the queue
      */
     public void calculatePlayerOrder() {
-        while (playerOrder.size() > 0) {
-            playerOrder.poll();
-        }
+        playerOrder.clear();
 
         Space start = priorityAntenna.getSpace();
 
