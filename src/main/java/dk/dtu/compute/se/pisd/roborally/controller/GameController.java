@@ -143,13 +143,15 @@ public class GameController {
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
             int step = board.getStep();
             Card card = currentPlayer.getProgramField(step).getCard();
-            switch (card.getType()) {
-                case "Command":
-                    executeCommand(currentPlayer, ((CommandCard) card).command);
-                    break;
-                case "Damage":
-                    executeDamage(currentPlayer, ((DamageCard) card).damage);
-                    break;
+            if(card != null) {
+                switch (card.getType()) {
+                    case "Command":
+                        executeCommand(currentPlayer, ((CommandCard) card).command);
+                        break;
+                    case "Damage":
+                        executeDamage(currentPlayer, ((DamageCard) card).damage);
+                        break;
+                }
             }
             incrementStep(step);
 
