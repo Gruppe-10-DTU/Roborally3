@@ -1,5 +1,4 @@
 package dk.dtu.compute.se.pisd.roborally.model.Cards;
 
-public interface Card {
-    String getType();
+public enum Damage {
 }
