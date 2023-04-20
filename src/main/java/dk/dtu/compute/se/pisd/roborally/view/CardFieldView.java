@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally.model.Cards.Card;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.CommandCard;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.CommandCardField;
 import dk.dtu.compute.se.pisd.roborally.model.Phase;
@@ -143,7 +144,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
     @Override
     public void updateView(Subject subject) {
         if (subject == field && subject != null) {
-            CommandCard card = field.getCard();
+            Card card = field.getCard();
             if (card != null && field.isVisible()) {
                 label.setText(card.getName());
             } else {
