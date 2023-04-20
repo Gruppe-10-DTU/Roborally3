@@ -125,6 +125,11 @@ public class Board extends Subject {
         }
     }
 
+    /**
+     * @auther Sandie Petersen
+     * clears the queue if needed
+     * calculates the player priority and adds them to the queue
+     */
     public void calculatePlayerOrder() {
         while (playerOrder.size() > 0) {
             playerOrder.poll();
@@ -139,6 +144,11 @@ public class Board extends Subject {
         }
     }
 
+    /**
+     * @auther Sandie Petersen
+     * polls the next player if possible
+     * @return true if possible
+     */
     public boolean nextPlayer() {
         if (playerOrder.size() > 0) {
             current = playerOrder.poll();
