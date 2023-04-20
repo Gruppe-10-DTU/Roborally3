@@ -68,9 +68,11 @@ public class GameController {
             if (player != null) {
                 for (int j = 0; j < Player.NO_REGISTERS; j++) {
                     CommandCardField field = player.getProgramField(j);
-                    player.discardCard(field.getCard());
-                    field.setCard(null);
-                    field.setVisible(true);
+                    if(field.getCard() != null) {
+                        player.discardCard(field.getCard());
+                        field.setCard(null);
+                        field.setVisible(true);
+                    }
                 }
                 for (int j = 0; j < Player.NO_CARDS; j++) {
                     CommandCardField field = player.getCardField(j);
