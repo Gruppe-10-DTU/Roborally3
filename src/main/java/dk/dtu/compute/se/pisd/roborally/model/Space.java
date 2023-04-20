@@ -22,6 +22,9 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElements.BoardElement;
+
+import java.util.EnumSet;
 
 /**
  * ...
@@ -37,12 +40,33 @@ public class Space extends Subject {
     public final int y;
 
     private Player player;
+    private BoardElement boardElement;
+    private EnumSet<Heading> walls;
+
 
     public Space(Board board, int x, int y) {
         this.board = board;
         this.x = x;
         this.y = y;
         player = null;
+    }
+    public void setWalls(EnumSet<Heading> walls){
+
+        this.walls = walls;
+
+    }
+
+
+    public boolean hasWall(Heading heading){
+        if (walls == null){
+            return false;
+        }
+        return switch (heading) {
+            case NORTH -> walls.contains(Heading.SOUTH);
+            case SOUTH -> walls.contains(Heading.NORTH);
+            case EAST -> walls.contains(Heading.WEST);
+            case WEST -> walls.contains(Heading.EAST);
+        };
     }
 
     public Player getPlayer() {

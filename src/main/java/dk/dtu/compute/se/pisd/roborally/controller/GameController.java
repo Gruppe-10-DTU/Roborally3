@@ -24,6 +24,8 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.EnumSet;
+
 /**
  * ...
  *
@@ -45,23 +47,14 @@ public class GameController {
      * @param space the space to which the current player should move
      */
     public void moveCurrentPlayerToSpace(@NotNull Space space)  {
-        // TODO Assignment V1: method should be implemented by the students:
-        //   - the current player should be moved to the given space
-        //     (if it is free()
-        //   - and the current player should be set to the player
-        //     following the current player
-        //   - the counter of moves in the game should be increased by one
-        //     if the player is moved
-
-        if (space != null && space.board == board) {
+        if(space.getPlayer() == null){
             Player currentPlayer = board.getCurrentPlayer();
-            if (currentPlayer != null && space.getPlayer() == null) {
+            if(!currentPlayer.getSpace().equals(space) || !space.hasWall(currentPlayer.getHeading())) {
+                board.setStep(board.getStep() + 1);
                 currentPlayer.setSpace(space);
-                int playerNumber = (board.getPlayerNumber(currentPlayer) + 1) % board.getPlayersNumber();
-                board.setCurrentPlayer(board.getPlayer(playerNumber));
+                board.setCurrentPlayer(board.getPlayer((board.getPlayerNumber(currentPlayer) + 1) % board.getPlayersNumber()));
             }
         }
-
     }
 
     // XXX: V2
@@ -75,31 +68,30 @@ public class GameController {
             if (player != null) {
                 for (int j = 0; j < Player.NO_REGISTERS; j++) {
                     CommandCardField field = player.getProgramField(j);
+                    player.discardCard(field.getCard());
                     field.setCard(null);
                     field.setVisible(true);
                 }
                 for (int j = 0; j < Player.NO_CARDS; j++) {
                     CommandCardField field = player.getCardField(j);
-                    field.setCard(generateRandomCommandCard());
-                    field.setVisible(true);
+                    if(field.getCard() == null) {
+                        field.setCard(player.drawCard());
+                        field.setVisible(true);
+                    }
                 }
             }
         }
     }
 
-    // XXX: V2
-    private CommandCard generateRandomCommandCard() {
-        Command[] commands = Command.values();
-        int random = (int) (Math.random() * commands.length);
-        return new CommandCard(commands[random]);
-    }
 
     // XXX: V2
     public void finishProgrammingPhase() {
         makeProgramFieldsInvisible();
         makeProgramFieldsVisible(0);
         board.setPhase(Phase.ACTIVATION);
-        board.setCurrentPlayer(board.getPlayer(0));
+        board.calculatePlayerOrder();
+        board.nextPlayer();
+        //board.setCurrentPlayer(board.getPlayer(0));
         board.setStep(0);
     }
 
@@ -153,29 +145,54 @@ public class GameController {
                 CommandCard card = currentPlayer.getProgramField(step).getCard();
                 if (card != null) {
                     Command command = card.command;
+                    if (command.isInteractive()) {
+                        board.setPhase(Phase.PLAYER_INTERACTION);
+                        return;
+                    }
                     executeCommand(currentPlayer, command);
                 }
-                int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
-                if (nextPlayerNumber < board.getPlayersNumber()) {
-                    board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
+                    incrementStep(step);
+
                 } else {
-                    step++;
-                    if (step < Player.NO_REGISTERS) {
-                        makeProgramFieldsVisible(step);
-                        board.setStep(step);
-                        board.setCurrentPlayer(board.getPlayer(0));
-                    } else {
-                        startProgrammingPhase();
-                    }
+                    // this should not happen
+                    assert false;
                 }
             } else {
                 // this should not happen
                 assert false;
             }
-        } else {
-            // this should not happen
-            assert false;
+    }
+
+    public void incrementStep(int step){
+        boolean playerIsSet = board.nextPlayer();
+
+        if (!playerIsSet) {
+            step++;
+
+            if (step < Player.NO_REGISTERS) {
+                makeProgramFieldsVisible(step);
+                board.setStep(step);
+                board.calculatePlayerOrder();
+                board.nextPlayer();
+            } else {
+                startProgrammingPhase();
+            }
+
         }
+
+        /*int nextPlayerNumber = board.getPlayerNumber(board.getCurrentPlayer()) + 1;
+        if (nextPlayerNumber < board.getPlayersNumber()) {
+            board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
+        } else {
+            step++;
+            if (step < Player.NO_REGISTERS) {
+                makeProgramFieldsVisible(step);
+                board.setStep(step);
+                board.setCurrentPlayer(board.getPlayer(0));
+            } else {
+                startProgrammingPhase();
+            }
+        }*/
     }
 
     // XXX: V2
@@ -198,45 +215,91 @@ public class GameController {
                 case FAST_FORWARD:
                     this.fastForward(player);
                     break;
+                case REVERSE:
+                    this.reverse(player);
+                    break;
+                case UTURN:
+                    this.uTurn(player);
+                    break;
                 default:
                     // DO NOTHING (for now)
             }
         }
     }
 
-    // TODO: V2
+    public void executeCommandOptionAndContinue(Command command){
+        board.setPhase(Phase.ACTIVATION);
+        executeCommand(board.getCurrentPlayer(), command);
+        incrementStep(board.getStep());
+
+    }
+
+    /**
+     * @author Asbjørn Nielsen
+     * @param player
+     * Moves the player forwards, if the target space don't have a wall.
+     */
     public void moveForward(@NotNull Player player) {
-        Space space = player.getSpace();
-        if (player != null && player.board == board && space != null) {
-            Heading heading = player.getHeading();
-            Space target = board.getNeighbour(space, heading);
-            if (target != null) {
-                // XXX note that this removes an other player from the space, when there
-                //     is another player on the target. Eventually, this needs to be
-                //     implemented in a way so that other players are pushed away!
-                target.setPlayer(player);
+        Space space = board.getNeighbour(player.getSpace(),player.getHeading());
+        if(space != null && !space.hasWall(player.getHeading())) {
+            if(space.getPlayer() != null){
+                pushRobot(player,space.getPlayer());
+            }
+            if(space.getPlayer() == null) {
+                player.setSpace(board.getNeighbour(player.getSpace(), player.getHeading()));
             }
         }
     }
 
-    // TODO: V2
+    public void reverse(@NotNull Player player){
+        player.setHeading(player.getHeading().prev().prev());
+        moveForward(player);
+        player.setHeading(player.getHeading().prev().prev());
+    }
+
+    /**
+     * @author Asbjørn Nielsen
+     * @param pushing The robot who is doing the pushing
+     * @param pushed The pushed robot
+     * Pushes a row of robots.
+     */
+    public void pushRobot(@NotNull Player pushing, @NotNull Player pushed){
+        if(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer() != null){
+            pushRobot(pushing,board.getPlayer(board.getPlayerNumber(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer())));
+        }
+        if(!board.getNeighbour(pushed.getSpace(),pushing.getHeading()).hasWall(pushing.getHeading())){
+            if(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer() == null) {
+                pushed.setSpace(board.getNeighbour(pushed.getSpace(), pushing.getHeading()));
+            }
+        }
+    }
+
+    /**
+     * @author Asbjørn Nielsen
+     * @param player
+     * Moves the player forwards twice.
+     */
     public void fastForward(@NotNull Player player) {
         moveForward(player);
         moveForward(player);
     }
 
-    // TODO: V2
+    /**
+     * @author Asbjørn Nielsen
+     * @param player
+     * Turns the aforementioned player one nook to the right
+     */
     public void turnRight(@NotNull Player player) {
-        if (player != null && player.board == board) {
-            player.setHeading(player.getHeading().next());
-        }
+        player.setHeading(player.getHeading().next());
     }
 
-    // TODO: V2
+    // TODO Assignment V2
     public void turnLeft(@NotNull Player player) {
-        if (player != null && player.board == board) {
-            player.setHeading(player.getHeading().prev());
-        }
+        player.setHeading(player.getHeading().prev());
+    }
+
+    public void uTurn(@NotNull Player player){
+        player.setHeading(player.getHeading().prev().prev());
     }
 
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
@@ -249,15 +312,15 @@ public class GameController {
         } else {
             return false;
         }
-    }
 
-    /**
-     * A method called when no corresponding controller operation is implemented yet. This
-     * should eventually be removed.
-     */
-    public void notImplemented() {
-        // XXX just for now to indicate that the actual method is not yet implemented
-        assert false;
     }
+        /**
+         * A method called when no corresponding controller operation is implemented yet. This
+         * should eventually be removed.
+         */
+        public void notImplemented() {
+            // XXX just for now to indicate that the actual method is not yet implemented
+            assert false;
+        }
 
 }
