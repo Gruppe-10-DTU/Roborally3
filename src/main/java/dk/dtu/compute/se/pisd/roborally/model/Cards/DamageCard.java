@@ -10,6 +10,7 @@ public class DamageCard extends Subject implements Card {
         this.damage = damage;
     }
 
+    @Override
     public String getName() {
         return damage.displayName;
     }
