@@ -59,6 +59,8 @@ public class Board extends Subject {
 
     private boolean stepMode;
 
+    PriorityQueue<Player> playerOrder = new PriorityQueue<>();
+
 
     public Board(int width, int height, @NotNull String boardName) {
         this.boardName = boardName;
@@ -72,7 +74,7 @@ public class Board extends Subject {
             }
         }
         this.stepMode = false;
-        priorityAntenna = new PriorityAntenna(spaces[0][4]);
+        priorityAntenna = new PriorityAntenna(spaces[4][0]);
     }
 
     private PriorityAntenna priorityAntenna;
@@ -123,18 +125,27 @@ public class Board extends Subject {
         }
     }
 
-    public PriorityQueue<Player> calculatePlayerOrder() {
-        PriorityQueue<Player> playerOrder = new PriorityQueue<>();
+    public void calculatePlayerOrder() {
+        while (playerOrder.size() > 0) {
+            playerOrder.poll();
+        }
 
         Space start = priorityAntenna.getSpace();
 
         for (Player player : players) {
             Space playerSpace = player.getSpace();
-            player.setPriority(Math.abs((playerSpace.x - start.x) + (playerSpace.y - start.y)));
+            player.setPriority(Math.abs((playerSpace.x - start.x)) + Math.abs(playerSpace.y - start.y));
             playerOrder.add(player);
         }
+    }
 
-        return playerOrder;
+    public boolean nextPlayer() {
+        if (playerOrder.size() > 0) {
+            current = playerOrder.poll();
+            return true;
+        } else return false;
+
+
     }
 
     public Player getCurrentPlayer() {
