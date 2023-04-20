@@ -22,9 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.model.*;
-import dk.dtu.compute.se.pisd.roborally.model.Cards.Command;
-import dk.dtu.compute.se.pisd.roborally.model.Cards.CommandCard;
-import dk.dtu.compute.se.pisd.roborally.model.Cards.CommandCardField;
+import dk.dtu.compute.se.pisd.roborally.model.Cards.*;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -144,26 +142,20 @@ public class GameController {
         Player currentPlayer = board.getCurrentPlayer();
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
             int step = board.getStep();
-            if (step >= 0 && step < Player.NO_REGISTERS) {
-                CommandCard card = currentPlayer.getProgramField(step).getCard();
-                if (card != null) {
-                    Command command = card.command;
-                    if (command.isInteractive()) {
-                        board.setPhase(Phase.PLAYER_INTERACTION);
-                        return;
-                    }
-                    executeCommand(currentPlayer, command);
+            Card card = currentPlayer.getProgramField(step).getCard();
+            if (card != null) {
+                switch (card.getType()) {
+                    case "Command":
+                        executeCommand(currentPlayer, ((CommandCard) card).command);
+                        break;
+                    case "Damage":
+                        executeDamage(currentPlayer, ((DamageCard) card).effect);
+                        break;
                 }
-                    incrementStep(step);
-
-                } else {
-                    // this should not happen
-                    assert false;
-                }
-            } else {
-                // this should not happen
-                assert false;
             }
+            incrementStep(step);
+
+        }
     }
 
     public void incrementStep(int step){
@@ -200,6 +192,10 @@ public class GameController {
 
     // XXX: V2
     private void executeCommand(@NotNull Player player, Command command) {
+        if (command.isInteractive()) {
+            board.setPhase(Phase.PLAYER_INTERACTION);
+            return;
+        }
         if (player != null && player.board == board && command != null) {
             // XXX This is a very simplistic way of dealing with some basic cards and
             //     their execution. This should eventually be done in a more elegant way
@@ -235,6 +231,17 @@ public class GameController {
         executeCommand(board.getCurrentPlayer(), command);
         incrementStep(board.getStep());
 
+    }
+
+    private void executeDamage(Player currentPlayer, Damage dmg){
+        switch (dmg){
+            case 1:
+
+                break;
+            default:
+                //nothing happens
+
+        }
     }
 
     /**
