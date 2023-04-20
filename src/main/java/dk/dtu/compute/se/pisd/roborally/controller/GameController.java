@@ -143,15 +143,13 @@ public class GameController {
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
             int step = board.getStep();
             Card card = currentPlayer.getProgramField(step).getCard();
-            if (card != null) {
-                switch (card.getType()) {
-                    case "Command":
-                        executeCommand(currentPlayer, ((CommandCard) card).command);
-                        break;
-                    case "Damage":
-                        executeDamage(currentPlayer, ((DamageCard) card).effect);
-                        break;
-                }
+            switch (card.getType()) {
+                case "Command":
+                    executeCommand(currentPlayer, ((CommandCard) card).command);
+                    break;
+                case "Damage":
+                    executeDamage(currentPlayer, ((DamageCard) card).damage);
+                    break;
             }
             incrementStep(step);
 
@@ -235,8 +233,13 @@ public class GameController {
 
     private void executeDamage(Player currentPlayer, Damage dmg){
         switch (dmg){
-            case 1:
-
+            case SPAM:
+                break;
+            case TROJAN_HORSE:
+                break;
+            case WORM:
+                break;
+            case VIRUS:
                 break;
             default:
                 //nothing happens
@@ -313,8 +316,8 @@ public class GameController {
     }
 
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
-        CommandCard sourceCard = source.getCard();
-        CommandCard targetCard = target.getCard();
+        Card sourceCard = source.getCard();
+        Card targetCard = target.getCard();
         if (sourceCard != null && targetCard == null) {
             target.setCard(sourceCard);
             source.setCard(null);
