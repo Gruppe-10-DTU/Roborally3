@@ -7,8 +7,8 @@ import java.util.ArrayList;
  * @author Philip Astrup Cramer
  */
 public class PlayerCardDeck {
-    private ArrayList<CommandCard> deck;
-    private ArrayList<CommandCard> discards;
+    private ArrayList<Card> deck;
+    private ArrayList<Card> discards;
 
     public PlayerCardDeck(){
         this.deck = new ArrayList<>();
@@ -24,11 +24,11 @@ public class PlayerCardDeck {
      *
      * @author Philip Astrup Cramer
      */
-    public CommandCard drawCard(){
+    public Card drawCard(){
         if(this.deck.size() < 1){
             reShuffle();
         }
-        CommandCard drawnCard = this.deck.get(0);
+        Card drawnCard = this.deck.get(0);
         this.deck.remove(0);
         return drawnCard;
     }
@@ -40,7 +40,7 @@ public class PlayerCardDeck {
      *
      * @author Philip Astrup Cramer
      */
-    public boolean discard(CommandCard addedCard){
+    public boolean discard(Card addedCard){
         return this.discards.add(addedCard);
     }
 
