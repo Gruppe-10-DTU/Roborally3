@@ -22,7 +22,6 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.model.*;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElement.BoardActionType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumSet;
@@ -328,22 +327,7 @@ public class GameController {
         } else {
             return false;
         }
-
     }
-
-    public void activateBoard(){
-        for (BoardActionType boardActionType : BoardActionType.values()
-             ) {
-            switch (boardActionType){
-                case LASER -> fireLaser();
-
-            }
-        }
-    }
-
-    private void fireLaser() {
-    }
-
 
     /**
      * A method called when no corresponding controller operation is implemented yet. This

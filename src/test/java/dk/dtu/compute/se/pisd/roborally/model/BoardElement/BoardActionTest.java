@@ -39,11 +39,30 @@ class BoardActionTest {
     }
 
     @Test
-    void checkPoint_add_player_first(){
+    void checkPoint_add_player_first_checkpoint(){
         Checkpoint checkpoint = new Checkpoint(board, 0,0);
         Player player = board.getPlayer(0);
 
         checkpoint.addPlayer(player);
         checkpoint.doAction(gameController);
+        Assertions.assertTrue(checkpoint.checkPlayer(player));
+        Assertions.assertFalse(checkpoint.checkPlayer(board.getPlayer(1)));
+    }
+
+    @Test
+    void checkPoint_add_player_second_checkpoint() {
+        Checkpoint checkpoint = new Checkpoint(board, 0, 0);
+        Checkpoint checkpoint2 = new Checkpoint(board, 0, 0, checkpoint);
+
+        Player player = board.getPlayer(0);
+
+        checkpoint2.addPlayer(player);
+        checkpoint2.doAction(gameController);
+        Assertions.assertFalse(checkpoint2.checkPlayer(player));
+        checkpoint.addPlayer(player);
+        checkpoint.doAction(gameController);
+        checkpoint2.addPlayer(player);
+        checkpoint2.doAction(gameController);
+        Assertions.assertTrue(checkpoint2.checkPlayer(player));
     }
 }

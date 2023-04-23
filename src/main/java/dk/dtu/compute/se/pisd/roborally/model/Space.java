@@ -22,7 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElement.BoardActionType;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumSet;
 
@@ -41,40 +41,31 @@ public class Space extends Subject {
 
     protected Player player;
     private EnumSet<Heading> walls;
-    public BoardActionType boardActionType;
-
-    public BoardActionType getBoardElementType() {
-        return boardActionType;
-    }
 
 
     public Space(Board board, int x, int y) {
         this.board = board;
         this.x = x;
         this.y = y;
-        boardActionType = null;
         player = null;
     }
 
     public void setWalls(EnumSet<Heading> walls){
-
         this.walls = walls;
-
     }
 
-
+    /**
+     * Checks if there's a wall in the field the object is trying to move into
+     * @param heading The moving direction
+     * @return true if there's a wall in the way, otherwise false.
+     */
     public boolean hasWall(Heading heading){
-        if (walls == null){
-            return false;
-        }
-        return switch (heading) {
-            case NORTH -> walls.contains(Heading.SOUTH);
-            case SOUTH -> walls.contains(Heading.NORTH);
-            case EAST -> walls.contains(Heading.WEST);
-            case WEST -> walls.contains(Heading.EAST);
-        };
+        return walls.contains(heading.reverse());
     }
 
+    public boolean getOut(Heading heading){
+        return walls.contains(heading);
+    }
     public Player getPlayer() {
         return player;
     }

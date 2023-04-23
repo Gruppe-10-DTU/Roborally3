@@ -47,6 +47,20 @@ public class Player extends Subject implements Comparable<Player> {
     private Heading heading = SOUTH;
     private CmdCardDeck deck;
 
+    private int energy;
+
+    public int getEnergy() {
+        return energy;
+    }
+
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
+
+    public void incrementEnergy(){
+        this.energy++;
+    }
+
     private CommandCardField[] program;
     private CommandCardField[] cards;
 

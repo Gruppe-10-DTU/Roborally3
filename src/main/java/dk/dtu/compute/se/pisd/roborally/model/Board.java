@@ -22,12 +22,13 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.Checkpoint;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceActionComparator;
 import org.jetbrains.annotations.NotNull;
 
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.PriorityQueue;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
@@ -64,15 +65,15 @@ public class Board extends Subject {
         return wincondition;
     }
 
-    public void setWincondition(Checkpoint wincondition) {
-        this.wincondition = wincondition;
-    }
+    private TreeSet<SequenceAction> boardActions;
+
 
     PriorityQueue<Player> playerOrder = new PriorityQueue<>();
 
 
     public Board(int width, int height, @NotNull String boardName) {
         this.boardName = boardName;
+        this.boardActions = new TreeSet<>(new SequenceActionComparator());
         this.width = width;
         this.height = height;
         spaces = new Space[width][height];
@@ -87,6 +88,13 @@ public class Board extends Subject {
     }
 
     private PriorityAntenna priorityAntenna;
+
+    public void addBoardActions(SequenceAction sequenceAction){
+        this.boardActions.add(sequenceAction);
+    }
+    public void removeBoardAction(SequenceAction sequenceAction){
+        this.boardActions.remove(sequenceAction);
+    }
 
     public List<Player> getPlayers(){
         return players;
