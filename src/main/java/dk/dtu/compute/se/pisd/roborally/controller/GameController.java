@@ -25,6 +25,8 @@ import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.BoardActionType;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.EnumSet;
+
 /**
  * ...
  *
@@ -67,23 +69,21 @@ public class GameController {
             if (player != null) {
                 for (int j = 0; j < Player.NO_REGISTERS; j++) {
                     CommandCardField field = player.getProgramField(j);
-                    field.setCard(null);
-                    field.setVisible(true);
+                    if(field.getCard() != null) {
+                        player.discardCard(field.getCard());
+                        field.setCard(null);
+                        field.setVisible(true);
+                    }
                 }
                 for (int j = 0; j < Player.NO_CARDS; j++) {
                     CommandCardField field = player.getCardField(j);
-                    field.setCard(generateRandomCommandCard());
-                    field.setVisible(true);
+                    if(field.getCard() == null) {
+                        field.setCard(player.drawCard());
+                        field.setVisible(true);
+                    }
                 }
             }
         }
-    }
-
-    // XXX: V2
-    private CommandCard generateRandomCommandCard() {
-        Command[] commands = Command.values();
-        int random = (int) (Math.random() * commands.length);
-        return new CommandCard(commands[random]);
     }
 
     // XXX: V2
@@ -91,7 +91,9 @@ public class GameController {
         makeProgramFieldsInvisible();
         makeProgramFieldsVisible(0);
         board.setPhase(Phase.ACTIVATION);
-        board.setCurrentPlayer(board.getPlayer(0));
+        board.calculatePlayerOrder();
+        board.nextPlayer();
+        //board.setCurrentPlayer(board.getPlayer(0));
         board.setStep(0);
     }
 
@@ -164,7 +166,23 @@ public class GameController {
     }
 
     public void incrementStep(int step){
-        int nextPlayerNumber = board.getPlayerNumber(board.getCurrentPlayer()) + 1;
+        boolean playerIsSet = board.nextPlayer();
+
+        if (!playerIsSet) {
+            step++;
+
+            if (step < Player.NO_REGISTERS) {
+                makeProgramFieldsVisible(step);
+                board.setStep(step);
+                board.calculatePlayerOrder();
+                board.nextPlayer();
+            } else {
+                startProgrammingPhase();
+            }
+
+        }
+
+        /*int nextPlayerNumber = board.getPlayerNumber(board.getCurrentPlayer()) + 1;
         if (nextPlayerNumber < board.getPlayersNumber()) {
             board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
         } else {
@@ -176,7 +194,7 @@ public class GameController {
             } else {
                 startProgrammingPhase();
             }
-        }
+        }*/
     }
 
     // XXX: V2
@@ -198,6 +216,12 @@ public class GameController {
                     break;
                 case FAST_FORWARD:
                     this.fastForward(player);
+                    break;
+                case REVERSE:
+                    this.reverse(player);
+                    break;
+                case UTURN:
+                    this.uTurn(player);
                     break;
                 default:
                     // DO NOTHING (for now)
@@ -231,7 +255,39 @@ public class GameController {
      * Moves the player forwards, if the target space don't have a wall.
      */
     public void moveForward(@NotNull Player player) {
+        Space space = board.getNeighbour(player.getSpace(),player.getHeading());
+        if(space != null && !space.hasWall(player.getHeading())) {
+            if(space.getPlayer() != null){
+                pushRobot(player,space.getPlayer());
+            }
+            if(space.getPlayer() == null) {
+                player.setSpace(board.getNeighbour(player.getSpace(), player.getHeading()));
+            }
+        }
         movePlayer(player, player.getHeading());
+    }
+
+    public void reverse(@NotNull Player player){
+        player.setHeading(player.getHeading().prev().prev());
+        moveForward(player);
+        player.setHeading(player.getHeading().prev().prev());
+    }
+
+    /**
+     * @author Asbjørn Nielsen
+     * @param pushing The robot who is doing the pushing
+     * @param pushed The pushed robot
+     * Pushes a row of robots.
+     */
+    public void pushRobot(@NotNull Player pushing, @NotNull Player pushed){
+        if(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer() != null){
+            pushRobot(pushing,board.getPlayer(board.getPlayerNumber(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer())));
+        }
+        if(!board.getNeighbour(pushed.getSpace(),pushing.getHeading()).hasWall(pushing.getHeading())){
+            if(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer() == null) {
+                pushed.setSpace(board.getNeighbour(pushed.getSpace(), pushing.getHeading()));
+            }
+        }
     }
 
     /**
@@ -256,6 +312,10 @@ public class GameController {
     // TODO Assignment V2
     public void turnLeft(@NotNull Player player) {
         player.setHeading(player.getHeading().prev());
+    }
+
+    public void uTurn(@NotNull Player player){
+        player.setHeading(player.getHeading().prev().prev());
     }
 
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {

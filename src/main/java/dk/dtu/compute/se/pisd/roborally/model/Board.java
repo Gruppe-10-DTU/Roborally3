@@ -25,8 +25,10 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.Checkpoint;
 import org.jetbrains.annotations.NotNull;
 
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
 
@@ -37,7 +39,6 @@ import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
  *
  */
 public class Board extends Subject {
-
     public final int width;
 
     public final int height;
@@ -67,6 +68,9 @@ public class Board extends Subject {
         this.wincondition = wincondition;
     }
 
+    PriorityQueue<Player> playerOrder = new PriorityQueue<>();
+
+
     public Board(int width, int height, @NotNull String boardName) {
         this.boardName = boardName;
         this.width = width;
@@ -79,7 +83,10 @@ public class Board extends Subject {
             }
         }
         this.stepMode = false;
+        priorityAntenna = new PriorityAntenna(spaces[4][0]);
     }
+
+    private PriorityAntenna priorityAntenna;
 
     public List<Player> getPlayers(){
         return players;
@@ -129,6 +136,37 @@ public class Board extends Subject {
         } else {
             return null;
         }
+    }
+
+    /**
+     * @auther Sandie Petersen
+     * clears the queue if needed
+     * calculates the player priority and adds them to the queue
+     */
+    public void calculatePlayerOrder() {
+        playerOrder.clear();
+
+        Space start = priorityAntenna.getSpace();
+
+        for (Player player : players) {
+            Space playerSpace = player.getSpace();
+            player.setPriority(Math.abs((playerSpace.x - start.x)) + Math.abs(playerSpace.y - start.y));
+            playerOrder.add(player);
+        }
+    }
+
+    /**
+     * @auther Sandie Petersen
+     * polls the next player if possible
+     * @return true if possible
+     */
+    public boolean nextPlayer() {
+        if (playerOrder.size() > 0) {
+            current = playerOrder.poll();
+            return true;
+        } else return false;
+
+
     }
 
     public Player getCurrentPlayer() {
@@ -198,16 +236,16 @@ public class Board extends Subject {
         int y = space.y;
         switch (heading) {
             case SOUTH:
-                y = (y + 1);
+                y = (y + 1) % height;
                 break;
             case WEST:
-                x = (x - 1);
+                x = (x + width - 1) % width;
                 break;
             case NORTH:
-                y = (y - 1);
+                y = (y + height - 1) % height;
                 break;
             case EAST:
-                x = (x + 1);
+                x = (x + 1) % width;
                 break;
         }
 
@@ -223,6 +261,5 @@ public class Board extends Subject {
                 ", Player = " + getCurrentPlayer().getName() +
                 ", Step: " + getStep();
     }
-
 
 }

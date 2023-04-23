@@ -47,6 +47,7 @@ public class Space extends Subject {
         return boardActionType;
     }
 
+
     public Space(Board board, int x, int y) {
         this.board = board;
         this.x = x;
@@ -56,8 +57,11 @@ public class Space extends Subject {
     }
 
     public void setWalls(EnumSet<Heading> walls){
+
         this.walls = walls;
+
     }
+
 
     public boolean hasWall(Heading heading){
         if (walls == null){
