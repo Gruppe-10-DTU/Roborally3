@@ -21,9 +21,10 @@ public class Energy extends Space implements SequenceAction{
     public void doAction(GameController gameController) {
         for (Player player : board.getPlayers()
              ) {
-            if(player.getSpace().equals(this.getClass())){
+            if(player.getSpace().getClass().equals(this.getClass())){
                 if(energy){
                     energy = false;
+                    player.incrementEnergy();
                 } else if (board.getStep()==5) {
                     player.incrementEnergy();
                 }

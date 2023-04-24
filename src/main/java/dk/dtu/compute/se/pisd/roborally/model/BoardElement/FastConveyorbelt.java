@@ -6,14 +6,18 @@ import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 public class FastConveyorbelt extends Conveyorbelt implements SequenceAction{
 
     public FastConveyorbelt(Board board, int x, int y, Heading heading) {
         super(board, x, y, heading);
-        board.addBoardActions(this);
+    }
+    public FastConveyorbelt(Board board, int x, int y, Heading heading, Heading turn) {
+        super(board, x, y, heading, turn);
     }
 
     /**
@@ -22,22 +26,34 @@ public class FastConveyorbelt extends Conveyorbelt implements SequenceAction{
      */
     @Override
     public void doAction(GameController gameController) {
-        for (int k = 0; k < 2; k++) {
-            List<Space> targetSpace = new ArrayList<>(board.getPlayersNumber());
-            for (int i = 0; i < board.getPlayersNumber(); i++) {
-                if(player.getSpace().getClass().equals(this.getClass())){
-                    targetSpace.add(i, board.getNeighbour(player.getSpace(), ((Conveyorbelt) player.getSpace()).heading));
+        //Target of the move
+
+        Map<Player, Space> targetSpace = new HashMap<>();
+        Player player;
+        Space space;
+        for (int i = 0; i < board.getPlayersNumber(); i++) {
+            player = board.getPlayer(i);
+            space = player.getSpace();
+            for (int j = 0; j < 2; j++) {
+                if(space.getClass().equals(this.getClass())){
+                    space = board.getNeighbour(space, ((Conveyorbelt) player.getSpace()).heading);
+                    if(space.getPlayer() == null || space instanceof FastConveyorbelt){
+                        targetSpace.put(player, space);
+                        if(space instanceof Conveyorbelt){
+                            ((Conveyorbelt) space).turnPlayer(player);
+                        }
+                    }
+
                 }
             }
-            for (int i = 0; i < targetSpace.size(); i++) {
-                if(targetSpace.get(i) == null){
-                    continue;
-                }
-                Space space = targetSpace.get(i);
-                targetSpace.remove(i);
-                if(!targetSpace.contains(space) || space.getPlayer() != null){
-                    player.setSpace(space);
-                }
+        }
+        HashSet<Space> filterMap = new HashSet<>();
+        List<Space> distinct = targetSpace.values().stream().filter(x -> !filterMap.add(x)).toList();
+        for (Map.Entry<Player, Space> entry : targetSpace.entrySet()
+        ) {
+            player = entry.getKey();
+            if(!distinct.contains(entry.getValue())){
+                player.setSpace(entry.getValue());
             }
         }
     }

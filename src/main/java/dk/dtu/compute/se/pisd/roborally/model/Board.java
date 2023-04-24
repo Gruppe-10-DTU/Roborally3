@@ -22,14 +22,12 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.Checkpoint;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceActionComparator;
 import org.jetbrains.annotations.NotNull;
 
-
 import java.util.*;
-import java.util.PriorityQueue;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
 
@@ -87,6 +85,10 @@ public class Board extends Subject {
         priorityAntenna = new PriorityAntenna(spaces[4][0]);
     }
 
+    public void setSpace(Space space){
+        spaces[space.x][space.y] = space;
+    }
+
     private PriorityAntenna priorityAntenna;
 
     public void addBoardActions(SequenceAction sequenceAction){
@@ -95,7 +97,9 @@ public class Board extends Subject {
     public void removeBoardAction(SequenceAction sequenceAction){
         this.boardActions.remove(sequenceAction);
     }
-
+    public Set<SequenceAction> getBoardActions(){
+        return boardActions;
+    }
     public List<Player> getPlayers(){
         return players;
     }
@@ -147,7 +151,7 @@ public class Board extends Subject {
     }
 
     /**
-     * @auther Sandie Petersen
+     * @author Sandie Petersen
      * clears the queue if needed
      * calculates the player priority and adds them to the queue
      */
@@ -164,7 +168,7 @@ public class Board extends Subject {
     }
 
     /**
-     * @auther Sandie Petersen
+     * @author Sandie Petersen
      * polls the next player if possible
      * @return true if possible
      */
@@ -209,6 +213,7 @@ public class Board extends Subject {
             notifyChange();
         }
     }
+
 
     public boolean isStepMode() {
         return stepMode;

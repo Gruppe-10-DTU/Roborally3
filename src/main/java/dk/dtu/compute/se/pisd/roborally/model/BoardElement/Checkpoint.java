@@ -47,7 +47,7 @@ public class Checkpoint extends Space implements SequenceAction {
      * @param player The player to be added
      * @return If the player is on the checkpoint.
      */
-    protected boolean checkPlayer(Player player){
+    public boolean checkPlayer(Player player){
         return players.contains(player);
     }
 

@@ -22,7 +22,6 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumSet;
 
@@ -48,6 +47,8 @@ public class Space extends Subject {
         this.x = x;
         this.y = y;
         player = null;
+        board.setSpace(this);
+        walls = EnumSet.noneOf(Heading.class);
     }
 
     public void setWalls(EnumSet<Heading> walls){
@@ -66,6 +67,7 @@ public class Space extends Subject {
     public boolean getOut(Heading heading){
         return walls.contains(heading);
     }
+
     public Player getPlayer() {
         return player;
     }
@@ -92,5 +94,6 @@ public class Space extends Subject {
         // notify the space of these changes by calling this method.
         notifyChange();
     }
+
 
 }

@@ -3,11 +3,10 @@ package dk.dtu.compute.se.pisd.roborally.model.BoardElement;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 public class BoardLaser extends Space implements SequenceAction {
-    private Heading shootingDirection;
+    private final Heading shootingDirection;
 
     public BoardLaser(Board board, int x, int y, Heading shootingDirection) {
         super(board, x, y);
@@ -17,8 +16,9 @@ public class BoardLaser extends Space implements SequenceAction {
 
     /**
      * Checks if the LoS hits a laser.
+     * @author Nilas
      * @param heading Direction of the shot
-     * @return
+     * @return boolean if the robot is hit
      */
     public boolean hit(Heading heading){
         return this.shootingDirection == heading.reverse();
@@ -26,20 +26,22 @@ public class BoardLaser extends Space implements SequenceAction {
 
     /**
      * Implements the board laser action.
+     * @author Nilas
      * @param gameController The gamecontroller
      */
     @Override
     public void doAction(GameController gameController) {
-        Space space;
         Heading heading = Heading.WEST;
-        for (Player player: gameController.board.getPlayers()
-             ) {
-            space = player.getSpace();
+        gameController.board.getPlayers().parallelStream().forEach(player -> {
+            Space space = player.getSpace();
             for (int i = 0; i < 4; i++) {
-                isHit(gameController.board, space, heading);
+                //Set isHit in the if statement and add the dmg card inside the statement.
+                if(!space.getOut(heading)) {
+                    isHit(gameController.board, space, heading);
+                }
                 heading.next();
             }
-        }
+        });
     }
 
     @Override
@@ -49,6 +51,7 @@ public class BoardLaser extends Space implements SequenceAction {
 
     /**
      * Action to see if a player is in a firing line of a laser on the board. Returns true if it is, otherwise false.
+     * @author Nilas
      * @param board The playing board
      * @param space Space of the player
      * @param heading firing line of the laser
@@ -57,10 +60,10 @@ public class BoardLaser extends Space implements SequenceAction {
     protected boolean isHit(Board board, Space space, Heading heading){
 
         while(space != null){
-            if(space.getPlayer() != null || getOut(heading) || hasWall(heading)){
+            if(space.getPlayer() != null || hasWall(heading)){
                 return false;
             }
-            if(space instanceof BoardLaser && ((BoardLaser) space).shootingDirection == heading.reverse()){
+            if(space instanceof BoardLaser && ((BoardLaser) space).hit(heading)){
                 return true;
             }
 

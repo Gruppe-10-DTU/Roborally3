@@ -45,7 +45,7 @@ public class Player extends Subject implements Comparable<Player> {
     private Space space;
     private int priority;
     private Heading heading = SOUTH;
-    private CmdCardDeck deck;
+    private final CmdCardDeck deck;
 
     private int energy;
 
@@ -61,8 +61,8 @@ public class Player extends Subject implements Comparable<Player> {
         this.energy++;
     }
 
-    private CommandCardField[] program;
-    private CommandCardField[] cards;
+    private final CommandCardField[] program;
+    private final CommandCardField[] cards;
 
     public Player(@NotNull Board board, String color, @NotNull String name) {
         this.board = board;
@@ -70,6 +70,7 @@ public class Player extends Subject implements Comparable<Player> {
         this.color = color;
         this.deck = new CmdCardDeck();
         this.space = null;
+        this.energy = 0;
 
         program = new CommandCardField[NO_REGISTERS];
         for (int i = 0; i < program.length; i++) {

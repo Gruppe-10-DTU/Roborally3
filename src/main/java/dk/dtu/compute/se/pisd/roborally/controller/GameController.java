@@ -22,9 +22,8 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.EnumSet;
 
 /**
  * ...
@@ -242,9 +241,14 @@ public class GameController {
      * Moves the player one step in a specific direction
      */
     public void movePlayer(@NotNull Player player, Heading heading){
-        Space space = board.getNeighbour(player.getSpace(),heading);
-        if(space != null && !space.hasWall(heading)) {
-            player.setSpace(board.getNeighbour(player.getSpace(), heading));
+        Space space = board.getNeighbour(player.getSpace(), heading);
+        if(space != null && !space.hasWall(heading) && !player.getSpace().getOut(heading)) {
+            if(space.getPlayer() != null){
+                pushRobot(player,space.getPlayer());
+            }
+            if(space.getPlayer() == null) {
+                player.setSpace(board.getNeighbour(player.getSpace(),heading));
+            }
         }
     }
 
@@ -254,15 +258,6 @@ public class GameController {
      * Moves the player forwards, if the target space don't have a wall.
      */
     public void moveForward(@NotNull Player player) {
-        Space space = board.getNeighbour(player.getSpace(),player.getHeading());
-        if(space != null && !space.hasWall(player.getHeading())) {
-            if(space.getPlayer() != null){
-                pushRobot(player,space.getPlayer());
-            }
-            if(space.getPlayer() == null) {
-                player.setSpace(board.getNeighbour(player.getSpace(), player.getHeading()));
-            }
-        }
         movePlayer(player, player.getHeading());
     }
 
@@ -286,6 +281,13 @@ public class GameController {
             if(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer() == null) {
                 pushed.setSpace(board.getNeighbour(pushed.getSpace(), pushing.getHeading()));
             }
+        }
+    }
+
+    public void executeBoardActions(){
+        for (SequenceAction sequenceAction : board.getBoardActions()
+             ) {
+            sequenceAction.doAction(this);
         }
     }
 

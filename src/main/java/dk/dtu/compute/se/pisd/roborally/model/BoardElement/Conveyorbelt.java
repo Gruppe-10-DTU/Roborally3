@@ -6,8 +6,10 @@ import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 public class Conveyorbelt extends Space implements SequenceAction {
 
@@ -17,9 +19,11 @@ public class Conveyorbelt extends Space implements SequenceAction {
     public Conveyorbelt(Board board, int x, int y, Heading heading){
         super(board, x, y);
         this.heading = heading;
+        board.addBoardActions(this);
     }
     public Conveyorbelt(Board board, int x, int y, Heading heading, Heading turn){
         super(board, x, y);
+        board.addBoardActions(this);
         this.heading = heading;
         this.turn = turn;
     }
@@ -44,20 +48,25 @@ public class Conveyorbelt extends Space implements SequenceAction {
     @Override
     public void doAction(GameController gameController) {
         //Target of the move
-        List<Space> targetSpace = new ArrayList<>(board.getPlayersNumber());
+        Map<Player, Space> targetSpace = new HashMap<>();
+        Player player;
+        Space space;
         for (int i = 0; i < board.getPlayersNumber(); i++) {
-            if(player.getSpace().getClass().equals(this.getClass())){
-               targetSpace.add(i, board.getNeighbour(player.getSpace(), ((Conveyorbelt) player.getSpace()).heading));
+            player = board.getPlayer(i);
+            space = player.getSpace();
+            if(space.getClass().equals(this.getClass())){
+                space = board.getNeighbour(player.getSpace(), ((Conveyorbelt) player.getSpace()).heading);
+                if(space.getPlayer() != null || space.getClass().equals(this.getClass())){
+                    targetSpace.put(player, space);
+                }
             }
         }
-        for (int i = 0; i < targetSpace.size(); i++) {
-            if(targetSpace.get(i) == null){
-                continue;
-            }
-            Space space = targetSpace.get(i);
-            targetSpace.remove(i);
-            if(!targetSpace.contains(space) || space.getPlayer() != null){
-                player.setSpace(space);
+        HashSet<Space> filterMap = new HashSet<>();
+        List<Space> distinct = targetSpace.values().stream().filter(x -> !filterMap.add(x)).toList();
+        for (Map.Entry<Player, Space> entry : targetSpace.entrySet()
+             ) {
+            if(!distinct.contains(entry.getValue())){
+                entry.getKey().setSpace(entry.getValue());
             }
         }
     }
