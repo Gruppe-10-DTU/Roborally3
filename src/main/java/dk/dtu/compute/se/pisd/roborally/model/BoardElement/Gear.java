@@ -5,7 +5,6 @@ import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
-import org.jetbrains.annotations.NotNull;
 
 public class Gear extends Space implements SequenceAction {
 
@@ -27,6 +26,7 @@ public class Gear extends Space implements SequenceAction {
 
     /**
      * Check each players standing space, and if on gear, rotates the player.
+     * @author Nilas
      * @param gameController The game controller
      */
     @Override
@@ -46,6 +46,7 @@ public class Gear extends Space implements SequenceAction {
 
     /**
      * Turns the player either left or right, depending on the board.
+     * @author Nilas
      * @param player The player to be turned
      */
     private void turnPlayer(Player player){

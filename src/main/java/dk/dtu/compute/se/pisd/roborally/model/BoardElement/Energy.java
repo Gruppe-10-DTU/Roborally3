@@ -15,6 +15,7 @@ public class Energy extends Space implements SequenceAction{
     /**
      * Always add an energy to the player on the first time for each field, otherwise will only increment energy
      * on the 5th step.
+     * @author Nilas
      * @param gameController The main controller for the game
      */
     @Override

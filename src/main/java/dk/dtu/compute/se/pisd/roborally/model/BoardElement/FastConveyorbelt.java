@@ -22,6 +22,7 @@ public class FastConveyorbelt extends Conveyorbelt implements SequenceAction{
 
     /**
      * Moves a player two steps if possible. If the player is moved off the belt on the first step, the action will stop.
+     * @author Nilas
      * @param gameController The main controller for the game
      */
     @Override
@@ -36,7 +37,7 @@ public class FastConveyorbelt extends Conveyorbelt implements SequenceAction{
             space = player.getSpace();
             for (int j = 0; j < 2; j++) {
                 if(space.getClass().equals(this.getClass())){
-                    space = board.getNeighbour(space, ((Conveyorbelt) player.getSpace()).heading);
+                    space = board.getNeighbour(space, ((FastConveyorbelt) player.getSpace()).heading);
                     if(space.getPlayer() == null || space instanceof FastConveyorbelt){
                         targetSpace.put(player, space);
                         if(space instanceof Conveyorbelt){

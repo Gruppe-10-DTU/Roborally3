@@ -18,7 +18,6 @@ public class Push extends Space implements SequenceAction {
 
     /**
      * Iterate over each player. If the player is on an instance of this field, it'll turn him.
-     *
      * @author Nilas
      * @param gameController The main controller for the game
      */

@@ -30,6 +30,7 @@ public class Conveyorbelt extends Space implements SequenceAction {
 
     /**
      * Turns the player either left or right, depending on the arrow.
+     * @author Nilas
      * @param player The player to be turned
      */
     protected void turnPlayer(Player player){
@@ -43,6 +44,7 @@ public class Conveyorbelt extends Space implements SequenceAction {
     /**
      * Moves a player on the board. The player will no push another player.
      * If two players will end up on the same space, the action will not happend for either of them.
+     * @author Nilas
      * @param gameController The main controller for the game
      */
     @Override
@@ -55,8 +57,8 @@ public class Conveyorbelt extends Space implements SequenceAction {
             player = board.getPlayer(i);
             space = player.getSpace();
             if(space.getClass().equals(this.getClass())){
-                space = board.getNeighbour(player.getSpace(), ((Conveyorbelt) player.getSpace()).heading);
-                if(space.getPlayer() != null || space.getClass().equals(this.getClass())){
+                space = board.getNeighbour(player.getSpace(), ((Conveyorbelt) space).heading);
+                if(space.getPlayer() == null || space.getClass().equals(this.getClass())){
                     targetSpace.put(player, space);
                 }
             }

@@ -27,6 +27,7 @@ public class Checkpoint extends Space implements SequenceAction {
 
     /**
      * Adds a player to the checkpoint.
+     * @author Nilas
      * @param player The player to be addedee
      * @return True if it was possible to add the player
      */
@@ -44,6 +45,7 @@ public class Checkpoint extends Space implements SequenceAction {
 
     /**
      * Simple method that checks if the player is already added
+     * @author Nilas
      * @param player The player to be added
      * @return If the player is on the checkpoint.
      */
