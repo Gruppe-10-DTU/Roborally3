@@ -1,0 +1,452 @@
+{
+  "Spaces": [
+    {
+      "x": "3",
+      "y": "0",
+      "Type": "Empty",
+      "Number": "",
+      "Direction": ""
+    },
+    {
+      "x": "3",
+      "y": "1",
+      "Type": "Conveyer",
+      "Number": "2",
+      "Direction": "East"
+    },
+    {
+      "x": "3",
+      "y": "2",
+      "Type": "Empty",
+      "Number": "",
+      "Direction": ""
+    },
+    {
+      "x": "3",
+      "y": "3",
+      "Type": "Empty",
+      "Number": "",
+      "Direction": ""
+    },
+    {
+      "x": "3",
+      "y": "4",
+      "Type": "Empty",
+      "Number": "",
+      "Direction": ""
+    },
+    {
+      "x": "3",
+      "y": "5",
+      "Type": "Empty",
+      "Number": "",
+      "Direction": ""
+    },
+    {
+      "x": "3",
+      "y": "6",
+      "Type": "Conveyer",
+      "Number": "2",
+      "Direction": "West"
+    },
+    {
+      "x": "3",
+      "y": "7",
+      "Type": "CheckPoint",
+      "Number": "3",
+      "Direction": ""
+    },
+    {
+      "x": "4",
+      "y": "0",
+      "Type": "Conveyer",
+      "Number": "2",
+      "Direction": "South"
+    },
+    {
+      "x": "4",
+      "y": "1",
+      "Type": "Conveyer",
+      "Number": "2",
+      "Direction": "SouthWest"
+    },
+    {
+      "x": "4",
+      "y": "2",
+      "Type": "CheckPoint",
+      "Number": "2",
+      "Direction": ""
+    },
+    {
+      "x": "4",
+      "y": "3",
+      "Type": "Conveyer",
+      "Number": "1",
+      "Direction": "WestNorth"
+    },
+    {
+      "x": "4",
+      "y": "4",
+      "Type": "Conveyer",
+      "Number": "1",
+      "Direction": "North"
+    },
+    {
+      "x": "4",
+      "y": "5",
+      "Type": "Conveyer",
+      "Number": "1",
+      "Direction": "NorthEast"
+    },
+    {
+      "x": "4",
+      "y": "6",
+      "Type": "Conveyer",
+      "Number": "2",
+      "Direction": "EastSouth"
+    },
+    {
+      "x": "4",
+      "y": "7",
+      "Type": "Conveyer",
+      "Number": "2",
+      "Direction": "South"
+    },
+    {
+      "x": "5",
+      "y": "0",
+      "Type": "Empty",
+      "Number": "",
+      "Direction": ""
+    },
+    {
+      "x": "5",
+      "y": "1",
+      "Type": "Conveyer",
+      "Number": "1",
+      "Direction": "WestSouth"
+    },
+    {
+      "x": "5",
+      "y": "2",
+      "Type": "Conveyer",
+      "Number": "1",
+      "Direction": "South"
+    },
+    {
+      "x": "5",
+      "y": "3",
+      "Type": "Conveyer",
+      "Number": "1",
+      "Direction": "SouthWest"
+    },
+    {
+      "x": "5",
+      "y": "4",
+      "Type": "Energy",
+      "Number": "",
+      "Direction": ""
+    },
+    {
+      "x": "5",
+      "y": "5",
+      "Type": "Conveyer",
+      "Number": "1",
+      "Direction": "East"
+    },
+    {
+      "x": "5",
+      "y": "6",
+      "Type": "Empty",
+      "Number": "",
+      "Direction": ""
+    },
+    {
+      "x": "5",
+      "y": "7",
+      "Type": "Empty",
+      "Number": "",
+      "Direction": ""
+    },
+    {
+      "x": "6",
+      "y": "0",
+      "Type": "Empty",
+      "Number": "",
+      "Direction": ""
+    },
+    {
+      "x": "6",
+      "y": "1",
+      "Type": "Conveyer",
+      "Number": "1",
+      "Direction": "West"
+    },
+    {
+      "x": "6",
+      "y": "2",
+      "Type": "Energy",
+      "Number": "",
+      "Direction": ""
+    },
+    {
+      "x": "6",
+      "y": "3",
+      "Type": "Empty",
+      "Number": "",
+      "Direction": ""
+    },
+    {
+      "x": "6",
+      "y": "4",
+      "Type": "Empty",
+      "Number": "",
+      "Direction": ""
+    },
+    {
+      "x": "6",
+      "y": "5",
+      "Type": "Conveyer",
+      "Number": "1",
+      "Direction": "WestSouth"
+    },
+    {
+      "x": "6",
+      "y": "6",
+      "Type": "Conveyer",
+      "Number": "1",
+      "Direction": "SouthEast"
+    },
+    {
+      "x": "6",
+      "y": "7",
+      "Type": "Empty",
+      "Number": "",
+      "Direction": ""
+    },
+    {
+      "x": "7",
+      "y": "0",
+      "Type": "Empty",
+      "Number": "",
+      "Direction": ""
+    },
+    {
+      "x": "7",
+      "y": "1",
+      "Type": "Conveyer",
+      "Number": "1",
+      "Direction": "NorthWest"
+    },
+    {
+      "x": "7",
+      "y": "2",
+      "Type": "Conveyer",
+      "Number": "1",
+      "Direction": "WestNorth"
+    },
+    {
+      "x": "7",
+      "y": "3",
+      "Type": "Empty",
+      "Number": "",
+      "Direction": ""
+    },
+    {
+      "x": "7",
+      "y": "4",
+      "Type": "Empty",
+      "Number": "",
+      "Direction": ""
+    },
+    {
+      "x": "7",
+      "y": "5",
+      "Type": "Energy",
+      "Number": "",
+      "Direction": ""
+    },
+    {
+      "x": "7",
+      "y": "6",
+      "Type": "Conveyer",
+      "Number": "1",
+      "Direction": "East"
+    },
+    {
+      "x": "7",
+      "y": "7",
+      "Type": "Empty",
+      "Number": "",
+      "Direction": ""
+    },
+    {
+      "x": "8",
+      "y": "0",
+      "Type": "Empty",
+      "Number": "",
+      "Direction": ""
+    },
+    {
+      "x": "8",
+      "y": "1",
+      "Type": "Empty",
+      "Number": "",
+      "Direction": ""
+    },
+    {
+      "x": "8",
+      "y": "2",
+      "Type": "Conveyer",
+      "Number": "1",
+      "Direction": "West"
+    },
+    {
+      "x": "8",
+      "y": "3",
+      "Type": "Energy",
+      "Number": "",
+      "Direction": ""
+    },
+    {
+      "x": "8",
+      "y": "4",
+      "Type": "Conveyer",
+      "Number": "1",
+      "Direction": "SoutEast"
+    },
+    {
+      "x": "8",
+      "y": "5",
+      "Type": "Conveyer",
+      "Number": "1",
+      "Direction": "South"
+    },
+    {
+      "x": "8",
+      "y": "6",
+      "Type": "Conveyer",
+      "Number": "1",
+      "Direction": "EastSouth"
+    },
+    {
+      "x": "8",
+      "y": "7",
+      "Type": "Empty",
+      "Number": "",
+      "Direction": ""
+    },
+    {
+      "x": "9",
+      "y": "0",
+      "Type": "Conveyer",
+      "Number": "2",
+      "Direction": "South"
+    },
+    {
+      "x": "9",
+      "y": "1",
+      "Type": "Conveyer",
+      "Number": "2",
+      "Direction": "WestSouth"
+    },
+    {
+      "x": "9",
+      "y": "2",
+      "Type": "Conveyer",
+      "Number": "1",
+      "Direction": "SouthWest"
+    },
+    {
+      "x": "9",
+      "y": "3",
+      "Type": "Conveyer",
+      "Number": "1",
+      "Direction": "South"
+    },
+    {
+      "x": "9",
+      "y": "4",
+      "Type": "Conveyer",
+      "Number": "1",
+      "Direction": "EastSouth"
+    },
+    {
+      "x": "9",
+      "y": "5",
+      "Type": "Empty",
+      "Number": "",
+      "Direction": ""
+    },
+    {
+      "x": "9",
+      "y": "6",
+      "Type": "Conveyer",
+      "Number": "2",
+      "Direction": "EastSouth"
+    },
+    {
+      "x": "9",
+      "y": "7",
+      "Type": "Conveyer",
+      "Number": "2",
+      "Direction": "South"
+    },
+    {
+      "x": "10",
+      "y": "0",
+      "Type": "Empty",
+      "Number": "",
+      "Direction": ""
+    },
+    {
+      "x": "10",
+      "y": "1",
+      "Type": "Conveyer",
+      "Number": "2",
+      "Direction": "West"
+    },
+    {
+      "x": "10",
+      "y": "2",
+      "Type": "Empty",
+      "Number": "",
+      "Direction": ""
+    },
+    {
+      "x": "10",
+      "y": "3",
+      "Type": "Empty",
+      "Number": "",
+      "Direction": ""
+    },
+    {
+      "x": "10",
+      "y": "4",
+      "Type": "Empty",
+      "Number": "",
+      "Direction": ""
+    },
+    {
+      "x": "10",
+      "y": "5",
+      "Type": "CheckPoint",
+      "Number": "1",
+      "Direction": ""
+    },
+    {
+      "x": "10",
+      "y": "6",
+      "Type": "Conveyer",
+      "Number": "2",
+      "Direction": "East"
+    },
+    {
+      "x": "10",
+      "y": "7",
+      "Type": "Empty",
+      "Number": "",
+      "Direction": ""
+    }
+  ]
+}
