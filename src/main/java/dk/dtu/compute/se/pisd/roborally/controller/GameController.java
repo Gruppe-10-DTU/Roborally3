@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElement.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,10 +35,13 @@ import org.jetbrains.annotations.NotNull;
 public class GameController {
 
     final public Board board;
+    final public EndGame endGame;
 
-    public GameController(@NotNull Board board) {
+    public GameController(@NotNull Board board, EndGame endGame) {
         this.board = board;
+        this.endGame = endGame;
     }
+
 
     /**
      * This is just some dummy controller operation to make a simple move to see something
@@ -328,6 +332,15 @@ public class GameController {
             return true;
         } else {
             return false;
+        }
+    }
+    private void endGame(){
+        Checkpoint checkpoint = board.getWincondition();
+        for (Player player: board.getPlayers()
+             ) {
+            if(checkpoint.checkPlayer(player));{
+                endGame.endGame(player);
+            }
         }
     }
 
