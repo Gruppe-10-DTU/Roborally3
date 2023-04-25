@@ -142,6 +142,10 @@ public class GameController {
     }
 
     // XXX: V2
+
+    /**
+     * @author Søren og Philip
+     */
     private void executeNextStep() {
         Player currentPlayer = board.getCurrentPlayer();
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
@@ -236,6 +240,11 @@ public class GameController {
 
     }
 
+    /**
+     * calls the method corresponding to the given damage type
+     *
+     * @author Philip Astrup Cramer
+     */
     private void executeDamage(Player currentPlayer, Damage dmg){
         switch (dmg){
             case SPAM:
@@ -336,13 +345,25 @@ public class GameController {
         }
 
     }
+
+    /**
+     * @author Philip Astrup Cramer
+     */
     private void executeTrojanHorse(Player player){
         player.discardCard(new DamageCard(Damage.SPAM));
         player.discardCard(new DamageCard(Damage.SPAM));
     }
+
+    /**
+     * @author Philip Astrup Cramer
+     */
     private void executeWorm(Player player){
         rebootRobot(player);
     }
+
+    /**
+     * @author Philip Astrup Cramer
+     */
     private void executeVirus(Player player){
         ArrayList<Player> withinRange = board.playersInRange(player, 6);
         for (Player affectedPLayer : withinRange) {
