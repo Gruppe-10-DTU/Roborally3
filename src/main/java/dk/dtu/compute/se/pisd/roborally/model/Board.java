@@ -247,6 +247,27 @@ public class Board extends Subject {
 
         return getSpace(x, y);
     }
+
+    /**
+     *
+     * Calculates which players are within a given range
+     * and returns an ArrayList of them
+     *
+     * @author Philip Astrup Cramer
+     */
+    public ArrayList<Player> playersInRange(Player centerPlayer, int range){
+        ArrayList<Player> result = new ArrayList<>();
+        for (Player otherPLayer : this.players) {
+            int distX = Math.abs((centerPlayer.getSpace().x - otherPLayer.getSpace().x));
+            int distY = Math.abs((centerPlayer.getSpace().y - otherPLayer.getSpace().y));
+            if (distX + distY <= range){
+                result.add(otherPLayer);
+            }
+        }
+        result.remove(centerPlayer);
+        return result;
+    }
+
     public String getStatusMessage() {
         // this is actually a view aspect, but for making assignment V1 easy for
         // the students, this method gives a string representation of the current
