@@ -21,8 +21,11 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
-import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.*;
+import dk.dtu.compute.se.pisd.roborally.model.Phase;
+import dk.dtu.compute.se.pisd.roborally.model.Player;
+import dk.dtu.compute.se.pisd.roborally.model.Space;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -338,4 +341,23 @@ public class GameController {
             assert false;
         }
 
+
+    /**
+     * @author Nilas Thoegersen
+     * @param player The player getting rebooted
+     */
+        public void rebootRobot(Player player){
+            player.discardCard(new DamageCard(Damage.WORM));
+            player.discardCard(new DamageCard(Damage.WORM));
+
+            for (int i = 0; i < 5; i++) {
+                CommandCardField field = player.getProgramField(i);
+                if(field.getCard() != null) {
+                    player.discardCard(field.getCard());
+                    field.setCard(null);
+                    field.setVisible(true);
+                }
+            }
+            board.getRebootToken().doFieldAction(this, player);
+        }
 }
