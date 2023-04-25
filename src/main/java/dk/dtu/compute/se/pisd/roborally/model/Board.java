@@ -22,7 +22,10 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.JSONReader;
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 
 import java.util.ArrayList;
@@ -44,6 +47,8 @@ public class Board extends Subject {
 
     public final String boardName;
 
+    public int playerAmound;
+
     private Integer gameId;
 
     private final Space[][] spaces;
@@ -60,6 +65,63 @@ public class Board extends Subject {
 
     PriorityQueue<Player> playerOrder = new PriorityQueue<>();
 
+    public Board(int width, int height, @NotNull String boardName, int playerAmound) {
+        this.boardName = boardName;
+        this.playerAmound = playerAmound;
+        this.width = width;
+        this.height = height;
+
+        JSONArray spawnArray = new JSONReader("src/main/resources/boards/spawnBoard2.json").getJsonSpaces();
+
+        JSONArray courseArray;
+        switch (boardName){
+            case "Risky Crossing":
+                courseArray = new JSONReader("src/main/resources/boards/RiskyCrossing.json").getJsonSpaces();
+                break;
+            default:
+                courseArray = new JSONReader("src/main/resources/boards/RiskyCrossing.json").getJsonSpaces();
+        }
+
+        spaces = new Space[width][height];
+
+        //Loop and create the spaces of the first 3 rows, the spawn section
+        for (int i = 0; i < spawnArray.length(); i++) {
+
+            int x = Integer.parseInt(spawnArray.getJSONObject(i).getString("x"));
+            int y = Integer.parseInt(spawnArray.getJSONObject(i).getString("y"));
+
+            switch (spawnArray.getJSONObject(i).getString("Type")) {
+                case "Priority" :
+                    priorityAntenna = new PriorityAntenna(spaces[x][y]);
+                    break;
+                case "Wall" :
+                    break;
+                case "Spawn" :
+                    //Spawn point
+                    break;
+                default:
+
+                    break;
+            }
+
+        }
+
+        //Loop and create the remaining spaces of the first 3 rows, the course section
+        for (int i = 0; i < courseArray.length(); i++) {
+
+        }
+
+
+
+        for (int x = 0; x < width; x++) {
+            for(int y = 0; y < height; y++) {
+                Space space = new Space(this, x, y);
+                spaces[x][y] = space;
+            }
+        }
+        this.stepMode = false;
+
+    }
 
     public Board(int width, int height, @NotNull String boardName) {
         this.boardName = boardName;
