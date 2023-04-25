@@ -63,6 +63,9 @@ public class Board extends Subject {
     public Checkpoint getWincondition() {
         return wincondition;
     }
+    public void setWincondition(Checkpoint wincondition){
+        this.wincondition = wincondition;
+    }
 
     private TreeSet<SequenceAction> boardActions;
 
