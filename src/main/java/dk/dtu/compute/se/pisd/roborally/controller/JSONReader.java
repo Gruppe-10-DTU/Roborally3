@@ -19,10 +19,11 @@ public class JSONReader {
     private JSONArray spacesArray;
 
     public JSONReader(String path) {
+
         try {
             String jsonContent = Files.readString(Paths.get(path), StandardCharsets.UTF_8);
             jsonSpaces = new JSONObject(jsonContent);
-            spacesArray = jsonSpaces.getJSONArray("Spaces");
+            spacesArray = jsonSpaces.getJSONArray("spaces");
             return;
         } catch (Exception e) {
             System.out.println(e.getMessage());
