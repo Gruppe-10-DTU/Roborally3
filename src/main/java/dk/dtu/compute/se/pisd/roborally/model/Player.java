@@ -51,8 +51,22 @@ public class Player extends Subject implements Comparable<Player> {
     private Heading heading = SOUTH;
     private PlayerCardDeck deck;
 
-    private CommandCardField[] program;
-    private CommandCardField[] cards;
+    private int energy;
+
+    public int getEnergy() {
+        return energy;
+    }
+
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
+
+    public void incrementEnergy(){
+        this.energy++;
+    }
+
+    private final CommandCardField[] program;
+    private final CommandCardField[] cards;
 
     public Player(@NotNull Board board, String color, @NotNull String name) {
         this.board = board;
@@ -60,6 +74,7 @@ public class Player extends Subject implements Comparable<Player> {
         this.color = color;
         this.deck = new PlayerCardDeck();
         this.space = null;
+        this.energy = 0;
 
         program = new CommandCardField[NO_REGISTERS];
         for (int i = 0; i < program.length; i++) {

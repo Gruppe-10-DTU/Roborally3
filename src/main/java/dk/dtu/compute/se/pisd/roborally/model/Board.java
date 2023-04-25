@@ -22,12 +22,12 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElement.Checkpoint;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceActionComparator;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
 
@@ -57,6 +57,14 @@ public class Board extends Subject {
     private int step = 0;
 
     private boolean stepMode;
+    private Checkpoint wincondition;
+
+    public Checkpoint getWincondition() {
+        return wincondition;
+    }
+
+    private TreeSet<SequenceAction> boardActions;
+
 
     private RebootToken rebootToken;
 
@@ -73,6 +81,7 @@ public class Board extends Subject {
 
     public Board(int width, int height, @NotNull String boardName) {
         this.boardName = boardName;
+        this.boardActions = new TreeSet<>(new SequenceActionComparator());
         this.width = width;
         this.height = height;
         spaces = new Space[width][height];
@@ -86,7 +95,24 @@ public class Board extends Subject {
         priorityAntenna = new PriorityAntenna(spaces[4][0]);
     }
 
+    public void setSpace(Space space){
+        spaces[space.x][space.y] = space;
+    }
+
     private PriorityAntenna priorityAntenna;
+
+    public void addBoardActions(SequenceAction sequenceAction){
+        this.boardActions.add(sequenceAction);
+    }
+    public void removeBoardAction(SequenceAction sequenceAction){
+        this.boardActions.remove(sequenceAction);
+    }
+    public Set<SequenceAction> getBoardActions(){
+        return boardActions;
+    }
+    public List<Player> getPlayers(){
+        return players;
+    }
 
     public Board(int width, int height) {
         this(width, height, "defaultboard");
@@ -135,7 +161,7 @@ public class Board extends Subject {
     }
 
     /**
-     * @auther Sandie Petersen
+     * @author Sandie Petersen
      * clears the queue if needed
      * calculates the player priority and adds them to the queue
      */
@@ -152,7 +178,7 @@ public class Board extends Subject {
     }
 
     /**
-     * @auther Sandie Petersen
+     * @author Sandie Petersen
      * polls the next player if possible
      * @return true if possible
      */

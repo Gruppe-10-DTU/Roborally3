@@ -21,11 +21,8 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
-import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Cards.*;
-import dk.dtu.compute.se.pisd.roborally.model.Phase;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
@@ -87,7 +84,6 @@ public class GameController {
             }
         }
     }
-
 
     // XXX: V2
     public void finishProgrammingPhase() {
@@ -266,20 +262,30 @@ public class GameController {
     }
 
     /**
+     * @author Nilas
+     * @param player The player to be moved
+     * @param heading The way the player is moving
+     * Moves the player one step in a specific direction
+     */
+    public void movePlayer(@NotNull Player player, Heading heading){
+        Space space = board.getNeighbour(player.getSpace(), heading);
+        if(space != null && !space.hasWall(heading) && !player.getSpace().getOut(heading)) {
+            if(space.getPlayer() != null){
+                pushRobot(player,space.getPlayer());
+            }
+            if(space.getPlayer() == null) {
+                player.setSpace(board.getNeighbour(player.getSpace(),heading));
+            }
+        }
+    }
+
+    /**
      * @author Asbjørn Nielsen
      * @param player
      * Moves the player forwards, if the target space don't have a wall.
      */
     public void moveForward(@NotNull Player player) {
-        Space space = board.getNeighbour(player.getSpace(),player.getHeading());
-        if(space != null && !space.hasWall(player.getHeading())) {
-            if(space.getPlayer() != null){
-                pushRobot(player,space.getPlayer());
-            }
-            if(space.getPlayer() == null) {
-                player.setSpace(board.getNeighbour(player.getSpace(), player.getHeading()));
-            }
-        }
+        movePlayer(player, player.getHeading());
     }
 
     public void reverse(@NotNull Player player){
@@ -302,6 +308,13 @@ public class GameController {
             if(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer() == null) {
                 pushed.setSpace(board.getNeighbour(pushed.getSpace(), pushing.getHeading()));
             }
+        }
+    }
+
+    public void executeBoardActions(){
+        for (SequenceAction sequenceAction : board.getBoardActions()
+             ) {
+            sequenceAction.doAction(this);
         }
     }
 
@@ -370,14 +383,15 @@ public class GameController {
             affectedPLayer.discardCard(new DamageCard(Damage.VIRUS));
         }
     }
-        /**
-         * A method called when no corresponding controller operation is implemented yet. This
-         * should eventually be removed.
-         */
-        public void notImplemented() {
-            // XXX just for now to indicate that the actual method is not yet implemented
-            assert false;
-        }
+
+    /**
+     * A method called when no corresponding controller operation is implemented yet. This
+     * should eventually be removed.
+     */
+    public void notImplemented() {
+        // XXX just for now to indicate that the actual method is not yet implemented
+        assert false;
+    }
 
 
     /**

@@ -22,7 +22,6 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElements.BoardElement;
 
 import java.util.EnumSet;
 
@@ -39,8 +38,7 @@ public class Space extends Subject {
     public final int x;
     public final int y;
 
-    private Player player;
-    private BoardElement boardElement;
+    protected Player player;
     private EnumSet<Heading> walls;
 
 
@@ -49,24 +47,25 @@ public class Space extends Subject {
         this.x = x;
         this.y = y;
         player = null;
+        board.setSpace(this);
+        walls = EnumSet.noneOf(Heading.class);
     }
+
     public void setWalls(EnumSet<Heading> walls){
-
         this.walls = walls;
-
     }
 
-
+    /**
+     * Checks if there's a wall in the field the object is trying to move into
+     * @param heading The moving direction
+     * @return true if there's a wall in the way, otherwise false.
+     */
     public boolean hasWall(Heading heading){
-        if (walls == null){
-            return false;
-        }
-        return switch (heading) {
-            case NORTH -> walls.contains(Heading.SOUTH);
-            case SOUTH -> walls.contains(Heading.NORTH);
-            case EAST -> walls.contains(Heading.WEST);
-            case WEST -> walls.contains(Heading.EAST);
-        };
+        return walls.contains(heading.reverse());
+    }
+
+    public boolean getOut(Heading heading){
+        return walls.contains(heading);
     }
 
     public Player getPlayer() {
@@ -95,5 +94,6 @@ public class Space extends Subject {
         // notify the space of these changes by calling this method.
         notifyChange();
     }
+
 
 }
