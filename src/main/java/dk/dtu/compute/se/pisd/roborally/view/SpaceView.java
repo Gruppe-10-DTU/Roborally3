@@ -26,7 +26,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import org.jetbrains.annotations.NotNull;
@@ -61,16 +61,11 @@ public class SpaceView extends StackPane implements ViewObserver {
         //background.setImage(img);
 
         //background = new ImageView(img);
-        ImageView spaceImg = new ImageView(new Image("spaces/empty60.png"));
-        spaceImg.setX(60);
-        spaceImg.setY(60);
-        this.getChildren().add(spaceImg);
-        //this.setStyle(" -fx-background-image: url(\"file:///Users/sandiepetersen/Documents/DTU/2. Semester/Programmering/Roborally3_2/src/main/resources/spaces/empty60.png");");
-        //ImageView imageView = new ImageView(new Image("spaces/empty60.png"));
-        //File file = new File("/Users/sandiepetersen/Documents/DTU/2. Semester/Programmering/Roborally3_2/src/main/resources/spaces/empty60.png");
-        //Image image = new Image(file.toURI().toString());
-        //ImageView iv = new ImageView(image);
-        //this.getChildren().add(iv);
+        Image spaceImg = new Image("spaces/empty60.png");
+
+        this.setBackground(new Background(new BackgroundImage(spaceImg, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+
+
 
         // updatePlayer();
 
