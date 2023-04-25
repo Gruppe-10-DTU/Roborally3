@@ -154,7 +154,7 @@ public class GameController {
             Card card = currentPlayer.getProgramField(step).getCard();
             if(card != null) {
                 while (card.getType().equals("Damage")) {
-                    executeDamage(currentPlayer, ((DamageCard) card).damage);
+                    executeDamage(currentPlayer, (Damage) card.getAction());
                     currentPlayer.getProgramField(step).setCard(currentPlayer.drawCard());
                     card = currentPlayer.getProgramField(step).getCard();
                 }
@@ -162,7 +162,7 @@ public class GameController {
                     board.setPhase(Phase.PLAYER_INTERACTION);
                     return;
                 }
-                executeCommand(currentPlayer, ((CommandCard) card).command);
+                executeCommand(currentPlayer, (Command) card.getAction());
 
             }
             incrementStep(step);
