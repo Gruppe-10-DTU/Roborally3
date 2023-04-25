@@ -87,27 +87,48 @@ public class Board extends Subject {
         //Loop and create the spaces of the first 3 rows, the spawn section
         for (int i = 0; i < spawnArray.length(); i++) {
 
-            int x = Integer.parseInt(spawnArray.getJSONObject(i).getString("x"));
-            int y = Integer.parseInt(spawnArray.getJSONObject(i).getString("y"));
+            JSONObject current = spawnArray.getJSONObject(i);
 
-            switch (spawnArray.getJSONObject(i).getString("Type")) {
+            int x = Integer.parseInt(current.getString("x"));
+            int y = Integer.parseInt(current.getString("y"));
+
+            Space space = new Space(this, x, y);
+
+            switch (current.getString("Type")) {
                 case "Priority" :
                     priorityAntenna = new PriorityAntenna(spaces[x][y]);
                     break;
                 case "Wall" :
+                    //space.setWalls(current.getString("Direction"));
                     break;
                 case "Spawn" :
                     //Spawn point
                     break;
                 default:
-
                     break;
             }
-
+            spaces[x][y] = space;
         }
 
         //Loop and create the remaining spaces of the first 3 rows, the course section
         for (int i = 0; i < courseArray.length(); i++) {
+
+            JSONObject current = spawnArray.getJSONObject(i);
+
+            int x = Integer.parseInt(current.getString("x"));
+            int y = Integer.parseInt(current.getString("y"));
+
+            Space space = new Space(this, x, y);
+
+            switch (current.getString("Type")) {
+                case "Wall" :
+                    //space.setWalls(current.getString("Direction"));
+                    break;
+
+            }
+
+
+            spaces[x][y] = space;
 
         }
 
