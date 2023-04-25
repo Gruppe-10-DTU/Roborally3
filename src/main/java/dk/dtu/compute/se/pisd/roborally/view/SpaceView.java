@@ -24,9 +24,10 @@ package dk.dtu.compute.se.pisd.roborally.view;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
-import javafx.scene.layout.*;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import org.jetbrains.annotations.NotNull;
@@ -61,10 +62,8 @@ public class SpaceView extends StackPane implements ViewObserver {
         //background.setImage(img);
 
         //background = new ImageView(img);
-        Image spaceImg = new Image("spaces/empty60.png");
-
-        this.setBackground(new Background(new BackgroundImage(spaceImg, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
-
+        ImageView spaceImg = new ImageView(new Image("spaces/empty60.png"));
+        this.getChildren().add(0,spaceImg);
 
 
         // updatePlayer();
@@ -75,8 +74,11 @@ public class SpaceView extends StackPane implements ViewObserver {
     }
 
     private void updatePlayer() {
-        this.getChildren().clear();
-
+        try {
+            this.getChildren().remove(1);
+        }catch (IndexOutOfBoundsException e){
+            // Do nothing. This is so the image doesn't get removed.
+        }
         Player player = space.getPlayer();
         if (player != null) {
             Polygon arrow = new Polygon(0.0, 0.0,
@@ -89,7 +91,7 @@ public class SpaceView extends StackPane implements ViewObserver {
             }
 
             arrow.setRotate((90*player.getHeading().ordinal())%360);
-            this.getChildren().add(arrow);
+            this.getChildren().add(1, arrow);
         }
     }
 
