@@ -170,7 +170,7 @@ public class AppController implements Observer, EndGame {
         won.setContentText(player.getName() + " has won");
         won.showAndWait();
         gameController = null;
-        exit();
+        roboRally.createBoardView(null);
     }
 
     public boolean isGameRunning() {
