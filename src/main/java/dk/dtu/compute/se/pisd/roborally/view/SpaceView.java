@@ -22,15 +22,13 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import javafx.scene.shape.StrokeLineCap;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -46,7 +44,6 @@ public class SpaceView extends StackPane implements ViewObserver {
 
     public final Space space;
 
-
     public SpaceView(@NotNull Space space) {
         this.space = space;
 
@@ -59,11 +56,21 @@ public class SpaceView extends StackPane implements ViewObserver {
         this.setMinHeight(SPACE_HEIGHT);
         this.setMaxHeight(SPACE_HEIGHT);
 
-        if ((space.x + space.y) % 2 == 0) {
-            this.setStyle("-fx-background-color: white;");
-        } else {
-            this.setStyle("-fx-background-color: black;");
-        }
+        //ImageView background = new ImageView();
+        //Image img = new Image(getClass().getResourceAsStream("spaces/empty60.png"));
+        //background.setImage(img);
+
+        //background = new ImageView(img);
+        ImageView spaceImg = new ImageView(new Image("spaces/empty60.png"));
+        spaceImg.setX(60);
+        spaceImg.setY(60);
+        this.getChildren().add(spaceImg);
+        //this.setStyle(" -fx-background-image: url(\"file:///Users/sandiepetersen/Documents/DTU/2. Semester/Programmering/Roborally3_2/src/main/resources/spaces/empty60.png");");
+        //ImageView imageView = new ImageView(new Image("spaces/empty60.png"));
+        //File file = new File("/Users/sandiepetersen/Documents/DTU/2. Semester/Programmering/Roborally3_2/src/main/resources/spaces/empty60.png");
+        //Image image = new Image(file.toURI().toString());
+        //ImageView iv = new ImageView(image);
+        //this.getChildren().add(iv);
 
         // updatePlayer();
 
