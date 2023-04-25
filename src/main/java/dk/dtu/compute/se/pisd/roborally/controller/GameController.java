@@ -150,7 +150,6 @@ public class GameController {
             if(card != null) {
                 while (card.getType().equals("Damage")) {
                     executeDamage(currentPlayer, ((DamageCard) card).damage);
-                    board.getDmgCardDeck().returnCard(card);
                     currentPlayer.getProgramField(step).setCard(currentPlayer.drawCard());
                     card = currentPlayer.getProgramField(step).getCard();
                 }
