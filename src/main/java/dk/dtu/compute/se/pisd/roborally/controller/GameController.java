@@ -21,6 +21,7 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import dk.dtu.compute.se.pisd.roborally.CustomExceptions.SpaceOutOfBoundsException;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
 import org.jetbrains.annotations.NotNull;
@@ -330,7 +331,13 @@ public class GameController {
             return false;
         }
     }
-
+    public void shootLaser(@NotNull Space space, Heading heading) throws SpaceOutOfBoundsException {
+        if(board.getNeighbour(space, heading).getPlayer() != null) {
+            shootLaser(board.getNeighbour(space,heading),heading);
+        }else{
+            board.getSpace(space.x,space.y).getPlayer().discardCard();
+        }
+    }
     /**
      * A method called when no corresponding controller operation is implemented yet. This
      * should eventually be removed.
