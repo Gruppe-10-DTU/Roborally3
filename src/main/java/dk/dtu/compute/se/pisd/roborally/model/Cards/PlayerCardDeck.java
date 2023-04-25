@@ -1,4 +1,4 @@
-package dk.dtu.compute.se.pisd.roborally.model;
+package dk.dtu.compute.se.pisd.roborally.model.Cards;
 
 import java.util.ArrayList;
 
@@ -6,11 +6,11 @@ import java.util.ArrayList;
  *
  * @author Philip Astrup Cramer
  */
-public class CmdCardDeck {
-    private ArrayList<CommandCard> deck;
-    private ArrayList<CommandCard> discards;
+public class PlayerCardDeck {
+    private ArrayList<Card> deck;
+    private ArrayList<Card> discards;
 
-    public CmdCardDeck(){
+    public PlayerCardDeck(){
         this.deck = new ArrayList<>();
         this.discards = new ArrayList<>();
         generateDeck();
@@ -24,11 +24,11 @@ public class CmdCardDeck {
      *
      * @author Philip Astrup Cramer
      */
-    public CommandCard drawCard(){
+    public Card drawCard(){
         if(this.deck.size() < 1){
             reShuffle();
         }
-        CommandCard drawnCard = this.deck.get(0);
+        Card drawnCard = this.deck.get(0);
         this.deck.remove(0);
         return drawnCard;
     }
@@ -40,7 +40,7 @@ public class CmdCardDeck {
      *
      * @author Philip Astrup Cramer
      */
-    public boolean discard(CommandCard addedCard){
+    public boolean discard(Card addedCard){
         return this.discards.add(addedCard);
     }
 

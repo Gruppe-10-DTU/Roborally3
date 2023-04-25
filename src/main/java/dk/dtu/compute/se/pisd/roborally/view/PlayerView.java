@@ -24,6 +24,9 @@ package dk.dtu.compute.se.pisd.roborally.view;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.model.Cards.Command;
+import dk.dtu.compute.se.pisd.roborally.model.Cards.CommandCard;
+import dk.dtu.compute.se.pisd.roborally.model.Cards.CommandCardField;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -206,7 +209,7 @@ public class PlayerView extends Tab implements ViewObserver {
                     //      the player's choices of the interactive command card. The
                     //      following is just a mockup showing two options
                     Button optionButton;
-                    List<Command> commands = player.board.getCurrentPlayer().getProgramField(player.board.getStep()).getCard().command.getOptions();
+                    List<Command> commands = ((CommandCard) player.board.getCurrentPlayer().getProgramField(player.board.getStep()).getCard()).command.getOptions();
                     for (Command command : commands) {
                         optionButton = new Button(command.displayName);
                         optionButton.setOnAction( e -> gameController.executeCommandOptionAndContinue(command));
