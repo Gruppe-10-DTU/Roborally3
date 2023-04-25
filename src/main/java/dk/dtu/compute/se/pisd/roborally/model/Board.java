@@ -25,6 +25,7 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceActionComparator;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -65,6 +66,16 @@ public class Board extends Subject {
 
     private TreeSet<SequenceAction> boardActions;
 
+
+    private RebootToken rebootToken;
+
+    public RebootToken getRebootToken() {
+        return rebootToken;
+    }
+
+    public void setRebootToken(RebootToken rebootToken) {
+        this.rebootToken = rebootToken;
+    }
 
     PriorityQueue<Player> playerOrder = new PriorityQueue<>();
 
@@ -214,7 +225,6 @@ public class Board extends Subject {
         }
     }
 
-
     public boolean isStepMode() {
         return stepMode;
     }
@@ -264,6 +274,27 @@ public class Board extends Subject {
 
         return getSpace(x, y);
     }
+
+    /**
+     *
+     * Calculates which players are within a given range
+     * and returns an ArrayList of them
+     *
+     * @author Philip Astrup Cramer
+     */
+    public ArrayList<Player> playersInRange(Player centerPlayer, int range){
+        ArrayList<Player> result = new ArrayList<>();
+        for (Player otherPLayer : this.players) {
+            int distX = Math.abs((centerPlayer.getSpace().x - otherPLayer.getSpace().x));
+            int distY = Math.abs((centerPlayer.getSpace().y - otherPLayer.getSpace().y));
+            if (distX + distY <= range){
+                result.add(otherPLayer);
+            }
+        }
+        result.remove(centerPlayer);
+        return result;
+    }
+
     public String getStatusMessage() {
         // this is actually a view aspect, but for making assignment V1 easy for
         // the students, this method gives a string representation of the current

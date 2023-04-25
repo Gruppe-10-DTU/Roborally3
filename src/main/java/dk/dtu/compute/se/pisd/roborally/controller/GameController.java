@@ -24,7 +24,9 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 import dk.dtu.compute.se.pisd.roborally.CustomExceptions.SpaceOutOfBoundsException;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
+import dk.dtu.compute.se.pisd.roborally.model.Cards.*;
 import org.jetbrains.annotations.NotNull;
+import java.util.ArrayList;
 
 /**
  * ...
@@ -138,30 +140,31 @@ public class GameController {
     }
 
     // XXX: V2
+
+    /**
+     * @author Søren og Philip
+     */
     private void executeNextStep() {
         Player currentPlayer = board.getCurrentPlayer();
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
             int step = board.getStep();
-            if (step >= 0 && step < Player.NO_REGISTERS) {
-                CommandCard card = currentPlayer.getProgramField(step).getCard();
-                if (card != null) {
-                    Command command = card.command;
-                    if (command.isInteractive()) {
-                        board.setPhase(Phase.PLAYER_INTERACTION);
-                        return;
-                    }
-                    executeCommand(currentPlayer, command);
+            Card card = currentPlayer.getProgramField(step).getCard();
+            if(card != null) {
+                while (card.getType().equals("Damage")) {
+                    executeDamage(currentPlayer, ((DamageCard) card).damage);
+                    currentPlayer.getProgramField(step).setCard(currentPlayer.drawCard());
+                    card = currentPlayer.getProgramField(step).getCard();
                 }
-                    incrementStep(step);
+                if (((CommandCard) card).command.isInteractive()) {
+                    board.setPhase(Phase.PLAYER_INTERACTION);
+                    return;
+                }
+                executeCommand(currentPlayer, ((CommandCard) card).command);
 
-                } else {
-                    // this should not happen
-                    assert false;
-                }
-            } else {
-                // this should not happen
-                assert false;
             }
+            incrementStep(step);
+
+        }
     }
 
     public void incrementStep(int step){
@@ -233,6 +236,31 @@ public class GameController {
         executeCommand(board.getCurrentPlayer(), command);
         incrementStep(board.getStep());
 
+    }
+
+    /**
+     * calls the method corresponding to the given damage type
+     *
+     * @author Philip Astrup Cramer
+     */
+    private void executeDamage(Player currentPlayer, Damage dmg){
+        switch (dmg){
+            case SPAM:
+                //this has no further effect
+                break;
+            case TROJAN_HORSE:
+                this.executeTrojanHorse(currentPlayer);
+                break;
+            case WORM:
+                this.executeWorm(currentPlayer);
+                break;
+            case VIRUS:
+                this.executeVirus(currentPlayer);
+                break;
+            default:
+                //nothing happens
+
+        }
     }
 
     /**
@@ -321,14 +349,40 @@ public class GameController {
     }
 
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
-        CommandCard sourceCard = source.getCard();
-        CommandCard targetCard = target.getCard();
+        Card sourceCard = source.getCard();
+        Card targetCard = target.getCard();
         if (sourceCard != null && targetCard == null) {
             target.setCard(sourceCard);
             source.setCard(null);
             return true;
         } else {
             return false;
+        }
+
+    }
+
+    /**
+     * @author Philip Astrup Cramer
+     */
+    private void executeTrojanHorse(Player player){
+        player.discardCard(new DamageCard(Damage.SPAM));
+        player.discardCard(new DamageCard(Damage.SPAM));
+    }
+
+    /**
+     * @author Philip Astrup Cramer
+     */
+    private void executeWorm(Player player){
+        rebootRobot(player);
+    }
+
+    /**
+     * @author Philip Astrup Cramer
+     */
+    private void executeVirus(Player player){
+        ArrayList<Player> withinRange = board.playersInRange(player, 6);
+        for (Player affectedPLayer : withinRange) {
+            affectedPLayer.discardCard(new DamageCard(Damage.VIRUS));
         }
     }
     public void shootLaser(@NotNull Space space, Heading heading) throws SpaceOutOfBoundsException {
@@ -347,4 +401,23 @@ public class GameController {
         assert false;
     }
 
+
+    /**
+     * @author Nilas Thoegersen
+     * @param player The player getting rebooted
+     */
+        public void rebootRobot(Player player){
+            player.discardCard(new DamageCard(Damage.SPAM));
+            player.discardCard(new DamageCard(Damage.SPAM));
+
+            for (int i = 0; i < 5; i++) {
+                CommandCardField field = player.getProgramField(i);
+                if(field.getCard() != null) {
+                    player.discardCard(field.getCard());
+                    field.setCard(null);
+                    field.setVisible(true);
+                }
+            }
+            board.getRebootToken().doFieldAction(this, player);
+        }
 }
