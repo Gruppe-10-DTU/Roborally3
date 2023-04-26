@@ -19,9 +19,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package dk.dtu.compute.se.pisd.roborally.model;
+package dk.dtu.compute.se.pisd.roborally.model.Cards;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * ...
@@ -29,39 +30,22 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
  * @author Ekkart Kindler, ekki@dtu.dk
  *
  */
-public class CommandCardField extends Subject {
+public class CommandCard extends Subject implements Card{
 
-    final public Player player;
+    final public Command command;
+    String type = "Command";
 
-    private CommandCard card;
-
-    private boolean visible;
-
-    public CommandCardField(Player player) {
-        this.player = player;
-        this. card = null;
-        this.visible = true;
+    public CommandCard(@NotNull Command command) {
+        this.command = command;
+    }
+    @Override
+    public String getName() {
+        return command.displayName;
     }
 
-    public CommandCard getCard() {
-        return card;
-    }
 
-    public void setCard(CommandCard card) {
-        if (card != this.card) {
-            this.card = card;
-            notifyChange();
-        }
-    }
-
-    public boolean isVisible() {
-        return visible;
-    }
-
-    public void setVisible(boolean visible) {
-        if (visible != this.visible) {
-            this.visible = visible;
-            notifyChange();
-        }
+    @Override
+    public String getType() {
+        return "Command";
     }
 }

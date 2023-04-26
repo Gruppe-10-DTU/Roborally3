@@ -30,8 +30,11 @@ import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
 import javafx.application.Platform;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.TextInputDialog;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -44,7 +47,7 @@ import java.util.Optional;
  * @author Ekkart Kindler, ekki@dtu.dk
  *
  */
-public class AppController implements Observer {
+public class AppController implements Observer, EndGame {
 
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
     final private List<String> BOARD_OPTIONS = Arrays.asList("Risky Crossing");
@@ -94,6 +97,8 @@ public class AppController implements Observer {
             gameController = new GameController(board);
             int no = result.get();
             for (int i = 0; i < no; i++) {
+
+
                 TextInputDialog nameDialog = new TextInputDialog("Player" + (i+1));
                 nameDialog.setTitle("Player name");
                 nameDialog.setHeaderText("Select player name");
@@ -168,6 +173,22 @@ public class AppController implements Observer {
         if (gameController == null || stopGame()) {
             Platform.exit();
         }
+    }
+
+    /**
+     * Implement the method from the interface, which will be passsed to the game controller, closing the program.
+     * @author Nilas Thoegersen
+     * @param player The player who have won
+     */
+    @Override
+    public void endGame(Player player){
+        Alert won = new Alert(AlertType.INFORMATION);
+        won.setTitle("We have a winner");
+        won.setHeaderText(null);
+        won.setContentText(player.getName() + " has won");
+        won.showAndWait();
+        gameController = null;
+        roboRally.createBoardView(null);
     }
 
     public boolean isGameRunning() {

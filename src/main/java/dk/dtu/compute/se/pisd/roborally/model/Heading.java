@@ -38,4 +38,9 @@ public enum Heading {
     public Heading prev() {
         return values()[(this.ordinal() + values().length - 1) % values().length];
     }
+
+    /**
+     * @return The inverse direction of the action
+     */
+    public Heading reverse(){ return values()[(this.ordinal() + (values().length/2)) % values().length];}
 }

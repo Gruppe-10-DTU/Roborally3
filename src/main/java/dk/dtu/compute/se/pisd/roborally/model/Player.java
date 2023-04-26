@@ -22,6 +22,10 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.model.Cards.Card;
+import dk.dtu.compute.se.pisd.roborally.model.Cards.PlayerCardDeck;
+import dk.dtu.compute.se.pisd.roborally.model.Cards.CommandCard;
+import dk.dtu.compute.se.pisd.roborally.model.Cards.CommandCardField;
 import org.jetbrains.annotations.NotNull;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
@@ -45,17 +49,32 @@ public class Player extends Subject implements Comparable<Player> {
     private Space space;
     private int priority;
     private Heading heading = SOUTH;
-    private CmdCardDeck deck;
+    private PlayerCardDeck deck;
 
-    private CommandCardField[] program;
-    private CommandCardField[] cards;
+    private int energy;
+
+    public int getEnergy() {
+        return energy;
+    }
+
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
+
+    public void incrementEnergy(){
+        this.energy++;
+    }
+
+    private final CommandCardField[] program;
+    private final CommandCardField[] cards;
 
     public Player(@NotNull Board board, String color, @NotNull String name) {
         this.board = board;
         this.name = name;
         this.color = color;
-        this.deck = new CmdCardDeck();
+        this.deck = new PlayerCardDeck();
         this.space = null;
+        this.energy = 0;
 
         program = new CommandCardField[NO_REGISTERS];
         for (int i = 0; i < program.length; i++) {
@@ -135,11 +154,11 @@ public class Player extends Subject implements Comparable<Player> {
         return cards[i];
     }
 
-    public CommandCard drawCard() {
+    public Card drawCard() {
         return this.deck.drawCard();
     }
 
-    public void discardCard(CommandCard card) {
+    public void discardCard(Card card) {
         this.deck.discard(card);
     }
     public int getPriority() {
