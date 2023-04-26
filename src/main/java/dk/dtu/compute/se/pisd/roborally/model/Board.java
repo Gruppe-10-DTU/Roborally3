@@ -65,6 +65,8 @@ public class Board extends Subject {
 
     PriorityQueue<Player> playerOrder = new PriorityQueue<>();
 
+
+
     public Board(int width, int height, @NotNull String boardName, int playerAmound) {
         this.boardName = boardName;
         this.playerAmound = playerAmound;
@@ -124,15 +126,10 @@ public class Board extends Subject {
                 case "Wall" :
                     //space.setWalls(current.getString("Direction"));
                     break;
-
             }
-
-
             spaces[x][y] = space;
 
         }
-
-
 
         for (int x = 0; x < width; x++) {
             for(int y = 0; y < height; y++) {
