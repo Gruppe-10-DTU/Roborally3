@@ -29,18 +29,19 @@ public class RobotLaser implements SequenceAction{
      * @throws SpaceOutOfBoundsException
      * Since the method recursively checks if the space is empty, and the space eventually will go out of bounds
      * the method should throw an out-of-bounds error at some point (unless a robot is hit).
+     *
+     * The method returns the player that is hit by the laser shot. If it does not hit anyone, it will return null.
      */
     public Player shootLaser(@NotNull Space space, Heading heading) throws SpaceOutOfBoundsException {
-        Player hitsPlayer = null;
         if(board.getNeighbour(space, heading).getPlayer() != null) {
             if(board.getNeighbour(space,heading) == null || board.getNeighbour(space, heading).hasWall(heading)){
-                return hitsPlayer;
+                return null;
             }
             shootLaser(board.getNeighbour(space,heading),heading);
         }else{
-            hitsPlayer = board.getSpace(space.x,space.y).getPlayer();
+            return board.getSpace(space.x,space.y).getPlayer();
             }
-        return hitsPlayer;
+        return null;
     }
 
     @Override
@@ -48,6 +49,7 @@ public class RobotLaser implements SequenceAction{
         for (Player player: gameController.board.getPlayers()) {
             RobotLaser robotLaser = new RobotLaser(board,player);
             robotLaser.shootLaser(player.getSpace(),player.getHeading());
+            //If the hit player is not null, we will then add a damage card to their discard-pile.
             if(robotLaser.shootLaser(player.getSpace(),player.getHeading()) != null){
                 robotLaser.shootLaser(player.getSpace(),player.getHeading()).discardCard(new DamageCard(Damage.SPAM));
                 System.out.println("Player: " + robotLaser.shootLaser(player.getSpace(), player.getHeading()) + " was hit by " + player + "'s laser!");
