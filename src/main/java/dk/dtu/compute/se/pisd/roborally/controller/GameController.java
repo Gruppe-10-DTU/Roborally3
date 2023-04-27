@@ -232,15 +232,7 @@ public class GameController {
     }
 
     /**
-     * calls the method corresponding to the given damage type
-     *
-     * @author Philip Astrup Cramer
-     */
-    private void executeDamage(Player currentPlayer, Damage dmg){
-
-    }
-
-    /**
+     * @author Asbjørn Nielsen
      * @author Nilas
      * @param player The player to be moved
      * @param heading The way the player is moving
