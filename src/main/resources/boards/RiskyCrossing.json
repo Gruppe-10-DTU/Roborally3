@@ -1,5 +1,5 @@
 {
-  "Spaces": [
+  "spaces": [
     {
       "x": "3",
       "y": "0",
@@ -12,7 +12,8 @@
       "y": "1",
       "Type": "Conveyer",
       "Number": "2",
-      "Direction": "East"
+      "Direction": "EAST",
+      "Turn": ""
     },
     {
       "x": "3",
@@ -47,7 +48,8 @@
       "y": "6",
       "Type": "Conveyer",
       "Number": "2",
-      "Direction": "West"
+      "Direction": "WEST",
+      "Turn": ""
     },
     {
       "x": "3",
@@ -61,14 +63,16 @@
       "y": "0",
       "Type": "Conveyer",
       "Number": "2",
-      "Direction": "South"
+      "Direction": "SOUTH",
+      "Turn": ""
     },
     {
       "x": "4",
       "y": "1",
       "Type": "Conveyer",
       "Number": "2",
-      "Direction": "SouthWest"
+      "Direction": "SOUTH",
+      "Turn": "WEST"
     },
     {
       "x": "4",
@@ -82,35 +86,40 @@
       "y": "3",
       "Type": "Conveyer",
       "Number": "1",
-      "Direction": "WestNorth"
+      "Direction": "WEST",
+      "Turn": "NORTH"
     },
     {
       "x": "4",
       "y": "4",
       "Type": "Conveyer",
       "Number": "1",
-      "Direction": "North"
+      "Direction": "NORTH",
+      "Turn": ""
     },
     {
       "x": "4",
       "y": "5",
       "Type": "Conveyer",
       "Number": "1",
-      "Direction": "NorthEast"
+      "Direction": "NORTH",
+      "Turn": "EAST"
     },
     {
       "x": "4",
       "y": "6",
       "Type": "Conveyer",
       "Number": "2",
-      "Direction": "EastSouth"
+      "Direction": "EAST",
+      "Turn": "SOUTH"
     },
     {
       "x": "4",
       "y": "7",
       "Type": "Conveyer",
       "Number": "2",
-      "Direction": "South"
+      "Direction": "SOUTH",
+      "Turn": ""
     },
     {
       "x": "5",
@@ -124,21 +133,24 @@
       "y": "1",
       "Type": "Conveyer",
       "Number": "1",
-      "Direction": "WestSouth"
+      "Direction": "WEST",
+      "Turn": "SOUTH"
     },
     {
       "x": "5",
       "y": "2",
       "Type": "Conveyer",
       "Number": "1",
-      "Direction": "South"
+      "Direction": "SOUTH",
+      "Turn": ""
     },
     {
       "x": "5",
       "y": "3",
       "Type": "Conveyer",
       "Number": "1",
-      "Direction": "SouthWest"
+      "Direction": "SOUTH",
+      "Turn": "WEST"
     },
     {
       "x": "5",
@@ -152,7 +164,8 @@
       "y": "5",
       "Type": "Conveyer",
       "Number": "1",
-      "Direction": "East"
+      "Direction": "EAST",
+      "Turn": ""
     },
     {
       "x": "5",
@@ -180,7 +193,8 @@
       "y": "1",
       "Type": "Conveyer",
       "Number": "1",
-      "Direction": "West"
+      "Direction": "WEST",
+      "Turn": ""
     },
     {
       "x": "6",
@@ -208,14 +222,16 @@
       "y": "5",
       "Type": "Conveyer",
       "Number": "1",
-      "Direction": "WestSouth"
+      "Direction": "WEST",
+      "Turn": "SOUTH"
     },
     {
       "x": "6",
       "y": "6",
       "Type": "Conveyer",
       "Number": "1",
-      "Direction": "SouthEast"
+      "Direction": "SOUTH",
+      "Turn": "EAST"
     },
     {
       "x": "6",
@@ -236,14 +252,16 @@
       "y": "1",
       "Type": "Conveyer",
       "Number": "1",
-      "Direction": "NorthWest"
+      "Direction": "NORTH",
+      "Turn": "WEST"
     },
     {
       "x": "7",
       "y": "2",
       "Type": "Conveyer",
       "Number": "1",
-      "Direction": "WestNorth"
+      "Direction": "WEST",
+      "Turn": "NORTH"
     },
     {
       "x": "7",
@@ -271,7 +289,8 @@
       "y": "6",
       "Type": "Conveyer",
       "Number": "1",
-      "Direction": "East"
+      "Direction": "EAST",
+      "Turn": ""
     },
     {
       "x": "7",
@@ -299,7 +318,8 @@
       "y": "2",
       "Type": "Conveyer",
       "Number": "1",
-      "Direction": "West"
+      "Direction": "WEST",
+      "Turn": ""
     },
     {
       "x": "8",
@@ -313,21 +333,24 @@
       "y": "4",
       "Type": "Conveyer",
       "Number": "1",
-      "Direction": "SoutEast"
+      "Direction": "SOUTH",
+      "Turn": "EAST"
     },
     {
       "x": "8",
       "y": "5",
       "Type": "Conveyer",
       "Number": "1",
-      "Direction": "South"
+      "Direction": "SOUTH",
+      "Turn": ""
     },
     {
       "x": "8",
       "y": "6",
       "Type": "Conveyer",
       "Number": "1",
-      "Direction": "EastSouth"
+      "Direction": "EAST",
+      "Turn": "SOUTH"
     },
     {
       "x": "8",
@@ -341,35 +364,40 @@
       "y": "0",
       "Type": "Conveyer",
       "Number": "2",
-      "Direction": "South"
+      "Direction": "SOUTH",
+      "Turn": ""
     },
     {
       "x": "9",
       "y": "1",
       "Type": "Conveyer",
       "Number": "2",
-      "Direction": "WestSouth"
+      "Direction": "WEST",
+      "Turn": "SOUTH"
     },
     {
       "x": "9",
       "y": "2",
       "Type": "Conveyer",
       "Number": "1",
-      "Direction": "SouthWest"
+      "Direction": "SOUTH",
+      "Turn": "WEST"
     },
     {
       "x": "9",
       "y": "3",
       "Type": "Conveyer",
       "Number": "1",
-      "Direction": "South"
+      "Direction": "SOUTH",
+      "Turn": ""
     },
     {
       "x": "9",
       "y": "4",
       "Type": "Conveyer",
       "Number": "1",
-      "Direction": "EastSouth"
+      "Direction": "EAST",
+      "Turn": "SOUTH"
     },
     {
       "x": "9",
@@ -383,14 +411,16 @@
       "y": "6",
       "Type": "Conveyer",
       "Number": "2",
-      "Direction": "EastSouth"
+      "Direction": "EAST",
+      "Turn": "SOUTH"
     },
     {
       "x": "9",
       "y": "7",
       "Type": "Conveyer",
       "Number": "2",
-      "Direction": "South"
+      "Direction": "SOUTH",
+      "Turn": ""
     },
     {
       "x": "10",
@@ -404,7 +434,8 @@
       "y": "1",
       "Type": "Conveyer",
       "Number": "2",
-      "Direction": "West"
+      "Direction": "WEST",
+      "Turn": ""
     },
     {
       "x": "10",
@@ -439,7 +470,8 @@
       "y": "6",
       "Type": "Conveyer",
       "Number": "2",
-      "Direction": "East"
+      "Direction": "EAST",
+      "Turn": ""
     },
     {
       "x": "10",
