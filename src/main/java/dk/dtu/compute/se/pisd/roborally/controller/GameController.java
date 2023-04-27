@@ -158,7 +158,7 @@ public class GameController {
                     currentPlayer.getProgramField(step).setCard(currentPlayer.drawCard());
                     card = currentPlayer.getProgramField(step).getCard();
                 }
-                if (((CommandCard) card).command.isInteractive()) {
+                if (((CommandCard) card).getAction().isInteractive()) {
                     board.setPhase(Phase.PLAYER_INTERACTION);
                     return;
                 }
@@ -260,9 +260,6 @@ public class GameController {
             case VIRUS:
                 this.executeVirus(currentPlayer);
                 break;
-            default:
-                //nothing happens
-
         }
     }
 
