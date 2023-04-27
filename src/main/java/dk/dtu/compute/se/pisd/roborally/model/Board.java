@@ -454,5 +454,7 @@ public class Board extends Subject {
     }
 
 
-
+    public void returnDamageCard(DamageCard damageCard) {
+        this.damageCardDeck.returnCard(damageCard);
+    }
 }

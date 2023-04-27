@@ -1,5 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally.model.Cards;
 
+import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+
 import java.util.ArrayList;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Cards.Damage.*;
@@ -62,10 +64,10 @@ public class DamageCardDeck {
      */
     public DamageCard getDamageCard(Damage type){
         DamageCard drawn = new DamageCard(OPTIONAL);
-        if(trojanHorsePile.isEmpty()) drawn.getAction().removeOption(TROJAN_HORSE);
-        if(spamPile.isEmpty()) drawn.getAction().removeOption(SPAM);
-        if(wormPile.isEmpty()) drawn.getAction().removeOption(WORM);
-        if (virusPile.isEmpty()) drawn.getAction().removeOption(VIRUS);
+        if(trojanHorsePile.isEmpty()) drawn.removeOptionFromList(TROJAN_HORSE);
+        if(spamPile.isEmpty()) drawn.removeOptionFromList(SPAM);
+        if(wormPile.isEmpty()) drawn.removeOptionFromList(WORM);
+        if (virusPile.isEmpty()) drawn.removeOptionFromList(VIRUS);
         switch (type) {
             case SPAM:
                 if (!this.spamPile.isEmpty()) {
@@ -92,6 +94,9 @@ public class DamageCardDeck {
                 }
                 break;
         }
+        if(!drawn.getOptions().isEmpty()){
+            //drawn.doAction();
+        }
         return drawn;
     }
 
@@ -100,17 +105,17 @@ public class DamageCardDeck {
      * @author Philip Astrup Cramer
      */
     public void returnCard(DamageCard card){
-        switch (card.getAction()){
-            case SPAM:
+        switch (card.getName()){
+            case "Spam":
                 this.spamPile.add(card);
                 break;
-            case TROJAN_HORSE:
+            case "Trojan Horse":
                 this.trojanHorsePile.add(card);
                 break;
-            case WORM:
+            case "Worm":
                 this.wormPile.add(card);
                 break;
-            case VIRUS:
+            case "Virus":
                 this.virusPile.add(card);
                 break;
         }

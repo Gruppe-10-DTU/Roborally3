@@ -201,7 +201,7 @@ public class PlayerView extends Tab implements ViewObserver {
                     String type = player.getProgramField(player.board.getStep()).getCard().getType();
                     switch (type) {
                         case "Command":
-                            List<Command> commands = ((CommandCard) player.board.getCurrentPlayer().getProgramField(player.board.getStep()).getCard()).getAction().getOptions();
+                            List<Command> commands = ((CommandCard) player.board.getCurrentPlayer().getProgramField(player.board.getStep()).getCard()).getOptions();
                             for (Command command : commands) {
                                 optionButton = new Button(command.getDisplayname());
                                 optionButton.setOnAction(e -> gameController.executeCommandOptionAndContinue(command));
@@ -210,7 +210,7 @@ public class PlayerView extends Tab implements ViewObserver {
                             }
                             break;
                         case "Damage":
-                            List<Damage> damageTypes = ((DamageCard) player.board.getCurrentPlayer().getProgramField(player.board.getStep()).getCard()).getAction().getOptions();
+                            List<Damage> damageTypes = ((DamageCard) player.board.getCurrentPlayer().getProgramField(player.board.getStep()).getCard()).getOptions();
                             for (Damage damage : damageTypes) {
                                 optionButton = new Button(damage.getDisplayName());
                                 optionButton.setOnAction(e -> gameController.getDamageCardAndContinue(player, damage));
