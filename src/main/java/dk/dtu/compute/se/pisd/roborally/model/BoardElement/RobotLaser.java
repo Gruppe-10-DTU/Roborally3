@@ -33,7 +33,7 @@ public class RobotLaser implements SequenceAction{
      * The method returns the player that is hit by the laser shot. If it does not hit anyone, it will return null.
      */
     public Player shootLaser(@NotNull Space space, Heading heading) throws SpaceOutOfBoundsException {
-        if(board.getNeighbour(space, heading).getPlayer() != null && board.getNeighbour(space,heading).hasWall(heading.reverse())) {
+        if(board.getNeighbour(space, heading).getPlayer() != null && !board.getNeighbour(space,heading).hasWall(heading.reverse())) {
             shootLaser(board.getNeighbour(space,heading),heading);
         }else{
             return board.getSpace(space.x,space.y).getPlayer();
