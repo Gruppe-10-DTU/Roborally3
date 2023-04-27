@@ -209,6 +209,7 @@ public class PlayerView extends Tab implements ViewObserver {
                     //      the player's choices of the interactive command card. The
                     //      following is just a mockup showing two options
                     Button optionButton;
+                    /*
                     List<Command> commands = ((Command) player.board.getCurrentPlayer().getProgramField(player.board.getStep()).getCard().getAction()).getOptions();
                     for (Command command : commands) {
                         optionButton = new Button(command.displayName);
@@ -216,6 +217,7 @@ public class PlayerView extends Tab implements ViewObserver {
                         optionButton.setDisable(false);
                         playerInteractionPanel.getChildren().add(optionButton);
                     }
+                    */
                 }
             }
         }

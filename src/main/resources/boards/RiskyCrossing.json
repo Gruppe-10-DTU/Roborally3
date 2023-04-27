@@ -382,7 +382,7 @@
       "Type": "Conveyer",
       "Number": 2,
       "Direction": "WEST",
-      "Turn": "SOUTH"
+      "Turn": "NORTH"
     },
     {
       "x": "9",
@@ -420,8 +420,8 @@
       "y": "6",
       "Type": "Conveyer",
       "Number": 2,
-      "Direction": "EAST",
-      "Turn": "SOUTH"
+      "Direction": "NORTH",
+      "Turn": "EAST"
     },
     {
       "x": "9",

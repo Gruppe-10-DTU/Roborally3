@@ -28,7 +28,6 @@ import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.PriorityAntenna;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
@@ -98,10 +97,32 @@ public class SpaceView extends StackPane implements ViewObserver {
             Heading heading = fastConveyorbelt.getHeading();
             Heading turn = fastConveyorbelt.getTurn();
             if (turn != null) {
-                spaceImg = new Image("spaces/FastConveyorbelt/fastConveyot.png");
+                spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_NORTH_WEST.png");
 
-                if (heading == Heading.SOUTH && turn == Heading.WEST) {
-                    spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_SOUTH_WEST.png");
+                if (heading == Heading.SOUTH) {
+                    if (turn == Heading.WEST) {
+                        spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_SOUTH_WEST.png");
+                    } else if (turn == Heading.EAST) {
+                        spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_SOUTH_EAST.png");
+                    }
+                } else if (heading == Heading.EAST) {
+                    if (turn == Heading.NORTH) {
+                        spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_EAST_NORTH.png");
+                    } else if (turn == Heading.SOUTH) {
+                        spaceImg = new Image("spaces/FastConveyorbelt/fastConveyer_EAST_SOUTH.png");
+                    }
+                } else if (heading == Heading.WEST) {
+                    if (turn == Heading.NORTH) {
+                        spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_WEST_NORTH.png");
+                    } else if (turn == Heading.SOUTH) {
+                        spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_WEST_SOUTH.png");
+                    }
+                } else if (heading == Heading.NORTH) {
+                    if (turn == Heading.WEST) {
+                        spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_NORTH_WEST.png");
+                    } else if (turn == Heading.EAST) {
+                        spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_NORTH_EAST.png");
+                    }
                 }
             } else {
                 if (heading == Heading.EAST) {
