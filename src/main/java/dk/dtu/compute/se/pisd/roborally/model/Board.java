@@ -26,6 +26,9 @@ import dk.dtu.compute.se.pisd.roborally.model.BoardElement.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceActionComparator;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
+import dk.dtu.compute.se.pisd.roborally.model.Cards.Damage;
+import dk.dtu.compute.se.pisd.roborally.model.Cards.DamageCard;
+import dk.dtu.compute.se.pisd.roborally.model.Cards.DamageCardDeck;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -68,6 +71,7 @@ public class Board extends Subject {
     }
 
     private TreeSet<SequenceAction> boardActions;
+    private DamageCardDeck damageCardDeck;
 
 
     private RebootToken rebootToken;
@@ -95,6 +99,7 @@ public class Board extends Subject {
                 spaces[x][y] = space;
             }
         }
+        this.damageCardDeck = new DamageCardDeck();
         this.stepMode = false;
         priorityAntenna = new PriorityAntenna(spaces[4][0]);
     }
@@ -296,6 +301,9 @@ public class Board extends Subject {
         }
         result.remove(centerPlayer);
         return result;
+    }
+    public DamageCard drawDamageCard(Damage damage){
+        return this.damageCardDeck.getDamageCard(damage);
     }
 
     public String getStatusMessage() {
