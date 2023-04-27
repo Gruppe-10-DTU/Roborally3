@@ -240,6 +240,10 @@ public class GameController {
         incrementStep(board.getStep());
 
     }
+    public void getDamageCardAndContinue(Player player , Damage damage){
+        board.setPhase(Phase.ACTIVATION);
+        player.discardCard(board.drawDamageCard(damage));
+    }
 
     /**
      * calls the method corresponding to the given damage type
