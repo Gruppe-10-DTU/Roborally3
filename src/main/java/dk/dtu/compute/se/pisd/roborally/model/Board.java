@@ -145,6 +145,7 @@ public class Board extends Subject {
         }
 
         //Loop and create the remaining spaces of the first 3 rows, the course section
+        Checkpoint prevChekpoint = null;
         for (int i = 0; i < courseArray.length(); i++) {
 
             JSONObject current = courseArray.getJSONObject(i);
@@ -164,7 +165,7 @@ public class Board extends Subject {
                     break;
                 case "Conveyer" :
                     Heading heading = Heading.valueOf(current.getString("Direction"));
-                    if (current.getString("Number") == "1") {
+                    if (current.getInt("Number") == 1) {
                         Conveyorbelt conveyorbelt;
                         if (current.getString("Turn") == "") {
                             conveyorbelt = new Conveyorbelt(this,x,y,heading);
@@ -184,9 +185,14 @@ public class Board extends Subject {
                         spaces[x][y] = fastConveyorbelt;
                     }
                     break;
-                case "Checkpoint" :
-                    //Not looking at the order
-                    Checkpoint checkpoint = new Checkpoint(this,x,y);
+                case "CheckPoint" :
+                    Checkpoint checkpoint;
+                    if (prevChekpoint != null) {
+                        checkpoint = new Checkpoint(this,x,y,prevChekpoint);
+                    } else {
+                        checkpoint = new Checkpoint(this,x,y);
+                    }
+                    prevChekpoint = checkpoint;
                     spaces[x][y] = checkpoint;
                     break;
                 case "Lazer" :
@@ -438,5 +444,7 @@ public class Board extends Subject {
                 ", Player = " + getCurrentPlayer().getName() +
                 ", Step: " + getStep();
     }
+
+
 
 }

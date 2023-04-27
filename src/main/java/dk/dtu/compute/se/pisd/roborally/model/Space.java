@@ -96,5 +96,7 @@ public class Space extends Subject {
         notifyChange();
     }
 
-
+    public EnumSet<Heading> getWalls() {
+        return walls;
+    }
 }

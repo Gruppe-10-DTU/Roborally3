@@ -24,6 +24,10 @@ public class BoardLaser extends Space implements SequenceAction {
         return this.shootingDirection == heading.reverse();
     }
 
+    public Heading getShootingDirection () {
+        return shootingDirection;
+    }
+
     /**
      * Implements the board laser action.
      * @author Nilas
