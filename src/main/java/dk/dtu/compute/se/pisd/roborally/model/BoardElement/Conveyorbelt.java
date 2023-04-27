@@ -73,6 +73,14 @@ public class Conveyorbelt extends Space implements SequenceAction {
         }
     }
 
+    public Heading getHeading() {
+        return heading;
+    }
+
+    public Heading getTurn() {
+        return turn;
+    }
+
     @Override
     public int getPrio() {
         return 2;

@@ -22,16 +22,21 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElement.*;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
+import dk.dtu.compute.se.pisd.roborally.model.PriorityAntenna;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import javafx.scene.shape.StrokeLineCap;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.EnumSet;
 
 /**
  * ...
@@ -46,7 +51,6 @@ public class SpaceView extends StackPane implements ViewObserver {
 
     public final Space space;
 
-
     public SpaceView(@NotNull Space space) {
         this.space = space;
 
@@ -59,11 +63,101 @@ public class SpaceView extends StackPane implements ViewObserver {
         this.setMinHeight(SPACE_HEIGHT);
         this.setMaxHeight(SPACE_HEIGHT);
 
-        if ((space.x + space.y) % 2 == 0) {
-            this.setStyle("-fx-background-color: white;");
+        Image spaceImg = new Image("spaces/empty60.png");
+
+        String simpleName = space.getClass().getSimpleName();
+
+        if (space instanceof BoardLaser) {
+
+            BoardLaser boardLaser = (BoardLaser) space;
+
+            if (boardLaser.getShootingDirection() == Heading.EAST) {
+                spaceImg = new Image("spaces/wall/wall_EAST.png");
+            } else if (boardLaser.getShootingDirection() == Heading.SOUTH) {
+                spaceImg = new Image("spaces/wall/wall_SOUTH.png");
+            } else if (boardLaser.getShootingDirection() == Heading.WEST) {
+                spaceImg = new Image("spaces/wall/wall_WEST.png");
+            } else if (boardLaser.getShootingDirection() == Heading.NORTH) {
+                spaceImg = new Image("spaces/wall/wall_NORTH.png");
+            }
+        } else if (space instanceof Checkpoint) {
+            //More is needed
+            Checkpoint checkpoint = (Checkpoint) space;
+            int count = 1;
+
+            spaceImg = new Image("spaces/checkpoint/checkpoint1.png");
+
+        } else if (space instanceof PriorityAntenna) {
+            spaceImg = new Image("spaces/priorityAntenna.png");
+
+        } else if (space instanceof FastConveyorbelt) {
+            //More is needed
+
+            FastConveyorbelt fastConveyorbelt = (FastConveyorbelt) space;
+
+            Heading heading = fastConveyorbelt.getHeading();
+            Heading turn = fastConveyorbelt.getTurn();
+            if (turn != null) {
+                spaceImg = new Image("spaces/FastConveyorbelt/fastConveyot.png");
+
+                if (heading == Heading.SOUTH && turn == Heading.WEST) {
+                    spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_SOUTH_WEST.png");
+                }
+            } else {
+                if (heading == Heading.EAST) {
+                    spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_EAST.png");
+                } else if (heading == Heading.SOUTH) {
+                    spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_SOUTH.png");
+                } else if (heading == Heading.WEST) {
+                    spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_WEST.png");
+                } else if (heading == Heading.NORTH) {
+                    spaceImg = new Image("spaces/FastConveyorbelt/fastConveyot_NORTH.png");
+                }
+            }
+
+        } else if (space instanceof Conveyorbelt) {
+            spaceImg = new Image("spaces/conveyorbelt/conveyer_NORTH.png");
+
+        } else if (space instanceof Energy) {
+            spaceImg = new Image("spaces/energy.png");
+
+        }  else if (space instanceof Gear) {
+
+        } else if (space instanceof Push) {
+
+        } else if (space instanceof Pit) {
+
+        } else if (simpleName == "Spawn"){
+            //Create class first
         } else {
-            this.setStyle("-fx-background-color: black;");
+            EnumSet<Heading> walls = space.getWalls();
+
+            if (!walls.isEmpty()) {
+                int numberOfWalls = walls.size();
+
+                if (numberOfWalls == 1) {
+                    if (walls.contains(Heading.EAST)) {
+                        spaceImg = new Image("spaces/wall/wall_EAST.png");
+                    } else if (walls.contains(Heading.SOUTH)) {
+                        spaceImg = new Image("spaces/wall/wall_SOUTH.png");
+                    } else if (walls.contains(Heading.WEST)) {
+                        spaceImg = new Image("spaces/wall/wall_WEST.png");
+                    } else if (walls.contains(Heading.NORTH)) {
+                        spaceImg = new Image("spaces/wall/wall_NORTH.png");
+                    }
+                }
+
+            }
+
         }
+        ImageView spaceImgView = new ImageView(spaceImg);
+        this.getChildren().add(0,spaceImgView);
+
+
+
+        //this.setBackground(new Background(new BackgroundImage(spaceImg, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+
+
 
         // updatePlayer();
 
@@ -73,8 +167,11 @@ public class SpaceView extends StackPane implements ViewObserver {
     }
 
     private void updatePlayer() {
-        this.getChildren().clear();
-
+        try {
+            this.getChildren().remove(1);
+        }catch (IndexOutOfBoundsException e){
+            // Do nothing. This is so the image doesn't get removed.
+        }
         Player player = space.getPlayer();
         if (player != null) {
             Polygon arrow = new Polygon(0.0, 0.0,
@@ -87,7 +184,7 @@ public class SpaceView extends StackPane implements ViewObserver {
             }
 
             arrow.setRotate((90*player.getHeading().ordinal())%360);
-            this.getChildren().add(arrow);
+            this.getChildren().add(1, arrow);
         }
     }
 

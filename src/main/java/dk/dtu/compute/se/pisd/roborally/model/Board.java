@@ -22,14 +22,15 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElement.Checkpoint;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceActionComparator;
+import dk.dtu.compute.se.pisd.roborally.controller.JSONReader;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElement.*;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.Damage;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.DamageCard;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.DamageCardDeck;
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.*;
 
@@ -47,6 +48,8 @@ public class Board extends Subject {
     public final int height;
 
     public final String boardName;
+
+    public int playerAmound;
 
     private Integer gameId;
 
@@ -87,6 +90,140 @@ public class Board extends Subject {
     PriorityQueue<Player> playerOrder = new PriorityQueue<>();
 
 
+    /**
+     * @auther Sandie Petersen
+     * @param width
+     * @param height
+     * @param boardName
+     * @param playerAmound
+     * Loads the file of the requested board and creates all the indicidual spacess on the board
+     */
+    public Board(int width, int height, @NotNull String boardName, int playerAmound) {
+        this.boardActions = new TreeSet<>(new SequenceActionComparator());
+        this.boardName = boardName;
+        this.playerAmound = playerAmound;
+        this.width = width;
+        this.height = height;
+
+        JSONArray spawnArray = new JSONReader("src/main/resources/boards/spawnBoard" + playerAmound + ".json").getJsonSpaces();
+
+        JSONArray courseArray;
+        switch (boardName){
+            case "Risky Crossing":
+                courseArray = new JSONReader("src/main/resources/boards/RiskyCrossing.json").getJsonSpaces();
+                break;
+            default:
+                courseArray = new JSONReader("src/main/resources/boards/RiskyCrossing.json").getJsonSpaces();
+        }
+
+        spaces = new Space[width][height];
+
+        //Loop and create the spaces of the first 3 rows, the spawn section
+        for (int i = 0; i < spawnArray.length(); i++) {
+
+            JSONObject current = spawnArray.getJSONObject(i);
+            int x = Integer.parseInt(current.getString("x"));
+            int y = Integer.parseInt(current.getString("y"));
+
+            switch (current.getString("Type")) {
+                case "Priority" :
+                    PriorityAntenna priorityAntenna = new PriorityAntenna(this,x,y);
+                    spaces[x][y] = priorityAntenna;
+                    break;
+                case "Wall" :
+                    EnumSet<Heading> walls = EnumSet.copyOf(List.of(Heading.valueOf(current.getString("Direction"))));
+                    Space wall = new Space(this, x, y);
+                    wall.setWalls(walls);
+                    spaces[x][y] = wall;
+                    break;
+                case "Spawn" :
+                    Space spawn = new Space(this, x, y);
+                    spaces[x][y] = spawn;
+                    //Spawn point
+                    break;
+                default:
+                    Space space = new Space(this, x, y);
+                    spaces[x][y] = space;
+                    break;
+            }
+        }
+
+        //Loop and create the remaining spaces of the first 3 rows, the course section
+        Checkpoint prevChekpoint = null;
+        for (int i = 0; i < courseArray.length(); i++) {
+
+            JSONObject current = courseArray.getJSONObject(i);
+            int x = Integer.parseInt(current.getString("x"));
+            int y = Integer.parseInt(current.getString("y"));
+
+            switch (current.getString("Type")) {
+                case "Wall" :
+                    EnumSet<Heading> walls = EnumSet.copyOf(List.of(Heading.valueOf(current.getString("Direction"))));
+                    Space wall = new Space(this, x, y);
+                    wall.setWalls(walls);
+                    spaces[x][y] = wall;
+                    break;
+                case "Energy" :
+                    Energy energy = new Energy(this, x, y);
+                    spaces[x][y] = energy;
+                    break;
+                case "Conveyer" :
+                    Heading heading = Heading.valueOf(current.getString("Direction"));
+                    if (current.getInt("Number") == 1) {
+                        Conveyorbelt conveyorbelt;
+                        if (current.getString("Turn") == "") {
+                            conveyorbelt = new Conveyorbelt(this,x,y,heading);
+                        } else {
+                            Heading turn = Heading.valueOf(current.getString("Turn"));
+                            conveyorbelt = new Conveyorbelt(this,x,y,heading,turn);
+                        }
+                        spaces[x][y] = conveyorbelt;
+                    } else {
+                        FastConveyorbelt fastConveyorbelt;
+                        if (current.getString("Turn") == "") {
+                            fastConveyorbelt = new FastConveyorbelt(this,x,y,heading);
+                        } else {
+                            Heading turn = Heading.valueOf(current.getString("Turn"));
+                            fastConveyorbelt = new FastConveyorbelt(this,x,y,heading,turn);
+                        }
+                        spaces[x][y] = fastConveyorbelt;
+                    }
+                    break;
+                case "CheckPoint" :
+                    Checkpoint checkpoint;
+                    if (prevChekpoint != null) {
+                        checkpoint = new Checkpoint(this,x,y,prevChekpoint);
+                    } else {
+                        checkpoint = new Checkpoint(this,x,y);
+                    }
+                    prevChekpoint = checkpoint;
+                    spaces[x][y] = checkpoint;
+                    break;
+                case "Lazer" :
+                    Heading shootingDirection = Heading.valueOf(current.getString("Direction"));
+                    BoardLaser boardLaser = new BoardLaser(this,x,y,shootingDirection);
+                    spaces[x][y] = boardLaser;
+                    break;
+                case "Gear" :
+                    Heading turnDirection = Heading.valueOf(current.getString("Direction"));
+                    Gear gear = new Gear(turnDirection,this,x,y);
+                    spaces[x][y] = gear;
+                    break;
+                case "Push" :
+                    Heading pushDirection = Heading.valueOf(current.getString("Direction"));
+                    int step = Integer.parseInt(current.getString("Number"));
+                    Push push = new Push(this,x,y,step,pushDirection);
+                    spaces[x][y] = push;
+                    break;
+                default:
+                    Space space = new Space(this, x, y);
+                    spaces[x][y] = space;
+            }
+        }
+        this.stepMode = false;
+
+    }
+
     public Board(int width, int height, @NotNull String boardName) {
         this.boardName = boardName;
         this.boardActions = new TreeSet<>(new SequenceActionComparator());
@@ -101,7 +238,6 @@ public class Board extends Subject {
         }
         this.damageCardDeck = new DamageCardDeck();
         this.stepMode = false;
-        priorityAntenna = new PriorityAntenna(spaces[4][0]);
     }
 
     public void setSpace(Space space){
@@ -177,11 +313,11 @@ public class Board extends Subject {
     public void calculatePlayerOrder() {
         playerOrder.clear();
 
-        Space start = priorityAntenna.getSpace();
+        Integer[] start = priorityAntenna.getSpace();
 
         for (Player player : players) {
             Space playerSpace = player.getSpace();
-            player.setPriority(Math.abs((playerSpace.x - start.x)) + Math.abs(playerSpace.y - start.y));
+            player.setPriority(Math.abs((playerSpace.x - start[0])) + Math.abs(playerSpace.y - start[1]));
             playerOrder.add(player);
         }
     }
@@ -316,5 +452,7 @@ public class Board extends Subject {
                 ", Player = " + getCurrentPlayer().getName() +
                 ", Step: " + getStep();
     }
+
+
 
 }
