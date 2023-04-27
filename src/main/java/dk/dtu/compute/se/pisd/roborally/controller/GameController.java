@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.CustomExceptions.SpaceOutOfBoundsException;
 import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElement.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.*;
 import org.jetbrains.annotations.NotNull;
@@ -37,10 +38,13 @@ import java.util.ArrayList;
 public class GameController {
 
     final public Board board;
+    final public EndGame endGame;
 
-    public GameController(@NotNull Board board) {
+    public GameController(@NotNull Board board, EndGame endGame) {
         this.board = board;
+        this.endGame = endGame;
     }
+
 
     /**
      * This is just some dummy controller operation to make a simple move to see something
@@ -154,15 +158,15 @@ public class GameController {
             Card card = currentPlayer.getProgramField(step).getCard();
             if(card != null) {
                 while (card.getType().equals("Damage")) {
-                    executeDamage(currentPlayer, ((DamageCard) card).damage);
+                    executeDamage(currentPlayer, (Damage) card.getAction());
                     currentPlayer.getProgramField(step).setCard(currentPlayer.drawCard());
                     card = currentPlayer.getProgramField(step).getCard();
                 }
-                if (((CommandCard) card).command.isInteractive()) {
+                if (((CommandCard) card).getAction().isInteractive()) {
                     board.setPhase(Phase.PLAYER_INTERACTION);
                     return;
                 }
-                executeCommand(currentPlayer, ((CommandCard) card).command);
+                executeCommand(currentPlayer, (Command) card.getAction());
 
             }
             incrementStep(step);
@@ -259,9 +263,6 @@ public class GameController {
             case VIRUS:
                 this.executeVirus(currentPlayer);
                 break;
-            default:
-                //nothing happens
-
         }
     }
 
@@ -385,6 +386,15 @@ public class GameController {
         ArrayList<Player> withinRange = board.playersInRange(player, 6);
         for (Player affectedPLayer : withinRange) {
             affectedPLayer.discardCard(new DamageCard(Damage.VIRUS));
+        }
+    }
+    private void endGame(){
+        Checkpoint checkpoint = board.getWincondition();
+        for (Player player: board.getPlayers()
+             ) {
+            if(checkpoint.checkPlayer(player));{
+                endGame.endGame(player);
+            }
         }
     }
 

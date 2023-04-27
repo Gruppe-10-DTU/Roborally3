@@ -23,15 +23,15 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
-
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
-
 import javafx.application.Platform;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.TextInputDialog;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -44,7 +44,7 @@ import java.util.Optional;
  * @author Ekkart Kindler, ekki@dtu.dk
  *
  */
-public class AppController implements Observer {
+public class AppController implements Observer, EndGame {
 
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
@@ -63,7 +63,6 @@ public class AppController implements Observer {
         dialog.setHeaderText("Select number of players");
         Optional<Integer> result = dialog.showAndWait();
 
-
         if (result.isPresent()) {
             if (gameController != null) {
                 // The UI should not allow this, but in case this happens anyway.
@@ -77,7 +76,7 @@ public class AppController implements Observer {
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
             Board board = new Board(8,8);
-            gameController = new GameController(board);
+            gameController = new GameController(board, this);
             int no = result.get();
             for (int i = 0; i < no; i++) {
 
@@ -156,6 +155,22 @@ public class AppController implements Observer {
         if (gameController == null || stopGame()) {
             Platform.exit();
         }
+    }
+
+    /**
+     * Implement the method from the interface, which will be passsed to the game controller, closing the program.
+     * @author Nilas Thoegersen
+     * @param player The player who have won
+     */
+    @Override
+    public void endGame(Player player){
+        Alert won = new Alert(AlertType.INFORMATION);
+        won.setTitle("We have a winner");
+        won.setHeaderText(null);
+        won.setContentText(player.getName() + " has won");
+        won.showAndWait();
+        gameController = null;
+        roboRally.createBoardView(null);
     }
 
     public boolean isGameRunning() {

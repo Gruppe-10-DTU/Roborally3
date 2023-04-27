@@ -51,4 +51,16 @@ class BoardTest {
     void nextPlayerEmpty() {
         assertFalse(board.nextPlayer());
     }
+
+    @Test
+    void players_in_range_calculates_correctly(){
+        assertEquals(1, board.playersInRange(player1, 6).size());
+
+        player2.setSpace(board.getSpace(2,4));
+        Player player3 = new Player(board,null,"Player 3");
+        player3.setSpace(board.getSpace(3,7));
+        board.addPlayer(player3);
+
+        assertEquals(2, board.playersInRange(player2, 6).size());
+    }
 }
