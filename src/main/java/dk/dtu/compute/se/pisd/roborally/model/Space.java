@@ -22,8 +22,6 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElements.BoardElement;
-import javafx.scene.layout.Background;
 
 import java.util.EnumSet;
 
@@ -41,7 +39,6 @@ public class Space extends Subject {
     public final int y;
 
     protected Player player;
-    private BoardElement boardElement;
     private String background = "Empty";
     private EnumSet<Heading> walls;
 

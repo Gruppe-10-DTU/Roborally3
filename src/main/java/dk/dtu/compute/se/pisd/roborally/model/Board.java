@@ -23,9 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.JSONReader;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElement.Checkpoint;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceActionComparator;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElement.*;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -88,14 +86,22 @@ public class Board extends Subject {
     PriorityQueue<Player> playerOrder = new PriorityQueue<>();
 
 
-
+    /**
+     * @auther Sandie Petersen
+     * @param width
+     * @param height
+     * @param boardName
+     * @param playerAmound
+     * Loads the file of the requested board and creates all the indicidual spacess on the board
+     */
     public Board(int width, int height, @NotNull String boardName, int playerAmound) {
+        this.boardActions = new TreeSet<>(new SequenceActionComparator());
         this.boardName = boardName;
         this.playerAmound = playerAmound;
         this.width = width;
         this.height = height;
 
-        JSONArray spawnArray = new JSONReader("src/main/resources/boards/spawnBoard2.json").getJsonSpaces();
+        JSONArray spawnArray = new JSONReader("src/main/resources/boards/spawnBoard" + playerAmound + ".json").getJsonSpaces();
 
         JSONArray courseArray;
         switch (boardName){
@@ -112,51 +118,95 @@ public class Board extends Subject {
         for (int i = 0; i < spawnArray.length(); i++) {
 
             JSONObject current = spawnArray.getJSONObject(i);
-
             int x = Integer.parseInt(current.getString("x"));
             int y = Integer.parseInt(current.getString("y"));
-
-            Space space = new Space(this, x, y);
 
             switch (current.getString("Type")) {
                 case "Priority" :
                     priorityAntenna = new PriorityAntenna(spaces[x][y]);
                     break;
                 case "Wall" :
-                    //space.setWalls(current.getString("Direction"));
+                    EnumSet<Heading> walls = EnumSet.copyOf(List.of(Heading.valueOf(current.getString("Direction"))));
+                    Space wall = new Space(this, x, y);
+                    wall.setWalls(walls);
+                    spaces[x][y] = wall;
                     break;
                 case "Spawn" :
+                    Space spawn = new Space(this, x, y);
+                    spaces[x][y] = spawn;
                     //Spawn point
                     break;
                 default:
+                    Space space = new Space(this, x, y);
+                    spaces[x][y] = space;
                     break;
             }
-            spaces[x][y] = space;
         }
 
         //Loop and create the remaining spaces of the first 3 rows, the course section
         for (int i = 0; i < courseArray.length(); i++) {
 
-            JSONObject current = spawnArray.getJSONObject(i);
-
+            JSONObject current = courseArray.getJSONObject(i);
             int x = Integer.parseInt(current.getString("x"));
             int y = Integer.parseInt(current.getString("y"));
 
-            Space space = new Space(this, x, y);
-
             switch (current.getString("Type")) {
                 case "Wall" :
-                    //space.setWalls(current.getString("Direction"));
+                    EnumSet<Heading> walls = EnumSet.copyOf(List.of(Heading.valueOf(current.getString("Direction"))));
+                    Space wall = new Space(this, x, y);
+                    wall.setWalls(walls);
+                    spaces[x][y] = wall;
                     break;
-            }
-            spaces[x][y] = space;
-
-        }
-
-        for (int x = 0; x < width; x++) {
-            for(int y = 0; y < height; y++) {
-                Space space = new Space(this, x, y);
-                spaces[x][y] = space;
+                case "Energy" :
+                    Energy energy = new Energy(this, x, y);
+                    spaces[x][y] = energy;
+                    break;
+                case "Conveyer" :
+                    Heading heading = Heading.valueOf(current.getString("Direction"));
+                    if (current.getString("Number") == "1") {
+                        Conveyorbelt conveyorbelt;
+                        if (current.getString("Turn") == "") {
+                            conveyorbelt = new Conveyorbelt(this,x,y,heading);
+                        } else {
+                            Heading turn = Heading.valueOf(current.getString("Turn"));
+                            conveyorbelt = new Conveyorbelt(this,x,y,heading,turn);
+                        }
+                        spaces[x][y] = conveyorbelt;
+                    } else {
+                        FastConveyorbelt fastConveyorbelt;
+                        if (current.getString("Turn") == "") {
+                            fastConveyorbelt = new FastConveyorbelt(this,x,y,heading);
+                        } else {
+                            Heading turn = Heading.valueOf(current.getString("Turn"));
+                            fastConveyorbelt = new FastConveyorbelt(this,x,y,heading,turn);
+                        }
+                        spaces[x][y] = fastConveyorbelt;
+                    }
+                    break;
+                case "Checkpoint" :
+                    //Not looking at the order
+                    Checkpoint checkpoint = new Checkpoint(this,x,y);
+                    spaces[x][y] = checkpoint;
+                    break;
+                case "Lazer" :
+                    Heading shootingDirection = Heading.valueOf(current.getString("Direction"));
+                    BoardLaser boardLaser = new BoardLaser(this,x,y,shootingDirection);
+                    spaces[x][y] = boardLaser;
+                    break;
+                case "Gear" :
+                    Heading turnDirection = Heading.valueOf(current.getString("Direction"));
+                    Gear gear = new Gear(turnDirection,this,x,y);
+                    spaces[x][y] = gear;
+                    break;
+                case "Push" :
+                    Heading pushDirection = Heading.valueOf(current.getString("Direction"));
+                    int step = Integer.parseInt(current.getString("Number"));
+                    Push push = new Push(this,x,y,step,pushDirection);
+                    spaces[x][y] = push;
+                    break;
+                default:
+                    Space space = new Space(this, x, y);
+                    spaces[x][y] = space;
             }
         }
         this.stepMode = false;

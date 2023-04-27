@@ -94,7 +94,8 @@ public class AppController implements Observer, EndGame {
 
             Board board = new Board(11,8, selectedBoard, result.get());
 
-            gameController = new GameController(board);
+
+            gameController = new GameController(board, this);
             int no = result.get();
             for (int i = 0; i < no; i++) {
 
