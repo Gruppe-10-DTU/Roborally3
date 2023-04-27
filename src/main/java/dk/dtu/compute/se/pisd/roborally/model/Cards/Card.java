@@ -1,9 +1,9 @@
 package dk.dtu.compute.se.pisd.roborally.model.Cards;
 
-public interface Card<T> {
+import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+
+public interface Card {
     String getType();
     String getName();
-
-    T getAction();
-
+    void doAction(GameController gameController);
 }
