@@ -39,6 +39,7 @@ public class Space extends Subject {
     public final int y;
 
     protected Player player;
+    private String background = "Empty";
     private EnumSet<Heading> walls;
 
 
@@ -95,5 +96,7 @@ public class Space extends Subject {
         notifyChange();
     }
 
-
+    public EnumSet<Heading> getWalls() {
+        return walls;
+    }
 }
