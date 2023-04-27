@@ -153,17 +153,7 @@ public class GameController {
             int step = board.getStep();
             Card card = currentPlayer.getProgramField(step).getCard();
             if(card != null) {
-                while (card.getType().equals("Damage")) {
-                    executeDamage(currentPlayer, ((DamageCard) card).damage);
-                    currentPlayer.getProgramField(step).setCard(currentPlayer.drawCard());
-                    card = currentPlayer.getProgramField(step).getCard();
-                }
-                if (((CommandCard) card).command.isInteractive()) {
-                    board.setPhase(Phase.PLAYER_INTERACTION);
-                    return;
-                }
-                executeCommand(currentPlayer, ((CommandCard) card).command);
-
+                card.doAction(this);
             }
             incrementStep(step);
 
@@ -247,23 +237,7 @@ public class GameController {
      * @author Philip Astrup Cramer
      */
     private void executeDamage(Player currentPlayer, Damage dmg){
-        switch (dmg){
-            case SPAM:
-                //this has no further effect
-                break;
-            case TROJAN_HORSE:
-                this.executeTrojanHorse(currentPlayer);
-                break;
-            case WORM:
-                this.executeWorm(currentPlayer);
-                break;
-            case VIRUS:
-                this.executeVirus(currentPlayer);
-                break;
-            default:
-                //nothing happens
 
-        }
     }
 
     /**
@@ -364,30 +338,6 @@ public class GameController {
 
     }
 
-    /**
-     * @author Philip Astrup Cramer
-     */
-    private void executeTrojanHorse(Player player){
-        player.discardCard(new DamageCard(Damage.SPAM));
-        player.discardCard(new DamageCard(Damage.SPAM));
-    }
-
-    /**
-     * @author Philip Astrup Cramer
-     */
-    private void executeWorm(Player player){
-        rebootRobot(player);
-    }
-
-    /**
-     * @author Philip Astrup Cramer
-     */
-    private void executeVirus(Player player){
-        ArrayList<Player> withinRange = board.playersInRange(player, 6);
-        for (Player affectedPLayer : withinRange) {
-            affectedPLayer.discardCard(new DamageCard(Damage.VIRUS));
-        }
-    }
     private void endGame(){
         Checkpoint checkpoint = board.getWincondition();
         for (Player player: board.getPlayers()
