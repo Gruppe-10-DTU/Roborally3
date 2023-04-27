@@ -21,7 +21,7 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
-import dk.dtu.compute.se.pisd.roborally.CustomExceptions.SpaceOutOfBoundsException;
+
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
@@ -302,7 +302,7 @@ public class GameController {
      * @param pushed The pushed robot
      * Pushes a row of robots.
      */
-    public void pushRobot(@NotNull Player pushing, @NotNull Player pushed) throws SpaceOutOfBoundsException{
+    public void pushRobot(@NotNull Player pushing, @NotNull Player pushed){
         if(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer() != null){
             pushRobot(pushing,board.getPlayer(board.getPlayerNumber(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer())));
         }

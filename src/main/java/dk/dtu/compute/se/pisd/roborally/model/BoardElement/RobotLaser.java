@@ -1,6 +1,5 @@
 package dk.dtu.compute.se.pisd.roborally.model.BoardElement;
 
-import dk.dtu.compute.se.pisd.roborally.CustomExceptions.SpaceOutOfBoundsException;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.Damage;
@@ -26,13 +25,10 @@ public class RobotLaser implements SequenceAction{
      * Space from which the laser is shot
      * @param heading
      * Direction the laser is heading
-     * @throws SpaceOutOfBoundsException
-     * Since the method recursively checks if the space is empty, and the space eventually will go out of bounds
-     * the method should throw an out-of-bounds error at some point (unless a robot is hit).
      *
      * The method returns the player that is hit by the laser shot. If it does not hit anyone, it will return null.
      */
-    public Player shootLaser(@NotNull Space space, Heading heading) throws SpaceOutOfBoundsException {
+    public Player shootLaser(@NotNull Space space, Heading heading){
         if(board.getNeighbour(space, heading).getPlayer() != null && !board.getNeighbour(space,heading).hasWall(heading.reverse())) {
             shootLaser(board.getNeighbour(space,heading),heading);
         }else{
