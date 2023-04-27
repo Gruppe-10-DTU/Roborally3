@@ -51,18 +51,13 @@ public class PlayerView extends Tab implements ViewObserver {
     private GridPane programPane;
     private Label cardsLabel;
     private GridPane cardsPane;
-
     private CardFieldView[] programCardViews;
     private CardFieldView[] cardViews;
-
     private VBox buttonPanel;
-
     private Button finishButton;
     private Button executeButton;
     private Button stepButton;
-
     private VBox playerInteractionPanel;
-
     private GameController gameController;
 
     public PlayerView(@NotNull GameController gameController, @NotNull Player player) {
@@ -123,7 +118,6 @@ public class PlayerView extends Tab implements ViewObserver {
                 cardsPane.add(cardViews[i], i, 0);
             }
         }
-
         top.getChildren().add(programLabel);
         top.getChildren().add(programPane);
         top.getChildren().add(cardsLabel);
@@ -160,7 +154,6 @@ public class PlayerView extends Tab implements ViewObserver {
                     }
                 }
             }
-
             if (player.board.getPhase() != Phase.PLAYER_INTERACTION) {
                 if (!programPane.getChildren().contains(buttonPanel)) {
                     programPane.getChildren().remove(playerInteractionPanel);
@@ -192,8 +185,6 @@ public class PlayerView extends Tab implements ViewObserver {
                         executeButton.setDisable(true);
                         stepButton.setDisable(true);
                 }
-
-
             } else {
                 if (!programPane.getChildren().contains(playerInteractionPanel)) {
                     programPane.getChildren().remove(buttonPanel);
@@ -226,7 +217,6 @@ public class PlayerView extends Tab implements ViewObserver {
                                 optionButton.setDisable(false);
                                 playerInteractionPanel.getChildren().add(optionButton);
                             }
-
                     }
                 }
             }
