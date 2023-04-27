@@ -385,13 +385,7 @@ public class GameController {
             affectedPLayer.discardCard(new DamageCard(Damage.VIRUS));
         }
     }
-    public void shootLaser(@NotNull Space space, Heading heading) throws SpaceOutOfBoundsException {
-        if(board.getNeighbour(space, heading).getPlayer() != null) {
-            shootLaser(board.getNeighbour(space,heading),heading);
-        }else{
-            board.getSpace(space.x,space.y).getPlayer().discardCard();
-        }
-    }
+
     /**
      * A method called when no corresponding controller operation is implemented yet. This
      * should eventually be removed.
