@@ -63,14 +63,6 @@ public class SpaceView extends StackPane implements ViewObserver {
         this.setMinHeight(SPACE_HEIGHT);
         this.setMaxHeight(SPACE_HEIGHT);
 
-        //ImageView background = new ImageView();
-        //Image img = new Image(getClass().getResourceAsStream("spaces/empty60.png"));
-        //background.setImage(img);
-
-        //background = new ImageView(img);
-        ImageView spaceImg = new ImageView(new Image("spaces/empty60.png"));
-        this.getChildren().add(0,spaceImg);
-
         Image spaceImg = new Image("spaces/empty60.png");
 
         String simpleName = space.getClass().getSimpleName();
@@ -111,8 +103,6 @@ public class SpaceView extends StackPane implements ViewObserver {
                 if (heading == Heading.SOUTH && turn == Heading.WEST) {
                     spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_SOUTH_WEST.png");
                 }
-
-
             } else {
                 if (heading == Heading.EAST) {
                     spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_EAST.png");
@@ -124,9 +114,6 @@ public class SpaceView extends StackPane implements ViewObserver {
                     spaceImg = new Image("spaces/FastConveyorbelt/fastConveyot_NORTH.png");
                 }
             }
-
-
-
 
         } else if (space instanceof Conveyorbelt) {
             spaceImg = new Image("spaces/conveyorbelt/conveyer_NORTH.png");
@@ -163,11 +150,12 @@ public class SpaceView extends StackPane implements ViewObserver {
             }
 
         }
+        ImageView spaceImgView = new ImageView(spaceImg);
+        this.getChildren().add(0,spaceImgView);
 
 
 
-
-        this.setBackground(new Background(new BackgroundImage(spaceImg, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+        //this.setBackground(new Background(new BackgroundImage(spaceImg, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
 
 
 
