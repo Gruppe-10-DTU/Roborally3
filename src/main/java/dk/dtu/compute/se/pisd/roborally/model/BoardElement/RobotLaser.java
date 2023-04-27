@@ -10,13 +10,11 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
 
 public class RobotLaser implements SequenceAction{
     private Board board;
     private Player player;
     public RobotLaser(Board board, Player player) {
-        super();
         this.player = player;
         this.board = board;
         board.addBoardActions(this);
@@ -52,7 +50,7 @@ public class RobotLaser implements SequenceAction{
             robotLaser.shootLaser(player.getSpace(),player.getHeading());
             if(robotLaser.shootLaser(player.getSpace(),player.getHeading()) != null){
                 robotLaser.shootLaser(player.getSpace(),player.getHeading()).discardCard(new DamageCard(Damage.SPAM));
-                System.out.println("Player: " + robotLaser.shootLaser(player.getSpace(), player.getHeading()) + " was shot by " + player + "'s laser!");
+                System.out.println("Player: " + robotLaser.shootLaser(player.getSpace(), player.getHeading()) + " was hit by " + player + "'s laser!");
             }
         }
     }

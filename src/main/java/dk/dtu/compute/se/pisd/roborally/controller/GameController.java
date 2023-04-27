@@ -152,9 +152,6 @@ public class GameController {
         Player currentPlayer = board.getCurrentPlayer();
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
             int step = board.getStep();
-            if(step%board.getPlayersNumber() == 0 && step != 0){
-                executeBoardActions();
-            }
             Card card = currentPlayer.getProgramField(step).getCard();
             if(card != null) {
                 while (card.getType().equals("Damage")) {
