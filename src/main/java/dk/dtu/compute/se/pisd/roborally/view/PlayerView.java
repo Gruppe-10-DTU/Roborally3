@@ -24,9 +24,7 @@ package dk.dtu.compute.se.pisd.roborally.view;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.*;
-import dk.dtu.compute.se.pisd.roborally.model.Cards.Command;
-import dk.dtu.compute.se.pisd.roborally.model.Cards.CommandCard;
-import dk.dtu.compute.se.pisd.roborally.model.Cards.CommandCardField;
+import dk.dtu.compute.se.pisd.roborally.model.Cards.*;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -209,16 +207,28 @@ public class PlayerView extends Tab implements ViewObserver {
                     //      the player's choices of the interactive command card. The
                     //      following is just a mockup showing two options
                     Button optionButton;
-                    List<Command> commands = ((CommandCard) player.board.getCurrentPlayer().getProgramField(player.board.getStep()).getCard()).command.getOptions();
-                    for (Command command : commands) {
-                        optionButton = new Button(command.displayName);
-                        optionButton.setOnAction( e -> gameController.executeCommandOptionAndContinue(command));
-                        optionButton.setDisable(false);
-                        playerInteractionPanel.getChildren().add(optionButton);
+                    String type = player.getProgramField(player.board.getStep()).getCard().getType();
+                    switch (type) {
+                        case "Command":
+                            List<Command> commands = ((CommandCard) player.board.getCurrentPlayer().getProgramField(player.board.getStep()).getCard()).command.getOptions();
+                            for (Command command : commands) {
+                                optionButton = new Button(command.displayName);
+                                optionButton.setOnAction(e -> gameController.executeCommandOptionAndContinue(command));
+                                optionButton.setDisable(false);
+                                playerInteractionPanel.getChildren().add(optionButton);
+                            }
+                            break;
+                        case "Damage":
+                            List<Damage> damageTypes = ((DamageCard) player.board.getCurrentPlayer().getProgramField(player.board.getStep()).getCard()).getAction().getOptions();
+                            for (Damage damage : damageTypes){
+                                optionButton = new Button(damage.getDisplayName());
+                                optionButton.setOnAction(e -> gameController.getDamageCardAndContinue(player, damage));
+                                optionButton.setDisable(false);
+                                playerInteractionPanel.getChildren().add(optionButton);
+                            }
                     }
                 }
             }
         }
     }
-
 }
