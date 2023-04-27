@@ -30,7 +30,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Ekkart Kindler, ekki@dtu.dk
  *
  */
-public class CommandCard extends Subject implements Card{
+public class CommandCard extends Subject implements Card<Command>{
 
     final public Command command;
     String type = "Command";
@@ -38,14 +38,20 @@ public class CommandCard extends Subject implements Card{
     public CommandCard(@NotNull Command command) {
         this.command = command;
     }
+
+    @Override
+    public Command getType() {
+        return command;
+    }
+
     @Override
     public String getName() {
         return command.displayName;
     }
 
-
     @Override
-    public String getType() {
-        return "Command";
+    public int getAmount(){
+        return command.cardAmount;
     }
+
 }

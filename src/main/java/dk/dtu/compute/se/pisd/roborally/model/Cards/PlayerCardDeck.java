@@ -66,7 +66,7 @@ public class PlayerCardDeck {
     */
     private void generateDeck(){
         for (Command value : Command.values()) {
-            for(int i = 0; i < value.getAmount(); i++){
+            for(int i = 0; i < value.cardAmount; i++){
                 discard(new CommandCard(value));
             }
         }

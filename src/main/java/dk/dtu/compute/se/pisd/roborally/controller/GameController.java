@@ -153,12 +153,12 @@ public class GameController {
             int step = board.getStep();
             Card card = currentPlayer.getProgramField(step).getCard();
             if(card != null) {
-                while (card.getType().equals("Damage")) {
-                    executeDamage(currentPlayer, ((DamageCard) card).damage);
+                while (card.getType().name().equals("Damage")) {
+                    executeDamage(currentPlayer, (Damage) card.getType());
                     currentPlayer.getProgramField(step).setCard(currentPlayer.drawCard());
                     card = currentPlayer.getProgramField(step).getCard();
                 }
-                if (((CommandCard) card).command.isInteractive()) {
+                if (((Command) card.getType()).isInteractive()) {
                     board.setPhase(Phase.PLAYER_INTERACTION);
                     return;
                 }

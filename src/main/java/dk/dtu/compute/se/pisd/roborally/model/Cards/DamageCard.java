@@ -3,7 +3,7 @@ package dk.dtu.compute.se.pisd.roborally.model.Cards;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import org.jetbrains.annotations.NotNull;
 
-public class DamageCard extends Subject implements Card {
+public class DamageCard extends Subject implements Card<Damage> {
     final public Damage damage;
 
     public DamageCard(@NotNull Damage damage) {
@@ -16,7 +16,12 @@ public class DamageCard extends Subject implements Card {
     }
 
     @Override
-    public String getType() {
-        return "Damage";
+    public int getAmount() {
+        return damage.cardAmount;
+    }
+
+    @Override
+    public Damage getType() {
+        return damage;
     }
 }

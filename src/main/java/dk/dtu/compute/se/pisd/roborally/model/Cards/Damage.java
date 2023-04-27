@@ -19,8 +19,4 @@ public enum Damage {
         this.displayName = displayName;
         this.cardAmount = cardAmount;
     }
-
-    public int getAmount(){
-        return this.cardAmount;
-    }
 }

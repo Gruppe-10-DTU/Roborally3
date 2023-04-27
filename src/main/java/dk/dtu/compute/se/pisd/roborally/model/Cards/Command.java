@@ -42,9 +42,14 @@ public enum Command {
     UTURN("U-Turn",1),
     FAST_FORWARD("Fast Fwd",6),
 
-    // XXX Assignment P3
-    OPTION_LEFT_RIGHT("Left OR Right",1, LEFT, RIGHT);
 
+    // XXX Assignment P3
+    OPTION_LEFT_RIGHT("Left OR Right",1, LEFT, RIGHT),
+    SANDBOX_ROUTINE("Sandbox routine", 0, FORWARD, FAST_FORWARD, /* VERY_FAST_FORWARD ,*/ REVERSE, LEFT, RIGHT, UTURN),
+
+    WEASEL_ROUTINE("Weasel", 0),
+
+    SPAM_FOLDER("Spam folder", 0);
 
 
 
@@ -73,8 +78,5 @@ public enum Command {
 
     public List<Command> getOptions() {
         return options;
-    }
-    public int getAmount(){
-        return this.cardAmount;
     }
 }
