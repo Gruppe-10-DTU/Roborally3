@@ -123,7 +123,8 @@ public class Board extends Subject {
 
             switch (current.getString("Type")) {
                 case "Priority" :
-                    priorityAntenna = new PriorityAntenna(spaces[x][y]);
+                    PriorityAntenna priorityAntenna = new PriorityAntenna(this,x,y);
+                    spaces[x][y] = priorityAntenna;
                     break;
                 case "Wall" :
                     EnumSet<Heading> walls = EnumSet.copyOf(List.of(Heading.valueOf(current.getString("Direction"))));
@@ -226,7 +227,6 @@ public class Board extends Subject {
             }
         }
         this.stepMode = false;
-        priorityAntenna = new PriorityAntenna(spaces[4][0]);
     }
 
     public void setSpace(Space space){
@@ -302,11 +302,11 @@ public class Board extends Subject {
     public void calculatePlayerOrder() {
         playerOrder.clear();
 
-        Space start = priorityAntenna.getSpace();
+        Integer[] start = priorityAntenna.getSpace();
 
         for (Player player : players) {
             Space playerSpace = player.getSpace();
-            player.setPriority(Math.abs((playerSpace.x - start.x)) + Math.abs(playerSpace.y - start.y));
+            player.setPriority(Math.abs((playerSpace.x - start[0])) + Math.abs(playerSpace.y - start[1]));
             playerOrder.add(player);
         }
     }
