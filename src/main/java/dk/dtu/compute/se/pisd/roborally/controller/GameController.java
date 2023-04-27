@@ -148,6 +148,9 @@ public class GameController {
         Player currentPlayer = board.getCurrentPlayer();
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
             int step = board.getStep();
+            if(step%board.getPlayersNumber() == 0 && step != 0){
+                executeBoardActions();
+            }
             Card card = currentPlayer.getProgramField(step).getCard();
             if(card != null) {
                 while (card.getType().equals("Damage")) {
@@ -163,7 +166,6 @@ public class GameController {
 
             }
             incrementStep(step);
-
         }
     }
 
@@ -302,7 +304,7 @@ public class GameController {
      * @param pushed The pushed robot
      * Pushes a row of robots.
      */
-    public void pushRobot(@NotNull Player pushing, @NotNull Player pushed){
+    public void pushRobot(@NotNull Player pushing, @NotNull Player pushed) throws SpaceOutOfBoundsException{
         if(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer() != null){
             pushRobot(pushing,board.getPlayer(board.getPlayerNumber(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer())));
         }
