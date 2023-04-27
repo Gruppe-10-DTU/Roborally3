@@ -48,9 +48,9 @@ public enum Command {
 
 
 
-    final public String displayName;
+    final private String displayName;
 
-    final int cardAmount;
+    final private int cardAmount;
 
     // XXX Assignment P3
     // Command(String displayName) {
@@ -76,5 +76,9 @@ public enum Command {
     }
     public int getAmount(){
         return this.cardAmount;
+    }
+
+    public String getDisplayname() {
+        return this.displayName;
     }
 }

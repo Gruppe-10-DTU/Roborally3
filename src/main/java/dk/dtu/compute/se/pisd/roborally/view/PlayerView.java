@@ -141,7 +141,7 @@ public class PlayerView extends Tab implements ViewObserver {
             for (int i = 0; i < Player.NO_REGISTERS; i++) {
                 CardFieldView cardFieldView = programCardViews[i];
                 if (cardFieldView != null) {
-                    if (player.board.getPhase() == Phase.PROGRAMMING ) {
+                    if (player.board.getPhase() == Phase.PROGRAMMING) {
                         cardFieldView.setBackground(CardFieldView.BG_DEFAULT);
                     } else {
                         if (i < player.board.getStep()) {
@@ -210,9 +210,9 @@ public class PlayerView extends Tab implements ViewObserver {
                     String type = player.getProgramField(player.board.getStep()).getCard().getType();
                     switch (type) {
                         case "Command":
-                            List<Command> commands = ((CommandCard) player.board.getCurrentPlayer().getProgramField(player.board.getStep()).getCard()).command.getOptions();
+                            List<Command> commands = ((CommandCard) player.board.getCurrentPlayer().getProgramField(player.board.getStep()).getCard()).getAction().getOptions();
                             for (Command command : commands) {
-                                optionButton = new Button(command.displayName);
+                                optionButton = new Button(command.getDisplayname());
                                 optionButton.setOnAction(e -> gameController.executeCommandOptionAndContinue(command));
                                 optionButton.setDisable(false);
                                 playerInteractionPanel.getChildren().add(optionButton);
@@ -220,16 +220,16 @@ public class PlayerView extends Tab implements ViewObserver {
                             break;
                         case "Damage":
                             List<Damage> damageTypes = ((DamageCard) player.board.getCurrentPlayer().getProgramField(player.board.getStep()).getCard()).getAction().getOptions();
-                            for (Damage damage : damageTypes){
+                            for (Damage damage : damageTypes) {
                                 optionButton = new Button(damage.getDisplayName());
                                 optionButton.setOnAction(e -> gameController.getDamageCardAndContinue(player, damage));
                                 optionButton.setDisable(false);
                                 playerInteractionPanel.getChildren().add(optionButton);
                             }
 
+                    }
                 }
             }
         }
     }
-
 }

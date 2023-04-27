@@ -39,7 +39,7 @@ public class CommandCard extends Subject implements Card<Command>{
     }
     @Override
     public String getName() {
-        return command.displayName;
+        return command.getDisplayname();
     }
 
     @Override

@@ -12,7 +12,7 @@ public class DamageCard extends Subject implements Card<Damage> {
 
     @Override
     public String getName() {
-        return damage.displayName;
+        return damage.getDisplayName();
     }
 
     @Override
