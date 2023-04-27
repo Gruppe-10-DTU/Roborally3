@@ -226,9 +226,10 @@ public class PlayerView extends Tab implements ViewObserver {
                                 optionButton.setDisable(false);
                                 playerInteractionPanel.getChildren().add(optionButton);
                             }
-                    }
+
                 }
             }
         }
     }
+
 }

@@ -18,7 +18,7 @@ public class PlayerCardDeck {
     }
 
     /**
-     * Draws a card from the playes deck
+     * Draws a card from the player's deck
      * and if the player's deck is empty shuffles the discard pile
      * into the deck
      *
@@ -45,7 +45,7 @@ public class PlayerCardDeck {
     }
 
     /**
-     * takes a radom card from the discard pile
+     * takes a random card from the discard pile
      * and adds it to the deck until the discard
      * pile is empty
      *
