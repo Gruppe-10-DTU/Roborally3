@@ -2,7 +2,7 @@ package dk.dtu.compute.se.pisd.roborally.CustomExceptions;
 
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
-public class SpaceOutOfBoundsException extends IndexOutOfBoundsException {
+public class SpaceOutOfBoundsException extends Exception {
     public SpaceOutOfBoundsException() {
         super();
     }
