@@ -163,11 +163,11 @@ public class Board extends Subject {
                     Energy energy = new Energy(this, x, y);
                     spaces[x][y] = energy;
                     break;
-                case "Conveyer" :
+                case "Conveyor" :
                     Heading heading = Heading.valueOf(current.getString("Direction"));
                     if (current.getInt("Number") == 1) {
                         Conveyorbelt conveyorbelt;
-                        if (current.getString("Turn") == "") {
+                        if (current.getString("Turn").equals("")) {
                             conveyorbelt = new Conveyorbelt(this,x,y,heading);
                         } else {
                             Heading turn = Heading.valueOf(current.getString("Turn"));
@@ -176,7 +176,7 @@ public class Board extends Subject {
                         spaces[x][y] = conveyorbelt;
                     } else {
                         FastConveyorbelt fastConveyorbelt;
-                        if (current.getString("Turn") == "") {
+                        if (current.getString("Turn").equals("")) {
                             fastConveyorbelt = new FastConveyorbelt(this,x,y,heading);
                         } else {
                             Heading turn = Heading.valueOf(current.getString("Turn"));
