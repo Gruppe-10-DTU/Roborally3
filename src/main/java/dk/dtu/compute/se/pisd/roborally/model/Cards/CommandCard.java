@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.model.Cards;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -74,10 +75,18 @@ public class CommandCard extends Subject implements Card{
             case UTURN:
                 gameController.uTurn(player);
                 break;
+            case OPTION_LEFT_RIGHT:
+                gameController.board.setPhase(Phase.PLAYER_INTERACTION);
             default:
                 // DO NOTHING (for now)
         }
     }
+
+    @Override
+    public boolean isInteractive() {
+        return (this.command.equals(Command.OPTION_LEFT_RIGHT));
+    }
+
     public List<Command> getOptions(){
         return this.command.getOptions();
     }
