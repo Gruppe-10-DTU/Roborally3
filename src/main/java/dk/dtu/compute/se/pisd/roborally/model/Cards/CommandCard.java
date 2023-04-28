@@ -26,6 +26,8 @@ import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 /**
  * ...
  *
@@ -34,7 +36,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class CommandCard extends Subject implements Card{
 
-    final public Command command;
+    final private Command command;
     String type = "Command";
 
     public CommandCard(@NotNull Command command) {
@@ -76,7 +78,9 @@ public class CommandCard extends Subject implements Card{
                 // DO NOTHING (for now)
         }
     }
-
+    public List<Command> getOptions(){
+        return this.command.getOptions();
+    }
 
     @Override
     public String getType() {
