@@ -16,6 +16,14 @@ public class Push extends Space implements SequenceAction {
         board.addBoardActions(this);
     }
 
+    public int getStep() {
+        return step;
+    }
+
+    public Heading getHeading() {
+        return heading;
+    }
+
     /**
      * Iterate over each player. If the player is on an instance of this field, it'll turn him.
      * @author Nilas

@@ -24,6 +24,7 @@ package dk.dtu.compute.se.pisd.roborally.model;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.JSONReader;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.*;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -108,6 +109,9 @@ public class Board extends Subject {
             case "Risky Crossing":
                 courseArray = new JSONReader("src/main/resources/boards/RiskyCrossing.json").getJsonSpaces();
                 break;
+            case "Test":
+                courseArray = new JSONReader("src/main/resources/boards/Test.json").getJsonSpaces();
+                break;
             default:
                 courseArray = new JSONReader("src/main/resources/boards/RiskyCrossing.json").getJsonSpaces();
         }
@@ -149,8 +153,8 @@ public class Board extends Subject {
         for (int i = 0; i < courseArray.length(); i++) {
 
             JSONObject current = courseArray.getJSONObject(i);
-            int x = Integer.parseInt(current.getString("x"));
-            int y = Integer.parseInt(current.getString("y"));
+            int x = current.getInt("x");
+            int y = current.getInt("y");
 
             switch (current.getString("Type")) {
                 case "Wall" :
@@ -188,9 +192,9 @@ public class Board extends Subject {
                 case "CheckPoint" :
                     Checkpoint checkpoint;
                     if (prevChekpoint != null) {
-                        checkpoint = new Checkpoint(this,x,y,prevChekpoint);
+                        checkpoint = new Checkpoint(this,x,y,prevChekpoint, current.getInt("Number"));
                     } else {
-                        checkpoint = new Checkpoint(this,x,y);
+                        checkpoint = new Checkpoint(this,x,y, current.getInt("Number"));
                     }
                     prevChekpoint = checkpoint;
                     spaces[x][y] = checkpoint;
@@ -207,9 +211,13 @@ public class Board extends Subject {
                     break;
                 case "Push" :
                     Heading pushDirection = Heading.valueOf(current.getString("Direction"));
-                    int step = Integer.parseInt(current.getString("Number"));
+                    int step = current.getInt("Number");
                     Push push = new Push(this,x,y,step,pushDirection);
                     spaces[x][y] = push;
+                    break;
+                case "Pit" :
+                    Pit pit = new Pit(this,x,y);
+                    spaces[x][y] = pit;
                     break;
                 default:
                     Space space = new Space(this, x, y);
