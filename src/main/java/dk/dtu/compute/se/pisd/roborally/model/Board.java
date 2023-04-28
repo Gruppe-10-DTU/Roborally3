@@ -46,9 +46,10 @@ public class Board extends Subject {
 
     public final String boardName;
 
-    public int playerAmound;
+    public int playerAmount;
 
     private Integer gameId;
+    private PriorityAntenna priorityAntenna;
 
     private final Space[][] spaces;
 
@@ -97,7 +98,7 @@ public class Board extends Subject {
     public Board(int width, int height, @NotNull String boardName, int playerAmound) {
         this.boardActions = new TreeSet<>(new SequenceActionComparator());
         this.boardName = boardName;
-        this.playerAmound = playerAmound;
+        this.playerAmount = playerAmound;
         this.width = width;
         this.height = height;
 
@@ -123,7 +124,7 @@ public class Board extends Subject {
 
             switch (current.getString("Type")) {
                 case "Priority" :
-                    PriorityAntenna priorityAntenna = new PriorityAntenna(this,x,y);
+                    this.priorityAntenna = new PriorityAntenna(this,x,y);
                     spaces[x][y] = priorityAntenna;
                     break;
                 case "Wall" :
@@ -239,7 +240,6 @@ public class Board extends Subject {
         spaces[space.x][space.y] = space;
     }
 
-    private PriorityAntenna priorityAntenna;
 
     public void addBoardActions(SequenceAction sequenceAction){
         this.boardActions.add(sequenceAction);
