@@ -3,15 +3,15 @@
     {
       "x": 3,
       "y": 0,
-      "Type": "CheckPoint",
-      "Number": 1,
+      "Type": "",
+      "Number": "",
       "Direction": "",
       "Turn": ""
     },
     {
       "x": 3,
       "y": 1,
-      "Type": "Empty",
+      "Type": "",
       "Number": "",
       "Direction": "",
       "Turn": ""
@@ -19,7 +19,7 @@
     {
       "x": 3,
       "y": 2,
-      "Type": "Empty",
+      "Type": "",
       "Number": "",
       "Direction": "",
       "Turn": ""
@@ -27,77 +27,13 @@
     {
       "x": 3,
       "y": 3,
-      "Type": "Push",
-      "Number": 1,
-      "Direction": "EAST",
-      "Turn": ""
-    },
-    {
-      "x": 3,
-      "y": 4,
-      "Type": "Empty",
+      "Type": "",
       "Number": "",
       "Direction": "",
       "Turn": ""
     },
     {
       "x": 3,
-      "y": 5,
-      "Type": "Empty",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
-    },
-    {
-      "x": 3,
-      "y": 6,
-      "Type": "Empty",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
-    },
-    {
-      "x": 3,
-      "y": 7,
-      "Type": "Conveyer",
-      "Number": 1,
-      "Direction": "EAST",
-      "Turn": ""
-    },
-    {
-      "x": 4,
-      "y": 0,
-      "Type": "Empty",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
-    },
-    {
-      "x": 4,
-      "y": 1,
-      "Type": "Empty",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
-    },
-    {
-      "x": 4,
-      "y": 2,
-      "Type": "Pit",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
-    },
-    {
-      "x": 4,
-      "y": 3,
-      "Type": "Push",
-      "Number": 2,
-      "Direction": "NORTH",
-      "Turn": ""
-    },
-    {
-      "x": 4,
       "y": 4,
       "Type": "",
       "Number": "",
@@ -105,15 +41,15 @@
       "Turn": ""
     },
     {
-      "x": 4,
+      "x": 3,
       "y": 5,
-      "Type": "Gear",
+      "Type": "",
       "Number": "",
-      "Direction": "EAST",
+      "Direction": "",
       "Turn": ""
     },
     {
-      "x": 4,
+      "x": 3,
       "y": 6,
       "Type": "",
       "Number": "",
@@ -121,15 +57,15 @@
       "Turn": ""
     },
     {
-      "x": 4,
+      "x": 3,
       "y": 7,
-      "Type": "Conveyer",
-      "Number": 1,
-      "Direction": "EAST",
+      "Type": "",
+      "Number": "",
+      "Direction": "",
       "Turn": ""
     },
     {
-      "x": 5,
+      "x": 4,
       "y": 0,
       "Type": "",
       "Number": "",
@@ -137,7 +73,7 @@
       "Turn": ""
     },
     {
-      "x": 5,
+      "x": 4,
       "y": 1,
       "Type": "",
       "Number": "",
@@ -145,7 +81,7 @@
       "Turn": ""
     },
     {
-      "x": 5,
+      "x": 4,
       "y": 2,
       "Type": "",
       "Number": "",
@@ -153,7 +89,7 @@
       "Turn": ""
     },
     {
-      "x": 5,
+      "x": 4,
       "y": 3,
       "Type": "",
       "Number": "",
@@ -161,7 +97,7 @@
       "Turn": ""
     },
     {
-      "x": 5,
+      "x": 4,
       "y": 4,
       "Type": "",
       "Number": "",
@@ -169,7 +105,7 @@
       "Turn": ""
     },
     {
-      "x": 5,
+      "x": 4,
       "y": 5,
       "Type": "",
       "Number": "",
@@ -177,71 +113,7 @@
       "Turn": ""
     },
     {
-      "x": 5,
-      "y": 6,
-      "Type": "Conveyer",
-      "Number": 1,
-      "Direction": "NORTH",
-      "Turn": ""
-    },
-    {
-      "x": 5,
-      "y": 7,
-      "Type": "Conveyer",
-      "Number": 1,
-      "Direction": "EAST",
-      "Turn": "NORTH"
-    },
-    {
-      "x": 6,
-      "y": 0,
-      "Type": "CheckPoint",
-      "Number": 2,
-      "Direction": "",
-      "Turn": ""
-    },
-    {
-      "x": 6,
-      "y": 1,
-      "Type": "",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
-    },
-    {
-      "x": 6,
-      "y": 2,
-      "Type": "",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
-    },
-    {
-      "x": 6,
-      "y": 3,
-      "Type": "",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
-    },
-    {
-      "x": 6,
-      "y": 4,
-      "Type": "",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
-    },
-    {
-      "x": 6,
-      "y": 5,
-      "Type": "",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
-    },
-    {
-      "x": 6,
+      "x": 4,
       "y": 6,
       "Type": "",
       "Number": "",
@@ -249,7 +121,7 @@
       "Turn": ""
     },
     {
-      "x": 6,
+      "x": 4,
       "y": 7,
       "Type": "",
       "Number": "",
@@ -257,7 +129,7 @@
       "Turn": ""
     },
     {
-      "x": 7,
+      "x": 5,
       "y": 0,
       "Type": "",
       "Number": "",
@@ -265,6 +137,134 @@
       "Turn": ""
     },
     {
+      "x": 5,
+      "y": 1,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 5,
+      "y": 2,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 5,
+      "y": 3,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 5,
+      "y": 4,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 5,
+      "y": 5,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 5,
+      "y": 6,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 5,
+      "y": 7,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 6,
+      "y": 0,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 6,
+      "y": 1,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 6,
+      "y": 2,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 6,
+      "y": 3,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 6,
+      "y": 4,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 6,
+      "y": 5,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 6,
+      "y": 6,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 6,
+      "y": 7,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 7,
+      "y": 0,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
       "x": 7,
       "y": 1,
       "Type": "",
@@ -275,7 +275,7 @@
     {
       "x": 7,
       "y": 2,
-      "Type": "Energy",
+      "Type": "",
       "Number": "",
       "Direction": "",
       "Turn": ""
@@ -299,9 +299,9 @@
     {
       "x": 7,
       "y": 5,
-      "Type": "Gear",
+      "Type": "",
       "Number": "",
-      "Direction": "WEST",
+      "Direction": "",
       "Turn": ""
     },
     {
@@ -315,9 +315,9 @@
     {
       "x": 7,
       "y": 7,
-      "Type": "Conveyer",
-      "Number": 2,
-      "Direction": "EAST",
+      "Type": "",
+      "Number": "",
+      "Direction": "",
       "Turn": ""
     },
     {
@@ -379,16 +379,16 @@
     {
       "x": 8,
       "y": 7,
-      "Type": "Conveyer",
-      "Number": 2,
-      "Direction": "EAST",
+      "Type": "",
+      "Number": "",
+      "Direction": "",
       "Turn": ""
     },
     {
       "x": 9,
       "y": 0,
-      "Type": "CheckPoint",
-      "Number": 3,
+      "Type": "",
+      "Number": "",
       "Direction": "",
       "Turn": ""
     },
@@ -435,18 +435,18 @@
     {
       "x": 9,
       "y": 6,
-      "Type": "Conveyer",
-      "Number": 2,
-      "Direction": "NORTH",
+      "Type": "",
+      "Number": "",
+      "Direction": "",
       "Turn": ""
     },
     {
       "x": 9,
       "y": 7,
-      "Type": "Conveyer",
-      "Number": 2,
-      "Direction": "EAST",
-      "Turn": "NORTH"
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
     },
     {
       "x": 10,
@@ -483,9 +483,9 @@
     {
       "x": 10,
       "y": 4,
-      "Type": "Lazer",
+      "Type": "",
       "Number": "",
-      "Direction": "WEST",
+      "Direction": "",
       "Turn": ""
     },
     {
@@ -515,3 +515,4 @@
 
   ]
 }
+
