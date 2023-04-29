@@ -21,12 +21,14 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.*;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
+import java.util.EnumSet;
 
 /**
  * ...
@@ -42,6 +44,7 @@ public class GameController {
     public GameController(@NotNull Board board, EndGame endGame) {
         this.board = board;
         this.endGame = endGame;
+        board.getNeighbour(board.getSpace(5,5),Heading.EAST).setWalls(EnumSet.range(Heading.SOUTH, Heading.EAST));
     }
 
 
@@ -281,6 +284,8 @@ public class GameController {
             if(space.getPlayer() == null) {
                 player.setSpace(board.getNeighbour(player.getSpace(),heading));
             }
+        }else if(space == null){
+            rebootRobot(player);
         }
     }
 
@@ -306,14 +311,26 @@ public class GameController {
      * Pushes a row of robots.
      */
     public void pushRobot(@NotNull Player pushing, @NotNull Player pushed){
-        if(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer() != null){
-            pushRobot(pushing,board.getPlayer(board.getPlayerNumber(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer())));
-        }
-        if(!board.getNeighbour(pushed.getSpace(),pushing.getHeading()).hasWall(pushing.getHeading())){
-            if(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer() == null) {
-                pushed.setSpace(board.getNeighbour(pushed.getSpace(), pushing.getHeading()));
+        if(pushable(pushing)){
+            if(board.getNeighbour(pushed.getSpace(),pushing.getHeading()) == null){
+                rebootRobot(pushed);
+                return;
             }
+            if (board.getNeighbour(pushed.getSpace(), pushing.getHeading()).getPlayer() != null) {
+                pushRobot(pushing, board.getPlayer(board.getPlayerNumber(board.getNeighbour(pushed.getSpace(), pushing.getHeading()).getPlayer())));
+            }
+            pushed.setSpace(board.getNeighbour(pushed.getSpace(), pushing.getHeading()));
         }
+    }
+
+    public boolean pushable(@NotNull Player pusher){
+        boolean able = true;
+        if(board.getNeighbour(pusher.getSpace(),pusher.getHeading()) != null && pusher.getSpace().getOut(pusher.getHeading())){
+            return pushable(board.getNeighbour(pusher.getSpace(),pusher.getHeading()).getPlayer());
+        }
+        if(!board.getNeighbour(pusher.getSpace(),pusher.getHeading()).getOut(pusher.getHeading()) || !pushable(pusher)){
+            able = false;        }
+        return able;
     }
 
     public void executeBoardActions(){
