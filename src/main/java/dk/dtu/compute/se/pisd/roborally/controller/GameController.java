@@ -44,7 +44,6 @@ public class GameController {
     public GameController(@NotNull Board board, EndGame endGame) {
         this.board = board;
         this.endGame = endGame;
-        board.getNeighbour(board.getSpace(5,5),Heading.EAST).setWalls(EnumSet.range(Heading.SOUTH, Heading.EAST));
     }
 
 
