@@ -329,7 +329,7 @@ public class GameController {
         boolean able = true;
         Player nxt = board.getNeighbour(pusher.getSpace(),pusher.getHeading()).getPlayer();
         while(nxt != null) {
-            if (nxt.getSpace().hasWall(nxt.getHeading())) {
+            if (nxt.getSpace().hasWall(nxt.getHeading())|| nxt.getSpace().getOut(pusher.getHeading())) {
                 able = false;
                 break;
             } else {
