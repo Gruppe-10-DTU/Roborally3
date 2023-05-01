@@ -50,7 +50,7 @@ import java.util.Optional;
 public class AppController implements Observer, EndGame {
 
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
-    final private List<String> BOARD_OPTIONS = Arrays.asList("Risky Crossing");
+    final private List<String> BOARD_OPTIONS = Arrays.asList("Risky Crossing","Burnout", "Test");
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
 
     final private RoboRally roboRally;
