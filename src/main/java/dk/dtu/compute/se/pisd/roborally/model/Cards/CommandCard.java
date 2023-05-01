@@ -22,7 +22,11 @@
 package dk.dtu.compute.se.pisd.roborally.model.Cards;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally.model.Player;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 /**
  * ...
@@ -32,7 +36,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class CommandCard extends Subject implements Card{
 
-    final public Command command;
+    final private Command command;
     String type = "Command";
 
     public CommandCard(@NotNull Command command) {
@@ -43,6 +47,40 @@ public class CommandCard extends Subject implements Card{
         return command.displayName;
     }
 
+    /**
+     * @author Philip Astrup Cramer
+     * @author Nilas Thoegersen
+     * @param gameController
+     */
+    @Override
+    public void doAction(GameController gameController) {
+        Player player = gameController.board.getCurrentPlayer();
+        switch (command) {
+            case FORWARD:
+                gameController.moveForward(player);
+                break;
+            case RIGHT:
+                gameController.turnRight(player);
+                break;
+            case LEFT:
+                gameController.turnLeft(player);
+                break;
+            case FAST_FORWARD:
+                gameController.fastForward(player);
+                break;
+            case REVERSE:
+                gameController.reverse(player);
+                break;
+            case UTURN:
+                gameController.uTurn(player);
+                break;
+            default:
+                // DO NOTHING (for now)
+        }
+    }
+    public List<Command> getOptions(){
+        return this.command.getOptions();
+    }
 
     @Override
     public String getType() {
