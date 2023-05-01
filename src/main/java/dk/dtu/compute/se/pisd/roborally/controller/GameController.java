@@ -321,15 +321,22 @@ public class GameController {
             }
             pushed.setSpace(board.getNeighbour(pushed.getSpace(), pushing.getHeading()));
         }
+        else{
+            pushed.setSpace(pushed.getSpace());
+        }
     }
 
     public boolean pushable(@NotNull Player pusher){
         boolean able = true;
-        if(board.getNeighbour(pusher.getSpace(),pusher.getHeading()) != null && pusher.getSpace().getOut(pusher.getHeading())){
-            return pushable(board.getNeighbour(pusher.getSpace(),pusher.getHeading()).getPlayer());
+        Player nxt = board.getNeighbour(pusher.getSpace(),pusher.getHeading()).getPlayer();
+        while(nxt != null) {
+            if (nxt.getSpace().hasWall(nxt.getHeading())) {
+                able = false;
+                break;
+            } else {
+                nxt = board.getNeighbour(nxt.getSpace(), pusher.getHeading()).getPlayer();
+            }
         }
-        if(!board.getNeighbour(pusher.getSpace(),pusher.getHeading()).getOut(pusher.getHeading()) || !pushable(pusher)){
-            able = false;        }
         return able;
     }
 
