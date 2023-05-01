@@ -29,7 +29,7 @@ public class RobotLaser implements SequenceAction{
      * The method returns the player that is hit by the laser shot. If it does not hit anyone, it will return null.
      */
     public Player shootLaser(@NotNull Space space, Heading heading){
-        if(board.getNeighbour(space, heading).getPlayer() != null && !board.getNeighbour(space,heading).hasWall(heading.reverse())) {
+        if(board.getNeighbour(space, heading).getPlayer() == null && (!board.getNeighbour(space,heading).hasWall(heading) || !board.getNeighbour(space,heading).getOut(heading))) {
             shootLaser(board.getNeighbour(space,heading),heading);
         }else{
             return board.getSpace(space.x,space.y).getPlayer();
@@ -41,10 +41,10 @@ public class RobotLaser implements SequenceAction{
     public void doAction(GameController gameController) {
         for (Player player: gameController.board.getPlayers()) {
             RobotLaser robotLaser = new RobotLaser(board,player);
-            robotLaser.shootLaser(player.getSpace(),player.getHeading());
+            Player hit = robotLaser.shootLaser(player.getSpace(),player.getHeading());
             //If the hit player is not null, we will then add a damage card to their discard-pile.
-            if(robotLaser.shootLaser(player.getSpace(),player.getHeading()) != null){
-                robotLaser.shootLaser(player.getSpace(),player.getHeading()).discardCard(new DamageCard(Damage.SPAM));
+            if(hit != null){
+                hit.discardCard(new DamageCard(Damage.SPAM));
                 System.out.println("Player: " + robotLaser.shootLaser(player.getSpace(), player.getHeading()) + " was hit by " + player + "'s laser!");
             }
         }
