@@ -23,9 +23,12 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
+
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
+
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -47,10 +50,13 @@ import java.util.Optional;
 public class AppController implements Observer, EndGame {
 
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
+    final private List<String> BOARD_OPTIONS = Arrays.asList("Risky Crossing");
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
 
     final private RoboRally roboRally;
 
+
+    private String selectedBoard;
     private GameController gameController;
 
     public AppController(@NotNull RoboRally roboRally) {
@@ -58,10 +64,20 @@ public class AppController implements Observer, EndGame {
     }
 
     public void newGame() {
+        ChoiceDialog boardDialog = new ChoiceDialog(BOARD_OPTIONS.get(0), BOARD_OPTIONS);
+        boardDialog.setTitle("Course");
+        boardDialog.setHeaderText("Select course");
+        Optional<String> boardresult = boardDialog.showAndWait();
+
+        if (boardresult.isPresent()) {
+            selectedBoard = boardresult.get();
+        }
+
         ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
         dialog.setTitle("Player number");
         dialog.setHeaderText("Select number of players");
         Optional<Integer> result = dialog.showAndWait();
+
 
         if (result.isPresent()) {
             if (gameController != null) {
@@ -75,7 +91,10 @@ public class AppController implements Observer, EndGame {
 
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
-            Board board = new Board(8,8);
+
+            Board board = new Board(11,8, selectedBoard, result.get());
+
+
             gameController = new GameController(board, this);
             int no = result.get();
             for (int i = 0; i < no; i++) {

@@ -100,6 +100,7 @@ class GameControllerTest {
     @Test
     void pushRobotsOnWalls(){
         Board board = gameController.board;
+        gameController.startProgrammingPhase();
         board.getNeighbour(board.getSpace(3,3),Heading.EAST).setWalls(EnumSet.range(Heading.SOUTH, Heading.EAST));
         Player pusher = board.getCurrentPlayer();
         Player pushed1 = board.getPlayer(1);
@@ -111,12 +112,13 @@ class GameControllerTest {
         Assertions.assertEquals(pusher.getSpace(),board.getSpace(1,3), "Player " + pusher.getName() + " should be on space (1,3)");
         Assertions.assertEquals(pushed1.getSpace(),board.getSpace(2,3), "Player " + pushed1.getName() + " should be on space (2,3)");
         Assertions.assertEquals(pushed2.getSpace(),board.getSpace(3,3), "Player " + pushed2.getName() + " should be on space (3,3)");
-        Assertions.assertEquals(board.getNeighbour(board.getSpace(3,3),Heading.EAST).hasWall(Heading.EAST),true, "Space " + board.getSpace(3,3) + " should have a wall facing the east side");
+        Assertions.assertEquals(true,board.getSpace(4,3).hasWall(Heading.EAST), "Space " + board.getSpace(3,3) + " should have a wall facing the east side");
         pusher.setHeading(Heading.EAST);
+        gameController.fastForward(board.getCurrentPlayer());
         gameController.moveForward(board.getCurrentPlayer());
-        Assertions.assertEquals(pusher.getSpace(),board.getSpace(1,3), "Player " + pusher.getName() + " should be on space (1,3)");
-        Assertions.assertEquals(pushed1.getSpace(),board.getSpace(2,3), "Player " + pushed1.getName() + " should be on space (2,3)");
-        Assertions.assertEquals(pushed2.getSpace(),board.getSpace(3,3), "Player " + pushed2.getName() + " should be on space (3,3)");
+        Assertions.assertEquals(pusher.getSpace(),board.getSpace(2,3), "Player " + pusher.getName() + " should be on space (2,3)");
+        Assertions.assertEquals(pushed1.getSpace(),board.getSpace(3,3), "Player " + pushed1.getName() + " should be on space (3,3)");
+        Assertions.assertEquals(pushed2.getSpace(),board.getSpace(4,3), "Player " + pushed2.getName() + " should be on space (4,3)");
 
     }
 }
