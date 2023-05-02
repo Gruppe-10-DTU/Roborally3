@@ -37,6 +37,7 @@ import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -124,15 +125,21 @@ public class AppController implements Observer, EndGame {
     }
 
     public void saveGame() {
-        // XXX needs to be implemented eventually
+        String result = JSONReader.saveGame(gameController);
+        try {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("test.json"));
+            bufferedWriter.write(result);
+            bufferedWriter.close();
+        } catch (IOException e) {
+            System.out.println("Error in writing");
+            throw new RuntimeException(e);
+        }
     }
 
     public void loadGame() {
-        // XXX needs to be implememted eventually
-        // for now, we just create a new game
-        if (gameController == null) {
-            newGame();
-        }
+
+        Board board = JSONReader.loadGame("test.json");
+        gameController = new GameController(board, this);
     }
 
     /**

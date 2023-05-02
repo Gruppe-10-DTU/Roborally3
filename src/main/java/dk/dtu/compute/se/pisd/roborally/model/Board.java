@@ -24,6 +24,7 @@ package dk.dtu.compute.se.pisd.roborally.model;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.JSONReader;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.*;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElements.PriorityAntenna;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -50,9 +51,9 @@ public class Board extends Subject {
 
     private Integer gameId;
 
-    private final Space[][] spaces;
+    public final Space[][] spaces;
 
-    private final List<Player> players = new ArrayList<>();
+    public final List<Player> players = new ArrayList<>();
 
     private Player current;
 
@@ -70,7 +71,7 @@ public class Board extends Subject {
         this.wincondition = wincondition;
     }
 
-    private TreeSet<SequenceAction> boardActions;
+    private transient TreeSet<SequenceAction> boardActions;
 
 
     private RebootToken rebootToken;
@@ -446,5 +447,59 @@ public class Board extends Subject {
     }
 
 
+    public int getWidth() {
+        return width;
+    }
 
+    public int getHeight() {
+        return height;
+    }
+
+    public String getBoardName() {
+        return boardName;
+    }
+
+    public int getPlayerAmound() {
+        return playerAmound;
+    }
+
+    public void setPlayerAmound(int playerAmound) {
+        this.playerAmound = playerAmound;
+    }
+
+    public void setGameId(Integer gameId) {
+        this.gameId = gameId;
+    }
+
+    public Space[][] getSpaces() {
+        return spaces;
+    }
+
+    public Player getCurrent() {
+        return current;
+    }
+
+    public void setCurrent(Player current) {
+        this.current = current;
+    }
+
+    public void setBoardActions(TreeSet<SequenceAction> boardActions) {
+        this.boardActions = boardActions;
+    }
+
+    public PriorityQueue<Player> getPlayerOrder() {
+        return playerOrder;
+    }
+
+    public void setPlayerOrder(PriorityQueue<Player> playerOrder) {
+        this.playerOrder = playerOrder;
+    }
+
+    public PriorityAntenna getPriorityAntenna() {
+        return priorityAntenna;
+    }
+
+    public void setPriorityAntenna(PriorityAntenna priorityAntenna) {
+        this.priorityAntenna = priorityAntenna;
+    }
 }

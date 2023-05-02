@@ -24,6 +24,14 @@ public class Checkpoint extends Space implements SequenceAction {
         this.previous = previous;
     }
 
+    public Checkpoint getPrevious() {
+        return previous;
+    }
+
+    public void setPrevious(Checkpoint previous) {
+        this.previous = previous;
+    }
+
     /**
      * Adds a player to the checkpoint.
      * @author Nilas

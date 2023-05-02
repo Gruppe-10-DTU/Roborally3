@@ -1,16 +1,14 @@
-package dk.dtu.compute.se.pisd.roborally.model;
+package dk.dtu.compute.se.pisd.roborally.model.BoardElements;
 
+import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
+import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 public class PriorityAntenna extends Space {
 
-    private int x;
-    private int y;
 
     public PriorityAntenna(Board board, int x, int y) {
         super(board, x, y);
-        this.x = x;
-        this.y = y;
     }
 
 

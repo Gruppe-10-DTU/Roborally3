@@ -283,9 +283,9 @@ public class GameController {
     }
 
     public void executeBoardActions(){
-        for (SequenceAction sequenceAction : board.getBoardActions()
+        for (SequenceAction action : board.getBoardActions()
              ) {
-            sequenceAction.doAction(this);
+            action.doAction(this);
         }
     }
 
@@ -334,7 +334,7 @@ public class GameController {
         Checkpoint checkpoint = board.getWincondition();
         for (Player player: board.getPlayers()
              ) {
-            if(checkpoint.checkPlayer(player));{
+            if(checkpoint.checkPlayer(player)){
                 endGame.endGame(player);
             }
         }

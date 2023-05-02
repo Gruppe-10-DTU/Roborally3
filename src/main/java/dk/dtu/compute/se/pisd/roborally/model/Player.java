@@ -41,12 +41,12 @@ public class Player extends Subject implements Comparable<Player> {
     final public static int NO_REGISTERS = 5;
     final public static int NO_CARDS = 8;
 
-    final public Board board;
+    final transient public Board board;
 
     private String name;
     private String color;
 
-    private Space space;
+    private transient Space space;
     private int priority;
     private Heading heading = SOUTH;
     private PlayerCardDeck deck;

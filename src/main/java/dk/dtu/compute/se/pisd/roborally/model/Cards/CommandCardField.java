@@ -32,7 +32,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
  */
 public class CommandCardField extends Subject {
 
-    final public Player player;
+    final transient public Player player;
 
     private Card card;
 

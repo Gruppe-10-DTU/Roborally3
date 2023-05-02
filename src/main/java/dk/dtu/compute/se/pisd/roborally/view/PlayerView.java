@@ -35,6 +35,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -209,7 +210,7 @@ public class PlayerView extends Tab implements ViewObserver {
                     //      the player's choices of the interactive command card. The
                     //      following is just a mockup showing two options
                     Button optionButton;
-                    List<Command> commands = ((Command) player.board.getCurrentPlayer().getProgramField(player.board.getStep()).getCard().getAction()).getOptions();
+                    List<Command> commands = new ArrayList<>();
                     for (Command command : commands) {
                         optionButton = new Button(command.displayName);
                         optionButton.setOnAction( e -> gameController.executeCommandOptionAndContinue(command));
