@@ -175,9 +175,6 @@ public class SpaceView extends StackPane implements ViewObserver {
                 }
             }
 
-        } else if (space instanceof Conveyorbelt) {
-            spaceImg = new Image("spaces/conveyorbelt/conveyer_NORTH.png");
-
         } else if (space instanceof Energy) {
             spaceImg = new Image("spaces/energy.png");
 
