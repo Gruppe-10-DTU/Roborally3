@@ -52,11 +52,13 @@ public class Conveyorbelt extends Space implements SequenceAction {
      * @author Nilas
      */
     protected void turnPlayer(Player player) {
+        Heading heading1 = player.getHeading();
         if (turn == Heading.EAST) {
-            player.getHeading().next();
+            player.setHeading(heading1.prev());
         } else if (turn == Heading.WEST) {
-            player.getHeading().prev();
+            player.setHeading(heading1.next());
         }
+
     }
 
     /**
