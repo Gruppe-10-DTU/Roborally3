@@ -82,7 +82,7 @@ public class Board extends Subject {
     private transient TreeSet<SequenceAction> boardActions;
 
 
-    private RebootToken rebootToken;
+    public RebootToken rebootToken;
 
     public RebootToken getRebootToken() {
         return rebootToken;
@@ -123,6 +123,8 @@ public class Board extends Subject {
             case "Burnout":
                 courseArray = new JSONReader("src/main/resources/boards/Burnout.json").getJsonSpaces();
                 break;
+            case "testLoad":
+                courseArray = new JSONReader("src/main/resources/savedGames/test.json").getJsonSpaces();
             default:
                 courseArray = new JSONReader("src/main/resources/boards/RiskyCrossing.json").getJsonSpaces();
         }
@@ -300,6 +302,10 @@ public class Board extends Subject {
         }
     }
 
+    public Space getSpace(Space space){
+        return getSpace(space.x, space.y);
+    }
+
     public Space getSpace(int x, int y) {
         if (x >= 0 && x < width &&
                 y >= 0 && y < height) {
@@ -326,6 +332,10 @@ public class Board extends Subject {
         } else {
             return null;
         }
+    }
+
+    public Player getPlayerByName(String name){
+        return players.stream().filter(x-> x.getName().equals(name)).findAny().orElse(null);
     }
 
     /**

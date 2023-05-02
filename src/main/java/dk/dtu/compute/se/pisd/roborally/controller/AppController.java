@@ -34,7 +34,9 @@ import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -121,8 +123,6 @@ public class AppController implements Observer, EndGame {
                 player.setSpace(board.getSpace(i % board.width, i));
             }
 
-            // XXX: V2
-            // board.setCurrentPlayer(board.getPlayer(0));
             gameController.startProgrammingPhase();
 
             roboRally.createBoardView(gameController);
@@ -145,6 +145,9 @@ public class AppController implements Observer, EndGame {
 
         Board board = JSONReader.loadGame("test.json");
         gameController = new GameController(board, this);
+
+
+        roboRally.createBoardView(gameController);
     }
 
     /**
@@ -223,7 +226,6 @@ public class AppController implements Observer, EndGame {
 
     @Override
     public void update(Subject subject) {
-        // XXX do nothing for now
     }
 
 }

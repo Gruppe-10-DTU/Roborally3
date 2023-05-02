@@ -35,7 +35,7 @@ import java.util.WeakHashMap;
  */
 public abstract class Subject {
 
-    private transient final Set<Observer> observers =
+    private final Set<Observer> observers =
             Collections.newSetFromMap(new WeakHashMap<>());
     // Note: In JavaFX, the views do not have a way to know when they are
     // removed from the window, and therefore cannot always unregister

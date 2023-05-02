@@ -39,12 +39,12 @@ public class Player extends Subject implements Comparable<Player> {
     final public static int NO_REGISTERS = 5;
     final public static int NO_CARDS = 8;
 
-    final transient public Board board;
+    transient public Board board;
 
     private String name;
     private String color;
 
-    private transient Space space;
+    private Space space;
     private int priority;
     private Heading heading = SOUTH;
     private PlayerCardDeck deck;
@@ -53,6 +53,10 @@ public class Player extends Subject implements Comparable<Player> {
 
     public int getEnergy() {
         return energy;
+    }
+
+    public void setDeck(PlayerCardDeck deck) {
+        this.deck = deck;
     }
 
     public void setEnergy(int energy) {
@@ -84,6 +88,22 @@ public class Player extends Subject implements Comparable<Player> {
         this.board = board;
         this.name = name;
         this.color = color;
+        this.deck = new PlayerCardDeck();
+        this.space = null;
+        this.energy = 0;
+
+        program = new CommandCardField[NO_REGISTERS];
+        for (int i = 0; i < program.length; i++) {
+            program[i] = new CommandCardField(this);
+        }
+
+        cards = new CommandCardField[NO_CARDS];
+        for (int i = 0; i < cards.length; i++) {
+            cards[i] = new CommandCardField(this);
+        }
+    }
+
+    Player(){
         this.deck = new PlayerCardDeck();
         this.space = null;
         this.energy = 0;

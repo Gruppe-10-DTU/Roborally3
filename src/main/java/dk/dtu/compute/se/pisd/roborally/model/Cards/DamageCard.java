@@ -8,8 +8,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 public class DamageCard extends Subject implements Card {
-    final public Damage damage;
+    private Damage damage;
 
+    DamageCard(){
+
+    }
     public DamageCard(@NotNull Damage damage) {
         this.damage = damage;
     }
