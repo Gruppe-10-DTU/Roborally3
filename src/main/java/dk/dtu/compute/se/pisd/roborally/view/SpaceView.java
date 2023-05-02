@@ -69,13 +69,13 @@ public class SpaceView extends StackPane implements ViewObserver {
             BoardLaser boardLaser = (BoardLaser) space;
 
             if (boardLaser.getShootingDirection() == Heading.EAST) {
-                spaceImg = new Image("spaces/lazer1_EAST.png");
+                spaceImg = new Image("spaces/laser/lazer1_EAST.png");
             } else if (boardLaser.getShootingDirection() == Heading.SOUTH) {
-                spaceImg = new Image("spaces/lazer1_SOUTH.png");
+                spaceImg = new Image("spaces/laser/lazer1_SOUTH.png");
             } else if (boardLaser.getShootingDirection() == Heading.WEST) {
-                spaceImg = new Image("spaces/lazer1_WEST.png");
+                spaceImg = new Image("spaces/laser/lazer1_WEST.png");
             } else if (boardLaser.getShootingDirection() == Heading.NORTH) {
-                spaceImg = new Image("spaces/lazer1_NORTH.png");
+                spaceImg = new Image("spaces/laser/lazer1_NORTH.png");
             }
         } else if (space instanceof Checkpoint) {
 
