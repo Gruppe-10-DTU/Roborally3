@@ -212,8 +212,8 @@ public class SpaceView extends StackPane implements ViewObserver {
         } else if (space instanceof Pit) {
             spaceImg = new Image("spaces/pit.png");
 
-        } else if (space instanceof Pit){ //Change ti Spawn
-            //Create class first
+        } else if (space instanceof Spawn){
+            spaceImg =new Image("spaces/Spawn.png");
         } else {
             EnumSet<Heading> walls = space.getWalls();
 

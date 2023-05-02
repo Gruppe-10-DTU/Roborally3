@@ -28,6 +28,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Cards.CommandCard;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.CommandCardField;
 import org.jetbrains.annotations.NotNull;
 
+import static dk.dtu.compute.se.pisd.roborally.model.Heading.EAST;
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
 
 /**
@@ -48,7 +49,7 @@ public class Player extends Subject implements Comparable<Player> {
 
     private Space space;
     private int priority;
-    private Heading heading = SOUTH;
+    private Heading heading = EAST;
     private PlayerCardDeck deck;
 
     private int energy;
@@ -169,6 +170,12 @@ public class Player extends Subject implements Comparable<Player> {
         this.priority = priority;
     }
 
+    /**
+     * @Auther Sandie Petersen
+     * @param o the object to be compared.
+     * @return The priority of the object
+     * Used to compare the priorities of the players
+     */
     @Override
     public int compareTo(@NotNull Player o) {
         return Integer.compare(this.priority, o.priority);

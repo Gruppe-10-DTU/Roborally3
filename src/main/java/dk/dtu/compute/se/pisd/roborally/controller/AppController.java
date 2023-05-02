@@ -29,6 +29,7 @@ import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
+import dk.dtu.compute.se.pisd.roborally.model.Space;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -96,8 +97,8 @@ public class AppController implements Observer, EndGame {
 
 
             gameController = new GameController(board, this);
-            int no = result.get();
-            for (int i = 0; i < no; i++) {
+            int numberOfPlayers = result.get();
+            for (int i = 0; i < numberOfPlayers; i++) {
 
 
                 TextInputDialog nameDialog = new TextInputDialog("Player" + (i+1));
@@ -112,7 +113,8 @@ public class AppController implements Observer, EndGame {
 
                 Player player = new Player(board, PLAYER_COLORS.get(i), entered);
                 board.addPlayer(player);
-                player.setSpace(board.getSpace(i % board.width, i));
+                Space spawnSpace = board.nextSpawn();
+                player.setSpace(board.getSpace(spawnSpace.x,spawnSpace.y));
             }
 
             // XXX: V2

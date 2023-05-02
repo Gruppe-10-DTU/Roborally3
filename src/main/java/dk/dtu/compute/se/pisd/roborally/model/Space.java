@@ -57,6 +57,7 @@ public class Space extends Subject {
     }
 
     /**
+     *
      * Checks if there's a wall in the field the object is trying to move into
      * @param heading The moving direction
      * @return true if there's a wall in the way, otherwise false.
