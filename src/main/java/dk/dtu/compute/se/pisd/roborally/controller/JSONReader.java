@@ -28,7 +28,14 @@ public class JSONReader {
     private JSONArray spacesArray;
     private static Gson gson;
 
+    /**
+     * Contructor for the json reader
+     *
+     * @param path The file path
+     * @author Sandie Petersen
+     */
     public JSONReader(String path) {
+
         try {
             String jsonContent = Files.readString(Paths.get(path), StandardCharsets.UTF_8);
             jsonSpaces = new JSONObject(jsonContent);
@@ -96,17 +103,9 @@ public class JSONReader {
     }
 
 
-
-    public JSONArray getJsonSpaces () {
+    public JSONArray getJsonSpaces() {
         return spacesArray;
     }
-
-
-
-
-
-
-
 
 
 }

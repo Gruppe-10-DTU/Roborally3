@@ -54,6 +54,11 @@ public class DamageCard extends Subject implements Card {
     }
 
     @Override
+    public boolean isInteractive() {
+        return false;
+    }
+
+    @Override
     public String getType() {
         return "Damage";
     }
