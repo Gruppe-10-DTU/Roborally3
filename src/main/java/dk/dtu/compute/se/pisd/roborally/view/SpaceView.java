@@ -24,6 +24,7 @@ package dk.dtu.compute.se.pisd.roborally.view;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.*;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.PriorityAntenna;
@@ -66,13 +67,13 @@ public class SpaceView extends StackPane implements ViewObserver {
         if (space instanceof BoardLaser boardLaser) {
 
             if (boardLaser.getShootingDirection() == Heading.EAST) {
-                spaceImg = new Image("spaces/lazer1_EAST.png");
+                spaceImg = new Image("spaces/laser/lazer1_EAST.png");
             } else if (boardLaser.getShootingDirection() == Heading.SOUTH) {
-                spaceImg = new Image("spaces/lazer1_SOUTH.png");
+                spaceImg = new Image("spaces/laser/lazer1_SOUTH.png");
             } else if (boardLaser.getShootingDirection() == Heading.WEST) {
-                spaceImg = new Image("spaces/lazer1_WEST.png");
+                spaceImg = new Image("spaces/laser/lazer1_WEST.png");
             } else if (boardLaser.getShootingDirection() == Heading.NORTH) {
-                spaceImg = new Image("spaces/lazer1_NORTH.png");
+                spaceImg = new Image("spaces/laser/lazer1_NORTH.png");
             }
         } else if (space instanceof Checkpoint checkpoint) {
 
@@ -174,9 +175,6 @@ public class SpaceView extends StackPane implements ViewObserver {
                 }
             }
 
-        } else if (space instanceof Conveyorbelt) {
-            spaceImg = new Image("spaces/conveyorbelt/conveyer_NORTH.png");
-
         } else if (space instanceof Energy) {
             spaceImg = new Image("spaces/energy.png");
 
@@ -203,6 +201,21 @@ public class SpaceView extends StackPane implements ViewObserver {
         } else if (space instanceof Pit) {
             spaceImg = new Image("spaces/pit.png");
 
+        } else if (space instanceof Spawn){
+            spaceImg =new Image("spaces/Spawn.png");
+        } else if (space instanceof RebootToken) {
+            RebootToken rebootToken = (RebootToken) space;
+            Heading exit = rebootToken.getExit();
+
+            if (exit == Heading.EAST) {
+                spaceImg = new Image("spaces/reboot_EAST.png");
+            } else if (exit == Heading.SOUTH) {
+                spaceImg = new Image("spaces/reboot_SOUTH.png");
+            } else if (exit == Heading.NORTH) {
+                spaceImg = new Image("spaces/reboot_NORTH.png");
+            } else if (exit == Heading.WEST) {
+                spaceImg = new Image("spaces/reboot_WEST.png");
+            }
         } else {
             EnumSet<Heading> walls = space.getWalls();
 

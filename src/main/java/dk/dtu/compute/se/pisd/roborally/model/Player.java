@@ -27,6 +27,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Cards.CommandCardField;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.PlayerCardDeck;
 import org.jetbrains.annotations.NotNull;
 
+import static dk.dtu.compute.se.pisd.roborally.model.Heading.EAST;
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
 
 /**
@@ -46,7 +47,7 @@ public class Player extends Subject implements Comparable<Player> {
 
     private Space space;
     private int priority;
-    private Heading heading = SOUTH;
+    private Heading heading = EAST;
     private final PlayerCardDeck deck;
 
     private int energy;
@@ -214,11 +215,10 @@ public class Player extends Subject implements Comparable<Player> {
     }
 
     /**
-     * Function needed to sort player based on priority.
-     * Priority is based on closeness from the antenna.
-     *
+     * @Auther Sandie Petersen
      * @param o the object to be compared.
-     * @return Integer saying if the player is before or after the other player.
+     * @return The priority of the object
+     * Used to compare the priorities of the players
      */
     @Override
     public int compareTo(@NotNull Player o) {

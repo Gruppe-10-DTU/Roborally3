@@ -64,6 +64,8 @@ public class Board extends Subject {
     private boolean stepMode;
     private Checkpoint wincondition;
 
+    private PriorityQueue<Spawn> spawnPriority = new PriorityQueue<>();
+
     public Checkpoint getWincondition() {
         return wincondition;
     }
@@ -147,9 +149,10 @@ public class Board extends Subject {
                     spaces[x][y] = wall;
                     break;
                 case "Spawn":
-                    Space spawn = new Space(this, x, y);
+                    int priority = current.getInt("Number");
+                    Spawn spawn = new Spawn(this,x,y,priority);
+                    spawnPriority.add(spawn);
                     spaces[x][y] = spawn;
-                    //Spawn point
                     break;
                 default:
                     Space space = new Space(this, x, y);
@@ -228,6 +231,11 @@ public class Board extends Subject {
                 case "Pit":
                     Pit pit = new Pit(this, x, y);
                     spaces[x][y] = pit;
+                    break;
+                case "Reboot" :
+                    Heading exit = Heading.valueOf(current.getString("Direction"));
+                    RebootToken rebootToken = new RebootToken(this, x, y, exit);
+                    spaces[x][y] = rebootToken;
                     break;
                 default:
                     Space space = new Space(this, x, y);
@@ -354,8 +362,14 @@ public class Board extends Subject {
             current = playerOrder.poll();
             return true;
         } else return false;
+    }
 
-
+    /**
+     * @Auther Sandie Petersen
+     * @return The next available spawn space
+     */
+    public Spawn nextSpawn() {
+        return spawnPriority.remove();
     }
 
     public Player getCurrentPlayer() {
