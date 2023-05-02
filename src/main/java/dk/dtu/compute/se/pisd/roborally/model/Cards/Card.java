@@ -6,4 +6,5 @@ public interface Card {
     String getType();
     String getName();
     void doAction(GameController gameController);
+    boolean isInteractive();
 }
