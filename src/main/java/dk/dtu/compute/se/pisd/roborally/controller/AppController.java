@@ -23,12 +23,9 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
-
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
-
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -46,12 +43,11 @@ import java.util.Optional;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class AppController implements Observer, EndGame {
 
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
-    final private List<String> BOARD_OPTIONS = Arrays.asList("Risky Crossing");
+    final private List<String> BOARD_OPTIONS = Arrays.asList("Risky Crossing", "Burnout", "Test");
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
 
     final private RoboRally roboRally;
@@ -60,10 +56,19 @@ public class AppController implements Observer, EndGame {
     private String selectedBoard;
     private GameController gameController;
 
+
+    /**
+     * @param roboRally The game
+     */
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
     }
 
+    /**
+     * Creates a new game
+     *
+     * @author Sandie
+     */
     public void newGame() {
         ChoiceDialog boardDialog = new ChoiceDialog(BOARD_OPTIONS.get(0), BOARD_OPTIONS);
         boardDialog.setTitle("Course");
@@ -93,7 +98,7 @@ public class AppController implements Observer, EndGame {
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
 
-            Board board = new Board(11,8, selectedBoard, result.get());
+            Board board = new Board(11, 8, selectedBoard, result.get());
 
 
             gameController = new GameController(board, this);
@@ -101,12 +106,12 @@ public class AppController implements Observer, EndGame {
             for (int i = 0; i < no; i++) {
 
 
-                TextInputDialog nameDialog = new TextInputDialog("Player" + (i+1));
+                TextInputDialog nameDialog = new TextInputDialog("Player" + (i + 1));
                 nameDialog.setTitle("Player name");
                 nameDialog.setHeaderText("Select player name");
                 Optional<String> resultName = nameDialog.showAndWait();
 
-                String entered = "Player" + (i+1);
+                String entered = "Player" + (i + 1);
                 if (resultName.isPresent()) {
                     entered = resultName.get();
                 }
@@ -164,6 +169,11 @@ public class AppController implements Observer, EndGame {
         return false;
     }
 
+    /**
+     * Closes the game
+     *
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
     public void exit() {
         if (gameController != null) {
             Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -185,11 +195,12 @@ public class AppController implements Observer, EndGame {
 
     /**
      * Implement the method from the interface, which will be passsed to the game controller, closing the program.
-     * @author Nilas Thoegersen
+     *
      * @param player The player who have won
+     * @author Nilas Thoegersen
      */
     @Override
-    public void endGame(Player player){
+    public void endGame(Player player) {
         Alert won = new Alert(AlertType.INFORMATION);
         won.setTitle("We have a winner");
         won.setHeaderText(null);
@@ -199,6 +210,12 @@ public class AppController implements Observer, EndGame {
         roboRally.createBoardView(null);
     }
 
+    /**
+     * Checks if a game is already running
+     *
+     * @return Returns a boolean, true if the game is running
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
     public boolean isGameRunning() {
         return gameController != null;
     }

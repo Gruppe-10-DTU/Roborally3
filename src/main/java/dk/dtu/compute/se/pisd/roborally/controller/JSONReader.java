@@ -1,7 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
-import com.google.gson.*;
-
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
@@ -28,6 +28,12 @@ public class JSONReader {
     private JSONArray spacesArray;
     private static Gson gson;
 
+    /**
+     * Contructor for the json reader
+     *
+     * @param path The file path
+     * @author Sandie Petersen
+     */
     public JSONReader(String path) {
         try {
             String jsonContent = Files.readString(Paths.get(path), StandardCharsets.UTF_8);
@@ -37,7 +43,8 @@ public class JSONReader {
             System.out.println(e.getMessage());
         }
     }
-    public static String saveGame(GameController gameController){
+
+    public static String saveGame(GameController gameController) {
         RuntimeTypeAdapterFactory<Space> spaceRuntimeTypeAdapterFactory = RuntimeTypeAdapterFactory.of(
                         Space.class)
                 .registerSubtype(Space.class)
@@ -63,7 +70,8 @@ public class JSONReader {
         gson = gsonBuilder.create();
         return gson.toJson(gameController.board);
     }
-    public static Board loadGame(String filename){
+
+    public static Board loadGame(String filename) {
         RuntimeTypeAdapterFactory<Space> spaceRuntimeTypeAdapterFactory = RuntimeTypeAdapterFactory.of(
                         Space.class)
                 .registerSubtype(Space.class)
@@ -89,24 +97,16 @@ public class JSONReader {
         try {
             JsonReader jsonReader = new JsonReader(new FileReader("test.json"));
             return gson.fromJson(jsonReader, Board.class);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
             return null;
         }
     }
 
 
-
-    public JSONArray getJsonSpaces () {
+    public JSONArray getJsonSpaces() {
         return spacesArray;
     }
-
-
-
-
-
-
-
 
 
 }

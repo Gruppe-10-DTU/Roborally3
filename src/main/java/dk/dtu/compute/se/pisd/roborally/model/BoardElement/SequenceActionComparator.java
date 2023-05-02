@@ -1,9 +1,6 @@
 package dk.dtu.compute.se.pisd.roborally.model.BoardElement;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Comparator;
-import java.util.HashMap;
 
 public class SequenceActionComparator implements Comparator<SequenceAction> {
 
@@ -44,11 +41,11 @@ public class SequenceActionComparator implements Comparator<SequenceAction> {
      */
     @Override
     public int compare(SequenceAction o1, SequenceAction o2) {
-        if(o1.getPrio() > o2.getPrio()){
+        if (o1.getPrio() > o2.getPrio()) {
             return 1;
         } else if (o1.getPrio() < o2.getPrio()) {
             return -1;
-        }else {
+        } else {
             return 0;
         }
     }
