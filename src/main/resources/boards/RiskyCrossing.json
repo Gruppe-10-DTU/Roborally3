@@ -342,15 +342,15 @@
       "y": 4,
       "Type": "Conveyor",
       "Number": 1,
-      "Direction": "EAST",
-      "Turn": "SOUTH"
+      "Direction": "NORTH",
+      "Turn": "EAST"
     },
     {
       "x": 8,
       "y": 5,
       "Type": "Conveyor",
       "Number": 1,
-      "Direction": "SOUTH",
+      "Direction": "NORTH",
       "Turn": ""
     },
     {
@@ -358,8 +358,8 @@
       "y": 6,
       "Type": "Conveyor",
       "Number": 1,
-      "Direction": "SOUTH",
-      "Turn": "WEST"
+      "Direction": "EAST",
+      "Turn": "NORTH"
     },
     {
       "x": 8,
@@ -397,7 +397,7 @@
       "y": 3,
       "Type": "Conveyor",
       "Number": 1,
-      "Direction": "SOUTH",
+      "Direction": "NORTH",
       "Turn": ""
     },
     {
@@ -405,8 +405,8 @@
       "y": 4,
       "Type": "Conveyor",
       "Number": 1,
-      "Direction": "SOUTH",
-      "Turn": "WEST"
+      "Direction": "EAST",
+      "Turn": "NORTH"
     },
     {
       "x": 9,
