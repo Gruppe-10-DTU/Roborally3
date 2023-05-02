@@ -68,6 +68,12 @@ public class Board extends Subject {
         return wincondition;
     }
 
+    /**
+     * Sets the final win condition
+     *
+     * @param wincondition The final checkpoint
+     * @author Nilas Thoegersen
+     */
     public void setWincondition(Checkpoint wincondition) {
         this.wincondition = wincondition;
     }
@@ -85,7 +91,7 @@ public class Board extends Subject {
         this.rebootToken = rebootToken;
     }
 
-    PriorityQueue<Player> playerOrder = new PriorityQueue<>();
+    final PriorityQueue<Player> playerOrder = new PriorityQueue<>();
 
 
     /**
@@ -232,6 +238,13 @@ public class Board extends Subject {
 
     }
 
+    /**
+     * Contructor of the board
+     *
+     * @param width     Width of the board
+     * @param height    Height of the board
+     * @param boardName Name of the board
+     */
     public Board(int width, int height, @NotNull String boardName) {
         this.boardName = boardName;
         this.boardActions = new TreeSet<>(new SequenceActionComparator());
@@ -252,12 +265,12 @@ public class Board extends Subject {
     }
 
 
+    /**
+     * @param sequenceAction Adds a sequence action to the array of actions needing to be executed at the end of each turn
+     * @author Nilas Thoegersen
+     */
     public void addBoardActions(SequenceAction sequenceAction) {
         this.boardActions.add(sequenceAction);
-    }
-
-    public void removeBoardAction(SequenceAction sequenceAction) {
-        this.boardActions.remove(sequenceAction);
     }
 
     public Set<SequenceAction> getBoardActions() {
@@ -431,6 +444,8 @@ public class Board extends Subject {
      * Calculates which players are within a given range
      * and returns an ArrayList of them
      *
+     * @param centerPlayer The player calculating the range from
+     * @return An list of players within the range of the players
      * @author Philip Astrup Cramer
      */
     public ArrayList<Player> playersInRange(Player centerPlayer, int range) {
