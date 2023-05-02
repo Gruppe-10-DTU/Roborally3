@@ -42,7 +42,6 @@ public class JSONReader {
      * @author Sandie Petersen
      */
     public JSONReader(String path) {
-
         try {
             String jsonContent = Files.readString(Paths.get(path), StandardCharsets.UTF_8);
             jsonSpaces = new JSONObject(jsonContent);

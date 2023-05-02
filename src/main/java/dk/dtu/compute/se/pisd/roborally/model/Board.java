@@ -79,10 +79,10 @@ public class Board extends Subject {
         this.wincondition = wincondition;
     }
 
-    private transient TreeSet<SequenceAction> boardActions;
+    private final TreeSet<SequenceAction> boardActions;
 
 
-    public RebootToken rebootToken;
+    private RebootToken rebootToken;
 
     public RebootToken getRebootToken() {
         return rebootToken;
@@ -483,63 +483,5 @@ public class Board extends Subject {
                 ", Step: " + getStep();
     }
 
-    public int getWidth() {
-        return width;
-    }
 
-    public int getHeight() {
-        return height;
-    }
-
-    public String getBoardName() {
-        return boardName;
-    }
-
-    public int getPlayerAmount() {
-        return playerAmount;
-    }
-
-    public void setPlayerAmount(int playerAmount) {
-        this.playerAmount = playerAmount;
-    }
-
-    public void setGameId(Integer gameId) {
-        this.gameId = gameId;
-    }
-
-    public PriorityAntenna getPriorityAntenna() {
-        return priorityAntenna;
-    }
-
-    public void setPriorityAntenna(PriorityAntenna priorityAntenna) {
-        this.priorityAntenna = priorityAntenna;
-    }
-
-    public Space[][] getSpaces() {
-        return spaces;
-    }
-
-    public void setSpaces(Space[][] spaces) {
-        this.spaces = spaces;
-    }
-
-    public Player getCurrent() {
-        return current;
-    }
-
-    public void setCurrent(Player current) {
-        this.current = current;
-    }
-
-    public void setBoardActions(TreeSet<SequenceAction> boardActions) {
-        this.boardActions = boardActions;
-    }
-
-    public PriorityQueue<Player> getPlayerOrder() {
-        return playerOrder;
-    }
-
-    public void setPlayerOrder(PriorityQueue<Player> playerOrder) {
-        this.playerOrder = playerOrder;
-    }
 }
