@@ -20,12 +20,14 @@ public class Checkpoint extends Space implements SequenceAction {
         super(board, x, y);
         this.players = new HashSet<>(board.getPlayersNumber());
         this.checkpointNumber = number;
-        board.addBoardActions(this);
     }
-    public Checkpoint(Board board, int x, int y, Checkpoint previous, int number){
+    public Checkpoint(Board board, int x, int y, int number, Checkpoint previous){
         super(board, x, y);
+        this.players = new HashSet<>(board.getPlayersNumber());
         this.checkpointNumber = number;
         this.previous = previous;
+        board.addBoardActions(this);
+        board.setWincondition(this);
     }
 
     /**
@@ -53,7 +55,7 @@ public class Checkpoint extends Space implements SequenceAction {
      * @return If the player is on the checkpoint.
      */
     public boolean checkPlayer(Player player){
-        return players.contains(player);
+        return this.players.contains(player);
     }
 
     public int getCheckpointNumber() {
