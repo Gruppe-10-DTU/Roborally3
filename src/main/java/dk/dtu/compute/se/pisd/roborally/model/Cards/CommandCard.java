@@ -84,7 +84,7 @@ public class CommandCard extends Subject implements Card{
 
     @Override
     public boolean isInteractive() {
-        return this.command.equals(Command.OPTION_LEFT_RIGHT);
+        return this.command.isInteractive();
     }
 
     public List<Command> getOptions(){
