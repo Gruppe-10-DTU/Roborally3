@@ -1,8 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
-import com.google.gson.*;
-
-import com.google.gson.stream.JsonReader;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.*;
@@ -16,7 +15,6 @@ import dk.dtu.compute.se.pisd.roborally.model.Space;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.FileReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -44,7 +42,8 @@ public class JSONReader {
             System.out.println(e.getMessage());
         }
     }
-    public static String saveGame(GameController gameController){
+
+    public static String saveGame(GameController gameController) {
         RuntimeTypeAdapterFactory<Space> spaceRuntimeTypeAdapterFactory = RuntimeTypeAdapterFactory.of(
                         Space.class)
                 .registerSubtype(Space.class)
@@ -68,10 +67,13 @@ public class JSONReader {
                 .registerTypeAdapterFactory(cardRuntimeTypeAdapterFactory)
                 .setPrettyPrinting();
         gson = gsonBuilder.create();
-        return gson.toJson(gameController.board);
+        return gson.toJson(gameController.board, Board.class);
     }
-    public static Board loadGame(String filename){
+
+    public static Board loadGame(String filename) {
+        /*
         RuntimeTypeAdapterFactory<Space> spaceRuntimeTypeAdapterFactory = RuntimeTypeAdapterFactory.of(
+
                         Space.class)
                 .registerSubtype(Space.class)
                 .registerSubtype(BoardLaser.class)
@@ -96,10 +98,11 @@ public class JSONReader {
         try {
             JsonReader jsonReader = new JsonReader(new FileReader("test.json"));
             return gson.fromJson(jsonReader, Board.class);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
             return null;
-        }
+        }*/
+        return null;
     }
 
 

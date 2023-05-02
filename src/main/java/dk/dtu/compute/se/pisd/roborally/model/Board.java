@@ -24,8 +24,8 @@ package dk.dtu.compute.se.pisd.roborally.model;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.JSONReader;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.*;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElements.PriorityAntenna;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElements.PriorityAntenna;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -41,29 +41,29 @@ import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public class Board extends Subject {
-    public final int width;
+    public int width;
 
-    public final int height;
+    public int height;
 
-    public final String boardName;
+    public String boardName;
 
     public int playerAmount;
 
     private Integer gameId;
-    private PriorityAntenna priorityAntenna;
+    public PriorityAntenna priorityAntenna;
 
-    public final Space[][] spaces;
+    public Space[][] spaces;
 
-    public final List<Player> players = new ArrayList<>();
+    public List<Player> players = new ArrayList<>();
 
-    private Player current;
+    public Player current;
 
-    private Phase phase = INITIALISATION;
+    public Phase phase = INITIALISATION;
 
-    private int step = 0;
+    public int step = 0;
 
-    private boolean stepMode;
-    private Checkpoint wincondition;
+    public boolean stepMode;
+    public Checkpoint wincondition;
 
     public Checkpoint getWincondition() {
         return wincondition;
@@ -473,5 +473,63 @@ public class Board extends Subject {
                 ", Step: " + getStep();
     }
 
+    public int getWidth() {
+        return width;
+    }
 
+    public int getHeight() {
+        return height;
+    }
+
+    public String getBoardName() {
+        return boardName;
+    }
+
+    public int getPlayerAmount() {
+        return playerAmount;
+    }
+
+    public void setPlayerAmount(int playerAmount) {
+        this.playerAmount = playerAmount;
+    }
+
+    public void setGameId(Integer gameId) {
+        this.gameId = gameId;
+    }
+
+    public PriorityAntenna getPriorityAntenna() {
+        return priorityAntenna;
+    }
+
+    public void setPriorityAntenna(PriorityAntenna priorityAntenna) {
+        this.priorityAntenna = priorityAntenna;
+    }
+
+    public Space[][] getSpaces() {
+        return spaces;
+    }
+
+    public void setSpaces(Space[][] spaces) {
+        this.spaces = spaces;
+    }
+
+    public Player getCurrent() {
+        return current;
+    }
+
+    public void setCurrent(Player current) {
+        this.current = current;
+    }
+
+    public void setBoardActions(TreeSet<SequenceAction> boardActions) {
+        this.boardActions = boardActions;
+    }
+
+    public PriorityQueue<Player> getPlayerOrder() {
+        return playerOrder;
+    }
+
+    public void setPlayerOrder(PriorityQueue<Player> playerOrder) {
+        this.playerOrder = playerOrder;
+    }
 }

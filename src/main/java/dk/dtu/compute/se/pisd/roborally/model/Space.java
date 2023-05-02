@@ -21,10 +21,7 @@
  */
 package dk.dtu.compute.se.pisd.roborally.model;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.JsonAdapter;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import org.json.JSONPropertyIgnore;
 
 import java.util.EnumSet;
 
@@ -37,9 +34,9 @@ public class Space extends Subject {
 
     public transient final Board board;
 
-    public final int x;
+    protected final int x;
 
-    public final int y;
+    protected final int y;
 
     protected transient Player player;
 

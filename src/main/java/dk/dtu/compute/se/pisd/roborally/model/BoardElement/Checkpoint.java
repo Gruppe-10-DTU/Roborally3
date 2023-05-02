@@ -12,9 +12,9 @@ public class Checkpoint extends Space implements SequenceAction {
 
     private Checkpoint previous;
 
-    private final Set<Player> players;
+    private Set<Player> players;
 
-    private final int checkpointNumber;
+    private int checkpointNumber;
 
     /**
      * @param board  The playing board

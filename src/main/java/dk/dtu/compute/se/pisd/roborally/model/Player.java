@@ -47,7 +47,7 @@ public class Player extends Subject implements Comparable<Player> {
     private transient Space space;
     private int priority;
     private Heading heading = SOUTH;
-    private final PlayerCardDeck deck;
+    private PlayerCardDeck deck;
 
     private int energy;
 
