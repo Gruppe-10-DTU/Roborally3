@@ -154,7 +154,10 @@ public class GameController {
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
             int step = board.getStep();
             Card card = currentPlayer.getProgramField(step).getCard();
-            if(card != null) {
+            if(card != null && card.isInteractive()) {
+                card.doAction(this);
+                return;
+            } else if (card != null){
                 card.doAction(this);
             }
             incrementStep(step);
