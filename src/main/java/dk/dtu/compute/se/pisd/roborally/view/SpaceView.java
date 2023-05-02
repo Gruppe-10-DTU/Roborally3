@@ -24,6 +24,7 @@ package dk.dtu.compute.se.pisd.roborally.view;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.*;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.PriorityAntenna;
@@ -214,6 +215,19 @@ public class SpaceView extends StackPane implements ViewObserver {
 
         } else if (space instanceof Spawn){
             spaceImg =new Image("spaces/Spawn.png");
+        } else if (space instanceof RebootToken) {
+            RebootToken rebootToken = (RebootToken) space;
+            Heading exit = rebootToken.getExit();
+
+            if (exit == Heading.EAST) {
+                spaceImg = new Image("spaces/reboot_EAST.png");
+            } else if (exit == Heading.SOUTH) {
+                spaceImg = new Image("spaces/reboot_SOUTH.png");
+            } else if (exit == Heading.NORTH) {
+                spaceImg = new Image("spaces/reboot_NORTH.png");
+            } else if (exit == Heading.WEST) {
+                spaceImg = new Image("spaces/reboot_WEST.png");
+            }
         } else {
             EnumSet<Heading> walls = space.getWalls();
 

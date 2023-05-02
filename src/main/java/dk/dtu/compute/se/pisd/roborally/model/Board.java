@@ -226,6 +226,11 @@ public class Board extends Subject {
                     Pit pit = new Pit(this,x,y);
                     spaces[x][y] = pit;
                     break;
+                case "Reboot" :
+                    Heading exit = Heading.valueOf(current.getString("Direction"));
+                    RebootToken rebootToken = new RebootToken(this,x,y,exit);
+                    spaces[x][y] = rebootToken;
+                    break;
                 default:
                     Space space = new Space(this, x, y);
                     spaces[x][y] = space;

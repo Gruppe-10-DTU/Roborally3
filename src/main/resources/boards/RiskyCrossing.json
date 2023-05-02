@@ -434,9 +434,9 @@
     {
       "x": 10,
       "y": 0,
-      "Type": "Empty",
+      "Type": "Reboot",
       "Number": "",
-      "Direction": ""
+      "Direction": "SOUTH"
     },
     {
       "x": 10,
