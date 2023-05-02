@@ -19,6 +19,13 @@ public class RebootToken extends Space implements FieldAction {
 
     Heading exit;
 
+    /**
+     * @param board The playing board
+     * @param x     The coordinate on the x axis
+     * @param y     The coordinate on the y axis
+     * @param exit  Which way to move the player out of the field in case of a push.
+     * @author Nilas Thoegersen
+     */
     public RebootToken(Board board, int x, int y, Heading exit) {
         super(board, x, y);
         board.setRebootToken(this);
@@ -26,13 +33,16 @@ public class RebootToken extends Space implements FieldAction {
     }
 
     /**
+     * Set a player on the respawn token.
+     *
+     * @param gameController The gamecontroller
+     * @param player         The player getting respawned
      * @author Nilas Thoegersen
-     * @param gameController
-     * @param player
      */
     @Override
-    public void doFieldAction(GameController gameController, Player player){
-        if(player != null){
+    public void doFieldAction(GameController gameController, Player player) {
+        if (this.player != null) {
+            //TODO: Move the old player out
             //gameController.movePlayer(player, exit);
         }
         player.setSpace(this);

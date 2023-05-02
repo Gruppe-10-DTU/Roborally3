@@ -9,6 +9,15 @@ import dk.dtu.compute.se.pisd.roborally.model.Space;
 public class Push extends Space implements SequenceAction {
     private final int step;
     private final Heading heading;
+
+    /**
+     * @param board   The playing board
+     * @param x       The coordinate on the x axis
+     * @param y       The coordinate on the y axis
+     * @param step    When the field needs to activate
+     * @param heading The pushing direction
+     * @author Nilas Thoegersen
+     */
     public Push(Board board, int x, int y, int step, Heading heading) {
         super(board, x, y);
         this.step = step;
@@ -16,6 +25,10 @@ public class Push extends Space implements SequenceAction {
         board.addBoardActions(this);
     }
 
+    /**
+     * @return The prio of the class
+     * @author Nilas Thoegersen
+     */
     public int getStep() {
         return step;
     }
@@ -26,15 +39,16 @@ public class Push extends Space implements SequenceAction {
 
     /**
      * Iterate over each player. If the player is on an instance of this field, it'll turn him.
-     * @author Nilas
+     *
      * @param gameController The main controller for the game
+     * @author Nilas
      */
     @Override
     public void doAction(GameController gameController) {
         for (Player player : gameController.board.getPlayers()
         ) {
-            if(player.getSpace().getClass().equals(this.getClass())){
-                ((Push)player.getSpace()).pushPlayer(gameController, player);
+            if (player.getSpace().getClass().equals(this.getClass())) {
+                ((Push) player.getSpace()).pushPlayer(gameController, player);
             }
         }
     }
@@ -45,12 +59,12 @@ public class Push extends Space implements SequenceAction {
     }
 
     /**
-     * @author Nilas
      * @param gameController The gamecontroller used to move player
-     * @param player the player to be moved
+     * @param player         the player to be moved
+     * @author Nilas
      */
-    private void pushPlayer(GameController gameController, Player player){
-        if(gameController.board.getStep() == step){
+    private void pushPlayer(GameController gameController, Player player) {
+        if (gameController.board.getStep() == step) {
             gameController.movePlayer(player, heading);
         }
     }

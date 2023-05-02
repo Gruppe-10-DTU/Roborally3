@@ -14,14 +14,31 @@ import java.util.Map;
 public class Conveyorbelt extends Space implements SequenceAction {
 
 
-    protected Heading heading;
+    protected final Heading heading;
     protected Heading turn;
-    public Conveyorbelt(Board board, int x, int y, Heading heading){
+
+    /**
+     * @param board   The playing board
+     * @param x       The coordinate on the x axis
+     * @param y       The coordinate on the y axis
+     * @param heading The way the conveyorbelt is moving
+     * @author Nilas Thoegersen
+     */
+    public Conveyorbelt(Board board, int x, int y, Heading heading) {
         super(board, x, y);
         this.heading = heading;
         board.addBoardActions(this);
     }
-    public Conveyorbelt(Board board, int x, int y, Heading heading, Heading turn){
+
+    /**
+     * @param board   The playing board
+     * @param x       The coordinate on the x axis
+     * @param y       The coordinate on the y axis
+     * @param heading The way the conveyorbelt is moving
+     * @param turn    The way the conveyorbelt is turning
+     * @author Nilas Thoegersen
+     */
+    public Conveyorbelt(Board board, int x, int y, Heading heading, Heading turn) {
         super(board, x, y);
         board.addBoardActions(this);
         this.heading = heading;
@@ -30,22 +47,24 @@ public class Conveyorbelt extends Space implements SequenceAction {
 
     /**
      * Turns the player either left or right, depending on the arrow.
-     * @author Nilas
+     *
      * @param player The player to be turned
+     * @author Nilas
      */
-    protected void turnPlayer(Player player){
-        if(turn == Heading.EAST) {
+    protected void turnPlayer(Player player) {
+        if (turn == Heading.EAST) {
             player.getHeading().next();
-        }else if (turn == Heading.WEST) {
+        } else if (turn == Heading.WEST) {
             player.getHeading().prev();
         }
     }
 
     /**
-     * Moves a player on the board. The player will no push another player.
-     * If two players will end up on the same space, the action will not happend for either of them.
-     * @author Nilas
+     * Moves a player on the board. The player will not push another player.
+     * If two players ends up on the same space, the action will not happend for either of them.
+     *
      * @param gameController The main controller for the game
+     * @author Nilas
      */
     @Override
     public void doAction(GameController gameController) {
@@ -56,9 +75,9 @@ public class Conveyorbelt extends Space implements SequenceAction {
         for (int i = 0; i < board.getPlayersNumber(); i++) {
             player = board.getPlayer(i);
             space = player.getSpace();
-            if(space.getClass().equals(this.getClass())){
+            if (space.getClass().equals(this.getClass())) {
                 space = board.getNeighbour(player.getSpace(), ((Conveyorbelt) space).heading);
-                if(space.getPlayer() == null || space.getClass().equals(this.getClass())){
+                if (space.getPlayer() == null || space.getClass().equals(this.getClass())) {
                     targetSpace.put(player, space);
                 }
             }
@@ -66,8 +85,8 @@ public class Conveyorbelt extends Space implements SequenceAction {
         HashSet<Space> filterMap = new HashSet<>();
         List<Space> distinct = targetSpace.values().stream().filter(x -> !filterMap.add(x)).toList();
         for (Map.Entry<Player, Space> entry : targetSpace.entrySet()
-             ) {
-            if(!distinct.contains(entry.getValue())){
+        ) {
+            if (!distinct.contains(entry.getValue())) {
                 entry.getKey().setSpace(entry.getValue());
             }
         }
@@ -81,6 +100,10 @@ public class Conveyorbelt extends Space implements SequenceAction {
         return turn;
     }
 
+    /**
+     * @return The priority of the element
+     * @author Nilas Thoegersen
+     */
     @Override
     public int getPrio() {
         return 2;

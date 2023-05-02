@@ -21,20 +21,16 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
-import dk.dtu.compute.se.pisd.roborally.controller.FieldAction.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.*;
 import org.jetbrains.annotations.NotNull;
-import java.util.ArrayList;
-import java.util.EnumSet;
 
 /**
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class GameController {
 
@@ -64,6 +60,11 @@ public class GameController {
         }
     }
 
+    /**
+     * Start the programming phase
+     *
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
     // XXX: V2
     public void startProgrammingPhase() {
         board.setPhase(Phase.PROGRAMMING);
@@ -92,7 +93,11 @@ public class GameController {
         }
     }
 
-    // XXX: V2
+    /**
+     * Ends the programming phase
+     *
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
     public void finishProgrammingPhase() {
         makeProgramFieldsInvisible();
         makeProgramFieldsVisible(0);
@@ -103,6 +108,12 @@ public class GameController {
         board.setStep(0);
     }
 
+    /**
+     * Make a field visible for all players
+     *
+     * @param register the index of the register
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
     // XXX: V2
     private void makeProgramFieldsVisible(int register) {
         if (register >= 0 && register < Player.NO_REGISTERS) {
@@ -114,7 +125,11 @@ public class GameController {
         }
     }
 
-    // XXX: V2
+    /**
+     * Hide all fields so nobody can see which cards have been played
+     *
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
     private void makeProgramFieldsInvisible() {
         for (int i = 0; i < board.getPlayersNumber(); i++) {
             Player player = board.getPlayer(i);
@@ -125,28 +140,42 @@ public class GameController {
         }
     }
 
-    // XXX: V2
+    /**
+     * Automatically execute the rest of the cards
+     *
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
     public void executePrograms() {
         board.setStepMode(false);
         continuePrograms();
     }
 
-    // XXX: V2
+
+    /**
+     * Execute the cards one at a time
+     *
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
     public void executeStep() {
         board.setStepMode(true);
         continuePrograms();
     }
 
-    // XXX: V2
+    /**
+     * Loop to execute the cards continuous. Stops if either the mode is set to step or if a card needs player interaction
+     *
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
     private void continuePrograms() {
         do {
             executeNextStep();
         } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode());
     }
 
-    // XXX: V2
 
     /**
+     * Execute a card and then increment the step by one
+     *
      * @author Søren og Philip
      */
     private void executeNextStep() {
@@ -165,6 +194,12 @@ public class GameController {
         }
     }
 
+    /**
+     * Go to the next card to be executed.
+     *
+     * @param step The current step
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
     public void incrementStep(int step) {
         boolean playerIsSet = board.nextPlayer();
 
@@ -177,33 +212,17 @@ public class GameController {
                 board.calculatePlayerOrder();
                 board.nextPlayer();
             } else {
+                //End the phase by activating the board.
+                executeBoardActions();
                 startProgrammingPhase();
             }
 
         }
 
-        /*int nextPlayerNumber = board.getPlayerNumber(board.getCurrentPlayer()) + 1;
-        if (nextPlayerNumber < board.getPlayersNumber()) {
-            board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
-        } else {
-            step++;
-            if (step < Player.NO_REGISTERS) {
-                makeProgramFieldsVisible(step);
-                board.setStep(step);
-                board.setCurrentPlayer(board.getPlayer(0));
-            } else {
-                startProgrammingPhase();
-            }
-        }*/
     }
 
-    // XXX: V2
     private void executeCommand(@NotNull Player player, Command command) {
         if (player != null && player.board == board && command != null) {
-            // XXX This is a very simplistic way of dealing with some basic cards and
-            //     their execution. This should eventually be done in a more elegant way
-            //     (this concerns the way cards are modelled as well as the way they are executed).
-
             switch (command) {
                 case FORWARD:
                     this.moveForward(player);
@@ -229,11 +248,17 @@ public class GameController {
         }
     }
 
+    /**
+     * A function used to execute a player interactive card.
+     *
+     * @param command The command to be executed
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
+    //TODO: Fjern brug af denne funktion. Denne logik burde ligge inde i playerview, hvor funktionen kaldes
     public void executeCommandOptionAndContinue(Command command) {
         board.setPhase(Phase.ACTIVATION);
         executeCommand(board.getCurrentPlayer(), command);
         incrementStep(board.getStep());
-
     }
 
     /**
@@ -265,10 +290,17 @@ public class GameController {
         movePlayer(player, player.getHeading());
     }
 
+    /**
+     * Move the player backwards
+     *
+     * @param player The moving player
+     * @author Asbjørn Nielsen
+     * @author Nilas Thoegersen
+     */
     public void reverse(@NotNull Player player) {
-        player.setHeading(player.getHeading().prev().prev());
+        player.setHeading(player.getHeading().reverse());
         moveForward(player);
-        player.setHeading(player.getHeading().prev().prev());
+        player.setHeading(player.getHeading().reverse());
     }
 
     /**
@@ -292,6 +324,13 @@ public class GameController {
         }
     }
 
+    /**
+     * Pushes a player
+     *
+     * @param pusher The pushing player
+     * @return If the push was possible
+     * @author Asbjørn Nielsen
+     */
     public boolean pushable(@NotNull Player pusher) {
         boolean able = true;
         Player nxt = board.getNeighbour(pusher.getSpace(), pusher.getHeading()).getPlayer();
@@ -306,11 +345,17 @@ public class GameController {
         return able;
     }
 
+    /**
+     * Execute all actions, by prio. Checks if the game is done afterwards
+     *
+     * @author Nilas Thoegersen
+     */
     public void executeBoardActions() {
         for (SequenceAction sequenceAction : board.getBoardActions()
         ) {
             sequenceAction.doAction(this);
         }
+        checkIfGameIsDone();
     }
 
     /**
@@ -330,15 +375,30 @@ public class GameController {
         player.setHeading(player.getHeading().next());
     }
 
-    // TODO Assignment V2
+    /**
+     * @param player The turning player
+     * @author Søren
+     */
     public void turnLeft(@NotNull Player player) {
         player.setHeading(player.getHeading().prev());
     }
 
+    /**
+     * Turn the player around
+     *
+     * @param player The turning player
+     * @author Asbjørn Nielsen
+     */
     public void uTurn(@NotNull Player player) {
         player.setHeading(player.getHeading().prev().prev());
     }
 
+    /**
+     * @param source The source of the card
+     * @param target The target of the card
+     * @return Boolean saying if the move was possible
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
         Card sourceCard = source.getCard();
         Card targetCard = target.getCard();
@@ -352,12 +412,11 @@ public class GameController {
 
     }
 
-    private void endGame() {
+    private void checkIfGameIsDone() {
         Checkpoint checkpoint = board.getWincondition();
         for (Player player : board.getPlayers()
         ) {
-            if (checkpoint.checkPlayer(player)) ;
-            {
+            if (checkpoint.checkPlayer(player)) {
                 endGame.endGame(player);
             }
         }

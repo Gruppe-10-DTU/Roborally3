@@ -29,8 +29,8 @@ import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.PriorityAntenna;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
-import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -42,7 +42,6 @@ import java.util.EnumSet;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class SpaceView extends StackPane implements ViewObserver {
 
@@ -65,9 +64,7 @@ public class SpaceView extends StackPane implements ViewObserver {
 
         Image spaceImg = new Image("spaces/empty60.png");
 
-        if (space instanceof BoardLaser) {
-
-            BoardLaser boardLaser = (BoardLaser) space;
+        if (space instanceof BoardLaser boardLaser) {
 
             if (boardLaser.getShootingDirection() == Heading.EAST) {
                 spaceImg = new Image("spaces/laser/lazer1_EAST.png");
@@ -78,19 +75,15 @@ public class SpaceView extends StackPane implements ViewObserver {
             } else if (boardLaser.getShootingDirection() == Heading.NORTH) {
                 spaceImg = new Image("spaces/laser/lazer1_NORTH.png");
             }
-        } else if (space instanceof Checkpoint) {
-
-            Checkpoint checkpoint = (Checkpoint) space;
+        } else if (space instanceof Checkpoint checkpoint) {
 
             spaceImg = new Image("spaces/checkpoint/checkpoint" + checkpoint.getCheckpointNumber() + ".png");
 
         } else if (space instanceof PriorityAntenna) {
             spaceImg = new Image("spaces/priorityAntenna.png");
 
-        } else if (space instanceof Conveyorbelt) {
+        } else if (space instanceof Conveyorbelt conveyorbelt) {
             //More is needed
-
-            Conveyorbelt conveyorbelt = (Conveyorbelt) space;
 
             Heading heading = conveyorbelt.getHeading();
             Heading turn = conveyorbelt.getTurn();
@@ -188,16 +181,14 @@ public class SpaceView extends StackPane implements ViewObserver {
         } else if (space instanceof Energy) {
             spaceImg = new Image("spaces/energy.png");
 
-        }  else if (space instanceof Gear) {
-            Gear gear = (Gear) space;
+        } else if (space instanceof Gear gear) {
 
             if (gear.getHeading() == Heading.EAST) {
                 spaceImg = new Image("spaces/gear_EAST.png");
             } else {
                 spaceImg = new Image("spaces/gear_WEST.png");
             }
-        } else if (space instanceof Push) {
-            Push push = (Push) space;
+        } else if (space instanceof Push push) {
             Heading pushHeading = push.getHeading();
             int step = push.getStep();
 
@@ -250,7 +241,7 @@ public class SpaceView extends StackPane implements ViewObserver {
 
         }
         ImageView spaceImgView = new ImageView(spaceImg);
-        this.getChildren().add(0,spaceImgView);
+        this.getChildren().add(0, spaceImgView);
 
         // updatePlayer();
 
@@ -262,21 +253,21 @@ public class SpaceView extends StackPane implements ViewObserver {
     private void updatePlayer() {
         try {
             this.getChildren().remove(1);
-        }catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             // Do nothing. This is so the image doesn't get removed.
         }
         Player player = space.getPlayer();
         if (player != null) {
             Polygon arrow = new Polygon(0.0, 0.0,
                     10.0, 20.0,
-                    20.0, 0.0 );
+                    20.0, 0.0);
             try {
                 arrow.setFill(Color.valueOf(player.getColor()));
             } catch (Exception e) {
                 arrow.setFill(Color.MEDIUMPURPLE);
             }
 
-            arrow.setRotate((90*player.getHeading().ordinal())%360);
+            arrow.setRotate((90 * player.getHeading().ordinal()) % 360);
             this.getChildren().add(1, arrow);
         }
     }

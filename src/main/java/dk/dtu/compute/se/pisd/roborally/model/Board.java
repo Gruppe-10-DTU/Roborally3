@@ -38,7 +38,6 @@ import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class Board extends Subject {
     public final int width;
@@ -70,11 +69,18 @@ public class Board extends Subject {
     public Checkpoint getWincondition() {
         return wincondition;
     }
-    public void setWincondition(Checkpoint wincondition){
+
+    /**
+     * Sets the final win condition
+     *
+     * @param wincondition The final checkpoint
+     * @author Nilas Thoegersen
+     */
+    public void setWincondition(Checkpoint wincondition) {
         this.wincondition = wincondition;
     }
 
-    private TreeSet<SequenceAction> boardActions;
+    private final TreeSet<SequenceAction> boardActions;
 
 
     private RebootToken rebootToken;
@@ -87,28 +93,28 @@ public class Board extends Subject {
         this.rebootToken = rebootToken;
     }
 
-    PriorityQueue<Player> playerOrder = new PriorityQueue<>();
+    final PriorityQueue<Player> playerOrder = new PriorityQueue<>();
 
 
     /**
-     * @auther Sandie Petersen
-     * @param width
-     * @param height
-     * @param boardName
-     * @param playerAmound
-     * Loads the file of the requested board and creates all the indicidual spacess on the board
+     * @param width        width of the board
+     * @param height       height of the board
+     * @param boardName    the board name
+     * @param playerAmount The amount of players in the game
+     *                     Loads the file of the requested board and creates all the indicidual spacess on the board
+     * @author Sandie Petersen
      */
-    public Board(int width, int height, @NotNull String boardName, int playerAmound) {
+    public Board(int width, int height, @NotNull String boardName, int playerAmount) {
         this.boardActions = new TreeSet<>(new SequenceActionComparator());
         this.boardName = boardName;
-        this.playerAmount = playerAmound;
+        this.playerAmount = playerAmount;
         this.width = width;
         this.height = height;
 
-        JSONArray spawnArray = new JSONReader("src/main/resources/boards/spawnBoard" + playerAmound + ".json").getJsonSpaces();
+        JSONArray spawnArray = new JSONReader("src/main/resources/boards/spawnBoard" + playerAmount + ".json").getJsonSpaces();
 
         JSONArray courseArray;
-        switch (boardName){
+        switch (boardName) {
             case "Risky Crossing":
                 courseArray = new JSONReader("src/main/resources/boards/RiskyCrossing.json").getJsonSpaces();
                 break;
@@ -132,17 +138,17 @@ public class Board extends Subject {
             int y = Integer.parseInt(current.getString("y"));
 
             switch (current.getString("Type")) {
-                case "Priority" :
-                    this.priorityAntenna = new PriorityAntenna(this,x,y);
+                case "Priority":
+                    this.priorityAntenna = new PriorityAntenna(this, x, y);
                     spaces[x][y] = priorityAntenna;
                     break;
-                case "Wall" :
+                case "Wall":
                     EnumSet<Heading> walls = EnumSet.copyOf(List.of(Heading.valueOf(current.getString("Direction"))));
                     Space wall = new Space(this, x, y);
                     wall.setWalls(walls);
                     spaces[x][y] = wall;
                     break;
-                case "Spawn" :
+                case "Spawn":
                     int priority = current.getInt("Number");
                     Spawn spawn = new Spawn(this,x,y,priority);
                     spawnPriority.add(spawn);
@@ -164,71 +170,71 @@ public class Board extends Subject {
             int y = current.getInt("y");
 
             switch (current.getString("Type")) {
-                case "Wall" :
+                case "Wall":
                     EnumSet<Heading> walls = EnumSet.copyOf(List.of(Heading.valueOf(current.getString("Direction"))));
                     Space wall = new Space(this, x, y);
                     wall.setWalls(walls);
                     spaces[x][y] = wall;
                     break;
-                case "Energy" :
+                case "Energy":
                     Energy energy = new Energy(this, x, y);
                     spaces[x][y] = energy;
                     break;
-                case "Conveyor" :
+                case "Conveyor":
                     Heading heading = Heading.valueOf(current.getString("Direction"));
                     if (current.getInt("Number") == 1) {
                         Conveyorbelt conveyorbelt;
                         if (current.getString("Turn").equals("")) {
-                            conveyorbelt = new Conveyorbelt(this,x,y,heading);
+                            conveyorbelt = new Conveyorbelt(this, x, y, heading);
                         } else {
                             Heading turn = Heading.valueOf(current.getString("Turn"));
-                            conveyorbelt = new Conveyorbelt(this,x,y,heading,turn);
+                            conveyorbelt = new Conveyorbelt(this, x, y, heading, turn);
                         }
                         spaces[x][y] = conveyorbelt;
                     } else {
                         FastConveyorbelt fastConveyorbelt;
                         if (current.getString("Turn").equals("")) {
-                            fastConveyorbelt = new FastConveyorbelt(this,x,y,heading);
+                            fastConveyorbelt = new FastConveyorbelt(this, x, y, heading);
                         } else {
                             Heading turn = Heading.valueOf(current.getString("Turn"));
-                            fastConveyorbelt = new FastConveyorbelt(this,x,y,heading,turn);
+                            fastConveyorbelt = new FastConveyorbelt(this, x, y, heading, turn);
                         }
                         spaces[x][y] = fastConveyorbelt;
                     }
                     break;
-                case "CheckPoint" :
+                case "CheckPoint":
                     Checkpoint checkpoint;
                     if (prevChekpoint != null) {
-                        checkpoint = new Checkpoint(this,x,y,prevChekpoint, current.getInt("Number"));
+                        checkpoint = new Checkpoint(this, x, y, current.getInt("Number"), prevChekpoint);
                     } else {
-                        checkpoint = new Checkpoint(this,x,y, current.getInt("Number"));
+                        checkpoint = new Checkpoint(this, x, y, current.getInt("Number"));
                     }
                     prevChekpoint = checkpoint;
                     spaces[x][y] = checkpoint;
                     break;
-                case "Lazer" :
+                case "Lazer":
                     Heading shootingDirection = Heading.valueOf(current.getString("Direction"));
-                    BoardLaser boardLaser = new BoardLaser(this,x,y,shootingDirection);
+                    BoardLaser boardLaser = new BoardLaser(this, x, y, shootingDirection);
                     spaces[x][y] = boardLaser;
                     break;
-                case "Gear" :
+                case "Gear":
                     Heading turnDirection = Heading.valueOf(current.getString("Direction"));
-                    Gear gear = new Gear(turnDirection,this,x,y);
+                    Gear gear = new Gear(turnDirection, this, x, y);
                     spaces[x][y] = gear;
                     break;
-                case "Push" :
+                case "Push":
                     Heading pushDirection = Heading.valueOf(current.getString("Direction"));
                     int step = current.getInt("Number");
-                    Push push = new Push(this,x,y,step,pushDirection);
+                    Push push = new Push(this, x, y, step, pushDirection);
                     spaces[x][y] = push;
                     break;
-                case "Pit" :
-                    Pit pit = new Pit(this,x,y);
+                case "Pit":
+                    Pit pit = new Pit(this, x, y);
                     spaces[x][y] = pit;
                     break;
                 case "Reboot" :
                     Heading exit = Heading.valueOf(current.getString("Direction"));
-                    RebootToken rebootToken = new RebootToken(this,x,y,exit);
+                    RebootToken rebootToken = new RebootToken(this, x, y, exit);
                     spaces[x][y] = rebootToken;
                     break;
                 default:
@@ -240,6 +246,13 @@ public class Board extends Subject {
 
     }
 
+    /**
+     * Contructor of the board
+     *
+     * @param width     Width of the board
+     * @param height    Height of the board
+     * @param boardName Name of the board
+     */
     public Board(int width, int height, @NotNull String boardName) {
         this.boardName = boardName;
         this.boardActions = new TreeSet<>(new SequenceActionComparator());
@@ -247,7 +260,7 @@ public class Board extends Subject {
         this.height = height;
         spaces = new Space[width][height];
         for (int x = 0; x < width; x++) {
-            for(int y = 0; y < height; y++) {
+            for (int y = 0; y < height; y++) {
                 Space space = new Space(this, x, y);
                 spaces[x][y] = space;
             }
@@ -255,21 +268,24 @@ public class Board extends Subject {
         this.stepMode = false;
     }
 
-    public void setSpace(Space space){
+    public void setSpace(Space space) {
         spaces[space.x][space.y] = space;
     }
 
 
-    public void addBoardActions(SequenceAction sequenceAction){
+    /**
+     * @param sequenceAction Adds a sequence action to the array of actions needing to be executed at the end of each turn
+     * @author Nilas Thoegersen
+     */
+    public void addBoardActions(SequenceAction sequenceAction) {
         this.boardActions.add(sequenceAction);
     }
-    public void removeBoardAction(SequenceAction sequenceAction){
-        this.boardActions.remove(sequenceAction);
-    }
-    public Set<SequenceAction> getBoardActions(){
+
+    public Set<SequenceAction> getBoardActions() {
         return boardActions;
     }
-    public List<Player> getPlayers(){
+
+    public List<Player> getPlayers() {
         return players;
     }
 
@@ -337,9 +353,9 @@ public class Board extends Subject {
     }
 
     /**
+     * @return true if possible
      * @author Sandie Petersen
      * polls the next player if possible
-     * @return true if possible
      */
     public boolean nextPlayer() {
         if (playerOrder.size() > 0) {
@@ -414,7 +430,7 @@ public class Board extends Subject {
      * (no walls or obstacles in either of the involved spaces); otherwise,
      * null will be returned.
      *
-     * @param space the space for which the neighbour should be computed
+     * @param space   the space for which the neighbour should be computed
      * @param heading the heading of the neighbour
      * @return the space in the given direction; null if there is no (reachable) neighbour
      */
@@ -439,18 +455,19 @@ public class Board extends Subject {
     }
 
     /**
-     *
      * Calculates which players are within a given range
      * and returns an ArrayList of them
      *
+     * @param centerPlayer The player calculating the range from
+     * @return An list of players within the range of the players
      * @author Philip Astrup Cramer
      */
-    public ArrayList<Player> playersInRange(Player centerPlayer, int range){
+    public ArrayList<Player> playersInRange(Player centerPlayer, int range) {
         ArrayList<Player> result = new ArrayList<>();
         for (Player otherPLayer : this.players) {
             int distX = Math.abs((centerPlayer.getSpace().x - otherPLayer.getSpace().x));
             int distY = Math.abs((centerPlayer.getSpace().y - otherPLayer.getSpace().y));
-            if (distX + distY <= range){
+            if (distX + distY <= range) {
                 result.add(otherPLayer);
             }
         }
@@ -468,7 +485,6 @@ public class Board extends Subject {
                 ", Player = " + getCurrentPlayer().getName() +
                 ", Step: " + getStep();
     }
-
 
 
 }
