@@ -216,11 +216,9 @@ class BoardActionTest {
         //Test to see if lsr has added a SPAM card to target's discard-pile.
         String drawn = "";
         lsr.doAction(gameController);
-        target.discardCard(new DamageCard(Damage.SPAM));
         drawn = target.drawCard().getType();
         while(drawn != "Damage") drawn = target.drawCard().getType();
-        assertTrue(drawn.equals("Damage"));
-
+        assertTrue(drawn.equals("Damage"), "Target should recieve a card of the Damage-type!");
 
     }
 

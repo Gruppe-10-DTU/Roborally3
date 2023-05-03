@@ -47,15 +47,16 @@ public class BoardLaser extends Space implements SequenceAction {
      */
     @Override
     public void doAction(GameController gameController) {
-        Heading heading = Heading.WEST;
         gameController.board.getPlayers().parallelStream().forEach(player -> {
             Space space = player.getSpace();
+            Heading heading = Heading.WEST;
             for (int i = 0; i < 4; i++) {
                 //Set isHit in the if statement and add the dmg card inside the statement.
                 if (!space.getOut(heading)) {
-                    isHit(gameController.board, space, heading);
+                    if(isHit(gameController.board, space, heading))
+                      space.getPlayer().discardCard(new DamageCard(Damage.SPAM));
                 }
-                heading.next();
+                heading = heading.next();
             }
         });
     }
@@ -71,13 +72,13 @@ public class BoardLaser extends Space implements SequenceAction {
      * @param board   The playing board
      * @param space   Space of the player
      * @param heading firing line of the laser
-     * @return boolean saying if the player is it
+     * @return boolean saying if the player is hit
      * @author Nilas
      */
     protected boolean isHit(Board board, Space space, Heading heading) {
-
-        while (space != null) {
-            if (space.getPlayer() != null || hasWall(heading)) {
+        Space oSpace = space;
+        while (space != null){
+            if ((space.getPlayer() != null && oSpace.getPlayer() != space.getPlayer()) || hasWall(heading) || space.getOut(heading)) {
                 return false;
             }
             if (space instanceof BoardLaser && ((BoardLaser) space).hit(heading)) {
