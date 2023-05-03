@@ -1,6 +1,8 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
+import dk.dtu.compute.se.pisd.roborally.model.Cards.CommandCard;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import org.junit.jupiter.api.AfterEach;
@@ -119,6 +121,27 @@ class GameControllerTest {
         Assertions.assertEquals(pusher.getSpace(),board.getSpace(2,3), "Player " + pusher.getName() + " should be on space (2,3)");
         Assertions.assertEquals(pushed1.getSpace(),board.getSpace(3,3), "Player " + pushed1.getName() + " should be on space (3,3)");
         Assertions.assertEquals(pushed2.getSpace(),board.getSpace(4,3), "Player " + pushed2.getName() + " should be on space (4,3)");
-
     }
+    @Test
+    void rebootRobot() {
+        Board board = gameController.board;
+        gameController.startProgrammingPhase();
+        Player moveOutOfBounds = board.getCurrentPlayer();
+        RebootToken rb = new RebootToken(board,2,2,Heading.EAST);
+        board.setRebootToken(rb);
+        moveOutOfBounds.setSpace(board.getSpace(0,0));
+        moveOutOfBounds.setHeading(Heading.NORTH);
+        moveOutOfBounds.getProgramField(0).setCard(moveOutOfBounds.drawCard());
+        Assertions.assertSame(moveOutOfBounds.drawCard().getType(),moveOutOfBounds.getProgramField(0).getCard().getType(), "Player only has command type cards in deck, and the programmed card should alas be a command!");
+        //Check to see if player is moved to reboot token square.
+        Assertions.assertSame(moveOutOfBounds.getSpace(), board.getSpace(0, 0), "Player " + moveOutOfBounds.getName() + " should be on space (0,0)!");
+        gameController.moveForward(moveOutOfBounds);
+        Assertions.assertSame(moveOutOfBounds.getSpace(), board.getSpace(2, 2), "Player " + moveOutOfBounds.getName() + " should be moved to space (2,2)!");
+        //Checking to see if reboot has set card to null!
+        Assertions.assertSame(null,moveOutOfBounds.getProgramField(0).getCard(), "Since player is rebooting; Program field should be empty!");
+    }
+
+
+
+
 }
