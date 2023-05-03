@@ -55,7 +55,9 @@ public class FastConveyorbelt extends Conveyorbelt implements SequenceAction {
                 space = targetSpace.get(player) == null ? player.getSpace() : targetSpace.get(player);
                 if (space.getClass().equals(this.getClass())) {
                     space = board.getNeighbour(space, ((FastConveyorbelt) space).getExit());
-                    if (space.getPlayer() == null || space instanceof FastConveyorbelt) {
+                    if (space == null) {
+                        gameController.rebootRobot(player);
+                    } else if (space.getPlayer() == null || space instanceof FastConveyorbelt) {
                         targetSpace.put(player, space);
                         if (space instanceof Conveyorbelt) {
                             ((Conveyorbelt) space).turnPlayer(player);
