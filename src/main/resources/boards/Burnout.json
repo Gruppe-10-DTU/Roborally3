@@ -166,7 +166,7 @@
       "Type": "Conveyor",
       "Number": 2,
       "Direction": "NORTH",
-      "Turn": "EAST"
+      "Turn": "WEST"
     },
     {
       "x": 5,
@@ -190,7 +190,7 @@
       "Type": "Conveyor",
       "Number": 2,
       "Direction": "WEST",
-      "Turn": "NORTH"
+      "Turn": "WEST"
     },
     {
       "x": 5,
@@ -358,7 +358,7 @@
       "Type": "Conveyor",
       "Number": 2,
       "Direction": "EAST",
-      "Turn": "SOUTH"
+      "Turn": "WEST"
     },
     {
       "x": 8,
