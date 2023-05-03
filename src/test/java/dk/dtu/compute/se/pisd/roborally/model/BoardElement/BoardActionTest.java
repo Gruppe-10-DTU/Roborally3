@@ -2,10 +2,14 @@ package dk.dtu.compute.se.pisd.roborally.model.BoardElement;
 
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.Cards.Damage;
+import dk.dtu.compute.se.pisd.roborally.model.Cards.DamageCard;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.EnumSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -202,6 +206,64 @@ class BoardActionTest {
         assertEquals(board.getSpace(2,4), board.getPlayer(2).getSpace());
     }
 
+    @Test
+    void BoardLaser(){
+        Player target = board.getCurrentPlayer();
+        target.setSpace(board.getSpace(1,0));
+        BoardLaser lsr = new BoardLaser(board,board.getSpace(1,1).x,board.getSpace(1,1).y,Heading.NORTH);
+
+        //Test to see if lsr can hit player
+        assertTrue(lsr.isHit(board, board.getNeighbour(target.getSpace(),Heading.SOUTH), Heading.SOUTH), "Should hit the target player on space (1,0)!");
+
+        //Test to see if lsr has added a SPAM card to target's discard-pile.
+        String drawn = "";
+        lsr.doAction(gameController);
+        drawn = target.drawCard().getType();
+        while(drawn != "Damage") drawn = target.drawCard().getType();
+        assertTrue(drawn.equals("Damage"), "Target should recieve a card of the Damage-type!");
+
+        //Test to see if another player will stop the laser.
+        BoardLaser lsr2 = new BoardLaser(board,board.getSpace(2,2).x,board.getSpace(2,2).y,Heading.NORTH);
+        Player player2 = board.getPlayer(1);
+        target.setSpace(board.getSpace(2,0));
+        player2.setSpace(board.getSpace(2,1));
+        assertTrue(lsr2.isHit(board,player2.getSpace(),Heading.SOUTH), "Should hit player 2 on space (2,1)!");
+        assertFalse(lsr2.isHit(board,target.getSpace(),Heading.SOUTH),"Should not hit player 1 on space (2,0)!");
+
+        //Test to see if lsr will be stopped by walls.
+        board.getNeighbour(board.getSpace(1,0),Heading.SOUTH).setWalls(EnumSet.range(Heading.SOUTH,Heading.NORTH));
+        assertFalse(lsr.isHit(board,board.getNeighbour(target.getSpace(), Heading.SOUTH),Heading.SOUTH),"Should not hit the target player on space (1,0)!");
 
 
+    }
+
+
+
+        @Test
+        void RobotLaser(){
+        Player target = board.getCurrentPlayer();
+        Player shooter = board.getPlayer(1);
+        RobotLaser rblsr = new RobotLaser(board,shooter);
+        shooter.setHeading(Heading.NORTH);
+        target.setSpace(board.getSpace(1,0));
+
+        //Check if player 2 shoots player 1!
+        String drawn = "";
+        rblsr.doAction(gameController);
+        drawn = target.drawCard().getType();
+        while(drawn != "Damage") drawn = target.drawCard().getType();
+        assertTrue(drawn.equals("Damage"), "Target should recieve a card of the Damage-type!");
+
+        //Check to see if shooter can shoot through players.
+        Player target2 = board.getPlayer(2);
+        shooter.setSpace(board.getSpace(1,2));
+        target2.setSpace(board.getSpace(1,1));
+        assertTrue(rblsr.shootLaser(shooter.getSpace(),shooter.getHeading()) == target2, "Should hit player 2 on space (1,1)!");
+        assertFalse(rblsr.shootLaser(shooter.getSpace(),shooter.getHeading()) == target,"Should not hit player 1 on space (1,0)!");
+
+            //Check to see if a wall will stop player 2 laser.
+        board.getNeighbour(board.getSpace(1,0),Heading.SOUTH).setWalls(EnumSet.range(Heading.SOUTH,Heading.NORTH));
+        assertTrue(rblsr.shootLaser(shooter.getSpace(),shooter.getHeading()) == null);
+
+        }
 }
