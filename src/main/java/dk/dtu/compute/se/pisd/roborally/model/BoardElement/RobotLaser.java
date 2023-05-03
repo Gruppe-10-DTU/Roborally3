@@ -29,11 +29,12 @@ public class RobotLaser implements SequenceAction{
      * The method returns the player that is hit by the laser shot. If it does not hit anyone, it will return null.
      */
     public Player shootLaser(@NotNull Space space, Heading heading){
+        Space oSpace = space;
         while(space!=null){
             if(space.getOut(heading) || space.hasWall(heading)){
                 return null;
             }
-            if(space.getPlayer() != null){
+            if(oSpace != space && space.getPlayer() != null){
                 return space.getPlayer();
             }
             space = board.getNeighbour(space, heading);

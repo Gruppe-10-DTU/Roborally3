@@ -78,10 +78,10 @@ public class BoardLaser extends Space implements SequenceAction {
     protected boolean isHit(Board board, Space space, Heading heading) {
         Space oSpace = space;
         while (space != null){
-            if (space.getPlayer() != null && oSpace.getPlayer() != space.getPlayer() || hasWall(heading) || space.getOut(heading)) {
+            if (space.getPlayer() != null && space.getPlayer() != oSpace.getPlayer() || hasWall(heading) || space.getOut(heading)) {
                 return false;
             }
-            if (space instanceof BoardLaser && ((BoardLaser) space).hit(heading)) {
+            if(space instanceof BoardLaser && ((BoardLaser) space).hit(heading)) {
                 return true;
             }
             space = board.getNeighbour(space, heading);
