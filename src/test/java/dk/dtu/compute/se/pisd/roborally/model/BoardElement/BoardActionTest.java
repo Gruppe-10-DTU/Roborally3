@@ -55,7 +55,7 @@ class BoardActionTest {
     @Test
     void checkPoint_add_player_second_checkpoint() {
         Checkpoint checkpoint = new Checkpoint(board, 0, 0,1);
-        Checkpoint checkpoint2 = new Checkpoint(board, 0, 0, checkpoint,2);
+        Checkpoint checkpoint2 = new Checkpoint(board, 0, 0, 2, checkpoint);
 
         Player player = board.getPlayer(0);
 

@@ -53,10 +53,10 @@ public class GameController {
      *
      * @param space the space to which the current player should move
      */
-    public void moveCurrentPlayerToSpace(@NotNull Space space)  {
-        if(space.getPlayer() == null){
+    public void moveCurrentPlayerToSpace(@NotNull Space space) {
+        if (space.getPlayer() == null) {
             Player currentPlayer = board.getCurrentPlayer();
-            if(!currentPlayer.getSpace().equals(space) || !space.hasWall(currentPlayer.getHeading())) {
+            if (!currentPlayer.getSpace().equals(space) || !space.hasWall(currentPlayer.getHeading())) {
                 board.setStep(board.getStep() + 1);
                 currentPlayer.setSpace(space);
                 board.setCurrentPlayer(board.getPlayer((board.getPlayerNumber(currentPlayer) + 1) % board.getPlayersNumber()));
@@ -64,6 +64,11 @@ public class GameController {
         }
     }
 
+    /**
+     * Start the programming phase
+     *
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
     // XXX: V2
     public void startProgrammingPhase() {
         board.setPhase(Phase.PROGRAMMING);
@@ -75,7 +80,7 @@ public class GameController {
             if (player != null) {
                 for (int j = 0; j < Player.NO_REGISTERS; j++) {
                     CommandCardField field = player.getProgramField(j);
-                    if(field.getCard() != null) {
+                    if (field.getCard() != null) {
                         player.discardCard(field.getCard());
                         field.setCard(null);
                         field.setVisible(true);
@@ -83,7 +88,7 @@ public class GameController {
                 }
                 for (int j = 0; j < Player.NO_CARDS; j++) {
                     CommandCardField field = player.getCardField(j);
-                    if(field.getCard() == null) {
+                    if (field.getCard() == null) {
                         field.setCard(player.drawCard());
                         field.setVisible(true);
                     }
@@ -92,7 +97,11 @@ public class GameController {
         }
     }
 
-    // XXX: V2
+    /**
+     * Ends the programming phase
+     *
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
     public void finishProgrammingPhase() {
         makeProgramFieldsInvisible();
         makeProgramFieldsVisible(0);
@@ -103,6 +112,12 @@ public class GameController {
         board.setStep(0);
     }
 
+    /**
+     * Make a field visible for all players
+     *
+     * @param register the index of the register
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
     // XXX: V2
     private void makeProgramFieldsVisible(int register) {
         if (register >= 0 && register < Player.NO_REGISTERS) {
@@ -114,7 +129,11 @@ public class GameController {
         }
     }
 
-    // XXX: V2
+    /**
+     * Hide all fields so nobody can see which cards have been played
+     *
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
     private void makeProgramFieldsInvisible() {
         for (int i = 0; i < board.getPlayersNumber(); i++) {
             Player player = board.getPlayer(i);
@@ -125,19 +144,32 @@ public class GameController {
         }
     }
 
-    // XXX: V2
+    /**
+     * Automatically execute the rest of the cards
+     *
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
     public void executePrograms() {
         board.setStepMode(false);
         continuePrograms();
     }
 
-    // XXX: V2
+
+    /**
+     * Execute the cards one at a time
+     *
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
     public void executeStep() {
         board.setStepMode(true);
         continuePrograms();
     }
 
-    // XXX: V2
+    /**
+     * Loop to execute the cards continuous. Stops if either the mode is set to step or if a card needs player interaction
+     *
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
     private void continuePrograms() {
         do {
             executeNextStep();
@@ -147,6 +179,8 @@ public class GameController {
     // XXX: V2
 
     /**
+     * Execute a card and then increment the step by one
+     *
      * @author Søren og Philip
      */
     private void executeNextStep() {
@@ -154,7 +188,10 @@ public class GameController {
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
             int step = board.getStep();
             Card card = currentPlayer.getProgramField(step).getCard();
-            if(card != null) {
+            if (card != null && card.isInteractive()) {
+                card.doAction(this);
+                return;
+            } else if (card != null) {
                 card.doAction(this);
             }
             incrementStep(step);
@@ -162,13 +199,21 @@ public class GameController {
         }
     }
 
-    public void incrementStep(int step){
+    /**
+     * Go to the next card to be executed.
+     *
+     * @param step The current step
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
+    public void incrementStep(int step) {
         boolean playerIsSet = board.nextPlayer();
 
         if (!playerIsSet) {
             step++;
 
             if (step < Player.NO_REGISTERS) {
+                //End the phase by activating the board.
+                executeBoardActions();
                 makeProgramFieldsVisible(step);
                 board.setStep(step);
                 board.calculatePlayerOrder();
@@ -179,28 +224,10 @@ public class GameController {
 
         }
 
-        /*int nextPlayerNumber = board.getPlayerNumber(board.getCurrentPlayer()) + 1;
-        if (nextPlayerNumber < board.getPlayersNumber()) {
-            board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
-        } else {
-            step++;
-            if (step < Player.NO_REGISTERS) {
-                makeProgramFieldsVisible(step);
-                board.setStep(step);
-                board.setCurrentPlayer(board.getPlayer(0));
-            } else {
-                startProgrammingPhase();
-            }
-        }*/
     }
 
-    // XXX: V2
     private void executeCommand(@NotNull Player player, Command command) {
         if (player != null && player.board == board && command != null) {
-            // XXX This is a very simplistic way of dealing with some basic cards and
-            //     their execution. This should eventually be done in a more elegant way
-            //     (this concerns the way cards are modelled as well as the way they are executed).
-
             switch (command) {
                 case FORWARD:
                     this.moveForward(player);
@@ -226,96 +253,120 @@ public class GameController {
         }
     }
 
-    public void executeCommandOptionAndContinue(Command command){
+    /**
+     * A function used to execute a player interactive card.
+     *
+     * @param command The command to be executed
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
+    //TODO: Fjern brug af denne funktion. Denne logik burde ligge inde i playerview, hvor funktionen kaldes
+    public void executeCommandOptionAndContinue(Command command) {
         board.setPhase(Phase.ACTIVATION);
         executeCommand(board.getCurrentPlayer(), command);
         incrementStep(board.getStep());
-
     }
 
     /**
-     * calls the method corresponding to the given damage type
-     *
-     * @author Philip Astrup Cramer
-     */
-    private void executeDamage(Player currentPlayer, Damage dmg){
-        switch (dmg){
-            case SPAM:
-                //this has no further effect
-                break;
-            case TROJAN_HORSE:
-                this.executeTrojanHorse(currentPlayer);
-                break;
-            case WORM:
-                this.executeWorm(currentPlayer);
-                break;
-            case VIRUS:
-                this.executeVirus(currentPlayer);
-                break;
-        }
-    }
-
-    /**
-     * @author Nilas
-     * @param player The player to be moved
+     * @param player  The player to be moved
      * @param heading The way the player is moving
-     * Moves the player one step in a specific direction
+     *                Moves the player one step in a specific direction
+     * @author Asbjørn Nielsen
+     * @author Nilas
      */
-    public void movePlayer(@NotNull Player player, Heading heading){
+    public void movePlayer(@NotNull Player player, Heading heading) {
         Space space = board.getNeighbour(player.getSpace(), heading);
-        if(space != null && !space.hasWall(heading) && !player.getSpace().getOut(heading)) {
-            if(space.getPlayer() != null){
-                pushRobot(player,space.getPlayer());
+        if (space != null && !space.hasWall(heading) && !player.getSpace().getOut(heading)) {
+            if (space.getPlayer() != null) {
+                pushRobot(player, space.getPlayer());
             }
-            if(space.getPlayer() == null) {
-                player.setSpace(board.getNeighbour(player.getSpace(),heading));
+            if (space.getPlayer() == null) {
+                player.setSpace(board.getNeighbour(player.getSpace(), heading));
             }
+        } else if (space == null) {
+            rebootRobot(player);
         }
     }
 
     /**
+     * @param player Moves the player forwards, if the target space don't have a wall.
      * @author Asbjørn Nielsen
-     * @param player
-     * Moves the player forwards, if the target space don't have a wall.
      */
     public void moveForward(@NotNull Player player) {
         movePlayer(player, player.getHeading());
     }
 
-    public void reverse(@NotNull Player player){
-        player.setHeading(player.getHeading().prev().prev());
+    /**
+     * Move the player backwards
+     *
+     * @param player The moving player
+     * @author Asbjørn Nielsen
+     * @author Nilas Thoegersen
+     */
+    public void reverse(@NotNull Player player) {
+        player.setHeading(player.getHeading().reverse());
         moveForward(player);
-        player.setHeading(player.getHeading().prev().prev());
+        player.setHeading(player.getHeading().reverse());
     }
 
     /**
      * @author Asbjørn Nielsen
      * @param pushing The robot who is doing the pushing
-     * @param pushed The pushed robot
-     * Pushes a row of robots.
+     * @param pushed  The pushed robot
+     *                Pushes a row of robots.
+     * @author Asbjørn Nielsen
      */
-    public void pushRobot(@NotNull Player pushing, @NotNull Player pushed){
-        if(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer() != null){
-            pushRobot(pushing,board.getPlayer(board.getPlayerNumber(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer())));
-        }
-        if(!board.getNeighbour(pushed.getSpace(),pushing.getHeading()).hasWall(pushing.getHeading())){
-            if(board.getNeighbour(pushed.getSpace(),pushing.getHeading()).getPlayer() == null) {
-                pushed.setSpace(board.getNeighbour(pushed.getSpace(), pushing.getHeading()));
+    public void pushRobot(@NotNull Player pushing, @NotNull Player pushed) {
+        if (pushable(pushing)) {
+            if (board.getNeighbour(pushed.getSpace(), pushing.getHeading()) == null) {
+                rebootRobot(pushed);
+                return;
             }
-        }
-    }
-
-    public void executeBoardActions(){
-        for (SequenceAction sequenceAction : board.getBoardActions()
-             ) {
-            sequenceAction.doAction(this);
+            if (board.getNeighbour(pushed.getSpace(), pushing.getHeading()).getPlayer() != null) {
+                pushRobot(pushing, board.getPlayer(board.getPlayerNumber(board.getNeighbour(pushed.getSpace(), pushing.getHeading()).getPlayer())));
+            }
+            pushed.setSpace(board.getNeighbour(pushed.getSpace(), pushing.getHeading()));
+        } else {
+            pushed.setSpace(pushed.getSpace());
         }
     }
 
     /**
+     * Pushes a player
+     *
+     * @param pusher The pushing player
+     * @return If the push was possible
      * @author Asbjørn Nielsen
-     * @param player
-     * Moves the player forwards twice.
+     */
+    public boolean pushable(@NotNull Player pusher) {
+        boolean able = true;
+        Player nxt = board.getNeighbour(pusher.getSpace(), pusher.getHeading()).getPlayer();
+        while (nxt != null) {
+            if (nxt.getSpace().hasWall(nxt.getHeading()) || nxt.getSpace().getOut(pusher.getHeading())) {
+                able = false;
+                break;
+            } else {
+                nxt = board.getNeighbour(nxt.getSpace(), pusher.getHeading()).getPlayer();
+            }
+        }
+        return able;
+    }
+
+    /**
+     * Execute all actions, by prio. Checks if the game is done afterwards
+     *
+     * @author Nilas Thoegersen
+     */
+    public void executeBoardActions() {
+        for (SequenceAction sequenceAction : board.getBoardActions()
+        ) {
+            sequenceAction.doAction(this);
+        }
+        checkIfGameIsDone();
+    }
+
+    /**
+     * @param player Moves the player forwards twice.
+     * @author Asbjørn Nielsen
      */
     public void fastForward(@NotNull Player player) {
         moveForward(player);
@@ -323,23 +374,37 @@ public class GameController {
     }
 
     /**
+     * @param player Turns the aforementioned player one nook to the right
      * @author Asbjørn Nielsen
-     * @param player
-     * Turns the aforementioned player one nook to the right
      */
     public void turnRight(@NotNull Player player) {
         player.setHeading(player.getHeading().next());
     }
 
-    // TODO Assignment V2
+    /**
+     * @param player The turning player
+     * @author Søren
+     */
     public void turnLeft(@NotNull Player player) {
         player.setHeading(player.getHeading().prev());
     }
 
-    public void uTurn(@NotNull Player player){
+    /**
+     * Turn the player around
+     *
+     * @param player The turning player
+     * @author Asbjørn Nielsen
+     */
+    public void uTurn(@NotNull Player player) {
         player.setHeading(player.getHeading().prev().prev());
     }
 
+    /**
+     * @param source The source of the card
+     * @param target The target of the card
+     * @return Boolean saying if the move was possible
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
         Card sourceCard = source.getCard();
         Card targetCard = target.getCard();
@@ -353,35 +418,11 @@ public class GameController {
 
     }
 
-    /**
-     * @author Philip Astrup Cramer
-     */
-    private void executeTrojanHorse(Player player){
-        player.discardCard(new DamageCard(Damage.SPAM));
-        player.discardCard(new DamageCard(Damage.SPAM));
-    }
-
-    /**
-     * @author Philip Astrup Cramer
-     */
-    private void executeWorm(Player player){
-        rebootRobot(player);
-    }
-
-    /**
-     * @author Philip Astrup Cramer
-     */
-    private void executeVirus(Player player){
-        ArrayList<Player> withinRange = board.playersInRange(player, 6);
-        for (Player affectedPLayer : withinRange) {
-            affectedPLayer.discardCard(new DamageCard(Damage.VIRUS));
-        }
-    }
-    private void endGame(){
+    private void checkIfGameIsDone() {
         Checkpoint checkpoint = board.getWincondition();
-        for (Player player: board.getPlayers()
-             ) {
-            if(checkpoint.checkPlayer(player));{
+        for (Player player : board.getPlayers()
+        ) {
+            if (checkpoint.checkPlayer(player)) {
                 endGame.endGame(player);
             }
         }
@@ -398,21 +439,20 @@ public class GameController {
 
 
     /**
-     * @author Nilas Thoegersen
      * @param player The player getting rebooted
      */
         public void rebootRobot(Player player){
             player.discardCard(new DamageCard(Damage.SPAM));
             player.discardCard(new DamageCard(Damage.SPAM));
 
-            for (int i = 0; i < 5; i++) {
-                CommandCardField field = player.getProgramField(i);
-                if(field.getCard() != null) {
-                    player.discardCard(field.getCard());
-                    field.setCard(null);
-                    field.setVisible(true);
-                }
+        for (int i = 0; i < 5; i++) {
+            CommandCardField field = player.getProgramField(i);
+            if (field.getCard() != null) {
+                player.discardCard(field.getCard());
+                field.setCard(null);
+                field.setVisible(true);
             }
-            board.getRebootToken().doFieldAction(this, player);
         }
+        board.getRebootToken().doFieldAction(this, player);
+    }
 }

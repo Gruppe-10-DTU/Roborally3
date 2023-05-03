@@ -14,12 +14,12 @@ class BoardTest {
 
     @BeforeEach
     public void init() {
-        board = new Board(8, 8);
+        board = new Board(11, 8,"Test",2);
 
         player1 = new Player(board, "red", "Player 1");
         player1.setSpace(board.getSpace(0,1));
         player2 = new Player(board, "green", "Player 2");
-        player2.setSpace(board.getSpace(1,1));
+        player2.setSpace(board.getSpace(0,3));
 
         board.addPlayer(player1);
         board.addPlayer(player2);
