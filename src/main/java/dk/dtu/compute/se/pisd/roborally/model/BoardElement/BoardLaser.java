@@ -2,6 +2,8 @@ package dk.dtu.compute.se.pisd.roborally.model.BoardElement;
 
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.Cards.Damage;
+import dk.dtu.compute.se.pisd.roborally.model.Cards.DamageCard;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
@@ -41,7 +43,8 @@ public class BoardLaser extends Space implements SequenceAction {
             for (int i = 0; i < 4; i++) {
                 //Set isHit in the if statement and add the dmg card inside the statement.
                 if(!space.getOut(heading)) {
-                    isHit(gameController.board, space, heading);
+                    if(isHit(gameController.board, space, heading))
+                        space.getPlayer().discardCard(new DamageCard(Damage.SPAM));
                 }
                 heading.next();
             }
@@ -70,7 +73,6 @@ public class BoardLaser extends Space implements SequenceAction {
             if(space instanceof BoardLaser && ((BoardLaser) space).hit(heading)){
                 return true;
             }
-
             space = board.getNeighbour(space, heading);
         }
         return false;

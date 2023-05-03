@@ -21,13 +21,14 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
-
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.*;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
+import java.util.EnumSet;
 
 /**
  * ...
@@ -154,19 +155,10 @@ public class GameController {
             int step = board.getStep();
             Card card = currentPlayer.getProgramField(step).getCard();
             if(card != null) {
-                while (card.getType().equals("Damage")) {
-                    executeDamage(currentPlayer, (Damage) card.getAction());
-                    currentPlayer.getProgramField(step).setCard(currentPlayer.drawCard());
-                    card = currentPlayer.getProgramField(step).getCard();
-                }
-                if (((CommandCard) card).getAction().isInteractive()) {
-                    board.setPhase(Phase.PLAYER_INTERACTION);
-                    return;
-                }
-                executeCommand(currentPlayer, (Command) card.getAction());
-
+                card.doAction(this);
             }
             incrementStep(step);
+
         }
     }
 

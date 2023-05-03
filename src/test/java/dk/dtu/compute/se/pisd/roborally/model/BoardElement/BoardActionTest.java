@@ -2,6 +2,8 @@ package dk.dtu.compute.se.pisd.roborally.model.BoardElement;
 
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.Cards.Damage;
+import dk.dtu.compute.se.pisd.roborally.model.Cards.DamageCard;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import org.junit.jupiter.api.BeforeEach;
@@ -202,6 +204,32 @@ class BoardActionTest {
         assertEquals(board.getSpace(2,4), board.getPlayer(2).getSpace());
     }
 
+    @Test
+    void BoardLaser(){
+        Player target = board.getCurrentPlayer();
+        target.setSpace(board.getSpace(1,0));
+        BoardLaser lsr = new BoardLaser(board,board.getSpace(1,1).x,board.getSpace(1,1).y,Heading.NORTH);
 
+        //Test to see if lsr can hit player
+        assertTrue(lsr.isHit(board, board.getNeighbour(target.getSpace(),Heading.SOUTH), Heading.SOUTH), "Should hit the target player on space (1,0)!");
+
+        //Test to see if lsr has added a SPAM card to target's discard-pile.
+        String drawn = "";
+        lsr.doAction(gameController);
+        target.discardCard(new DamageCard(Damage.SPAM));
+        drawn = target.drawCard().getType();
+        while(drawn != "Damage") drawn = target.drawCard().getType();
+        assertTrue(drawn.equals("Damage"));
+
+
+    }
+
+
+
+        @Test
+        void RobotLaser(){
+
+
+        }
 
 }
