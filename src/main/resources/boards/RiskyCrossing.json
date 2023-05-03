@@ -86,8 +86,8 @@
       "y": 1,
       "Type": "Conveyor",
       "Number": 2,
-      "Direction": "SOUTH",
-      "Turn": "WEST"
+      "Direction": "WEST",
+      "Turn": "NORTH"
     },
 
     {
@@ -95,8 +95,8 @@
       "y": 3,
       "Type": "Conveyor",
       "Number": 1,
-      "Direction": "EAST",
-      "Turn": "SOUTH"
+      "Direction": "SOUTH",
+      "Turn": "EAST"
     },
     {
       "x": 4,
@@ -111,16 +111,16 @@
       "y": 5,
       "Type": "Conveyor",
       "Number": 1,
-      "Direction": "SOUTH",
-      "Turn": "EAST"
+      "Direction": "EAST",
+      "Turn": "NORTH"
     },
     {
       "x": 4,
       "y": 6,
       "Type": "Conveyor",
       "Number": 2,
-      "Direction": "EAST",
-      "Turn": "SOUTH"
+      "Direction": "SOUTH",
+      "Turn": "WEST"
     },
     {
       "x": 4,
@@ -142,8 +142,8 @@
       "y": 1,
       "Type": "Conveyor",
       "Number": 1,
-      "Direction": "EAST",
-      "Turn": "SOUTH"
+      "Direction": "SOUTH",
+      "Turn": "EAST"
     },
     {
       "x": 5,
@@ -158,8 +158,8 @@
       "y": 3,
       "Type": "Conveyor",
       "Number": 1,
-      "Direction": "SOUTH",
-      "Turn": "WEST"
+      "Direction": "WEST",
+      "Turn": "NORTH"
     },
     {
       "x": 5,
@@ -231,16 +231,16 @@
       "y": 5,
       "Type": "Conveyor",
       "Number": 1,
-      "Direction": "WEST",
-      "Turn": "SOUTH"
+      "Direction": "SOUTH",
+      "Turn": "WEST"
     },
     {
       "x": 6,
       "y": 6,
       "Type": "Conveyor",
       "Number": 1,
-      "Direction": "SOUTH",
-      "Turn": "EAST"
+      "Direction": "EAST",
+      "Turn": "NORTH"
     },
     {
       "x": 6,
@@ -261,8 +261,8 @@
       "y": 1,
       "Type": "Conveyor",
       "Number": 1,
-      "Direction": "NORTH",
-      "Turn": "WEST"
+      "Direction": "WEST",
+      "Turn": "SOUTH"
     },
     {
       "x": 7,

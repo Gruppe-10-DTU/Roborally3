@@ -101,7 +101,7 @@ public class SpaceView extends StackPane implements ViewObserver {
                         if (conveyorbelt instanceof FastConveyorbelt) {
                             spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_SOUTH_EAST.png");
                         } else {
-                            spaceImg = new Image("spaces/conveyorbelt/conveyer_SOUTH_EAST.png");
+                            spaceImg = new Image("spaces/conveyorbelt/conveyer_EAST_NORTH.png");
                         }
                     }
                 } else if (heading == Heading.EAST) {
@@ -109,13 +109,13 @@ public class SpaceView extends StackPane implements ViewObserver {
                         if (conveyorbelt instanceof FastConveyorbelt) {
                             spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_EAST_NORTH.png");
                         } else {
-                            spaceImg = new Image("spaces/conveyorbelt/conveyer_EAST_NORTH.png");
+                            spaceImg = new Image("spaces/conveyorbelt/conveyer_NORTH_EAST.png");
                         }
                     } else if (turn == Heading.SOUTH) {
                         if (conveyorbelt instanceof FastConveyorbelt) {
                             spaceImg = new Image("spaces/FastConveyorbelt/fastConveyer_EAST_SOUTH.png");
                         } else {
-                            spaceImg = new Image("spaces/conveyorbelt/conveyer_EAST_SOUTH.png");
+                            spaceImg = new Image("spaces/conveyorbelt/conveyer_SOUTH_EAST.png");
                         }
                     }
                 } else if (heading == Heading.WEST) {
@@ -143,7 +143,7 @@ public class SpaceView extends StackPane implements ViewObserver {
                         if (conveyorbelt instanceof FastConveyorbelt) {
                             spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_NORTH_EAST.png");
                         } else {
-                            spaceImg = new Image("spaces/conveyorbelt/conveyer_NORTH_EAST.png");
+                            spaceImg = new Image("spaces/conveyorbelt/conveyer_EAST_SOUTH.png");
                         }
                     }
                 }
