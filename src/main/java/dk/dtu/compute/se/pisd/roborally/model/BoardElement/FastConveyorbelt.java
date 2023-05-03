@@ -51,10 +51,10 @@ public class FastConveyorbelt extends Conveyorbelt implements SequenceAction {
         Space space;
         for (int i = 0; i < board.getPlayersNumber(); i++) {
             player = board.getPlayer(i);
-            space = player.getSpace();
             for (int j = 0; j < 2; j++) {
+                space = targetSpace.get(player) == null ? player.getSpace() : targetSpace.get(player);
                 if (space.getClass().equals(this.getClass())) {
-                    space = board.getNeighbour(space, ((FastConveyorbelt) player.getSpace()).heading);
+                    space = board.getNeighbour(space, ((FastConveyorbelt) space).getExit());
                     if (space.getPlayer() == null || space instanceof FastConveyorbelt) {
                         targetSpace.put(player, space);
                         if (space instanceof Conveyorbelt) {
