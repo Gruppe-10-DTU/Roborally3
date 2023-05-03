@@ -29,7 +29,6 @@ import java.util.EnumSet;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class Space extends Subject {
 
@@ -39,10 +38,16 @@ public class Space extends Subject {
     public final int y;
 
     protected Player player;
-    private String background = "Empty";
+    private final String background = "Empty";
     private EnumSet<Heading> walls;
 
 
+    /**
+     * @param board The playing board
+     * @param x     The coordinate on the x axis
+     * @param y     The coordinate on the y axis
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
     public Space(Board board, int x, int y) {
         this.board = board;
         this.x = x;
@@ -52,20 +57,27 @@ public class Space extends Subject {
         walls = EnumSet.noneOf(Heading.class);
     }
 
-    public void setWalls(EnumSet<Heading> walls){
+    public void setWalls(EnumSet<Heading> walls) {
         this.walls = walls;
     }
 
     /**
+     *
      * Checks if there's a wall in the field the object is trying to move into
+     *
      * @param heading The moving direction
      * @return true if there's a wall in the way, otherwise false.
      */
-    public boolean hasWall(Heading heading){
+    public boolean hasWall(Heading heading) {
         return walls.contains(heading.reverse());
     }
 
-    public boolean getOut(Heading heading){
+    /**
+     * @param heading The way a player is moving
+     * @return Boolean saying if it's possible to move out of the space
+     * @author Nilas Thoegersen
+     */
+    public boolean getOut(Heading heading) {
         return walls.contains(heading);
     }
 
@@ -73,6 +85,13 @@ public class Space extends Subject {
         return player;
     }
 
+    /**
+     * Method to move a player onto the field
+     * Dublivated in the Player class
+     *
+     * @param player The player moving there
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
     public void setPlayer(Player player) {
         Player oldPlayer = this.player;
         if (player != oldPlayer &&

@@ -1,0 +1,518 @@
+{
+  "spaces": [
+    {
+      "x": 3,
+      "y": 0,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 3,
+      "y": 1,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 3,
+      "y": 2,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 3,
+      "y": 3,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 3,
+      "y": 4,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 3,
+      "y": 5,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 3,
+      "y": 6,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 3,
+      "y": 7,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 4,
+      "y": 0,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 4,
+      "y": 1,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 4,
+      "y": 2,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 4,
+      "y": 3,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 4,
+      "y": 4,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 4,
+      "y": 5,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 4,
+      "y": 6,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 4,
+      "y": 7,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 5,
+      "y": 0,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 5,
+      "y": 1,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 5,
+      "y": 2,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 5,
+      "y": 3,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 5,
+      "y": 4,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 5,
+      "y": 5,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 5,
+      "y": 6,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 5,
+      "y": 7,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 6,
+      "y": 0,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 6,
+      "y": 1,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 6,
+      "y": 2,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 6,
+      "y": 3,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 6,
+      "y": 4,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 6,
+      "y": 5,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 6,
+      "y": 6,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 6,
+      "y": 7,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 7,
+      "y": 0,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 7,
+      "y": 1,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 7,
+      "y": 2,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 7,
+      "y": 3,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 7,
+      "y": 4,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 7,
+      "y": 5,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 7,
+      "y": 6,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 7,
+      "y": 7,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 8,
+      "y": 0,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 8,
+      "y": 1,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 8,
+      "y": 2,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 8,
+      "y": 3,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 8,
+      "y": 4,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 8,
+      "y": 5,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 8,
+      "y": 6,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 8,
+      "y": 7,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 9,
+      "y": 0,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 9,
+      "y": 1,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 9,
+      "y": 2,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 9,
+      "y": 3,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 9,
+      "y": 4,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 9,
+      "y": 5,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 9,
+      "y": 6,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 9,
+      "y": 7,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 10,
+      "y": 0,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 10,
+      "y": 1,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 10,
+      "y": 2,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 10,
+      "y": 3,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 10,
+      "y": 4,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 10,
+      "y": 5,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 10,
+      "y": 6,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    },
+    {
+      "x": 10,
+      "y": 7,
+      "Type": "",
+      "Number": "",
+      "Direction": "",
+      "Turn": ""
+    }
+
+  ]
+}
+

@@ -10,7 +10,14 @@ public class Gear extends Space implements SequenceAction {
 
     private Heading heading;
 
-    public Gear(Heading heading, Board board, int x, int y){
+    /**
+     * @param heading Which way to turn the player
+     * @param board   The playing board
+     * @param x       The coordinate on the x axis
+     * @param y       The coordinate on the y axis
+     * @author Nilas Thoegersen
+     */
+    public Gear(Heading heading, Board board, int x, int y) {
         super(board, x, y);
         this.heading = heading;
         board.addBoardActions(this);
@@ -25,20 +32,24 @@ public class Gear extends Space implements SequenceAction {
     }
 
     /**
-     * Check each players standing space, and if on gear, rotates the player.
-     * @author Nilas
+     * Check each player's standing space, and if on gear, rotates the player.
+     *
      * @param gameController The game controller
+     * @author Nilas
      */
     @Override
     public void doAction(GameController gameController) {
         for (Player player : board.getPlayers()
         ) {
-            if(player.getSpace().getClass().equals(this.getClass())){
-                ((Gear)player.getSpace()).turnPlayer(player);
+            if (player.getSpace().getClass().equals(this.getClass())) {
+                ((Gear) player.getSpace()).turnPlayer(player);
             }
         }
     }
 
+    /**
+     * @return Prio of the field
+     */
     @Override
     public int getPrio() {
         return 4;
@@ -46,13 +57,14 @@ public class Gear extends Space implements SequenceAction {
 
     /**
      * Turns the player either left or right, depending on the board.
-     * @author Nilas
+     *
      * @param player The player to be turned
+     * @author Nilas
      */
-    private void turnPlayer(Player player){
-        if(heading == Heading.EAST){
+    private void turnPlayer(Player player) {
+        if (heading == Heading.EAST) {
             player.getHeading().next();
-        }else{
+        } else {
             player.getHeading().prev();
         }
     }
