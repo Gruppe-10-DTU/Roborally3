@@ -48,6 +48,7 @@ public class Board extends Subject {
     public String boardName;
 
     public int playerAmount;
+    private int number = 1;
 
     private Integer gameId;
     public PriorityAntenna priorityAntenna;
@@ -94,49 +95,64 @@ public class Board extends Subject {
 
     PriorityQueue<Player> playerOrder = new PriorityQueue<>();
 
+    public Board(){
+        this.boardActions = new TreeSet<>(new SequenceActionComparator());
+    }
 
     /**
      * @param width        width of the board
      * @param height       height of the board
      * @param boardName    the board name
      * @param playerAmount The amount of players in the game
+     * @param boardArray   Json array of the board
      *                     Loads the file of the requested board and creates all the indicidual spacess on the board
      * @author Sandie Petersen
      */
-    public Board(int width, int height, @NotNull String boardName, int playerAmount) {
+    public Board(int width, int height, @NotNull String boardName, int playerAmount, JSONArray boardArray) {
         this.boardActions = new TreeSet<>(new SequenceActionComparator());
         this.boardName = boardName;
         this.playerAmount = playerAmount;
         this.width = width;
         this.height = height;
+        JSONArray courseArray = new JSONArray();
 
-        JSONArray spawnArray = new JSONReader("src/main/resources/boards/spawnBoard" + playerAmount + ".json").getJsonSpaces();
+        if(boardArray == null) {
+            JSONArray spawnArray = new JSONReader("src/main/resources/boards/spawnBoard" + playerAmount + ".json").getJsonSpaces();
 
-        JSONArray courseArray;
-        switch (boardName) {
-            case "Risky Crossing":
-                courseArray = new JSONReader("src/main/resources/boards/RiskyCrossing.json").getJsonSpaces();
-                break;
-            case "Test":
-                courseArray = new JSONReader("src/main/resources/boards/Test.json").getJsonSpaces();
-                break;
-            case "Burnout":
-                courseArray = new JSONReader("src/main/resources/boards/Burnout.json").getJsonSpaces();
-                break;
-            case "testLoad":
-                courseArray = new JSONReader("src/main/resources/savedGames/test.json").getJsonSpaces();
-            default:
-                courseArray = new JSONReader("src/main/resources/boards/RiskyCrossing.json").getJsonSpaces();
+            switch (boardName) {
+                case "Risky Crossing":
+                    courseArray = new JSONReader("src/main/resources/boards/RiskyCrossing.json").getJsonSpaces();
+                    break;
+                case "Test":
+                    courseArray = new JSONReader("src/main/resources/boards/Test.json").getJsonSpaces();
+                    break;
+                case "Burnout":
+                    courseArray = new JSONReader("src/main/resources/boards/Burnout.json").getJsonSpaces();
+                    break;
+                default:
+                    courseArray = new JSONReader("src/main/resources/boards/RiskyCrossing.json").getJsonSpaces();
+            }
+            for (int i = 0; i < spawnArray.length(); i++) {
+
+                courseArray.put(spawnArray.get(i));
+            }
+        }else{
+            JSONArray tmp;
+            for (int i = 0; i < boardArray.length(); i++) {
+                tmp = boardArray.getJSONArray(i);
+                for (int j = 0; j < tmp.length(); j++) {
+                    courseArray.put(tmp.get(j));
+                }
+            }
         }
-
         spaces = new Space[width][height];
-
+        /*
         //Loop and create the spaces of the first 3 rows, the spawn section
         for (int i = 0; i < spawnArray.length(); i++) {
 
             JSONObject current = spawnArray.getJSONObject(i);
-            int x = Integer.parseInt(current.getString("x"));
-            int y = Integer.parseInt(current.getString("y"));
+            int x = current.getInt("x");
+            int y = current.getInt("y");
 
             switch (current.getString("Type")) {
                 case "Priority":
@@ -144,7 +160,7 @@ public class Board extends Subject {
                     spaces[x][y] = priorityAntenna;
                     break;
                 case "Wall":
-                    EnumSet<Heading> walls = EnumSet.copyOf(List.of(Heading.valueOf(current.getString("Direction"))));
+                    EnumSet<Heading> walls = EnumSet.copyOf(List.of(Heading.valueOf(current.getString("Ddrection"))));
                     Space wall = new Space(this, x, y);
                     wall.setWalls(walls);
                     spaces[x][y] = wall;
@@ -160,18 +176,20 @@ public class Board extends Subject {
                     break;
             }
         }
-
+        */
         //Loop and create the remaining spaces of the first 3 rows, the course section
         Checkpoint prevChekpoint = null;
+        Heading heading = null;
+        JSONArray tmp;
         for (int i = 0; i < courseArray.length(); i++) {
 
             JSONObject current = courseArray.getJSONObject(i);
             int x = current.getInt("x");
             int y = current.getInt("y");
 
-            switch (current.getString("Type")) {
+            switch (current.getString("type")) {
                 case "Wall":
-                    EnumSet<Heading> walls = EnumSet.copyOf(List.of(Heading.valueOf(current.getString("Direction"))));
+                    EnumSet<Heading> walls = EnumSet.copyOf(List.of(Heading.valueOf(current.getString("direction"))));
                     Space wall = new Space(this, x, y);
                     wall.setWalls(walls);
                     spaces[x][y] = wall;
@@ -181,50 +199,50 @@ public class Board extends Subject {
                     spaces[x][y] = energy;
                     break;
                 case "Conveyor":
-                    Heading heading = Heading.valueOf(current.getString("Direction"));
-                    if (current.getInt("Number") == 1) {
-                        Conveyorbelt conveyorbelt;
-                        if (current.getString("Turn").equals("")) {
-                            conveyorbelt = new Conveyorbelt(this, x, y, heading);
-                        } else {
-                            Heading turn = Heading.valueOf(current.getString("Turn"));
-                            conveyorbelt = new Conveyorbelt(this, x, y, heading, turn);
-                        }
-                        spaces[x][y] = conveyorbelt;
+                    heading = Heading.valueOf(current.getString("direction"));
+                    Conveyorbelt conveyorbelt;
+                    if (!current.has("turn") || current.getString("turn").equals("")) {
+                        conveyorbelt = new Conveyorbelt(this, x, y, heading);
                     } else {
-                        FastConveyorbelt fastConveyorbelt;
-                        if (current.getString("Turn").equals("")) {
-                            fastConveyorbelt = new FastConveyorbelt(this, x, y, heading);
-                        } else {
-                            Heading turn = Heading.valueOf(current.getString("Turn"));
-                            fastConveyorbelt = new FastConveyorbelt(this, x, y, heading, turn);
-                        }
-                        spaces[x][y] = fastConveyorbelt;
+                        Heading turn = Heading.valueOf(current.getString("turn"));
+                        conveyorbelt = new Conveyorbelt(this, x, y, heading, turn);
                     }
+                    spaces[x][y] = conveyorbelt;
+                    break;
+                case "FastConveyorbelt":
+                    heading = Heading.valueOf(current.getString("direction"));
+                    FastConveyorbelt fastConveyorbelt;
+                    if (!current.has("turn") || current.getString("turn").equals("")) {
+                        fastConveyorbelt = new FastConveyorbelt(this, x, y, heading);
+                    } else {
+                        Heading turn = Heading.valueOf(current.getString("turn"));
+                        fastConveyorbelt = new FastConveyorbelt(this, x, y, heading, turn);
+                    }
+                    spaces[x][y] = fastConveyorbelt;
                     break;
                 case "CheckPoint":
                     Checkpoint checkpoint;
                     if (prevChekpoint != null) {
-                        checkpoint = new Checkpoint(this, x, y, current.getInt("Number"), prevChekpoint);
+                        checkpoint = new Checkpoint(this, x, y, current.getInt("number"), prevChekpoint);
                     } else {
-                        checkpoint = new Checkpoint(this, x, y, current.getInt("Number"));
+                        checkpoint = new Checkpoint(this, x, y, current.getInt("number"));
                     }
                     prevChekpoint = checkpoint;
                     spaces[x][y] = checkpoint;
                     break;
                 case "Lazer":
-                    Heading shootingDirection = Heading.valueOf(current.getString("Direction"));
+                    Heading shootingDirection = Heading.valueOf(current.getString("direction"));
                     BoardLaser boardLaser = new BoardLaser(this, x, y, shootingDirection);
                     spaces[x][y] = boardLaser;
                     break;
                 case "Gear":
-                    Heading turnDirection = Heading.valueOf(current.getString("Direction"));
+                    Heading turnDirection = Heading.valueOf(current.getString("direction"));
                     Gear gear = new Gear(turnDirection, this, x, y);
                     spaces[x][y] = gear;
                     break;
                 case "Push":
-                    Heading pushDirection = Heading.valueOf(current.getString("Direction"));
-                    int step = current.getInt("Number");
+                    Heading pushDirection = Heading.valueOf(current.getString("direction"));
+                    int step = current.getInt("number");
                     Push push = new Push(this, x, y, step, pushDirection);
                     spaces[x][y] = push;
                     break;
@@ -232,9 +250,25 @@ public class Board extends Subject {
                     Pit pit = new Pit(this, x, y);
                     spaces[x][y] = pit;
                     break;
+                case "Priority":
+                    this.priorityAntenna = new PriorityAntenna(this, x, y);
+                    spaces[x][y] = priorityAntenna;
+                    break;
+                case "Spawn":
+                    Space spawn = new Space(this, x, y);
+                    spaces[x][y] = spawn;
+                    //Spawn point
+                    break;
                 default:
                     Space space = new Space(this, x, y);
                     spaces[x][y] = space;
+            }
+
+            if(current.has("walls") && (tmp = current.getJSONArray("walls")).length() > 0){
+                for (int j = 0; j < tmp.length(); j++) {
+                    spaces[x][y].setWall(tmp.getEnum(Heading.class, j));
+                }
+
             }
         }
         this.stepMode = false;

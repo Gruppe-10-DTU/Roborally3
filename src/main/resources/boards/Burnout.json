@@ -3,515 +3,515 @@
     {
       "x": 10,
       "y": 4,
-      "Type": "CheckPoint",
-      "Number": 1,
-      "Direction": "",
-      "Turn": ""
+      "type": "CheckPoint",
+      "number": 1,
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 3,
       "y": 0,
-      "Type": "CheckPoint",
-      "Number": 2,
-      "Direction": "",
-      "Turn": ""
+      "type": "CheckPoint",
+      "number": 2,
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 10,
       "y": 7,
-      "Type": "CheckPoint",
-      "Number": 3,
-      "Direction": "",
-      "Turn": ""
+      "type": "CheckPoint",
+      "number": 3,
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 3,
       "y": 1,
-      "Type": "Conveyor",
-      "Number": 1,
-      "Direction": "WEST",
-      "Turn": ""
+      "type": "Conveyor",
+      "number": 1,
+      "direction": "WEST",
+      "turn": ""
     },
     {
       "x": 3,
       "y": 2,
-      "Type": "",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 3,
       "y": 3,
-      "Type": "Pit",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "Pit",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 3,
       "y": 4,
-      "Type": "",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 3,
       "y": 5,
-      "Type": "",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 3,
       "y": 6,
-      "Type": "Conveyor",
-      "Number": 2,
-      "Direction": "EAST",
-      "Turn": ""
+      "type": "FastConveyorbelt",
+      "number": 2,
+      "direction": "EAST",
+      "turn": ""
     },
     {
       "x": 3,
       "y": 7,
-      "Type": "Energy",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "Energy",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 4,
       "y": 0,
-      "Type": "Conveyor",
-      "Number": 2,
-      "Direction": "SOUTH",
-      "Turn": ""
+      "type": "FastConveyorbelt",
+      "number": 2,
+      "direction": "SOUTH",
+      "turn": ""
     },
     {
       "x": 4,
       "y": 1,
-      "Type": "",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 4,
       "y": 2,
-      "Type": "Wall",
-      "Number": "",
-      "Direction": "NORTH",
-      "Turn": ""
+      "type": "Wall",
+      "number": "",
+      "direction": "NORTH",
+      "turn": ""
     },
     {
       "x": 4,
       "y": 3,
-      "Type": "",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 4,
       "y": 4,
-      "Type": "",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 4,
       "y": 5,
-      "Type": "Lazer",
-      "Number": "",
-      "Direction": "NORTH",
-      "Turn": ""
+      "type": "Lazer",
+      "number": "",
+      "direction": "NORTH",
+      "turn": ""
     },
     {
       "x": 4,
       "y": 6,
-      "Type": "",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 4,
       "y": 7,
-      "Type": "Conveyor",
-      "Number": 1,
-      "Direction": "SOUTH",
-      "Turn": ""
+      "type": "Conveyor",
+      "number": 1,
+      "direction": "SOUTH",
+      "turn": ""
     },
     {
       "x": 5,
       "y": 0,
-      "Type": "",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 5,
       "y": 1,
-      "Type": "Lazer",
-      "Number": "",
-      "Direction": "EAST",
-      "Turn": ""
+      "type": "Lazer",
+      "number": "",
+      "direction": "EAST",
+      "turn": ""
     },
     {
       "x": 5,
       "y": 2,
-      "Type": "Conveyor",
-      "Number": 2,
-      "Direction": "NORTH",
-      "Turn": "EAST"
+      "type": "FastConveyorbelt",
+      "number": 2,
+      "direction": "NORTH",
+      "turn": "EAST"
     },
     {
       "x": 5,
       "y": 3,
-      "Type": "Conveyor",
-      "Number": 2,
-      "Direction": "NORTH",
-      "Turn": ""
+      "type": "FastConveyorbelt",
+      "number": 2,
+      "direction": "NORTH",
+      "turn": ""
     },
     {
       "x": 5,
       "y": 4,
-      "Type": "Conveyor",
-      "Number": 2,
-      "Direction": "NORTH",
-      "Turn": ""
+      "type": "FastConveyorbelt",
+      "number": 2,
+      "direction": "NORTH",
+      "turn": ""
     },
     {
       "x": 5,
       "y": 5,
-      "Type": "Conveyor",
-      "Number": 2,
-      "Direction": "WEST",
-      "Turn": "NORTH"
+      "type": "FastConveyorbelt",
+      "number": 2,
+      "direction": "WEST",
+      "turn": "NORTH"
     },
     {
       "x": 5,
       "y": 6,
-      "Type": "Wall",
-      "Number": "",
-      "Direction": "WEST",
-      "Turn": ""
+      "type": "Wall",
+      "number": "",
+      "direction": "WEST",
+      "turn": ""
     },
     {
       "x": 5,
       "y": 7,
-      "Type": "",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 6,
       "y": 0,
-      "Type": "Pit",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "Pit",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 6,
       "y": 1,
-      "Type": "",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 6,
       "y": 2,
-      "Type": "Conveyor",
-      "Number": 2,
-      "Direction": "EAST",
-      "Turn": ""
+      "type": "FastConveyorbelt",
+      "number": 2,
+      "direction": "EAST",
+      "turn": ""
     },
     {
       "x": 6,
       "y": 3,
-      "Type": "Gear",
-      "Number": "",
-      "Direction": "EAST",
-      "Turn": ""
+      "type": "Gear",
+      "number": "",
+      "direction": "EAST",
+      "turn": ""
     },
     {
       "x": 6,
       "y": 4,
-      "Type": "",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 6,
       "y": 5,
-      "Type": "Conveyor",
-      "Number": 2,
-      "Direction": "WEST",
-      "Turn": ""
+      "type": "FastConveyorbelt",
+      "number": 2,
+      "direction": "WEST",
+      "turn": ""
     },
     {
       "x": 6,
       "y": 6,
-      "Type": "",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 6,
       "y": 7,
-      "Type": "Energy",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "Energy",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 7,
       "y": 0,
-      "Type": "Energy",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "Energy",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 7,
       "y": 1,
-      "Type": "",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 7,
       "y": 2,
-      "Type": "Conveyor",
-      "Number": 2,
-      "Direction": "EAST",
-      "Turn": ""
+      "type": "FastConveyorbelt",
+      "number": 2,
+      "direction": "EAST",
+      "turn": ""
     },
     {
       "x": 7,
       "y": 3,
-      "Type": "",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 7,
       "y": 4,
-      "Type": "Energy",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "Energy",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 7,
       "y": 5,
-      "Type": "Conveyor",
-      "Number": 2,
-      "Direction": "WEST",
-      "Turn": ""
+      "type": "FastConveyorbelt",
+      "number": 2,
+      "direction": "WEST",
+      "turn": ""
     },
     {
       "x": 7,
       "y": 6,
-      "Type": "",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 7,
       "y": 7,
-      "Type": "Pit",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "Pit",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 8,
       "y": 0,
-      "Type": "",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 8,
       "y": 1,
-      "Type": "Wall",
-      "Number": "",
-      "Direction": "EAST",
-      "Turn": ""
+      "type": "Wall",
+      "number": "",
+      "direction": "EAST",
+      "turn": ""
     },
     {
       "x": 8,
       "y": 2,
-      "Type": "Conveyor",
-      "Number": 2,
-      "Direction": "EAST",
-      "Turn": "SOUTH"
+      "type": "FastConveyorbelt",
+      "number": 2,
+      "direction": "EAST",
+      "turn": "SOUTH"
     },
     {
       "x": 8,
       "y": 3,
-      "Type": "Conveyor",
-      "Number": 2,
-      "Direction": "SOUTH",
-      "Turn": ""
+      "type": "FastConveyorbelt",
+      "number": 2,
+      "direction": "SOUTH",
+      "turn": ""
     },
     {
       "x": 8,
       "y": 4,
-      "Type": "Conveyor",
-      "Number": 2,
-      "Direction": "SOUTH",
-      "Turn": ""
+      "type": "FastConveyorbelt",
+      "number": 2,
+      "direction": "SOUTH",
+      "turn": ""
     },
     {
       "x": 8,
       "y": 5,
-      "Type": "Conveyor",
-      "Number": 2,
-      "Direction": "SOUTH",
-      "Turn": "WEST"
+      "type": "FastConveyorbelt",
+      "number": 2,
+      "direction": "SOUTH",
+      "turn": "WEST"
     },
     {
       "x": 8,
       "y": 6,
-      "Type": "Lazer",
-      "Number": "",
-      "Direction": "WEST",
-      "Turn": ""
+      "type": "Lazer",
+      "number": "",
+      "direction": "WEST",
+      "turn": ""
     },
     {
       "x": 8,
       "y": 7,
-      "Type": "",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 9,
       "y": 0,
-      "Type": "Conveyor",
-      "Number": 1,
-      "Direction": "NORTH",
-      "Turn": ""
+      "type": "Conveyor",
+      "number": 1,
+      "direction": "NORTH",
+      "turn": ""
     },
     {
       "x": 9,
       "y": 1,
-      "Type": "",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 9,
       "y": 2,
-      "Type": "Lazer",
-      "Number": "",
-      "Direction": "SOUTH",
-      "Turn": ""
+      "type": "Lazer",
+      "number": "",
+      "direction": "SOUTH",
+      "turn": ""
     },
     {
       "x": 9,
       "y": 3,
-      "Type": "",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 9,
       "y": 4,
-      "Type": "",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 9,
       "y": 5,
-      "Type": "Wall",
-      "Number": "",
-      "Direction": "SOUTH",
-      "Turn": ""
+      "type": "Wall",
+      "number": "",
+      "direction": "SOUTH",
+      "turn": ""
     },
     {
       "x": 9,
       "y": 6,
-      "Type": "",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 9,
       "y": 7,
-      "Type": "Conveyor",
-      "Number": 2,
-      "Direction": "NORTH",
-      "Turn": ""
+      "type": "FastConveyorbelt",
+      "number": 2,
+      "direction": "NORTH",
+      "turn": ""
     },
     {
       "x": 10,
       "y": 0,
-      "Type": "Energy",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "Energy",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 10,
       "y": 1,
-      "Type": "Conveyor",
-      "Number": 2,
-      "Direction": "WEST",
-      "Turn": ""
+      "type": "FastConveyorbelt",
+      "number": 2,
+      "direction": "WEST",
+      "turn": ""
     },
     {
       "x": 10,
       "y": 2,
-      "Type": "",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 10,
       "y": 3,
-      "Type": "Pit",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "Pit",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
 
     {
       "x": 10,
       "y": 5,
-      "Type": "",
-      "Number": "",
-      "Direction": "",
-      "Turn": ""
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
     },
     {
       "x": 10,
       "y": 6,
-      "Type": "Conveyor",
-      "Number": 1,
-      "Direction": "EAST",
-      "Turn": ""
+      "type": "Conveyor",
+      "number": 1,
+      "direction": "EAST",
+      "turn": ""
     }
   ]
 }

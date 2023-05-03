@@ -24,11 +24,10 @@ package dk.dtu.compute.se.pisd.roborally.view;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.*;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElements.PriorityAntenna;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElements.PriorityAntenna;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
-import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -85,7 +84,7 @@ public class SpaceView extends StackPane implements ViewObserver {
         } else if (space instanceof Conveyorbelt conveyorbelt) {
             //More is needed
 
-            Heading heading = conveyorbelt.getHeading();
+            Heading heading = conveyorbelt.getDirection();
             Heading turn = conveyorbelt.getTurn();
             if (turn != null) {
                 spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_NORTH_WEST.png");

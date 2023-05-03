@@ -35,8 +35,10 @@ import javafx.scene.control.TextInputDialog;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -82,6 +84,7 @@ public class AppController implements Observer, EndGame {
         }
 
         ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
+
         dialog.setTitle("Player number");
         dialog.setHeaderText("Select number of players");
         Optional<Integer> result = dialog.showAndWait();
@@ -100,7 +103,7 @@ public class AppController implements Observer, EndGame {
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
 
-            Board board = new Board(11, 8, selectedBoard, result.get());
+            Board board = new Board(11, 8, selectedBoard, result.get(), null);
 
 
             gameController = new GameController(board, this);
@@ -142,12 +145,25 @@ public class AppController implements Observer, EndGame {
     }
 
     public void loadGame() {
+        String[] files;
+        try {
+            URL pathUrl = AppController.class.getClassLoader().getResource("savedGames/");
+            if ((pathUrl != null) && pathUrl.getProtocol().equals("file")) {
+                files = new File(pathUrl.toURI()).list();
+            }else return;
+        }catch (Exception e){
+            System.out.println("No files found");
+            return;
+        }
 
-        Board board = JSONReader.loadGame("test.json");
-        gameController = new GameController(board, this);
+        Optional<String> gameName = new ChoiceDialog<String>("Please select a file", files).showAndWait();
+        if(!gameName.isEmpty()) {
+            Board board = JSONReader.loadGame(gameName.get());
+            gameController = new GameController(board, this);
 
 
-        roboRally.createBoardView(gameController);
+            roboRally.createBoardView(gameController);
+        }
     }
 
     /**

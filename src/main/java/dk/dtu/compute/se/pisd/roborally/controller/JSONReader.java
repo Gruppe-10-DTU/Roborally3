@@ -2,8 +2,6 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
@@ -16,11 +14,11 @@ import dk.dtu.compute.se.pisd.roborally.model.Cards.CommandCard;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.DamageCard;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -55,17 +53,16 @@ public class JSONReader {
         RuntimeTypeAdapterFactory<Space> spaceRuntimeTypeAdapterFactory = RuntimeTypeAdapterFactory.of(
                         Space.class)
                 .registerSubtype(Space.class)
-                .registerSubtype(BoardLaser.class)
+                .registerSubtype(BoardLaser.class, "Lazer")
                 .registerSubtype(Checkpoint.class)
-                .registerSubtype(Conveyorbelt.class)
+                .registerSubtype(Conveyorbelt.class, "Conveyor")
                 .registerSubtype(Energy.class)
                 .registerSubtype(FastConveyorbelt.class)
                 .registerSubtype(Gear.class)
                 .registerSubtype(Push.class)
                 .registerSubtype(Pit.class)
-                .registerSubtype(PriorityAntenna.class)
+                .registerSubtype(PriorityAntenna.class, "Priority")
                 .registerSubtype(RebootToken.class);
-
         RuntimeTypeAdapterFactory<Card> cardRuntimeTypeAdapterFactory = RuntimeTypeAdapterFactory.of(Card.class, "cardtype")
                 .registerSubtype(CommandCard.class)
                 .registerSubtype(DamageCard.class);
@@ -80,39 +77,21 @@ public class JSONReader {
 
     public static Board loadGame(String filename) {
 
-        RuntimeTypeAdapterFactory<Space> spaceRuntimeTypeAdapterFactory = RuntimeTypeAdapterFactory.of(
-
-                        Space.class)
-                .registerSubtype(Space.class)
-                .registerSubtype(BoardLaser.class)
-                .registerSubtype(Checkpoint.class)
-                .registerSubtype(Conveyorbelt.class)
-                .registerSubtype(Energy.class)
-                .registerSubtype(FastConveyorbelt.class)
-                .registerSubtype(Gear.class)
-                .registerSubtype(Push.class)
-                .registerSubtype(Pit.class)
-                .registerSubtype(PriorityAntenna.class)
-                .registerSubtype(RebootToken.class);
-
-
         RuntimeTypeAdapterFactory<Card> cardRuntimeTypeAdapterFactory = RuntimeTypeAdapterFactory.of(Card.class, "cardtype")
                 .registerSubtype(CommandCard.class)
                 .registerSubtype(DamageCard.class);
         GsonBuilder gsonBuilder = new GsonBuilder()
-                .registerTypeAdapterFactory(spaceRuntimeTypeAdapterFactory)
                 .registerTypeAdapterFactory(cardRuntimeTypeAdapterFactory)
                 .setPrettyPrinting();
         gson = gsonBuilder.create();
 
         try {
-            JsonParser parser = new JsonParser();
-            JsonObject object = parser.parse(new BufferedReader(new FileReader("src/main/resources/savedGames/test.json"))).getAsJsonObject();
-
-            Board board = new Board(object.get("width").getAsInt(), object.get("height").getAsInt(), object.get("boardName").getAsString(), object.get("playerAmount").getAsInt());
-
+            String gameName = "savedGames/" + filename;
+            InputStream jsonStream = JSONReader.class.getClassLoader().getResourceAsStream(gameName);
+            JSONObject object = new JSONObject(IOUtils.toString(jsonStream,StandardCharsets.UTF_8));
+            Board board = new Board(object.getInt("width"), object.getInt("height"), object.getString("boardName"), object.getInt("playerAmount"), object.getJSONArray("spaces"));
             Type token = new TypeToken<ArrayList<Player>>(){}.getType();
-            String playersString = object.get("players").getAsJsonArray().toString();
+            String playersString = object.getJSONArray("players").toString();
 
             List<Player> players = gson.fromJson(playersString, token);
             for (Player player : players
@@ -123,10 +102,10 @@ public class JSONReader {
                 board.addPlayer(player);
                 space.setPlayer(player);
             }
-            board.setCurrentPlayer(board.getPlayerByName(object.getAsJsonObject("current").get("name").getAsString()));
+            board.setCurrentPlayer(board.getPlayerByName(object.getJSONObject("current").getString("name")));
             return board;
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
             return null;
         }
 

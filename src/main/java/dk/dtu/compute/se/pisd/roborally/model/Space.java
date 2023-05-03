@@ -63,6 +63,10 @@ public class Space extends Subject {
         this.walls = walls;
     }
 
+    public void setWall(Heading wall){
+        this.walls.add(wall);
+    }
+
     /**
      * Checks if there's a wall in the field the object is trying to move into
      *
