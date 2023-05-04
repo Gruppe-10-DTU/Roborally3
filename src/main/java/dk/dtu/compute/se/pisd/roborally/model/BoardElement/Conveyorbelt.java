@@ -95,7 +95,9 @@ public class Conveyorbelt extends Space implements SequenceAction {
             space = player.getSpace();
             if (space.getClass().equals(this.getClass())) {
                 space = board.getNeighbour(player.getSpace(), ((Conveyorbelt) space).getExit());
-                if (space.getPlayer() == null || space.getClass().equals(this.getClass())) {
+                if (space == null) {
+                    gameController.rebootRobot(player);
+                } else if (space.getPlayer() == null || space.getClass().equals(this.getClass())) {
                     targetSpace.put(player, space);
                 }
             }

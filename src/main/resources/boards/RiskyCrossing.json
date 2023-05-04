@@ -95,8 +95,8 @@
       "y": 3,
       "Type": "Conveyor",
       "Number": 1,
-      "Direction": "EAST",
-      "Turn": "SOUTH"
+      "Direction": "WEST",
+      "Turn": "EAST"
     },
     {
       "x": 4,
@@ -120,7 +120,7 @@
       "Type": "Conveyor",
       "Number": 2,
       "Direction": "EAST",
-      "Turn": "SOUTH"
+      "Turn": "WEST"
     },
     {
       "x": 4,
@@ -142,8 +142,8 @@
       "y": 1,
       "Type": "Conveyor",
       "Number": 1,
-      "Direction": "EAST",
-      "Turn": "SOUTH"
+      "Direction": "WEST",
+      "Turn": "EAST"
     },
     {
       "x": 5,
@@ -231,8 +231,8 @@
       "y": 5,
       "Type": "Conveyor",
       "Number": 1,
-      "Direction": "WEST",
-      "Turn": "SOUTH"
+      "Direction": "EAST",
+      "Turn": "WEST"
     },
     {
       "x": 6,
@@ -262,7 +262,7 @@
       "Type": "Conveyor",
       "Number": 1,
       "Direction": "NORTH",
-      "Turn": "WEST"
+      "Turn": "EAST"
     },
     {
       "x": 7,
@@ -270,7 +270,7 @@
       "Type": "Conveyor",
       "Number": 1,
       "Direction": "WEST",
-      "Turn": "NORTH"
+      "Turn": "WEST"
     },
     {
       "x": 7,
@@ -343,7 +343,7 @@
       "Type": "Conveyor",
       "Number": 1,
       "Direction": "NORTH",
-      "Turn": "EAST"
+      "Turn": "WEST"
     },
     {
       "x": 8,
@@ -359,7 +359,7 @@
       "Type": "Conveyor",
       "Number": 1,
       "Direction": "EAST",
-      "Turn": "NORTH"
+      "Turn": "EAST"
     },
     {
       "x": 8,
@@ -382,7 +382,7 @@
       "Type": "Conveyor",
       "Number": 2,
       "Direction": "WEST",
-      "Turn": "NORTH"
+      "Turn": "WEST"
     },
     {
       "x": 9,
@@ -390,7 +390,7 @@
       "Type": "Conveyor",
       "Number": 1,
       "Direction": "NORTH",
-      "Turn": "WEST"
+      "Turn": "EAST"
     },
     {
       "x": 9,
@@ -406,7 +406,7 @@
       "Type": "Conveyor",
       "Number": 1,
       "Direction": "EAST",
-      "Turn": "NORTH"
+      "Turn": "EAST"
     },
     {
       "x": 9,
@@ -421,7 +421,7 @@
       "Type": "Conveyor",
       "Number": 2,
       "Direction": "NORTH",
-      "Turn": "EAST"
+      "Turn": "WEST"
     },
     {
       "x": 9,
