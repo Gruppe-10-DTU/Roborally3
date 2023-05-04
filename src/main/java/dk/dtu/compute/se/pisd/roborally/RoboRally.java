@@ -35,7 +35,6 @@ import javafx.stage.Stage;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class RoboRally extends Application {
 
@@ -43,9 +42,6 @@ public class RoboRally extends Application {
 
     private Stage stage;
     private BorderPane boardRoot;
-    // private RoboRallyMenuBar menuBar;
-
-    // private AppController appController;
 
     @Override
     public void init() throws Exception {
@@ -58,7 +54,7 @@ public class RoboRally extends Application {
 
         AppController appController = new AppController(this);
 
-        // create the primary scene with the a menu bar and a pane for
+        // create the primary scene with a menu bar and a pane for
         // the board view (which initially is empty); it will be filled
         // when the user creates a new game or loads a game
         RoboRallyMenuBar menuBar = new RoboRallyMenuBar(appController);
@@ -72,7 +68,8 @@ public class RoboRally extends Application {
         stage.setOnCloseRequest(
                 e -> {
                     e.consume();
-                    appController.exit();} );
+                    appController.exit();
+                });
         stage.setResizable(true);
         stage.sizeToScene();
         stage.show();

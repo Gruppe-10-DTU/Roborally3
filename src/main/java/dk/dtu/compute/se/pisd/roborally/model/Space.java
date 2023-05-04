@@ -22,7 +22,6 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElements.BoardElement;
 
 import java.util.EnumSet;
 
@@ -30,49 +29,75 @@ import java.util.EnumSet;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class Space extends Subject {
 
-    public final Board board;
+    public transient final Board board;
 
     public final int x;
+
     public final int y;
 
-    private Player player;
-    private BoardElement boardElement;
+    protected transient Player player;
+
+    private String background = "Empty";
     private EnumSet<Heading> walls;
 
 
+    /**
+     * @param board The playing board
+     * @param x     The coordinate on the x axis
+     * @param y     The coordinate on the y axis
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
     public Space(Board board, int x, int y) {
         this.board = board;
         this.x = x;
         this.y = y;
         player = null;
+        board.setSpace(this);
+        walls = EnumSet.noneOf(Heading.class);
     }
-    public void setWalls(EnumSet<Heading> walls){
 
+    public void setWalls(EnumSet<Heading> walls) {
         this.walls = walls;
-
     }
 
+    public void setWall(Heading wall){
+        this.walls.add(wall);
+    }
 
-    public boolean hasWall(Heading heading){
-        if (walls == null){
-            return false;
-        }
-        return switch (heading) {
-            case NORTH -> walls.contains(Heading.SOUTH);
-            case SOUTH -> walls.contains(Heading.NORTH);
-            case EAST -> walls.contains(Heading.WEST);
-            case WEST -> walls.contains(Heading.EAST);
-        };
+    /**
+     *
+     * Checks if there's a wall in the field the object is trying to move into
+     *
+     * @param heading The moving direction
+     * @return true if there's a wall in the way, otherwise false.
+     */
+    public boolean hasWall(Heading heading) {
+        return walls.contains(heading.reverse());
+    }
+
+    /**
+     * @param heading The way a player is moving
+     * @return Boolean saying if it's possible to move out of the space
+     * @author Nilas Thoegersen
+     */
+    public boolean getOut(Heading heading) {
+        return walls.contains(heading);
     }
 
     public Player getPlayer() {
         return player;
     }
 
+    /**
+     * Method to move a player onto the field
+     * Dublivated in the Player class
+     *
+     * @param player The player moving there
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
     public void setPlayer(Player player) {
         Player oldPlayer = this.player;
         if (player != oldPlayer &&
@@ -96,4 +121,8 @@ public class Space extends Subject {
         notifyChange();
     }
 
+    public EnumSet<Heading> getWalls() {
+        return walls;
+    }
+    public String toString(){ return x + " " + y;}
 }

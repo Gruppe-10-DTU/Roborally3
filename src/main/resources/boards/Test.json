@@ -1,0 +1,517 @@
+{
+  "spaces": [
+    {
+      "x": 3,
+      "y": 0,
+      "type": "Checkpoint",
+      "number": 1,
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 3,
+      "y": 1,
+      "type": "Empty",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 3,
+      "y": 2,
+      "type": "Empty",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 3,
+      "y": 3,
+      "type": "Push",
+      "number": 1,
+      "direction": "EAST",
+      "turn": ""
+    },
+    {
+      "x": 3,
+      "y": 4,
+      "type": "Empty",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 3,
+      "y": 5,
+      "type": "Empty",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 3,
+      "y": 6,
+      "type": "Empty",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 3,
+      "y": 7,
+      "type": "Conveyor",
+      "number": 1,
+      "direction": "EAST",
+      "turn": ""
+    },
+    {
+      "x": 4,
+      "y": 0,
+      "type": "Empty",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 4,
+      "y": 1,
+      "type": "Empty",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 4,
+      "y": 2,
+      "type": "Pit",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 4,
+      "y": 3,
+      "type": "Push",
+      "number": 2,
+      "direction": "NORTH",
+      "turn": ""
+    },
+    {
+      "x": 4,
+      "y": 4,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 4,
+      "y": 5,
+      "type": "Gear",
+      "number": "",
+      "direction": "EAST",
+      "turn": ""
+    },
+    {
+      "x": 4,
+      "y": 6,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 4,
+      "y": 7,
+      "type": "Conveyor",
+      "number": 1,
+      "direction": "EAST",
+      "turn": ""
+    },
+    {
+      "x": 5,
+      "y": 0,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 5,
+      "y": 1,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 5,
+      "y": 2,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 5,
+      "y": 3,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 5,
+      "y": 4,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 5,
+      "y": 5,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 5,
+      "y": 6,
+      "type": "Conveyor",
+      "number": 1,
+      "direction": "NORTH",
+      "turn": ""
+    },
+    {
+      "x": 5,
+      "y": 7,
+      "type": "Conveyor",
+      "number": 1,
+      "direction": "EAST",
+      "turn": "NORTH"
+    },
+    {
+      "x": 6,
+      "y": 0,
+      "type": "Checkpoint",
+      "number": 2,
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 6,
+      "y": 1,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 6,
+      "y": 2,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 6,
+      "y": 3,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 6,
+      "y": 4,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 6,
+      "y": 5,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 6,
+      "y": 6,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 6,
+      "y": 7,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 7,
+      "y": 0,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 7,
+      "y": 1,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 7,
+      "y": 2,
+      "type": "Energy",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 7,
+      "y": 3,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 7,
+      "y": 4,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 7,
+      "y": 5,
+      "type": "Gear",
+      "number": "",
+      "direction": "WEST",
+      "turn": ""
+    },
+    {
+      "x": 7,
+      "y": 6,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 7,
+      "y": 7,
+      "type": "Conveyor",
+      "number": 2,
+      "direction": "EAST",
+      "turn": ""
+    },
+    {
+      "x": 8,
+      "y": 0,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 8,
+      "y": 1,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 8,
+      "y": 2,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 8,
+      "y": 3,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 8,
+      "y": 4,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 8,
+      "y": 5,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 8,
+      "y": 6,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 8,
+      "y": 7,
+      "type": "Conveyor",
+      "number": 2,
+      "direction": "EAST",
+      "turn": ""
+    },
+    {
+      "x": 9,
+      "y": 0,
+      "type": "Checkpoint",
+      "number": 3,
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 9,
+      "y": 1,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 9,
+      "y": 2,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 9,
+      "y": 3,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 9,
+      "y": 4,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 9,
+      "y": 5,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 9,
+      "y": 6,
+      "type": "Conveyor",
+      "number": 2,
+      "direction": "NORTH",
+      "turn": ""
+    },
+    {
+      "x": 9,
+      "y": 7,
+      "type": "Conveyor",
+      "number": 2,
+      "direction": "EAST",
+      "turn": "NORTH"
+    },
+    {
+      "x": 10,
+      "y": 0,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 10,
+      "y": 1,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 10,
+      "y": 2,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 10,
+      "y": 3,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 10,
+      "y": 4,
+      "type": "Lazer",
+      "number": "",
+      "direction": "WEST",
+      "turn": ""
+    },
+    {
+      "x": 10,
+      "y": 5,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 10,
+      "y": 6,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    },
+    {
+      "x": 10,
+      "y": 7,
+      "type": "",
+      "number": "",
+      "direction": "",
+      "turn": ""
+    }
+
+  ]
+}

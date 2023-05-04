@@ -22,40 +22,87 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.model.Cards.Card;
+import dk.dtu.compute.se.pisd.roborally.model.Cards.CommandCardField;
+import dk.dtu.compute.se.pisd.roborally.model.Cards.PlayerCardDeck;
 import org.jetbrains.annotations.NotNull;
 
-import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
+import static dk.dtu.compute.se.pisd.roborally.model.Heading.EAST;
 
 /**
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class Player extends Subject implements Comparable<Player> {
 
     final public static int NO_REGISTERS = 5;
     final public static int NO_CARDS = 8;
 
-    final public Board board;
+    transient public Board board;
 
     private String name;
     private String color;
 
     private Space space;
     private int priority;
-    private Heading heading = SOUTH;
-    private CmdCardDeck deck;
+    private Heading heading = EAST;
+    private final PlayerCardDeck deck;
 
-    private CommandCardField[] program;
-    private CommandCardField[] cards;
+    private int energy;
 
+    public int getEnergy() {
+        return energy;
+    }
+
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
+
+    /**
+     * Increase the energy of the player
+     *
+     * @author Nilas Thoegersen
+     */
+    public void incrementEnergy() {
+        this.energy++;
+    }
+
+    private final CommandCardField[] program;
+    private final CommandCardField[] cards;
+
+    /**
+     * @param board The playing board
+     * @param color The color of the plyaer
+     * @param name  The name of the player
+     * @authorEkkart Kindler, ekki@dtu.dk
+     * @author Sandie Petersen
+     * @author Philip Astrup Cramer
+     * @author Nilas Thoegersen
+     */
     public Player(@NotNull Board board, String color, @NotNull String name) {
         this.board = board;
         this.name = name;
         this.color = color;
-        this.deck = new CmdCardDeck();
+        this.deck = new PlayerCardDeck();
         this.space = null;
+        this.energy = 0;
+
+        program = new CommandCardField[NO_REGISTERS];
+        for (int i = 0; i < program.length; i++) {
+            program[i] = new CommandCardField(this);
+        }
+
+        cards = new CommandCardField[NO_CARDS];
+        for (int i = 0; i < cards.length; i++) {
+            cards[i] = new CommandCardField(this);
+        }
+    }
+
+    Player(){
+        this.deck = new PlayerCardDeck();
+        this.space = null;
+        this.energy = 0;
 
         program = new CommandCardField[NO_REGISTERS];
         for (int i = 0; i < program.length; i++) {
@@ -72,6 +119,12 @@ public class Player extends Subject implements Comparable<Player> {
         return name;
     }
 
+    /**
+     * Updates the players name
+     *
+     * @param name The player name
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
     public void setName(String name) {
         if (name != null && !name.equals(this.name)) {
             this.name = name;
@@ -86,6 +139,12 @@ public class Player extends Subject implements Comparable<Player> {
         return color;
     }
 
+    /**
+     * Update the players color
+     *
+     * @param color The new color
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
     public void setColor(String color) {
         this.color = color;
         notifyChange();
@@ -98,6 +157,13 @@ public class Player extends Subject implements Comparable<Player> {
         return space;
     }
 
+    /**
+     * Sets the players new position, and update the old fields plyaer value.
+     * Will not execute if the space doesn't change
+     *
+     * @param space The new space of the player
+     * @author
+     */
     public void setSpace(Space space) {
         Space oldSpace = this.space;
         if (space != oldSpace &&
@@ -117,6 +183,12 @@ public class Player extends Subject implements Comparable<Player> {
         return heading;
     }
 
+    /**
+     * Changes the players heading and update the player
+     *
+     * @param heading The new heading of the player
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
     public void setHeading(@NotNull Heading heading) {
         if (heading != this.heading) {
             this.heading = heading;
@@ -135,13 +207,20 @@ public class Player extends Subject implements Comparable<Player> {
         return cards[i];
     }
 
-    public CommandCard drawCard() {
+    /**
+     * Draw a card from the players deck
+     *
+     * @return A card from the deck
+     * @author Philip Astrup Cramer
+     */
+    public Card drawCard() {
         return this.deck.drawCard();
     }
 
-    public void discardCard(CommandCard card) {
+    public void discardCard(Card card) {
         this.deck.discard(card);
     }
+
     public int getPriority() {
         return priority;
     }
@@ -150,6 +229,12 @@ public class Player extends Subject implements Comparable<Player> {
         this.priority = priority;
     }
 
+    /**
+     * @author Sandie Petersen
+     * @param o the object to be compared.
+     * @return The priority of the object
+     * Used to compare the priorities of the players
+     */
     @Override
     public int compareTo(@NotNull Player o) {
         return Integer.compare(this.priority, o.priority);

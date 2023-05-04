@@ -19,7 +19,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package dk.dtu.compute.se.pisd.roborally.model;
+package dk.dtu.compute.se.pisd.roborally.model.Cards;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -29,28 +29,25 @@ import java.util.List;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public enum Command {
 
     // This is a very simplistic way of realizing different commands.
 
     FORWARD("Fwd", 6),
-    REVERSE("Reverse",1),
-    RIGHT("Turn Right",1),
-    LEFT("Turn Left",1),
-    UTURN("U-Turn",1),
-    FAST_FORWARD("Fast Fwd",6),
+    REVERSE("Reverse", 1),
+    RIGHT("Turn Right", 1),
+    LEFT("Turn Left", 1),
+    UTURN("U-Turn", 1),
+    FAST_FORWARD("Fast Fwd", 6),
 
     // XXX Assignment P3
-    OPTION_LEFT_RIGHT("Left OR Right",1, LEFT, RIGHT);
+    OPTION_LEFT_RIGHT("Left OR Right", 1, LEFT, RIGHT);
 
 
+    public String displayName;
 
-
-    final public String displayName;
-
-    final int cardAmount;
+    int cardAmount;
 
     // XXX Assignment P3
     // Command(String displayName) {
@@ -59,9 +56,9 @@ public enum Command {
     //
     // replaced by the code below:
 
-    final private List<Command> options;
+    private List<Command> options;
 
-    Command(String displayName,int cardAmount, Command... options) {
+    Command(String displayName, int cardAmount, Command... options) {
         this.displayName = displayName;
         this.cardAmount = cardAmount;
         this.options = Collections.unmodifiableList(Arrays.asList(options));
@@ -74,7 +71,8 @@ public enum Command {
     public List<Command> getOptions() {
         return options;
     }
-    public int getAmount(){
+
+    public int getAmount() {
         return this.cardAmount;
     }
 }

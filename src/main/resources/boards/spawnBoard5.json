@@ -1,0 +1,137 @@
+{
+  "spaces": [
+    {
+      "x": "0",
+      "y": "0",
+      "type": "Empty"
+    },
+    {
+      "x": "0",
+      "y": "1",
+      "type": "Empty"
+    },
+    {
+      "x": "0",
+      "y": "2",
+      "type": "Spawn",
+      "number": 1
+    },
+    {
+      "x": "0",
+      "y": "3",
+      "type": "Priority"
+    },
+    {
+      "x": "0",
+      "y": "4",
+      "type": "Empty"
+    },
+    {
+      "x": "0",
+      "y": "5",
+      "type": "Spawn",
+      "number": 1
+    },
+    {
+      "x": "0",
+      "y": "6",
+      "type": "Empty"
+    },
+    {
+      "x": "0",
+      "y": "7",
+      "type": "Empty"
+    },
+    {
+      "x": "1",
+      "y": "0",
+      "type": "Spawn",
+      "number": 1
+    },
+    {
+      "x": "1",
+      "y": "1",
+      "type": "Wall",
+      "direction": "NORTH"
+    },
+    {
+      "x": "1",
+      "y": "2",
+      "type": "Wall",
+      "direction": "EAST"
+    },
+    {
+      "x": "1",
+      "y": "3",
+      "type": "Empty"
+    },
+    {
+      "x": "1",
+      "y": "4",
+      "type": "Spawn",
+      "number": 1
+    },
+    {
+      "x": "1",
+      "y": "5",
+      "type": "Wall",
+      "direction": "EAST"
+    },
+    {
+      "x": "1",
+      "y": "6",
+      "type": "Wall",
+      "direction": "SOUTH"
+    },
+    {
+      "x": "1",
+      "y": "7",
+      "type": "Spawn",
+      "number": 1
+    },
+    {
+      "x": "2",
+      "y": "0",
+      "type": "Wall",
+      "direction": "EAST"
+    },
+    {
+      "x": "2",
+      "y": "1",
+      "type": "Empty"
+    },
+    {
+      "x": "2",
+      "y": "2",
+      "type": "Empty"
+    },
+    {
+      "x": "2",
+      "y": "3",
+      "type": "Wall",
+      "direction": "EAST"
+    },
+    {
+      "x": "2",
+      "y": "4",
+      "type": "Wall",
+      "direction": "EAST"
+    },
+    {
+      "x": "2",
+      "y": "5",
+      "type": "Empty"
+    },
+    {
+      "x": "2",
+      "y": "6",
+      "type": "Empty"
+    },
+    {
+      "x": "2",
+      "y": "7",
+      "type": "Wall",
+      "direction": "EAST"
+    }
+  ]
+}

@@ -1,0 +1,487 @@
+{
+  "spaces": [
+    {
+      "x": 10,
+      "y": 5,
+      "type": "Checkpoint",
+      "number": 1,
+      "direction": ""
+    },
+    {
+      "x": 4,
+      "y": 2,
+      "type": "Checkpoint",
+      "number": 2,
+      "direction": ""
+    },
+    {
+      "x": 3,
+      "y": 7,
+      "type": "Checkpoint",
+      "number": 3,
+      "direction": ""
+    },
+    {
+      "x": 3,
+      "y": 0,
+      "type": "Empty",
+      "number": "",
+      "direction": ""
+    },
+    {
+      "x": 3,
+      "y": 1,
+      "type": "FastConveyorbelt",
+      "number": 2,
+      "direction": "WEST",
+      "turn": ""
+    },
+    {
+      "x": 3,
+      "y": 2,
+      "type": "Empty",
+      "number": "",
+      "direction": ""
+    },
+    {
+      "x": 3,
+      "y": 3,
+      "type": "Empty",
+      "number": "",
+      "direction": ""
+    },
+    {
+      "x": 3,
+      "y": 4,
+      "type": "Empty",
+      "number": "",
+      "direction": ""
+    },
+    {
+      "x": 3,
+      "y": 5,
+      "type": "Empty",
+      "number": "",
+      "direction": ""
+    },
+    {
+      "x": 3,
+      "y": 6,
+      "type": "FastConveyorbelt",
+      "number": 2,
+      "direction": "EAST",
+      "turn": ""
+    },
+
+    {
+      "x": 4,
+      "y": 0,
+      "type": "FastConveyorbelt",
+      "number": 2,
+      "direction": "SOUTH",
+      "turn": ""
+    },
+    {
+      "x": 4,
+      "y": 1,
+      "type": "FastConveyorbelt",
+      "number": 2,
+      "direction": "SOUTH",
+      "turn": "WEST"
+    },
+
+    {
+      "x": 4,
+      "y": 3,
+      "type": "Conveyor",
+      "number": 1,
+      "direction": "WEST",
+      "turn": "EAST"
+    },
+    {
+      "x": 4,
+      "y": 4,
+      "type": "Conveyor",
+      "number": 1,
+      "direction": "SOUTH",
+      "turn": ""
+    },
+    {
+      "x": 4,
+      "y": 5,
+      "type": "Conveyor",
+      "number": 1,
+      "direction": "SOUTH",
+      "turn": "EAST"
+    },
+    {
+      "x": 4,
+      "y": 6,
+      "type": "FastConveyorbelt",
+      "number": 2,
+      "direction": "EAST",
+      "turn": "WEST"
+    },
+    {
+      "x": 4,
+      "y": 7,
+      "type": "FastConveyorbelt",
+      "number": 2,
+      "direction": "SOUTH",
+      "turn": ""
+    },
+    {
+      "x": 5,
+      "y": 0,
+      "type": "Empty",
+      "number": "",
+      "direction": ""
+    },
+    {
+      "x": 5,
+      "y": 1,
+      "type": "Conveyor",
+      "number": 1,
+      "direction": "WEST",
+      "turn": "EAST"
+    },
+    {
+      "x": 5,
+      "y": 2,
+      "type": "Conveyor",
+      "number": 1,
+      "direction": "SOUTH",
+      "turn": ""
+    },
+    {
+      "x": 5,
+      "y": 3,
+      "type": "Conveyor",
+      "number": 1,
+      "direction": "SOUTH",
+      "turn": "WEST"
+    },
+    {
+      "x": 5,
+      "y": 4,
+      "type": "Energy",
+      "number": "",
+      "direction": ""
+    },
+    {
+      "x": 5,
+      "y": 5,
+      "type": "Conveyor",
+      "number": 1,
+      "direction": "EAST",
+      "turn": ""
+    },
+    {
+      "x": 5,
+      "y": 6,
+      "type": "Empty",
+      "number": "",
+      "direction": ""
+    },
+    {
+      "x": 5,
+      "y": 7,
+      "type": "Empty",
+      "number": "",
+      "direction": ""
+    },
+    {
+      "x": 6,
+      "y": 0,
+      "type": "Empty",
+      "number": "",
+      "direction": ""
+    },
+    {
+      "x": 6,
+      "y": 1,
+      "type": "Conveyor",
+      "number": 1,
+      "direction": "WEST",
+      "turn": ""
+    },
+    {
+      "x": 6,
+      "y": 2,
+      "type": "Energy",
+      "number": "",
+      "direction": ""
+    },
+    {
+      "x": 6,
+      "y": 3,
+      "type": "Empty",
+      "number": "",
+      "direction": ""
+    },
+    {
+      "x": 6,
+      "y": 4,
+      "type": "Empty",
+      "number": "",
+      "direction": ""
+    },
+    {
+      "x": 6,
+      "y": 5,
+      "type": "Conveyor",
+      "number": 1,
+      "direction": "EAST",
+      "turn": "WEST"
+    },
+    {
+      "x": 6,
+      "y": 6,
+      "type": "Conveyor",
+      "number": 1,
+      "direction": "SOUTH",
+      "turn": "EAST"
+    },
+    {
+      "x": 6,
+      "y": 7,
+      "type": "Empty",
+      "number": "",
+      "direction": ""
+    },
+    {
+      "x": 7,
+      "y": 0,
+      "type": "Empty",
+      "number": "",
+      "direction": ""
+    },
+    {
+      "x": 7,
+      "y": 1,
+      "type": "Conveyor",
+      "number": 1,
+      "direction": "NORTH",
+      "turn": "EAST"
+    },
+    {
+      "x": 7,
+      "y": 2,
+      "type": "Conveyor",
+      "number": 1,
+      "direction": "WEST",
+      "turn": "WEST"
+    },
+    {
+      "x": 7,
+      "y": 3,
+      "type": "Empty",
+      "number": "",
+      "direction": ""
+    },
+    {
+      "x": 7,
+      "y": 4,
+      "type": "Empty",
+      "number": "",
+      "direction": ""
+    },
+    {
+      "x": 7,
+      "y": 5,
+      "type": "Energy",
+      "number": "",
+      "direction": ""
+    },
+    {
+      "x": 7,
+      "y": 6,
+      "type": "Conveyor",
+      "number": 1,
+      "direction": "EAST",
+      "turn": ""
+    },
+    {
+      "x": 7,
+      "y": 7,
+      "type": "Empty",
+      "number": "",
+      "direction": ""
+    },
+    {
+      "x": 8,
+      "y": 0,
+      "type": "Empty",
+      "number": "",
+      "direction": ""
+    },
+    {
+      "x": 8,
+      "y": 1,
+      "type": "Empty",
+      "number": "",
+      "direction": ""
+    },
+    {
+      "x": 8,
+      "y": 2,
+      "type": "Conveyor",
+      "number": 1,
+      "direction": "WEST",
+      "turn": ""
+    },
+    {
+      "x": 8,
+      "y": 3,
+      "type": "Energy",
+      "number": "",
+      "direction": ""
+    },
+    {
+      "x": 8,
+      "y": 4,
+      "type": "Conveyor",
+      "number": 1,
+      "direction": "NORTH",
+      "turn": "WEST"
+    },
+    {
+      "x": 8,
+      "y": 5,
+      "type": "Conveyor",
+      "number": 1,
+      "direction": "NORTH",
+      "turn": ""
+    },
+    {
+      "x": 8,
+      "y": 6,
+      "type": "Conveyor",
+      "number": 1,
+      "direction": "EAST",
+      "turn": "EAST"
+    },
+    {
+      "x": 8,
+      "y": 7,
+      "type": "Empty",
+      "number": "",
+      "direction": ""
+    },
+    {
+      "x": 9,
+      "y": 0,
+      "type": "FastConveyorbelt",
+      "number": 2,
+      "direction": "NORTH",
+      "turn": ""
+    },
+    {
+      "x": 9,
+      "y": 1,
+      "type": "FastConveyorbelt",
+      "number": 2,
+      "direction": "WEST",
+      "turn": "WEST"
+    },
+    {
+      "x": 9,
+      "y": 2,
+      "type": "Conveyor",
+      "number": 1,
+      "direction": "NORTH",
+      "turn": "EAST"
+    },
+    {
+      "x": 9,
+      "y": 3,
+      "type": "Conveyor",
+      "number": 1,
+      "direction": "NORTH",
+      "turn": ""
+    },
+    {
+      "x": 9,
+      "y": 4,
+      "type": "Conveyor",
+      "number": 1,
+      "direction": "EAST",
+      "turn": "EAST"
+    },
+    {
+      "x": 9,
+      "y": 5,
+      "type": "Empty",
+      "number": "",
+      "direction": ""
+    },
+    {
+      "x": 9,
+      "y": 6,
+      "type": "FastConveyorbelt",
+      "number": 2,
+      "direction": "NORTH",
+      "turn": "WEST"
+    },
+    {
+      "x": 9,
+      "y": 7,
+      "type": "FastConveyorbelt",
+      "number": 2,
+      "direction": "NORTH",
+      "turn": ""
+    },
+    {
+      "x": 10,
+      "y": 0,
+      "type": "Reboot",
+      "number": "",
+      "direction": "SOUTH"
+    },
+    {
+      "x": 10,
+      "y": 1,
+      "type": "FastConveyorbelt",
+      "number": 2,
+      "direction": "WEST",
+      "turn": ""
+    },
+    {
+      "x": 10,
+      "y": 2,
+      "type": "Empty",
+      "number": "",
+      "direction": ""
+    },
+    {
+      "x": 10,
+      "y": 3,
+      "type": "Empty",
+      "number": "",
+      "direction": ""
+    },
+    {
+      "x": 10,
+      "y": 4,
+      "type": "Empty",
+      "number": "",
+      "direction": ""
+    },
+    {
+      "x": 10,
+      "y": 6,
+      "type": "FastConveyorbelt",
+      "number": 2,
+      "direction": "EAST",
+      "turn": ""
+    },
+    {
+      "x": 10,
+      "y": 7,
+      "type": "Empty",
+      "number": "",
+      "direction": ""
+    }
+
+  ]
+}

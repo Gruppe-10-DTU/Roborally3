@@ -22,12 +22,16 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.JSONReader;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElement.*;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElements.PriorityAntenna;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
 
@@ -35,48 +39,268 @@ import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class Board extends Subject {
-    public final int width;
+    public int width;
 
-    public final int height;
+    public int height;
 
-    public final String boardName;
+    public String boardName;
+
+    public int playerAmount;
+    private int number = 1;
 
     private Integer gameId;
+    public PriorityAntenna priorityAntenna;
 
-    private final Space[][] spaces;
+    public Space[][] spaces;
 
-    private final List<Player> players = new ArrayList<>();
+    public List<Player> players = new ArrayList<>();
 
-    private Player current;
+    public Player current;
 
-    private Phase phase = INITIALISATION;
+    public Phase phase = INITIALISATION;
 
-    private int step = 0;
+    public int step = 0;
 
-    private boolean stepMode;
+    public boolean stepMode;
+    public Checkpoint wincondition;
+
+    private PriorityQueue<Spawn> spawnPriority = new PriorityQueue<>();
+
+    public Checkpoint getWincondition() {
+        return wincondition;
+    }
+
+    /**
+     * Sets the final win condition
+     *
+     * @param wincondition The final checkpoint
+     * @author Nilas Thoegersen
+     */
+    public void setWincondition(Checkpoint wincondition) {
+        this.wincondition = wincondition;
+    }
+
+    private final TreeSet<SequenceAction> boardActions;
+
+
+    private RebootToken rebootToken;
+
+    public RebootToken getRebootToken() {
+        return rebootToken;
+    }
+
+    private Pit pit;
+    public Pit getPit() {return pit;}
+    public void setPit(Pit pit) {
+        this.pit = pit;
+    }
+
+    public void setRebootToken(RebootToken rebootToken) {
+        this.rebootToken = rebootToken;
+    }
 
     PriorityQueue<Player> playerOrder = new PriorityQueue<>();
 
+    public Board(){
+        this.boardActions = new TreeSet<>(new SequenceActionComparator());
+    }
 
+    /**
+     * @param width        width of the board
+     * @param height       height of the board
+     * @param boardName    the board name
+     * @param playerAmount The amount of players in the game
+     * @param boardArray   Json array of the board
+     *                     Loads the file of the requested board and creates all the indicidual spacess on the board
+     * @author Sandie Petersen
+     */
+    public Board(int width, int height, @NotNull String boardName, int playerAmount, JSONArray boardArray) {
+        this.boardActions = new TreeSet<>(new SequenceActionComparator());
+        this.boardName = boardName;
+        this.playerAmount = playerAmount;
+        this.width = width;
+        this.height = height;
+        JSONArray courseArray = new JSONArray();
+
+        if(boardArray == null) {
+            JSONArray spawnArray = new JSONReader("src/main/resources/boards/spawnBoard" + playerAmount + ".json").getJsonSpaces();
+
+            switch (boardName) {
+                case "Risky Crossing":
+                    courseArray = new JSONReader("src/main/resources/boards/RiskyCrossing.json").getJsonSpaces();
+                    break;
+                case "Test":
+                    courseArray = new JSONReader("src/main/resources/boards/Test.json").getJsonSpaces();
+                    break;
+                case "Burnout":
+                    courseArray = new JSONReader("src/main/resources/boards/Burnout.json").getJsonSpaces();
+                    break;
+                default:
+                    courseArray = new JSONReader("src/main/resources/boards/RiskyCrossing.json").getJsonSpaces();
+            }
+            for (int i = 0; i < spawnArray.length(); i++) {
+
+                courseArray.put(spawnArray.get(i));
+            }
+        }else{
+            JSONArray tmp;
+            for (int i = 0; i < boardArray.length(); i++) {
+                tmp = boardArray.getJSONArray(i);
+                for (int j = 0; j < tmp.length(); j++) {
+                    courseArray.put(tmp.get(j));
+                }
+            }
+        }
+        spaces = new Space[width][height];
+
+        //Loop and create the remaining spaces of the first 3 rows, the course section
+        Checkpoint prevChekpoint = null;
+        Heading heading = null;
+        JSONArray tmp;
+        Checkpoint[] checkpoints = new Checkpoint[3];
+        for (int i = 0; i < courseArray.length(); i++) {
+
+            JSONObject current = courseArray.getJSONObject(i);
+            int x = current.getInt("x");
+            int y = current.getInt("y");
+
+            switch (current.getString("type")) {
+                case "Wall":
+                    EnumSet<Heading> walls = EnumSet.copyOf(List.of(Heading.valueOf(current.getString("direction"))));
+                    Space wall = new Space(this, x, y);
+                    wall.setWalls(walls);
+                    spaces[x][y] = wall;
+                    break;
+                case "Energy":
+                    Energy energy = new Energy(this, x, y);
+                    spaces[x][y] = energy;
+                    break;
+                case "Conveyor":
+                    heading = Heading.valueOf(current.getString("direction"));
+                    Conveyorbelt conveyorbelt;
+                    if (!current.has("turn") || current.getString("turn").equals("")) {
+                        conveyorbelt = new Conveyorbelt(this, x, y, heading);
+                    } else {
+                        Heading turn = Heading.valueOf(current.getString("turn"));
+                        conveyorbelt = new Conveyorbelt(this, x, y, heading, turn);
+                    }
+                    spaces[x][y] = conveyorbelt;
+                    break;
+                case "FastConveyorbelt":
+                    heading = Heading.valueOf(current.getString("direction"));
+                    FastConveyorbelt fastConveyorbelt;
+                    if (!current.has("turn") || current.getString("turn").equals("")) {
+                        fastConveyorbelt = new FastConveyorbelt(this, x, y, heading);
+                    } else {
+                        Heading turn = Heading.valueOf(current.getString("turn"));
+                        fastConveyorbelt = new FastConveyorbelt(this, x, y, heading, turn);
+                    }
+                    spaces[x][y] = fastConveyorbelt;
+                    break;
+                case "Checkpoint":
+                    Checkpoint checkpoint = new Checkpoint(this, x, y, current.getInt("number"));
+                    spaces[x][y] = checkpoint;
+                    checkpoints[checkpoint.getNumber() - 1] = checkpoint;
+                    break;
+                case "Lazer":
+                    Heading shootingDirection = Heading.valueOf(current.getString("direction"));
+                    BoardLaser boardLaser = new BoardLaser(this, x, y, shootingDirection);
+                    spaces[x][y] = boardLaser;
+                    break;
+                case "Gear":
+                    Heading turnDirection = Heading.valueOf(current.getString("direction"));
+                    Gear gear = new Gear(turnDirection, this, x, y);
+                    spaces[x][y] = gear;
+                    break;
+                case "Push":
+                    Heading pushDirection = Heading.valueOf(current.getString("direction"));
+                    int step = current.getInt("number");
+                    Push push = new Push(this, x, y, step, pushDirection);
+                    spaces[x][y] = push;
+                    break;
+                case "Pit":
+                    Pit pit = new Pit(this, x, y);
+                    spaces[x][y] = pit;
+                    break;
+                case "Priority":
+                    this.priorityAntenna = new PriorityAntenna(this, x, y);
+                    spaces[x][y] = priorityAntenna;
+                    break;
+                case "Reboot" :
+                    Heading exit = Heading.valueOf(current.getString("direction"));
+                    RebootToken rebootToken = new RebootToken(this, x, y, exit);
+                    spaces[x][y] = rebootToken;
+                    break;
+                case "Spawn":
+                    int priority = current.getInt("number");
+                    Spawn spawn = new Spawn(this,x,y,priority);
+                    spawnPriority.add(spawn);
+                    spaces[x][y] = spawn;
+                    //Spawn point
+                    break;
+                default:
+                    Space space = new Space(this, x, y);
+                    spaces[x][y] = space;
+            }
+
+            if(current.has("walls") && (tmp = current.getJSONArray("walls")).length() > 0){
+                for (int j = 0; j < tmp.length(); j++) {
+                    spaces[x][y].setWall(tmp.getEnum(Heading.class, j));
+                }
+
+            }
+        }
+        for (int i = checkpoints.length - 1; i > 0; i--) {
+            checkpoints[i].setPrevious(checkpoints[i-1]);
+        }
+        this.wincondition = checkpoints[2];
+        this.stepMode = false;
+    }
+
+    /**
+     * Contructor of the board
+     *
+     * @param width     Width of the board
+     * @param height    Height of the board
+     * @param boardName Name of the board
+     */
     public Board(int width, int height, @NotNull String boardName) {
         this.boardName = boardName;
+        this.boardActions = new TreeSet<>(new SequenceActionComparator());
         this.width = width;
         this.height = height;
         spaces = new Space[width][height];
         for (int x = 0; x < width; x++) {
-            for(int y = 0; y < height; y++) {
+            for (int y = 0; y < height; y++) {
                 Space space = new Space(this, x, y);
                 spaces[x][y] = space;
             }
         }
         this.stepMode = false;
-        priorityAntenna = new PriorityAntenna(spaces[4][0]);
     }
 
-    private PriorityAntenna priorityAntenna;
+    public void setSpace(Space space) {
+        spaces[space.x][space.y] = space;
+    }
+
+
+    /**
+     * @param sequenceAction Adds a sequence action to the array of actions needing to be executed at the end of each turn
+     * @author Nilas Thoegersen
+     */
+    public void addBoardActions(SequenceAction sequenceAction) {
+        this.boardActions.add(sequenceAction);
+    }
+
+    public Set<SequenceAction> getBoardActions() {
+        return boardActions;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
 
     public Board(int width, int height) {
         this(width, height, "defaultboard");
@@ -94,6 +318,10 @@ public class Board extends Subject {
                 throw new IllegalStateException("A game with a set id may not be assigned a new id!");
             }
         }
+    }
+
+    public Space getSpace(Space space){
+        return getSpace(space.x, space.y);
     }
 
     public Space getSpace(int x, int y) {
@@ -124,35 +352,45 @@ public class Board extends Subject {
         }
     }
 
+    public Player getPlayerByName(String name){
+        return players.stream().filter(x-> x.getName().equals(name)).findAny().orElse(null);
+    }
+
     /**
-     * @auther Sandie Petersen
+     * @author Sandie Petersen
      * clears the queue if needed
      * calculates the player priority and adds them to the queue
      */
     public void calculatePlayerOrder() {
         playerOrder.clear();
 
-        Space start = priorityAntenna.getSpace();
+        Integer[] start = priorityAntenna.getSpace();
 
         for (Player player : players) {
             Space playerSpace = player.getSpace();
-            player.setPriority(Math.abs((playerSpace.x - start.x)) + Math.abs(playerSpace.y - start.y));
+            player.setPriority(Math.abs((playerSpace.x - start[0])) + Math.abs(playerSpace.y - start[1]));
             playerOrder.add(player);
         }
     }
 
     /**
-     * @auther Sandie Petersen
-     * polls the next player if possible
      * @return true if possible
+     * @author Sandie Petersen
+     * polls the next player if possible
      */
     public boolean nextPlayer() {
         if (playerOrder.size() > 0) {
             current = playerOrder.poll();
             return true;
         } else return false;
+    }
 
-
+    /**
+     * @Auther Sandie Petersen
+     * @return The next available spawn space
+     */
+    public Spawn nextSpawn() {
+        return spawnPriority.remove();
     }
 
     public Player getCurrentPlayer() {
@@ -213,7 +451,7 @@ public class Board extends Subject {
      * (no walls or obstacles in either of the involved spaces); otherwise,
      * null will be returned.
      *
-     * @param space the space for which the neighbour should be computed
+     * @param space   the space for which the neighbour should be computed
      * @param heading the heading of the neighbour
      * @return the space in the given direction; null if there is no (reachable) neighbour
      */
@@ -222,21 +460,42 @@ public class Board extends Subject {
         int y = space.y;
         switch (heading) {
             case SOUTH:
-                y = (y + 1) % height;
+                y = (y + 1);
                 break;
             case WEST:
-                x = (x + width - 1) % width;
+                x = (x - 1);
                 break;
             case NORTH:
-                y = (y + height - 1) % height;
+                y = (y - 1);
                 break;
             case EAST:
-                x = (x + 1) % width;
+                x = (x + 1);
                 break;
         }
-
         return getSpace(x, y);
     }
+
+    /**
+     * Calculates which players are within a given range
+     * and returns an ArrayList of them
+     *
+     * @param centerPlayer The player calculating the range from
+     * @return An list of players within the range of the players
+     * @author Philip Astrup Cramer
+     */
+    public ArrayList<Player> playersInRange(Player centerPlayer, int range) {
+        ArrayList<Player> result = new ArrayList<>();
+        for (Player otherPLayer : this.players) {
+            int distX = Math.abs((centerPlayer.getSpace().x - otherPLayer.getSpace().x));
+            int distY = Math.abs((centerPlayer.getSpace().y - otherPLayer.getSpace().y));
+            if (distX + distY <= range) {
+                result.add(otherPLayer);
+            }
+        }
+        result.remove(centerPlayer);
+        return result;
+    }
+
     public String getStatusMessage() {
         // this is actually a view aspect, but for making assignment V1 easy for
         // the students, this method gives a string representation of the current
@@ -247,5 +506,6 @@ public class Board extends Subject {
                 ", Player = " + getCurrentPlayer().getName() +
                 ", Step: " + getStep();
     }
+
 
 }

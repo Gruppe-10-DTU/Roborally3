@@ -1,10 +1,10 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
-import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
+import dk.dtu.compute.se.pisd.roborally.model.Cards.CommandCard;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +22,7 @@ class GameControllerTest {
     @BeforeEach
     void setUp() {
         Board board = new Board(TEST_WIDTH, TEST_HEIGHT);
-        gameController = new GameController(board);
+        gameController = new GameController(board, null);
         for (int i = 0; i < 6; i++) {
             Player player = new Player(board, null,"Player " + i);
             board.addPlayer(player);
@@ -102,6 +102,7 @@ class GameControllerTest {
     @Test
     void pushRobotsOnWalls(){
         Board board = gameController.board;
+        gameController.startProgrammingPhase();
         board.getNeighbour(board.getSpace(3,3),Heading.EAST).setWalls(EnumSet.range(Heading.SOUTH, Heading.EAST));
         Player pusher = board.getCurrentPlayer();
         Player pushed1 = board.getPlayer(1);
@@ -113,13 +114,30 @@ class GameControllerTest {
         Assertions.assertEquals(pusher.getSpace(),board.getSpace(1,3), "Player " + pusher.getName() + " should be on space (1,3)");
         Assertions.assertEquals(pushed1.getSpace(),board.getSpace(2,3), "Player " + pushed1.getName() + " should be on space (2,3)");
         Assertions.assertEquals(pushed2.getSpace(),board.getSpace(3,3), "Player " + pushed2.getName() + " should be on space (3,3)");
-        Assertions.assertEquals(board.getNeighbour(board.getSpace(3,3),Heading.EAST).hasWall(Heading.EAST),true, "Space " + board.getSpace(3,3) + " should have a wall facing the east side");
+        Assertions.assertEquals(true,board.getSpace(4,3).hasWall(Heading.EAST), "Space " + board.getSpace(3,3) + " should have a wall facing the east side");
         pusher.setHeading(Heading.EAST);
+        gameController.fastForward(board.getCurrentPlayer());
         gameController.moveForward(board.getCurrentPlayer());
-        Assertions.assertEquals(pusher.getSpace(),board.getSpace(1,3), "Player " + pusher.getName() + " should be on space (1,3)");
-        Assertions.assertEquals(pushed1.getSpace(),board.getSpace(2,3), "Player " + pushed1.getName() + " should be on space (2,3)");
-        Assertions.assertEquals(pushed2.getSpace(),board.getSpace(3,3), "Player " + pushed2.getName() + " should be on space (3,3)");
-
+        Assertions.assertEquals(pusher.getSpace(),board.getSpace(2,3), "Player " + pusher.getName() + " should be on space (2,3)");
+        Assertions.assertEquals(pushed1.getSpace(),board.getSpace(3,3), "Player " + pushed1.getName() + " should be on space (3,3)");
+        Assertions.assertEquals(pushed2.getSpace(),board.getSpace(4,3), "Player " + pushed2.getName() + " should be on space (4,3)");
     }
-
+    @Test
+    void rebootRobot() {
+        Board board = gameController.board;
+        gameController.startProgrammingPhase();
+        Player moveOutOfBounds = board.getCurrentPlayer();
+        RebootToken rb = new RebootToken(board,2,2,Heading.EAST);
+        board.setRebootToken(rb);
+        moveOutOfBounds.setSpace(board.getSpace(0,0));
+        moveOutOfBounds.setHeading(Heading.NORTH);
+        moveOutOfBounds.getProgramField(0).setCard(moveOutOfBounds.drawCard());
+        Assertions.assertSame(moveOutOfBounds.drawCard().getType(),moveOutOfBounds.getProgramField(0).getCard().getType(), "Player only has command type cards in deck, and the programmed card should alas be a command!");
+        //Check to see if player is moved to reboot token square.
+        Assertions.assertSame(moveOutOfBounds.getSpace(), board.getSpace(0, 0), "Player " + moveOutOfBounds.getName() + " should be on space (0,0)!");
+        gameController.moveForward(moveOutOfBounds);
+        Assertions.assertSame(moveOutOfBounds.getSpace(), board.getSpace(2, 2), "Player " + moveOutOfBounds.getName() + " should be moved to space (2,2)!");
+        //Checking to see if reboot has set card to null!
+        Assertions.assertSame(null,moveOutOfBounds.getProgramField(0).getCard(), "Since player is rebooting; Program field should be empty!");
+    }
 }
