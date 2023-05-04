@@ -14,19 +14,19 @@ import java.util.Map;
 public class Conveyorbelt extends Space implements SequenceAction {
 
 
-    protected final Heading heading;
+    protected final Heading direction;
     protected Heading turn;
 
     /**
      * @param board   The playing board
      * @param x       The coordinate on the x axis
      * @param y       The coordinate on the y axis
-     * @param heading The way the conveyorbelt is moving
+     * @param direction The way the conveyorbelt is moving
      * @author Nilas Thoegersen
      */
-    public Conveyorbelt(Board board, int x, int y, Heading heading) {
+    public Conveyorbelt(Board board, int x, int y, Heading direction) {
         super(board, x, y);
-        this.heading = heading;
+        this.direction = direction;
         board.addBoardActions(this);
     }
 
@@ -34,14 +34,14 @@ public class Conveyorbelt extends Space implements SequenceAction {
      * @param board   The playing board
      * @param x       The coordinate on the x axis
      * @param y       The coordinate on the y axis
-     * @param heading The way the conveyorbelt is moving
+     * @param direction The way the conveyorbelt is moving
      * @param turn    The way the conveyorbelt is turning
      * @author Nilas Thoegersen
      */
-    public Conveyorbelt(Board board, int x, int y, Heading heading, Heading turn) {
+    public Conveyorbelt(Board board, int x, int y, Heading direction, Heading turn) {
         super(board, x, y);
         board.addBoardActions(this);
-        this.heading = heading;
+        this.direction = direction;
         this.turn = turn;
     }
 
@@ -69,11 +69,11 @@ public class Conveyorbelt extends Space implements SequenceAction {
      */
     protected Heading getExit(){
         if (turn == Heading.EAST) {
-            return heading.prev();
+            return turn.prev();
         } else if (turn == Heading.WEST) {
-            return heading.next();
+            return turn.next();
         }else{
-            return heading;
+            return turn;
         }
     }
 
@@ -84,6 +84,8 @@ public class Conveyorbelt extends Space implements SequenceAction {
      * @param gameController The main controller for the game
      * @author Nilas
      */
+
+    //TODO: Gør funktionen mere generel så den kan bruges i FastConveyorbelt
     @Override
     public void doAction(GameController gameController) {
         //Target of the move
@@ -112,8 +114,8 @@ public class Conveyorbelt extends Space implements SequenceAction {
         }
     }
 
-    public Heading getHeading() {
-        return heading;
+    public Heading getDirection() {
+        return direction;
     }
 
     public Heading getTurn() {

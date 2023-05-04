@@ -6,15 +6,16 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Checkpoint extends Space implements SequenceAction {
 
     private Checkpoint previous;
 
-    private final Set<Player> players;
+    private Set<Player> players;
 
-    private final int checkpointNumber;
+    private int number;
 
     /**
      * @param board  The playing board
@@ -27,7 +28,7 @@ public class Checkpoint extends Space implements SequenceAction {
     public Checkpoint(Board board, int x, int y, int number) {
         super(board, x, y);
         this.players = new HashSet<>(board.getPlayersNumber());
-        this.checkpointNumber = number;
+        this.number = number;
     }
 
     /**
@@ -42,10 +43,18 @@ public class Checkpoint extends Space implements SequenceAction {
     public Checkpoint(Board board, int x, int y, int number, Checkpoint previous) {
         super(board, x, y);
         this.players = new HashSet<>(board.getPlayersNumber());
-        this.checkpointNumber = number;
+        this.number = number;
         this.previous = previous;
         board.addBoardActions(this);
         board.setWincondition(this);
+    }
+
+    public Checkpoint getPrevious() {
+        return previous;
+    }
+
+    public void setPrevious(Checkpoint previous) {
+        this.previous = previous;
     }
 
     /**
@@ -78,9 +87,6 @@ public class Checkpoint extends Space implements SequenceAction {
         return this.players.contains(player);
     }
 
-    public int getCheckpointNumber() {
-        return checkpointNumber;
-    }
 
     /**
      * @param gameController The main controller for the game
@@ -94,6 +100,18 @@ public class Checkpoint extends Space implements SequenceAction {
                 ((Checkpoint) player.getSpace()).addPlayer(player);
             }
         }
+    }
+
+    public void setPlayers(List<Player> players){
+        this.players.addAll(players);
+    }
+
+    public List<Player> getPlayers(){
+
+        return players.stream().toList();
+    }
+    public int getNumber(){
+        return this.number;
     }
 
     /**

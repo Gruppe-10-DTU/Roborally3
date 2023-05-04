@@ -1,17 +1,16 @@
 package dk.dtu.compute.se.pisd.roborally.model.BoardElement;
 
 import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import org.jetbrains.annotations.NotNull;
 
 public class Spawn extends Space implements Comparable<Spawn> {
 
-    int playerPriority;
+    int number;
 
-    public Spawn(Board board, int x, int y, int playerPriority) {
+    public Spawn(Board board, int x, int y, int number) {
         super(board, x, y);
-        this.playerPriority = playerPriority;
+        this.number = number;
     }
 
     /**
@@ -23,6 +22,6 @@ public class Spawn extends Space implements Comparable<Spawn> {
 
     @Override
     public int compareTo(@NotNull Spawn spawn) {
-        return Integer.compare(this.playerPriority, spawn.playerPriority);
+        return Integer.compare(this.number, spawn.number);
     }
 }

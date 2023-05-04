@@ -25,6 +25,7 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.JSONReader;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.*;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElements.PriorityAntenna;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -40,29 +41,30 @@ import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public class Board extends Subject {
-    public final int width;
+    public int width;
 
-    public final int height;
+    public int height;
 
-    public final String boardName;
+    public String boardName;
 
     public int playerAmount;
+    private int number = 1;
 
     private Integer gameId;
-    private PriorityAntenna priorityAntenna;
+    public PriorityAntenna priorityAntenna;
 
-    private final Space[][] spaces;
+    public Space[][] spaces;
 
-    private final List<Player> players = new ArrayList<>();
+    public List<Player> players = new ArrayList<>();
 
-    private Player current;
+    public Player current;
 
-    private Phase phase = INITIALISATION;
+    public Phase phase = INITIALISATION;
 
-    private int step = 0;
+    public int step = 0;
 
-    private boolean stepMode;
-    private Checkpoint wincondition;
+    public boolean stepMode;
+    public Checkpoint wincondition;
 
     private PriorityQueue<Spawn> spawnPriority = new PriorityQueue<>();
 
@@ -99,85 +101,74 @@ public class Board extends Subject {
         this.rebootToken = rebootToken;
     }
 
-    final PriorityQueue<Player> playerOrder = new PriorityQueue<>();
+    PriorityQueue<Player> playerOrder = new PriorityQueue<>();
 
+    public Board(){
+        this.boardActions = new TreeSet<>(new SequenceActionComparator());
+    }
 
     /**
      * @param width        width of the board
      * @param height       height of the board
      * @param boardName    the board name
      * @param playerAmount The amount of players in the game
+     * @param boardArray   Json array of the board
      *                     Loads the file of the requested board and creates all the indicidual spacess on the board
      * @author Sandie Petersen
      */
-    public Board(int width, int height, @NotNull String boardName, int playerAmount) {
+    public Board(int width, int height, @NotNull String boardName, int playerAmount, JSONArray boardArray) {
         this.boardActions = new TreeSet<>(new SequenceActionComparator());
         this.boardName = boardName;
         this.playerAmount = playerAmount;
         this.width = width;
         this.height = height;
+        JSONArray courseArray = new JSONArray();
 
-        JSONArray spawnArray = new JSONReader("src/main/resources/boards/spawnBoard" + playerAmount + ".json").getJsonSpaces();
+        if(boardArray == null) {
+            JSONArray spawnArray = new JSONReader("src/main/resources/boards/spawnBoard" + playerAmount + ".json").getJsonSpaces();
 
-        JSONArray courseArray;
-        switch (boardName) {
-            case "Risky Crossing":
-                courseArray = new JSONReader("src/main/resources/boards/RiskyCrossing.json").getJsonSpaces();
-                break;
-            case "Test":
-                courseArray = new JSONReader("src/main/resources/boards/Test.json").getJsonSpaces();
-                break;
-            case "Burnout":
-                courseArray = new JSONReader("src/main/resources/boards/Burnout.json").getJsonSpaces();
-                break;
-            default:
-                courseArray = new JSONReader("src/main/resources/boards/RiskyCrossing.json").getJsonSpaces();
-        }
-
-        spaces = new Space[width][height];
-
-        //Loop and create the spaces of the first 3 rows, the spawn section
-        for (int i = 0; i < spawnArray.length(); i++) {
-
-            JSONObject current = spawnArray.getJSONObject(i);
-            int x = Integer.parseInt(current.getString("x"));
-            int y = Integer.parseInt(current.getString("y"));
-
-            switch (current.getString("Type")) {
-                case "Priority":
-                    this.priorityAntenna = new PriorityAntenna(this, x, y);
-                    spaces[x][y] = priorityAntenna;
+            switch (boardName) {
+                case "Risky Crossing":
+                    courseArray = new JSONReader("src/main/resources/boards/RiskyCrossing.json").getJsonSpaces();
                     break;
-                case "Wall":
-                    EnumSet<Heading> walls = EnumSet.copyOf(List.of(Heading.valueOf(current.getString("Direction"))));
-                    Space wall = new Space(this, x, y);
-                    wall.setWalls(walls);
-                    spaces[x][y] = wall;
+                case "Test":
+                    courseArray = new JSONReader("src/main/resources/boards/Test.json").getJsonSpaces();
                     break;
-                case "Spawn":
-                    int priority = current.getInt("Number");
-                    Spawn spawn = new Spawn(this,x,y,priority);
-                    spawnPriority.add(spawn);
-                    spaces[x][y] = spawn;
+                case "Burnout":
+                    courseArray = new JSONReader("src/main/resources/boards/Burnout.json").getJsonSpaces();
                     break;
                 default:
-                    Space space = new Space(this, x, y);
-                    spaces[x][y] = space;
-                    break;
+                    courseArray = new JSONReader("src/main/resources/boards/RiskyCrossing.json").getJsonSpaces();
+            }
+            for (int i = 0; i < spawnArray.length(); i++) {
+
+                courseArray.put(spawnArray.get(i));
+            }
+        }else{
+            JSONArray tmp;
+            for (int i = 0; i < boardArray.length(); i++) {
+                tmp = boardArray.getJSONArray(i);
+                for (int j = 0; j < tmp.length(); j++) {
+                    courseArray.put(tmp.get(j));
+                }
             }
         }
+        spaces = new Space[width][height];
 
         //Loop and create the remaining spaces of the first 3 rows, the course section
         Checkpoint prevChekpoint = null;
+        Heading heading = null;
+        JSONArray tmp;
+        Checkpoint[] checkpoints = new Checkpoint[3];
         for (int i = 0; i < courseArray.length(); i++) {
 
             JSONObject current = courseArray.getJSONObject(i);
             int x = current.getInt("x");
             int y = current.getInt("y");
 
-            switch (current.getString("Type")) {
+            switch (current.getString("type")) {
                 case "Wall":
-                    EnumSet<Heading> walls = EnumSet.copyOf(List.of(Heading.valueOf(current.getString("Direction"))));
+                    EnumSet<Heading> walls = EnumSet.copyOf(List.of(Heading.valueOf(current.getString("direction"))));
                     Space wall = new Space(this, x, y);
                     wall.setWalls(walls);
                     spaces[x][y] = wall;
@@ -187,50 +178,45 @@ public class Board extends Subject {
                     spaces[x][y] = energy;
                     break;
                 case "Conveyor":
-                    Heading heading = Heading.valueOf(current.getString("Direction"));
-                    if (current.getInt("Number") == 1) {
-                        Conveyorbelt conveyorbelt;
-                        if (current.getString("Turn").equals("")) {
-                            conveyorbelt = new Conveyorbelt(this, x, y, heading);
-                        } else {
-                            Heading turn = Heading.valueOf(current.getString("Turn"));
-                            conveyorbelt = new Conveyorbelt(this, x, y, heading, turn);
-                        }
-                        spaces[x][y] = conveyorbelt;
+                    heading = Heading.valueOf(current.getString("direction"));
+                    Conveyorbelt conveyorbelt;
+                    if (!current.has("turn") || current.getString("turn").equals("")) {
+                        conveyorbelt = new Conveyorbelt(this, x, y, heading);
                     } else {
-                        FastConveyorbelt fastConveyorbelt;
-                        if (current.getString("Turn").equals("")) {
-                            fastConveyorbelt = new FastConveyorbelt(this, x, y, heading);
-                        } else {
-                            Heading turn = Heading.valueOf(current.getString("Turn"));
-                            fastConveyorbelt = new FastConveyorbelt(this, x, y, heading, turn);
-                        }
-                        spaces[x][y] = fastConveyorbelt;
+                        Heading turn = Heading.valueOf(current.getString("turn"));
+                        conveyorbelt = new Conveyorbelt(this, x, y, heading, turn);
                     }
+                    spaces[x][y] = conveyorbelt;
                     break;
-                case "CheckPoint":
-                    Checkpoint checkpoint;
-                    if (prevChekpoint != null) {
-                        checkpoint = new Checkpoint(this, x, y, current.getInt("Number"), prevChekpoint);
+                case "FastConveyorbelt":
+                    heading = Heading.valueOf(current.getString("direction"));
+                    FastConveyorbelt fastConveyorbelt;
+                    if (!current.has("turn") || current.getString("turn").equals("")) {
+                        fastConveyorbelt = new FastConveyorbelt(this, x, y, heading);
                     } else {
-                        checkpoint = new Checkpoint(this, x, y, current.getInt("Number"));
+                        Heading turn = Heading.valueOf(current.getString("turn"));
+                        fastConveyorbelt = new FastConveyorbelt(this, x, y, heading, turn);
                     }
-                    prevChekpoint = checkpoint;
+                    spaces[x][y] = fastConveyorbelt;
+                    break;
+                case "Checkpoint":
+                    Checkpoint checkpoint = new Checkpoint(this, x, y, current.getInt("number"));
                     spaces[x][y] = checkpoint;
+                    checkpoints[checkpoint.getNumber() - 1] = checkpoint;
                     break;
                 case "Lazer":
-                    Heading shootingDirection = Heading.valueOf(current.getString("Direction"));
+                    Heading shootingDirection = Heading.valueOf(current.getString("direction"));
                     BoardLaser boardLaser = new BoardLaser(this, x, y, shootingDirection);
                     spaces[x][y] = boardLaser;
                     break;
                 case "Gear":
-                    Heading turnDirection = Heading.valueOf(current.getString("Direction"));
+                    Heading turnDirection = Heading.valueOf(current.getString("direction"));
                     Gear gear = new Gear(turnDirection, this, x, y);
                     spaces[x][y] = gear;
                     break;
                 case "Push":
-                    Heading pushDirection = Heading.valueOf(current.getString("Direction"));
-                    int step = current.getInt("Number");
+                    Heading pushDirection = Heading.valueOf(current.getString("direction"));
+                    int step = current.getInt("number");
                     Push push = new Push(this, x, y, step, pushDirection);
                     spaces[x][y] = push;
                     break;
@@ -238,18 +224,39 @@ public class Board extends Subject {
                     Pit pit = new Pit(this, x, y);
                     spaces[x][y] = pit;
                     break;
+                case "Priority":
+                    this.priorityAntenna = new PriorityAntenna(this, x, y);
+                    spaces[x][y] = priorityAntenna;
+                    break;
                 case "Reboot" :
-                    Heading exit = Heading.valueOf(current.getString("Direction"));
+                    Heading exit = Heading.valueOf(current.getString("direction"));
                     RebootToken rebootToken = new RebootToken(this, x, y, exit);
                     spaces[x][y] = rebootToken;
+                    break;
+                case "Spawn":
+                    int priority = current.getInt("number");
+                    Spawn spawn = new Spawn(this,x,y,priority);
+                    spawnPriority.add(spawn);
+                    spaces[x][y] = spawn;
+                    //Spawn point
                     break;
                 default:
                     Space space = new Space(this, x, y);
                     spaces[x][y] = space;
             }
-        }
-        this.stepMode = false;
 
+            if(current.has("walls") && (tmp = current.getJSONArray("walls")).length() > 0){
+                for (int j = 0; j < tmp.length(); j++) {
+                    spaces[x][y].setWall(tmp.getEnum(Heading.class, j));
+                }
+
+            }
+        }
+        for (int i = checkpoints.length - 1; i > 0; i--) {
+            checkpoints[i].setPrevious(checkpoints[i-1]);
+        }
+        this.wincondition = checkpoints[2];
+        this.stepMode = false;
     }
 
     /**
@@ -313,6 +320,10 @@ public class Board extends Subject {
         }
     }
 
+    public Space getSpace(Space space){
+        return getSpace(space.x, space.y);
+    }
+
     public Space getSpace(int x, int y) {
         if (x >= 0 && x < width &&
                 y >= 0 && y < height) {
@@ -339,6 +350,10 @@ public class Board extends Subject {
         } else {
             return null;
         }
+    }
+
+    public Player getPlayerByName(String name){
+        return players.stream().filter(x-> x.getName().equals(name)).findAny().orElse(null);
     }
 
     /**
