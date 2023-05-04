@@ -51,9 +51,9 @@
     {
       "x": 3,
       "y": 4,
-      "type": "",
+      "type": "Reboot",
       "number": "",
-      "direction": "",
+      "direction": "EAST",
       "turn": ""
     },
     {
@@ -166,7 +166,7 @@
       "type": "FastConveyorbelt",
       "number": 2,
       "direction": "NORTH",
-      "turn": "EAST"
+      "turn": "WEST"
     },
     {
       "x": 5,
@@ -190,7 +190,7 @@
       "type": "FastConveyorbelt",
       "number": 2,
       "direction": "WEST",
-      "turn": "NORTH"
+      "turn": "WEST"
     },
     {
       "x": 5,
@@ -358,7 +358,7 @@
       "type": "FastConveyorbelt",
       "number": 2,
       "direction": "EAST",
-      "turn": "SOUTH"
+      "turn": "WEST"
     },
     {
       "x": 8,

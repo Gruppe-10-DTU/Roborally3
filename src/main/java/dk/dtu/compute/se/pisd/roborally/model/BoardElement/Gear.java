@@ -63,9 +63,9 @@ public class Gear extends Space implements SequenceAction {
      */
     private void turnPlayer(Player player) {
         if (heading == Heading.EAST) {
-            player.getHeading().next();
+            player.setHeading(player.getHeading().next());
         } else {
-            player.getHeading().prev();
+            player.setHeading(player.getHeading().prev());
         }
     }
 }

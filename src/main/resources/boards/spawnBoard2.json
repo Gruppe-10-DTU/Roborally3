@@ -43,7 +43,8 @@
     {
       "x": "1",
       "y": "0",
-      "type": "Spawn"
+      "type": "Spawn",
+      "number": 1
     },
     {
       "x": "1",
@@ -82,7 +83,8 @@
     {
       "x": "1",
       "y": "7",
-      "type": "Spawn"
+      "type": "Spawn",
+      "number": 2
     },
     {
       "x": "2",

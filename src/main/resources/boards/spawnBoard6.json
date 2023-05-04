@@ -13,7 +13,8 @@
     {
       "x": "0",
       "y": "2",
-      "type": "Spawn"
+      "type": "Spawn",
+      "number": 3
     },
     {
       "x": "0",
@@ -28,7 +29,8 @@
     {
       "x": "0",
       "y": "5",
-      "type": "Spawn"
+      "type": "Spawn",
+      "number": 4
     },
     {
       "x": "0",
@@ -43,52 +45,56 @@
     {
       "x": "1",
       "y": "0",
-      "type": "Spawn"
+      "type": "Spawn",
+      "number": 1
     },
     {
       "x": "1",
       "y": "1",
       "type": "Wall",
-      "direction": "North"
+      "direction": "NORTH"
     },
     {
       "x": "1",
       "y": "2",
       "type": "Wall",
-      "direction": "East"
+      "direction": "EAST"
     },
     {
       "x": "1",
       "y": "3",
-      "type": "Spawn"
+      "type": "Spawn",
+      "number": 6
     },
     {
       "x": "1",
       "y": "4",
-      "type": "Spawn"
+      "type": "Spawn",
+      "number": 5
     },
     {
       "x": "1",
       "y": "5",
       "type": "Wall",
-      "direction": "East"
+      "direction": "EAST"
     },
     {
       "x": "1",
       "y": "6",
       "type": "Wall",
-      "direction": "South"
+      "direction": "SOUTH"
     },
     {
       "x": "1",
       "y": "7",
-      "type": "Spawn"
+      "type": "Spawn",
+      "number": 2
     },
     {
       "x": "2",
       "y": "0",
       "type": "Wall",
-      "direction": "East"
+      "direction": "EAST"
     },
     {
       "x": "2",
@@ -104,13 +110,13 @@
       "x": "2",
       "y": "3",
       "type": "Wall",
-      "direction": "East"
+      "direction": "EAST"
     },
     {
       "x": "2",
       "y": "4",
       "type": "Wall",
-      "direction": "East"
+      "direction": "EAST"
     },
     {
       "x": "2",
@@ -126,7 +132,7 @@
       "x": "2",
       "y": "7",
       "type": "Wall",
-      "direction": "East"
+      "direction": "EAST"
     }
   ]
 }

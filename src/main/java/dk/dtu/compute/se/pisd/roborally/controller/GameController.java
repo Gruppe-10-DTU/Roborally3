@@ -21,16 +21,20 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.*;
 import org.jetbrains.annotations.NotNull;
+import java.util.ArrayList;
+import java.util.EnumSet;
 
 /**
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
+ *
  */
 public class GameController {
 
@@ -172,6 +176,7 @@ public class GameController {
         } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode());
     }
 
+    // XXX: V2
 
     /**
      * Execute a card and then increment the step by one
@@ -207,13 +212,13 @@ public class GameController {
             step++;
 
             if (step < Player.NO_REGISTERS) {
+                //End the phase by activating the board.
+                executeBoardActions();
                 makeProgramFieldsVisible(step);
                 board.setStep(step);
                 board.calculatePlayerOrder();
                 board.nextPlayer();
             } else {
-                //End the phase by activating the board.
-                executeBoardActions();
                 startProgrammingPhase();
             }
 
@@ -304,6 +309,7 @@ public class GameController {
     }
 
     /**
+     * @author Asbjørn Nielsen
      * @param pushing The robot who is doing the pushing
      * @param pushed  The pushed robot
      *                Pushes a row of robots.
@@ -434,11 +440,10 @@ public class GameController {
 
     /**
      * @param player The player getting rebooted
-     * @author Nilas Thoegersen
      */
-    public void rebootRobot(Player player) {
-        player.discardCard(new DamageCard(Damage.SPAM));
-        player.discardCard(new DamageCard(Damage.SPAM));
+        public void rebootRobot(Player player){
+            player.discardCard(new DamageCard(Damage.SPAM));
+            player.discardCard(new DamageCard(Damage.SPAM));
 
         for (int i = 0; i < 5; i++) {
             CommandCardField field = player.getProgramField(i);

@@ -52,10 +52,28 @@ public class Conveyorbelt extends Space implements SequenceAction {
      * @author Nilas
      */
     protected void turnPlayer(Player player) {
+        Heading heading1 = player.getHeading();
         if (turn == Heading.EAST) {
-            player.getHeading().next();
+            player.setHeading(heading1.prev());
         } else if (turn == Heading.WEST) {
-            player.getHeading().prev();
+            player.setHeading(heading1.next());
+        }
+    }
+
+    /**
+     * Get the exit heading when pushed alongside the field. If the field has a turn, the exit is also moved.
+     *
+     * @return The Heading of the exit
+     * @author Nilas Thoegersen
+     * @author Sandie Petersen
+     */
+    protected Heading getExit(){
+        if (turn == Heading.EAST) {
+            return turn.prev();
+        } else if (turn == Heading.WEST) {
+            return turn.next();
+        }else{
+            return turn;
         }
     }
 
@@ -76,8 +94,10 @@ public class Conveyorbelt extends Space implements SequenceAction {
             player = board.getPlayer(i);
             space = player.getSpace();
             if (space.getClass().equals(this.getClass())) {
-                space = board.getNeighbour(player.getSpace(), ((Conveyorbelt) space).direction);
-                if (space.getPlayer() == null || space.getClass().equals(this.getClass())) {
+                space = board.getNeighbour(player.getSpace(), ((Conveyorbelt) space).getExit());
+                if (space == null) {
+                    gameController.rebootRobot(player);
+                } else if (space.getPlayer() == null || space.getClass().equals(this.getClass())) {
                     targetSpace.put(player, space);
                 }
             }

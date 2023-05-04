@@ -66,6 +66,8 @@ public class Board extends Subject {
     public boolean stepMode;
     public Checkpoint wincondition;
 
+    private PriorityQueue<Spawn> spawnPriority = new PriorityQueue<>();
+
     public Checkpoint getWincondition() {
         return wincondition;
     }
@@ -95,9 +97,6 @@ public class Board extends Subject {
 
     PriorityQueue<Player> playerOrder = new PriorityQueue<>();
 
-    public Board(){
-        this.boardActions = new TreeSet<>(new SequenceActionComparator());
-    }
 
     /**
      * @param width        width of the board
@@ -151,8 +150,8 @@ public class Board extends Subject {
         for (int i = 0; i < spawnArray.length(); i++) {
 
             JSONObject current = spawnArray.getJSONObject(i);
-            int x = current.getInt("x");
-            int y = current.getInt("y");
+            int x = Integer.parseInt(current.getString("x"));
+            int y = Integer.parseInt(current.getString("y"));
 
             switch (current.getString("Type")) {
                 case "Priority":
@@ -160,13 +159,15 @@ public class Board extends Subject {
                     spaces[x][y] = priorityAntenna;
                     break;
                 case "Wall":
-                    EnumSet<Heading> walls = EnumSet.copyOf(List.of(Heading.valueOf(current.getString("Ddrection"))));
+                    EnumSet<Heading> walls = EnumSet.copyOf(List.of(Heading.valueOf(current.getString("Direction"))));
                     Space wall = new Space(this, x, y);
                     wall.setWalls(walls);
                     spaces[x][y] = wall;
                     break;
                 case "Spawn":
-                    Space spawn = new Space(this, x, y);
+                    int priority = current.getInt("Number");
+                    Spawn spawn = new Spawn(this,x,y,priority);
+                    spawnPriority.add(spawn);
                     spaces[x][y] = spawn;
                     //Spawn point
                     break;
@@ -256,6 +257,18 @@ public class Board extends Subject {
                     break;
                 case "Spawn":
                     Space spawn = new Space(this, x, y);
+                    spaces[x][y] = spawn;
+                    //Spawn point
+                    break;
+                case "Reboot" :
+                    Heading exit = Heading.valueOf(current.getString("Direction"));
+                    RebootToken rebootToken = new RebootToken(this, x, y, exit);
+                    spaces[x][y] = rebootToken;
+                    break;
+                case "Spawn":
+                    int priority = current.getInt("Number");
+                    Spawn spawn = new Spawn(this,x,y,priority);
+                    spawnPriority.add(spawn);
                     spaces[x][y] = spawn;
                     //Spawn point
                     break;
@@ -399,8 +412,14 @@ public class Board extends Subject {
             current = playerOrder.poll();
             return true;
         } else return false;
+    }
 
-
+    /**
+     * @Auther Sandie Petersen
+     * @return The next available spawn space
+     */
+    public Spawn nextSpawn() {
+        return spawnPriority.remove();
     }
 
     public Player getCurrentPlayer() {

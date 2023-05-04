@@ -25,6 +25,7 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.*;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.PriorityAntenna;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
@@ -66,13 +67,13 @@ public class SpaceView extends StackPane implements ViewObserver {
         if (space instanceof BoardLaser boardLaser) {
 
             if (boardLaser.getShootingDirection() == Heading.EAST) {
-                spaceImg = new Image("spaces/lazer1_EAST.png");
+                spaceImg = new Image("spaces/laser/lazer1_EAST.png");
             } else if (boardLaser.getShootingDirection() == Heading.SOUTH) {
-                spaceImg = new Image("spaces/lazer1_SOUTH.png");
+                spaceImg = new Image("spaces/laser/lazer1_SOUTH.png");
             } else if (boardLaser.getShootingDirection() == Heading.WEST) {
-                spaceImg = new Image("spaces/lazer1_WEST.png");
+                spaceImg = new Image("spaces/laser/lazer1_WEST.png");
             } else if (boardLaser.getShootingDirection() == Heading.NORTH) {
-                spaceImg = new Image("spaces/lazer1_NORTH.png");
+                spaceImg = new Image("spaces/laser/lazer1_NORTH.png");
             }
         } else if (space instanceof Checkpoint checkpoint) {
 
@@ -87,7 +88,7 @@ public class SpaceView extends StackPane implements ViewObserver {
             Heading heading = conveyorbelt.getDirection();
             Heading turn = conveyorbelt.getTurn();
             if (turn != null) {
-                spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_NORTH_WEST.png");
+                spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_NORTH_EAST.png");
 
                 if (heading == Heading.SOUTH) {
                     if (turn == Heading.WEST) {
@@ -104,45 +105,45 @@ public class SpaceView extends StackPane implements ViewObserver {
                         }
                     }
                 } else if (heading == Heading.EAST) {
-                    if (turn == Heading.NORTH) {
+                    if (turn == Heading.EAST) {
                         if (conveyorbelt instanceof FastConveyorbelt) {
-                            spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_EAST_NORTH.png");
+                            spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_EAST_EAST.png");
                         } else {
-                            spaceImg = new Image("spaces/conveyorbelt/conveyer_EAST_NORTH.png");
+                            spaceImg = new Image("spaces/conveyorbelt/conveyer_EAST_EAST.png");
                         }
-                    } else if (turn == Heading.SOUTH) {
+                    } else if (turn == Heading.WEST) {
                         if (conveyorbelt instanceof FastConveyorbelt) {
-                            spaceImg = new Image("spaces/FastConveyorbelt/fastConveyer_EAST_SOUTH.png");
+                            spaceImg = new Image("spaces/FastConveyorbelt/fastConveyer_EAST_WEST.png");
                         } else {
-                            spaceImg = new Image("spaces/conveyorbelt/conveyer_EAST_SOUTH.png");
+                            spaceImg = new Image("spaces/conveyorbelt/conveyer_EAST_WEST.png");
                         }
                     }
                 } else if (heading == Heading.WEST) {
-                    if (turn == Heading.NORTH) {
+                    if (turn == Heading.WEST) {
                         if (conveyorbelt instanceof FastConveyorbelt) {
-                            spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_WEST_NORTH.png");
+                            spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_WEST_WEST.png");
                         } else {
-                            spaceImg = new Image("spaces/conveyorbelt/conveyer_WEST_NORTH.png");
+                            spaceImg = new Image("spaces/conveyorbelt/conveyer_WEST_WEST.png");
                         }
-                    } else if (turn == Heading.SOUTH) {
+                    } else if (turn == Heading.EAST) {
                         if (conveyorbelt instanceof FastConveyorbelt) {
-                            spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_WEST_SOUTH.png");
+                            spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_WEST_EAST.png");
                         } else {
-                            spaceImg = new Image("spaces/conveyorbelt/conveyer_WEST_SOUTH.png");
+                            spaceImg = new Image("spaces/conveyorbelt/conveyer_WEST_EAST.png");
                         }
                     }
                 } else if (heading == Heading.NORTH) {
-                    if (turn == Heading.WEST) {
-                        if (conveyorbelt instanceof FastConveyorbelt) {
-                            spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_NORTH_WEST.png");
-                        } else {
-                            spaceImg = new Image("spaces/conveyorbelt/conveyer_NORTH_WEST.png");
-                        }
-                    } else if (turn == Heading.EAST) {
+                    if (turn == Heading.EAST) {
                         if (conveyorbelt instanceof FastConveyorbelt) {
                             spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_NORTH_EAST.png");
                         } else {
                             spaceImg = new Image("spaces/conveyorbelt/conveyer_NORTH_EAST.png");
+                        }
+                    } else if (turn == Heading.WEST) {
+                        if (conveyorbelt instanceof FastConveyorbelt) {
+                            spaceImg = new Image("spaces/FastConveyorbelt/fastConveyor_NORTH_WEST.png");
+                        } else {
+                            spaceImg = new Image("spaces/conveyorbelt/conveyer_NORTH_WEST.png");
                         }
                     }
                 }
@@ -174,9 +175,6 @@ public class SpaceView extends StackPane implements ViewObserver {
                 }
             }
 
-        } else if (space instanceof Conveyorbelt) {
-            spaceImg = new Image("spaces/conveyorbelt/conveyer_NORTH.png");
-
         } else if (space instanceof Energy) {
             spaceImg = new Image("spaces/energy.png");
 
@@ -203,6 +201,21 @@ public class SpaceView extends StackPane implements ViewObserver {
         } else if (space instanceof Pit) {
             spaceImg = new Image("spaces/pit.png");
 
+        } else if (space instanceof Spawn){
+            spaceImg =new Image("spaces/Spawn.png");
+        } else if (space instanceof RebootToken) {
+            RebootToken rebootToken = (RebootToken) space;
+            Heading exit = rebootToken.getExit();
+
+            if (exit == Heading.EAST) {
+                spaceImg = new Image("spaces/reboot_EAST.png");
+            } else if (exit == Heading.SOUTH) {
+                spaceImg = new Image("spaces/reboot_SOUTH.png");
+            } else if (exit == Heading.NORTH) {
+                spaceImg = new Image("spaces/reboot_NORTH.png");
+            } else if (exit == Heading.WEST) {
+                spaceImg = new Image("spaces/reboot_WEST.png");
+            }
         } else {
             EnumSet<Heading> walls = space.getWalls();
 
