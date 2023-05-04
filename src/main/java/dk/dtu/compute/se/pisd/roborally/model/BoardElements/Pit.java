@@ -15,6 +15,7 @@ public class Pit extends Space implements FieldAction {
      */
     public Pit(Board board, int x, int y) {
         super(board, x, y);
+        board.setPit(this);
     }
 
     @Override
