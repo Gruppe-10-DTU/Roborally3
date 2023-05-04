@@ -13,6 +13,8 @@ import java.util.Map;
 
 public class FastConveyorbelt extends Conveyorbelt implements SequenceAction {
 
+    private int number = 2;
+
     /**
      * @param board   The playing board
      * @param x       The coordinate on the x axis
@@ -63,7 +65,6 @@ public class FastConveyorbelt extends Conveyorbelt implements SequenceAction {
                             ((Conveyorbelt) space).turnPlayer(player);
                         }
                     }
-
                 }
             }
         }
