@@ -7,6 +7,8 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 public class Push extends Space implements SequenceAction {
+
+    //TODO: Sæt step til at være array
     private final int step;
     private final Heading heading;
 

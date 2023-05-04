@@ -3,7 +3,7 @@
     {
       "x": 3,
       "y": 0,
-      "type": "CheckPoint",
+      "type": "Checkpoint",
       "number": 1,
       "direction": "",
       "turn": ""
@@ -195,7 +195,7 @@
     {
       "x": 6,
       "y": 0,
-      "type": "CheckPoint",
+      "type": "Checkpoint",
       "number": 2,
       "direction": "",
       "turn": ""
@@ -387,7 +387,7 @@
     {
       "x": 9,
       "y": 0,
-      "type": "CheckPoint",
+      "type": "Checkpoint",
       "number": 3,
       "direction": "",
       "turn": ""

@@ -65,7 +65,6 @@ public class FastConveyorbelt extends Conveyorbelt implements SequenceAction {
                             ((Conveyorbelt) space).turnPlayer(player);
                         }
                     }
-
                 }
             }
         }

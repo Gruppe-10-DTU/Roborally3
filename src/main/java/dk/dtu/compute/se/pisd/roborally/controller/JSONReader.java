@@ -18,6 +18,7 @@ import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
@@ -62,6 +63,7 @@ public class JSONReader {
                 .registerSubtype(Push.class)
                 .registerSubtype(Pit.class)
                 .registerSubtype(PriorityAntenna.class, "Priority")
+                .registerSubtype(Spawn.class)
                 .registerSubtype(RebootToken.class);
         RuntimeTypeAdapterFactory<Card> cardRuntimeTypeAdapterFactory = RuntimeTypeAdapterFactory.of(Card.class, "cardtype")
                 .registerSubtype(CommandCard.class)
@@ -86,10 +88,18 @@ public class JSONReader {
         gson = gsonBuilder.create();
 
         try {
-            String gameName = "savedGames/" + filename;
-            InputStream jsonStream = JSONReader.class.getClassLoader().getResourceAsStream(gameName);
+            InputStream jsonStream = new FileInputStream(filename);
             JSONObject object = new JSONObject(IOUtils.toString(jsonStream,StandardCharsets.UTF_8));
             Board board = new Board(object.getInt("width"), object.getInt("height"), object.getString("boardName"), object.getInt("playerAmount"), object.getJSONArray("spaces"));
+
+            Checkpoint checkpoint = board.getWincondition();
+            String win = object.getJSONObject("wincondition").toString();
+            Checkpoint savedCheckpoint = gson.fromJson(win, Checkpoint.class);
+            while(checkpoint != null){
+                checkpoint.setPlayers(savedCheckpoint.getPlayers());
+                checkpoint = checkpoint.getPrevious();
+                savedCheckpoint = savedCheckpoint.getPrevious();
+            }
             Type token = new TypeToken<ArrayList<Player>>(){}.getType();
             String playersString = object.getJSONArray("players").toString();
 

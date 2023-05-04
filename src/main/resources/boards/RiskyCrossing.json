@@ -3,21 +3,21 @@
     {
       "x": 10,
       "y": 5,
-      "type": "CheckPoint",
+      "type": "Checkpoint",
       "number": 1,
       "direction": ""
     },
     {
       "x": 4,
       "y": 2,
-      "type": "CheckPoint",
+      "type": "Checkpoint",
       "number": 2,
       "direction": ""
     },
     {
       "x": 3,
       "y": 7,
-      "type": "CheckPoint",
+      "type": "Checkpoint",
       "number": 3,
       "direction": ""
     },

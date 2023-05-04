@@ -28,7 +28,6 @@ import dk.dtu.compute.se.pisd.roborally.model.Cards.PlayerCardDeck;
 import org.jetbrains.annotations.NotNull;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.EAST;
-import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
 
 /**
  * ...
@@ -54,10 +53,6 @@ public class Player extends Subject implements Comparable<Player> {
 
     public int getEnergy() {
         return energy;
-    }
-
-    public void setDeck(PlayerCardDeck deck) {
-        this.deck = deck;
     }
 
     public void setEnergy(int energy) {

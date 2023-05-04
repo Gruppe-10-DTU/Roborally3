@@ -77,7 +77,7 @@ public class SpaceView extends StackPane implements ViewObserver {
             }
         } else if (space instanceof Checkpoint checkpoint) {
 
-            spaceImg = new Image("spaces/checkpoint/checkpoint" + checkpoint.getCheckpointNumber() + ".png");
+            spaceImg = new Image("spaces/checkpoint/checkpoint" + checkpoint.getNumber() + ".png");
 
         } else if (space instanceof PriorityAntenna) {
             spaceImg = new Image("spaces/priorityAntenna.png");

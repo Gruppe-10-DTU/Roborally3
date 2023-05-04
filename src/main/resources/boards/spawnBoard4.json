@@ -85,7 +85,7 @@
     {
       "x": "1",
       "y": "7",
-      "Type": "Spawn",
+      "type": "Spawn",
       "number": 1
     },
     {

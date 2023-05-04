@@ -6,8 +6,8 @@ import java.util.ArrayList;
  * @author Philip Astrup Cramer
  */
 public class PlayerCardDeck {
-    private final ArrayList<Card> deck;
-    private final ArrayList<Card> discards;
+    private ArrayList<Card> deck;
+    private ArrayList<Card> discards;
 
     /**
      * Creates a player deck

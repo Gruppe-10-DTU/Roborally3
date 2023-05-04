@@ -97,6 +97,9 @@ public class Board extends Subject {
 
     PriorityQueue<Player> playerOrder = new PriorityQueue<>();
 
+    public Board(){
+        this.boardActions = new TreeSet<>(new SequenceActionComparator());
+    }
 
     /**
      * @param width        width of the board
@@ -145,43 +148,12 @@ public class Board extends Subject {
             }
         }
         spaces = new Space[width][height];
-        /*
-        //Loop and create the spaces of the first 3 rows, the spawn section
-        for (int i = 0; i < spawnArray.length(); i++) {
 
-            JSONObject current = spawnArray.getJSONObject(i);
-            int x = Integer.parseInt(current.getString("x"));
-            int y = Integer.parseInt(current.getString("y"));
-
-            switch (current.getString("Type")) {
-                case "Priority":
-                    this.priorityAntenna = new PriorityAntenna(this, x, y);
-                    spaces[x][y] = priorityAntenna;
-                    break;
-                case "Wall":
-                    EnumSet<Heading> walls = EnumSet.copyOf(List.of(Heading.valueOf(current.getString("Direction"))));
-                    Space wall = new Space(this, x, y);
-                    wall.setWalls(walls);
-                    spaces[x][y] = wall;
-                    break;
-                case "Spawn":
-                    int priority = current.getInt("Number");
-                    Spawn spawn = new Spawn(this,x,y,priority);
-                    spawnPriority.add(spawn);
-                    spaces[x][y] = spawn;
-                    //Spawn point
-                    break;
-                default:
-                    Space space = new Space(this, x, y);
-                    spaces[x][y] = space;
-                    break;
-            }
-        }
-        */
         //Loop and create the remaining spaces of the first 3 rows, the course section
         Checkpoint prevChekpoint = null;
         Heading heading = null;
         JSONArray tmp;
+        Checkpoint[] checkpoints = new Checkpoint[3];
         for (int i = 0; i < courseArray.length(); i++) {
 
             JSONObject current = courseArray.getJSONObject(i);
@@ -221,15 +193,10 @@ public class Board extends Subject {
                     }
                     spaces[x][y] = fastConveyorbelt;
                     break;
-                case "CheckPoint":
-                    Checkpoint checkpoint;
-                    if (prevChekpoint != null) {
-                        checkpoint = new Checkpoint(this, x, y, current.getInt("number"), prevChekpoint);
-                    } else {
-                        checkpoint = new Checkpoint(this, x, y, current.getInt("number"));
-                    }
-                    prevChekpoint = checkpoint;
+                case "Checkpoint":
+                    Checkpoint checkpoint = new Checkpoint(this, x, y, current.getInt("number"));
                     spaces[x][y] = checkpoint;
+                    checkpoints[checkpoint.getNumber() - 1] = checkpoint;
                     break;
                 case "Lazer":
                     Heading shootingDirection = Heading.valueOf(current.getString("direction"));
@@ -255,18 +222,13 @@ public class Board extends Subject {
                     this.priorityAntenna = new PriorityAntenna(this, x, y);
                     spaces[x][y] = priorityAntenna;
                     break;
-                case "Spawn":
-                    Space spawn = new Space(this, x, y);
-                    spaces[x][y] = spawn;
-                    //Spawn point
-                    break;
                 case "Reboot" :
-                    Heading exit = Heading.valueOf(current.getString("Direction"));
+                    Heading exit = Heading.valueOf(current.getString("direction"));
                     RebootToken rebootToken = new RebootToken(this, x, y, exit);
                     spaces[x][y] = rebootToken;
                     break;
                 case "Spawn":
-                    int priority = current.getInt("Number");
+                    int priority = current.getInt("number");
                     Spawn spawn = new Spawn(this,x,y,priority);
                     spawnPriority.add(spawn);
                     spaces[x][y] = spawn;
@@ -284,8 +246,11 @@ public class Board extends Subject {
 
             }
         }
+        for (int i = checkpoints.length - 1; i > 0; i--) {
+            checkpoints[i].setPrevious(checkpoints[i-1]);
+        }
+        this.wincondition = checkpoints[2];
         this.stepMode = false;
-
     }
 
     /**

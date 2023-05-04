@@ -84,6 +84,8 @@ public class Conveyorbelt extends Space implements SequenceAction {
      * @param gameController The main controller for the game
      * @author Nilas
      */
+
+    //TODO: Gør funktionen mere generel så den kan bruges i FastConveyorbelt
     @Override
     public void doAction(GameController gameController) {
         //Target of the move

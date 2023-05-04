@@ -34,9 +34,9 @@ public class Space extends Subject {
 
     public transient final Board board;
 
-    protected final int x;
+    public final int x;
 
-    protected final int y;
+    public final int y;
 
     protected transient Player player;
 

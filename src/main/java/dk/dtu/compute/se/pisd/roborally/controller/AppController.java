@@ -26,7 +26,6 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
-
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -40,7 +39,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -136,32 +137,48 @@ public class AppController implements Observer, EndGame {
     }
 
     public void saveGame() {
-        String result = JSONReader.saveGame(gameController);
+        String file = "";
+        String savedGameController = JSONReader.saveGame(gameController);
+        TextInputDialog saveNameDialog = new TextInputDialog();
+        saveNameDialog.setTitle("Save game");
+
+        saveNameDialog.setHeaderText("Please name your save");
+        Optional<String> resultName = saveNameDialog.showAndWait();
+        while(resultName.isPresent() && Files.exists(Path.of("src/main/java/dk/dtu/compute/se/pisd/roborally/controller/savedGames", resultName.get()+".json"))) {
+            saveNameDialog.setHeaderText("That name is taken, please write a new one");
+
+            resultName = saveNameDialog.showAndWait();
+        }
+
         try {
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("test.json"));
-            bufferedWriter.write(result);
+            //TODO: Gøre den mere dynamis. Ikke sikker på det virker med Jar
+            File newSave = new File("src/main/java/dk/dtu/compute/se/pisd/roborally/controller/savedGames/"+resultName.get()+ ".json");
+            newSave.createNewFile();
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(newSave));
+            bufferedWriter.write(savedGameController);
             bufferedWriter.close();
         } catch (IOException e) {
-            System.out.println("Error in writing");
+            System.out.println(e.getMessage());
             throw new RuntimeException(e);
         }
     }
 
     public void loadGame() {
-        String[] files;
+        File file;
+        URI pathUri;
         try {
-            URL pathUrl = AppController.class.getClassLoader().getResource("savedGames/");
-            if ((pathUrl != null) && pathUrl.getProtocol().equals("file")) {
-                files = new File(pathUrl.toURI()).list();
-            }else return;
+            //TODO: Gør stien dynamisk.
+            file = new File("src/main/java/dk/dtu/compute/se/pisd/roborally/controller/savedGames");
         }catch (Exception e){
             System.out.println("No files found");
             return;
         }
+        boolean test2 = file.isDirectory();
+        String[] test = file.list();
 
-        Optional<String> gameName = new ChoiceDialog<String>("Please select a file", files).showAndWait();
-        if(!gameName.isEmpty()) {
-            Board board = JSONReader.loadGame(gameName.get());
+        Optional<String> gameName = new ChoiceDialog<String>("None", file.list()).showAndWait();
+        if(!gameName.equals("None")) {
+            Board board = JSONReader.loadGame(Path.of(file.getPath(), gameName.get()).toString());
             gameController = new GameController(board, this);
 
 
