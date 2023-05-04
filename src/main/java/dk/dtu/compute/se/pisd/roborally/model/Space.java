@@ -118,4 +118,5 @@ public class Space extends Subject {
     public EnumSet<Heading> getWalls() {
         return walls;
     }
+    public String toString(){ return x + " " + y;}
 }
