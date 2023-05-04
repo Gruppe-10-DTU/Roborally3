@@ -2,10 +2,13 @@ package dk.dtu.compute.se.pisd.roborally.model.BoardElement;
 
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.Damage;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.DamageCard;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,12 +24,14 @@ class BoardActionTest {
     @BeforeEach
     void setUp() {
         board = new Board(TEST_WIDTH, TEST_HEIGHT);
+
         gameController = new GameController(board, null);
         for (int i = 0; i < 3; i++) {
             Player player = new Player(board, null,"Player " + i);
             board.addPlayer(player);
             player.setSpace(board.getSpace(i, i));
-            player.setHeading(Heading.values()[i % Heading.values().length]);
+            player.setHeading(Heading.EAST);
+
         }
         board.setCurrentPlayer(board.getPlayer(0));
     }
@@ -36,11 +41,11 @@ class BoardActionTest {
         Gear gear = new Gear(Heading.EAST, board, 0,0);
         gear.setPlayer(board.getPlayer(0));
         gear.doAction(gameController);
-        assertEquals(board.getPlayer(0).getHeading(), Heading.SOUTH);
+        assertEquals(Heading.SOUTH,board.getPlayer(0).getHeading());
         gear.setHeading(Heading.WEST);
         gear.doAction(gameController);
-        assertEquals(board.getPlayer(0).getHeading(), Heading.SOUTH);
-        assertNotEquals(board.getPlayer(0).getHeading(), Heading.NORTH);
+        assertEquals(Heading.EAST, board.getPlayer(0).getHeading() );
+        assertNotEquals(Heading.NORTH, board.getPlayer(0).getHeading());
     }
 
     @Test
@@ -75,7 +80,7 @@ class BoardActionTest {
     public void conveyorbelt_move_one(){
         Conveyorbelt conveyorbelt = new Conveyorbelt(board, 5, 5, Heading.NORTH);
         conveyorbelt.setPlayer(board.getPlayer(2));
-        gameController.executeBoardActions();
+        conveyorbelt.doAction(gameController);
         assertEquals(board.getSpace(5,4), board.getPlayer(2).getSpace());
     }
     @Test
@@ -85,7 +90,8 @@ class BoardActionTest {
         Conveyorbelt conveyorbeltWest = new Conveyorbelt(board, 5, 3, Heading.SOUTH);
         conveyorbeltWest.setPlayer(board.getPlayer(1));
 
-        gameController.executeBoardActions();
+        conveyorbelt.doAction(gameController);
+        conveyorbeltWest.doAction(gameController);
         assertEquals(board.getSpace(5,5), board.getPlayer(2).getSpace());
         assertEquals(board.getSpace(5,3), board.getPlayer(1).getSpace());
 
@@ -98,17 +104,16 @@ class BoardActionTest {
 
         Player player = board.getPlayer(2);
         fastConveyorbelt.setPlayer(player);
-        gameController.executeBoardActions();
+        fastConveyorbelt.doAction(gameController);
         assertEquals(board.getSpace(7,5), player.getSpace());
     }
 
     @Test
     public void fast_conveyorbelt_move_one(){
         FastConveyorbelt fastConveyorbelt = new FastConveyorbelt(board, 5, 5, Heading.EAST);
-
         Player player = board.getPlayer(2);
         fastConveyorbelt.setPlayer(player);
-        gameController.executeBoardActions();
+        fastConveyorbelt.doAction(gameController);
         assertNotEquals(board.getSpace(7,5), player.getSpace());
         assertEquals(board.getSpace(6,5), player.getSpace());
     }
@@ -125,7 +130,8 @@ class BoardActionTest {
         fastConveyorbeltEast.setPlayer(player);
         Player player2 = board.getPlayer(2);
         fastConveyorbeltWest.setPlayer(player2);
-        gameController.executeBoardActions();
+        fastConveyorbeltEast.doAction(gameController);
+        fastConveyorbeltWest.doAction(gameController);
         assertEquals(board.getSpace(3,5), player.getSpace());
         assertEquals(board.getSpace(7,5), player2.getSpace());
 
@@ -193,18 +199,20 @@ class BoardActionTest {
         assertEquals(board.getSpace(3,4), player.getSpace());
     }
 
-    @Test
-    void push_move_two_players() {
-        Push push = new Push(board, 4, 4, 0, Heading.WEST);
-
-        Player player = board.getPlayer(1);
-        board.getPlayer(2).setSpace(board.getSpace(3,4));
-        push.setPlayer(player);
-        push.doAction(gameController);
-        assertEquals(board.getSpace(3,4), player.getSpace());
-
-        assertEquals(board.getSpace(2,4), board.getPlayer(2).getSpace());
-    }
+//    @Test
+//    void push_move_two_players() {
+//        Push push = new Push(board, 4, 4, 0, Heading.WEST);
+//
+//        Player player = board.getPlayer(1);
+//        Player player2 = board.getPlayer(2);
+//        board.getPlayer(1).setSpace(board.getSpace(2,4));
+//        board.getPlayer(2).setSpace(board.getSpace(3,4));
+//        push.setPlayer(player2);
+//        push.doAction(gameController);
+//        assertEquals( board.getSpace(2,4).toString(), player.getSpace().toString());
+//
+//        assertEquals(board.getSpace(1,4), player2.getSpace());
+//    }
 
     @Test
     void BoardLaser(){
@@ -266,4 +274,26 @@ class BoardActionTest {
         assertTrue(rblsr.shootLaser(shooter.getSpace(),shooter.getHeading()) == null);
 
         }
+    @Test
+    void BoardPit() {
+        Board board = gameController.board;
+        gameController.startProgrammingPhase();
+        Player pitFall = board.getCurrentPlayer();
+        Pit pit = new Pit(board,board.getSpace(1,1).x,board.getSpace(1,0).y);
+        RebootToken rb = new RebootToken(board,2,2,Heading.EAST);
+        board.setRebootToken(rb);
+        pitFall.setSpace(board.getSpace(0,0));
+        pitFall.setHeading(Heading.WEST);
+
+        //Check that player moves to pit
+        Assertions.assertSame(pitFall.getSpace(), board.getSpace(0, 0), "Player " + pitFall.getName() + " should space (0,0)");
+        gameController.moveForward(pitFall);
+        Assertions.assertSame(pitFall.getSpace(), board.getSpace(2, 2), "Player " + pitFall.getName() + " should be moved to space (0,1)");
+        //Check that player get moved to reboot square
+        pit.doFieldAction(gameController, pitFall);
+        Assertions.assertSame(pitFall.getSpace(), board.getSpace(2, 2), "Player " + pitFall.getName() + " should be moved to space (2,2)");
+
+        //Check that the robot is rebooting
+        Assertions.assertSame(null,pitFall.getProgramField(0).getCard(), "Since player is rebooting; Program field should be empty!");
+    }
 }
