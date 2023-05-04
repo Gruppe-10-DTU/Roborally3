@@ -3,134 +3,134 @@
     {
       "x": "0",
       "y": "0",
-      "Type": "Empty"
+      "type": "Empty"
     },
     {
       "x": "0",
       "y": "1",
-      "Type": "Empty"
+      "type": "Empty"
     },
     {
       "x": "0",
       "y": "2",
-      "Type": "Spawn",
-      "Number": 3
+      "type": "Spawn",
+      "number": 3
     },
     {
       "x": "0",
       "y": "3",
-      "Type": "Priority"
+      "type": "Priority"
     },
     {
       "x": "0",
       "y": "4",
-      "Type": "Empty"
+      "type": "Empty"
     },
     {
       "x": "0",
       "y": "5",
-      "Type": "Spawn",
-      "Number": 4
+      "type": "Spawn",
+      "number": 4
     },
     {
       "x": "0",
       "y": "6",
-      "Type": "Empty"
+      "type": "Empty"
     },
     {
       "x": "0",
       "y": "7",
-      "Type": "Empty"
+      "type": "Empty"
     },
     {
       "x": "1",
       "y": "0",
-      "Type": "Spawn",
-      "Number": 1
+      "type": "Spawn",
+      "number": 1
     },
     {
       "x": "1",
       "y": "1",
-      "Type": "Wall",
-      "Direction": "NORTH"
+      "type": "Wall",
+      "direction": "NORTH"
     },
     {
       "x": "1",
       "y": "2",
-      "Type": "Wall",
-      "Direction": "EAST"
+      "type": "Wall",
+      "direction": "EAST"
     },
     {
       "x": "1",
       "y": "3",
-      "Type": "Empty"
+      "type": "Empty"
     },
     {
       "x": "1",
       "y": "4",
-      "Type": "Empty"
+      "type": "Empty"
     },
     {
       "x": "1",
       "y": "5",
-      "Type": "Wall",
-      "Direction": "EAST"
+      "type": "Wall",
+      "direction": "EAST"
     },
     {
       "x": "1",
       "y": "6",
-      "Type": "Wall",
-      "Direction": "SOUTH"
+      "type": "Wall",
+      "direction": "SOUTH"
     },
     {
       "x": "1",
       "y": "7",
-      "Type": "Spawn",
-      "Number": 2
+      "type": "Spawn",
+      "number": 1
     },
     {
       "x": "2",
       "y": "0",
-      "Type": "Wall",
-      "Direction": "EAST"
+      "type": "Wall",
+      "direction": "EAST"
     },
     {
       "x": "2",
       "y": "1",
-      "Type": "Empty"
+      "type": "Empty"
     },
     {
       "x": "2",
       "y": "2",
-      "Type": "Empty"
+      "type": "Empty"
     },
     {
       "x": "2",
       "y": "3",
-      "Type": "Wall",
-      "Direction": "EAST"
+      "type": "Wall",
+      "direction": "EAST"
     },
     {
       "x": "2",
       "y": "4",
-      "Type": "Wall",
-      "Direction": "EAST"
+      "type": "Wall",
+      "direction": "EAST"
     },
     {
       "x": "2",
       "y": "5",
-      "Type": "Empty"
+      "type": "Empty"
     },
     {
       "x": "2",
       "y": "6",
-      "Type": "Empty"
+      "type": "Empty"
     },
     {
       "x": "2",
       "y": "7",
-      "Type": "Wall",
-      "Direction": "EAST"
+      "type": "Wall",
+      "direction": "EAST"
     }
   ]
 }

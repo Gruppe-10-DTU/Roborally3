@@ -26,7 +26,6 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
-
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -36,6 +35,13 @@ import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -81,6 +87,7 @@ public class AppController implements Observer, EndGame {
         }
 
         ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
+
         dialog.setTitle("Player number");
         dialog.setHeaderText("Select number of players");
         Optional<Integer> result = dialog.showAndWait();
@@ -99,7 +106,7 @@ public class AppController implements Observer, EndGame {
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
 
-            Board board = new Board(11, 8, selectedBoard, result.get());
+            Board board = new Board(11, 8, selectedBoard, result.get(), null);
 
 
             gameController = new GameController(board, this);
@@ -123,8 +130,6 @@ public class AppController implements Observer, EndGame {
                 player.setSpace(board.getSpace(spawnSpace.x,spawnSpace.y));
             }
 
-            // XXX: V2
-            // board.setCurrentPlayer(board.getPlayer(0));
             gameController.startProgrammingPhase();
 
             roboRally.createBoardView(gameController);
@@ -132,14 +137,52 @@ public class AppController implements Observer, EndGame {
     }
 
     public void saveGame() {
-        // XXX needs to be implemented eventually
+        String file = "";
+        String savedGameController = JSONReader.saveGame(gameController);
+        TextInputDialog saveNameDialog = new TextInputDialog();
+        saveNameDialog.setTitle("Save game");
+
+        saveNameDialog.setHeaderText("Please name your save");
+        Optional<String> resultName = saveNameDialog.showAndWait();
+        while(resultName.isPresent() && Files.exists(Path.of("src/main/java/dk/dtu/compute/se/pisd/roborally/controller/savedGames", resultName.get()+".json"))) {
+            saveNameDialog.setHeaderText("That name is taken, please write a new one");
+
+            resultName = saveNameDialog.showAndWait();
+        }
+
+        try {
+            //TODO: Gøre den mere dynamis. Ikke sikker på det virker med Jar
+            File newSave = new File("src/main/java/dk/dtu/compute/se/pisd/roborally/controller/savedGames/"+resultName.get()+ ".json");
+            newSave.createNewFile();
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(newSave));
+            bufferedWriter.write(savedGameController);
+            bufferedWriter.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 
     public void loadGame() {
-        // XXX needs to be implememted eventually
-        // for now, we just create a new game
-        if (gameController == null) {
-            newGame();
+        File file;
+        URI pathUri;
+        try {
+            //TODO: Gør stien dynamisk.
+            file = new File("src/main/java/dk/dtu/compute/se/pisd/roborally/controller/savedGames");
+        }catch (Exception e){
+            System.out.println("No files found");
+            return;
+        }
+        boolean test2 = file.isDirectory();
+        String[] test = file.list();
+
+        Optional<String> gameName = new ChoiceDialog<String>("None", file.list()).showAndWait();
+        if(!gameName.equals("None")) {
+            Board board = JSONReader.loadGame(Path.of(file.getPath(), gameName.get()).toString());
+            gameController = new GameController(board, this);
+
+
+            roboRally.createBoardView(gameController);
         }
     }
 
@@ -219,7 +262,6 @@ public class AppController implements Observer, EndGame {
 
     @Override
     public void update(Subject subject) {
-        // XXX do nothing for now
     }
 
 }
