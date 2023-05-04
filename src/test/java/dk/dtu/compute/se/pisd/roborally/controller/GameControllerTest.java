@@ -140,8 +140,4 @@ class GameControllerTest {
         //Checking to see if reboot has set card to null!
         Assertions.assertSame(null,moveOutOfBounds.getProgramField(0).getCard(), "Since player is rebooting; Program field should be empty!");
     }
-
-
-
-
 }
