@@ -91,6 +91,12 @@ public class Board extends Subject {
         return rebootToken;
     }
 
+    private Pit pit;
+    public Pit getPit() {return pit;}
+    public void setPit(Pit pit) {
+        this.pit = pit;
+    }
+
     public void setRebootToken(RebootToken rebootToken) {
         this.rebootToken = rebootToken;
     }
