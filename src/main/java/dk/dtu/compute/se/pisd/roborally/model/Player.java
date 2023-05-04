@@ -28,7 +28,6 @@ import dk.dtu.compute.se.pisd.roborally.model.Cards.PlayerCardDeck;
 import org.jetbrains.annotations.NotNull;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.EAST;
-import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
 
 /**
  * ...
@@ -40,7 +39,7 @@ public class Player extends Subject implements Comparable<Player> {
     final public static int NO_REGISTERS = 5;
     final public static int NO_CARDS = 8;
 
-    final public Board board;
+    transient public Board board;
 
     private String name;
     private String color;
@@ -85,6 +84,22 @@ public class Player extends Subject implements Comparable<Player> {
         this.board = board;
         this.name = name;
         this.color = color;
+        this.deck = new PlayerCardDeck();
+        this.space = null;
+        this.energy = 0;
+
+        program = new CommandCardField[NO_REGISTERS];
+        for (int i = 0; i < program.length; i++) {
+            program[i] = new CommandCardField(this);
+        }
+
+        cards = new CommandCardField[NO_CARDS];
+        for (int i = 0; i < cards.length; i++) {
+            cards[i] = new CommandCardField(this);
+        }
+    }
+
+    Player(){
         this.deck = new PlayerCardDeck();
         this.space = null;
         this.energy = 0;
@@ -215,7 +230,7 @@ public class Player extends Subject implements Comparable<Player> {
     }
 
     /**
-     * @Auther Sandie Petersen
+     * @author Sandie Petersen
      * @param o the object to be compared.
      * @return The priority of the object
      * Used to compare the priorities of the players

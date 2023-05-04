@@ -25,6 +25,7 @@ import dk.dtu.compute.se.pisd.roborally.controller.FieldAction.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.*;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
@@ -275,7 +276,12 @@ public class GameController {
      */
     public void movePlayer(@NotNull Player player, Heading heading) {
         Space space = board.getNeighbour(player.getSpace(), heading);
-        if (space != null && !space.hasWall(heading) && !player.getSpace().getOut(heading)) {
+
+        if (space != null && !space.hasWall(heading) && !player.getSpace().getOut(heading) ) {
+            if (space instanceof Pit){
+                board.getPit().doFieldAction(this,player);
+                return;
+            }
             if (space.getPlayer() != null) {
                 pushRobot(player, space.getPlayer());
             }

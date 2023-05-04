@@ -32,13 +32,15 @@ import java.util.EnumSet;
  */
 public class Space extends Subject {
 
-    public final Board board;
+    public transient final Board board;
 
     public final int x;
+
     public final int y;
 
-    protected Player player;
-    private final String background = "Empty";
+    protected transient Player player;
+
+    private String background = "Empty";
     private EnumSet<Heading> walls;
 
 
@@ -59,6 +61,10 @@ public class Space extends Subject {
 
     public void setWalls(EnumSet<Heading> walls) {
         this.walls = walls;
+    }
+
+    public void setWall(Heading wall){
+        this.walls.add(wall);
     }
 
     /**
@@ -118,4 +124,5 @@ public class Space extends Subject {
     public EnumSet<Heading> getWalls() {
         return walls;
     }
+    public String toString(){ return x + " " + y;}
 }
