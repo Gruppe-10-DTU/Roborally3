@@ -41,30 +41,30 @@ import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public class Board extends Subject {
-    public int width;
+    private int width;
 
-    public int height;
+    private int height;
 
-    public String boardName;
+    private String boardName;
 
-    public int playerAmount;
+    private int playerAmount;
     private int number = 1;
 
     private Integer gameId;
-    public PriorityAntenna priorityAntenna;
+    private PriorityAntenna priorityAntenna;
 
-    public Space[][] spaces;
+    private Space[][] spaces;
 
-    public List<Player> players = new ArrayList<>();
+    private List<Player> players = new ArrayList<>();
 
-    public Player current;
+    private Player current;
 
-    public Phase phase = INITIALISATION;
+    private Phase phase = INITIALISATION;
 
-    public int step = 0;
+    private int step = 0;
 
-    public boolean stepMode;
-    public Checkpoint wincondition;
+    private boolean stepMode;
+    private Checkpoint wincondition;
 
     private PriorityQueue<Spawn> spawnPriority = new PriorityQueue<>();
 
@@ -507,5 +507,11 @@ public class Board extends Subject {
                 ", Step: " + getStep();
     }
 
+    public int getHeight() {
+        return height;
+    }
 
+    public int getWidth() {
+        return width;
+    }
 }
