@@ -34,9 +34,9 @@ public class Space extends Subject {
 
     public transient final Board board;
 
-    public final int x;
+    protected final int x;
 
-    public final int y;
+    protected final int y;
 
     protected transient Player player;
 
@@ -125,4 +125,12 @@ public class Space extends Subject {
         return walls;
     }
     public String toString(){ return x + " " + y;}
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
 }
