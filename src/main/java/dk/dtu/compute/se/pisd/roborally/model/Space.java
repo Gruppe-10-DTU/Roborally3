@@ -32,7 +32,7 @@ import java.util.EnumSet;
  */
 public class Space extends Subject {
 
-    public transient final Board board;
+    protected transient final Board board;
 
     protected final int x;
 
@@ -128,6 +128,10 @@ public class Space extends Subject {
 
     public int getX() {
         return x;
+    }
+
+    public Board getBoard() {
+        return board;
     }
 
     public int getY() {
