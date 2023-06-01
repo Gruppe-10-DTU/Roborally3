@@ -3,8 +3,6 @@ package dk.dtu.compute.se.pisd.roborally.model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.PriorityQueue;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class BoardTest {
@@ -14,7 +12,7 @@ class BoardTest {
 
     @BeforeEach
     public void init() {
-        board = new Board(11, 8,"Test",2);
+        board = new Board(11, 8,"Test",2, null);
 
         player1 = new Player(board, "red", "Player 1");
         player1.setSpace(board.getSpace(0,1));

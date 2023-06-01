@@ -136,6 +136,11 @@ public class AppController implements Observer, EndGame {
         }
     }
 
+    /**
+     * Save a game into a file.
+     *
+     * @author Nilas Thoegersen
+     */
     public void saveGame() {
         String file = "";
         String savedGameController = JSONReader.saveGame(gameController);
@@ -163,6 +168,11 @@ public class AppController implements Observer, EndGame {
         }
     }
 
+    /**
+     * Choose a file to load
+     *
+     * @author Nilas Thoegersen
+     */
     public void loadGame() {
         File file;
         URI pathUri;
