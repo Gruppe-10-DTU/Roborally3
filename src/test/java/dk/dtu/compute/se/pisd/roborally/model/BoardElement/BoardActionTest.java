@@ -26,6 +26,7 @@ class BoardActionTest {
         board = new Board(TEST_WIDTH, TEST_HEIGHT);
 
         gameController = new GameController(board, null);
+
         for (int i = 0; i < 3; i++) {
             Player player = new Player(board, null,"Player " + i);
             board.addPlayer(player);

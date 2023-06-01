@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElement.Conveyorbelt;
 
 import java.util.EnumSet;
 
@@ -125,4 +126,5 @@ public class Space extends Subject {
         return walls;
     }
     public String toString(){ return x + " " + y;}
+
 }
