@@ -41,30 +41,30 @@ import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public class Board extends Subject {
-    public int width;
+    private int width;
 
-    public int height;
+    private int height;
 
-    public String boardName;
+    private String boardName;
 
-    public int playerAmount;
+    private int playerAmount;
     private int number = 1;
 
     private Integer gameId;
-    public PriorityAntenna priorityAntenna;
+    private PriorityAntenna priorityAntenna;
 
-    public Space[][] spaces;
+    private Space[][] spaces;
 
-    public List<Player> players = new ArrayList<>();
+    private List<Player> players = new ArrayList<>();
 
-    public Player current;
+    private Player current;
 
-    public Phase phase = INITIALISATION;
+    private Phase phase = INITIALISATION;
 
-    public int step = 0;
+    private int step = 0;
 
-    public boolean stepMode;
-    public Checkpoint wincondition;
+    private boolean stepMode;
+    private Checkpoint wincondition;
 
     private PriorityQueue<Spawn> spawnPriority = new PriorityQueue<>();
 
@@ -282,7 +282,7 @@ public class Board extends Subject {
     }
 
     public void setSpace(Space space) {
-        spaces[space.x][space.y] = space;
+        spaces[space.getX()][space.getY()] = space;
     }
 
 
@@ -321,7 +321,7 @@ public class Board extends Subject {
     }
 
     public Space getSpace(Space space){
-        return getSpace(space.x, space.y);
+        return getSpace(space.getX(), space.getY());
     }
 
     public Space getSpace(int x, int y) {
@@ -368,7 +368,7 @@ public class Board extends Subject {
 
         for (Player player : players) {
             Space playerSpace = player.getSpace();
-            player.setPriority(Math.abs((playerSpace.x - start[0])) + Math.abs(playerSpace.y - start[1]));
+            player.setPriority(Math.abs((playerSpace.getX() - start[0])) + Math.abs(playerSpace.getY() - start[1]));
             playerOrder.add(player);
         }
     }
@@ -456,8 +456,8 @@ public class Board extends Subject {
      * @return the space in the given direction; null if there is no (reachable) neighbour
      */
     public Space getNeighbour(@NotNull Space space, @NotNull Heading heading) {
-        int x = space.x;
-        int y = space.y;
+        int x = space.getX();
+        int y = space.getY();
         switch (heading) {
             case SOUTH:
                 y = (y + 1);
@@ -486,8 +486,8 @@ public class Board extends Subject {
     public ArrayList<Player> playersInRange(Player centerPlayer, int range) {
         ArrayList<Player> result = new ArrayList<>();
         for (Player otherPLayer : this.players) {
-            int distX = Math.abs((centerPlayer.getSpace().x - otherPLayer.getSpace().x));
-            int distY = Math.abs((centerPlayer.getSpace().y - otherPLayer.getSpace().y));
+            int distX = Math.abs((centerPlayer.getSpace().getX() - otherPLayer.getSpace().getX()));
+            int distY = Math.abs((centerPlayer.getSpace().getY() - otherPLayer.getSpace().getY()));
             if (distX + distY <= range) {
                 result.add(otherPLayer);
             }
@@ -507,5 +507,11 @@ public class Board extends Subject {
                 ", Step: " + getStep();
     }
 
+    public int getHeight() {
+        return height;
+    }
 
+    public int getWidth() {
+        return width;
+    }
 }

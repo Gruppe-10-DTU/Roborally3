@@ -22,7 +22,6 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElement.Conveyorbelt;
 
 import java.util.EnumSet;
 
@@ -33,11 +32,11 @@ import java.util.EnumSet;
  */
 public class Space extends Subject {
 
-    public transient final Board board;
+    protected transient final Board board;
 
-    public final int x;
+    protected final int x;
 
-    public final int y;
+    protected final int y;
 
     protected transient Player player;
 
@@ -127,4 +126,15 @@ public class Space extends Subject {
     }
     public String toString(){ return x + " " + y;}
 
+    public int getX() {
+        return x;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public int getY() {
+        return y;
+    }
 }

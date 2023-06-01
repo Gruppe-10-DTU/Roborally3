@@ -219,7 +219,7 @@ class BoardActionTest {
     void BoardLaser(){
         Player target = board.getCurrentPlayer();
         target.setSpace(board.getSpace(1,0));
-        BoardLaser lsr = new BoardLaser(board,board.getSpace(1,1).x,board.getSpace(1,1).y,Heading.NORTH);
+        BoardLaser lsr = new BoardLaser(board,board.getSpace(1,1).getX(),board.getSpace(1,1).getY(),Heading.NORTH);
 
         //Test to see if lsr can hit player
         assertTrue(lsr.isHit(board, board.getNeighbour(target.getSpace(),Heading.SOUTH), Heading.SOUTH), "Should hit the target player on space (1,0)!");
@@ -232,7 +232,7 @@ class BoardActionTest {
         assertTrue(drawn.equals("Damage"), "Target should recieve a card of the Damage-type!");
 
         //Test to see if another player will stop the laser.
-        BoardLaser lsr2 = new BoardLaser(board,board.getSpace(2,2).x,board.getSpace(2,2).y,Heading.NORTH);
+        BoardLaser lsr2 = new BoardLaser(board,board.getSpace(2,2).getX(),board.getSpace(2,2).getY(),Heading.NORTH);
         Player player2 = board.getPlayer(1);
         target.setSpace(board.getSpace(2,0));
         player2.setSpace(board.getSpace(2,1));
@@ -280,7 +280,7 @@ class BoardActionTest {
         Board board = gameController.board;
         gameController.startProgrammingPhase();
         Player pitFall = board.getCurrentPlayer();
-        Pit pit = new Pit(board,board.getSpace(1,1).x,board.getSpace(1,0).y);
+        Pit pit = new Pit(board,board.getSpace(1,1).getX(),board.getSpace(1,0).getY());
         RebootToken rb = new RebootToken(board,2,2,Heading.EAST);
         board.setRebootToken(rb);
         pitFall.setSpace(board.getSpace(0,0));

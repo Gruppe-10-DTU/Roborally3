@@ -127,7 +127,7 @@ public class AppController implements Observer, EndGame {
                 Player player = new Player(board, PLAYER_COLORS.get(i), entered);
                 board.addPlayer(player);
                 Space spawnSpace = board.nextSpawn();
-                player.setSpace(board.getSpace(spawnSpace.x,spawnSpace.y));
+                player.setSpace(board.getSpace(spawnSpace.getX(),spawnSpace.getY()));
             }
 
             gameController.startProgrammingPhase();
