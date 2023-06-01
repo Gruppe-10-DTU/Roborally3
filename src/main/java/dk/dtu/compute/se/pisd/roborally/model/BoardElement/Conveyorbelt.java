@@ -72,11 +72,11 @@ public class Conveyorbelt extends Space implements SequenceAction {
             return direction;
         }
         if (turn == Heading.EAST) {
-            return turn.prev();
+            return direction.prev();
         } else if (turn == Heading.WEST) {
-            return turn.next();
+            return direction.next();
         }else{
-            return turn;
+            return direction;
         }
     }
 
