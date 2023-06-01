@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class Spawn extends Space implements Comparable<Spawn> {
 
-    int number;
+    private int number;
 
     public Spawn(Board board, int x, int y, int number) {
         super(board, x, y);

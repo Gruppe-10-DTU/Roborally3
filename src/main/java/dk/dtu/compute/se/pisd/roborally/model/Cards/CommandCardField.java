@@ -38,9 +38,6 @@ public class CommandCardField extends Subject {
 
     private boolean visible;
 
-    public CommandCardField(){
-
-    }
 
     public CommandCardField(Player player) {
         this.player = player;

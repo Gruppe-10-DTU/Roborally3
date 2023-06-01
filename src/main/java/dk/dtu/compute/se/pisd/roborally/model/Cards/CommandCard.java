@@ -40,9 +40,6 @@ public class CommandCard extends Subject implements Card{
     private Command command;
     String type = "Command";
 
-    public CommandCard(){
-
-    }
 
     public CommandCard(@NotNull Command command) {
         this.command = command;

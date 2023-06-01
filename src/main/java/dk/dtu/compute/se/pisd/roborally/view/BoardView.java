@@ -62,12 +62,12 @@ public class BoardView extends VBox implements ViewObserver {
         this.getChildren().add(playersView);
         this.getChildren().add(statusLabel);
 
-        spaces = new SpaceView[board.width][board.height];
+        spaces = new SpaceView[board.getWidth()][board.getHeight()];
 
         spaceEventHandler = new SpaceEventHandler(gameController);
 
-        for (int x = 0; x < board.width; x++) {
-            for (int y = 0; y < board.height; y++) {
+        for (int x = 0; x < board.getWidth(); x++) {
+            for (int y = 0; y < board.getHeight(); y++) {
                 Space space = board.getSpace(x, y);
                 SpaceView spaceView = new SpaceView(space);
                 spaces[x][y] = spaceView;
@@ -92,7 +92,7 @@ public class BoardView extends VBox implements ViewObserver {
     //     behaviour of the game by being able to explicitly move the players on the board!
     private class SpaceEventHandler implements EventHandler<MouseEvent> {
 
-        final public GameController gameController;
+        final private GameController gameController;
 
         public SpaceEventHandler(@NotNull GameController gameController) {
             this.gameController = gameController;
@@ -102,8 +102,8 @@ public class BoardView extends VBox implements ViewObserver {
         public void handle(MouseEvent event) {
             Object source = event.getSource();
             if (source instanceof SpaceView spaceView) {
-                Space space = spaceView.space;
-                Board board = space.board;
+                Space space = spaceView.getSpace();
+                Board board = space.getBoard();
 
                 if (board == gameController.board) {
                     gameController.moveCurrentPlayerToSpace(space);
