@@ -227,6 +227,12 @@ public class GameController {
 
     }
 
+    /**
+     * Executes current command from command card for player
+     * @param player
+     * @param command
+     * @auther Søren Wünsche
+     */
     private void executeCommand(@NotNull Player player, Command command) {
         if (player != null && player.board == board && command != null) {
             switch (command) {
