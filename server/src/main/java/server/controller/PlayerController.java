@@ -1,4 +1,4 @@
-package controller;
+package server.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
