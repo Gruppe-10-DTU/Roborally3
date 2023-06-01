@@ -14,7 +14,7 @@ class BoardTest {
 
     @BeforeEach
     public void init() {
-        board = new Board(11, 8,"Test",2);
+        board = new Board(11, 8,"Test",2, null);
 
         player1 = new Player(board, "red", "Player 1");
         player1.setSpace(board.getSpace(0,1));
