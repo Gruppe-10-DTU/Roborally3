@@ -30,11 +30,8 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.view.GamesView;
 import javafx.application.Platform;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceDialog;
-import javafx.scene.control.TextInputDialog;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedWriter;
@@ -301,6 +298,9 @@ public class AppController implements Observer, EndGame {
     }
 
     public void joinGame(Game selectedItem) {
-        System.out.println("Trying to join " + selectedItem);
+        Game item = selectedItem;
+        int playerID = 232;
+        HttpController.joinGame(item.getId(), playerID);
+        System.out.println("Player: "+ playerID + " trying to join " + selectedItem);
     }
 }

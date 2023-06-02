@@ -8,7 +8,8 @@ import java.util.*;
 public class HttpController {
 
     private static final HttpClient client = HttpClient.newHttpClient();;
-    private static String serverUrl = "http://127.0.0.1";
+//    private static String serverUrl = "http://127.0.0.1";
+    private static String serverUrl = "http://localhost:8080";
     private static HttpResponse<String> lastResponse;
 
     /**
@@ -38,7 +39,7 @@ public class HttpController {
     }
     public static int joinGame(int gameID, int playerID){
         HttpRequest postPlayerRequest = HttpRequest.newBuilder()
-                .uri(URI.create(serverUrl + "/Games/" + gameID + "/Player"+ playerID))
+                .uri(URI.create(serverUrl + "/games/" + gameID + "/players"))
                 .POST(HttpRequest.BodyPublishers.ofString(String.valueOf(playerID)))
                 .build();
         try {

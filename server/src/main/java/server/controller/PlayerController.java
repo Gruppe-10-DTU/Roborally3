@@ -15,4 +15,8 @@ public class PlayerController {
     public ResponseEntity<String> getPlayers() throws HttpServerErrorException.NotImplemented {
         return null;
     }
+    @RequestMapping(value = "/games/{id}/players", method = RequestMethod.POST)
+    public ResponseEntity joinPlayers() throws HttpServerErrorException.NotImplemented {
+        return ResponseEntity.ok().build();
+    }
 }
