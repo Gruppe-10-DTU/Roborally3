@@ -33,6 +33,7 @@ class HttpControllerTest {
     @Test
     void getAvailableGamesTest() {
         Object returnedObj = HttpController.getAvailableGames();
+        assertEquals(200, HttpController.getLastResponseCode());
     }
 
     @Test

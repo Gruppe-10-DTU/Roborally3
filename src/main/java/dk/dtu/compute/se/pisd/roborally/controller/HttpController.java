@@ -22,7 +22,7 @@ public class HttpController {
 
     public static List<String> getAvailableGames(){
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(serverUrl + "/AvailableGames"))
+                .uri(URI.create(serverUrl + "/games"))
                 .GET()
                 .build();
         try {
