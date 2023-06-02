@@ -1,19 +1,24 @@
 package server.controller;
 
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpServerErrorException;
+import server.Service.GameService;
+import server.dto.GameDTO;
+import server.mapper.GameDTOMapper;
 
 import java.util.ArrayList;
 
 @RestController
 public class GameController {
-    private ArrayList<String> gameList = new ArrayList<>();
+    @Autowired
+    private GameService gameService;
+    private GameDTOMapper gameDTOMapper = new GameDTOMapper();
+
     @RequestMapping(value = "/games", method = RequestMethod.GET)
-    public ArrayList<String> getGameList(){
-        return gameList;
+    public ArrayList<GameDTO> getGameList(){
+        return gameDTOMapper.mapList(gameService.loadGames());
     }
     /*
     @RequestMapping(value = "/games/{id}", method = RequestMethod.GET)

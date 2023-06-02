@@ -1,10 +1,12 @@
 package server.Service;
 
+import org.springframework.stereotype.Service;
 import server.model.Game;
 
 import java.util.ArrayList;
 
-public class gameService {
+@Service
+public class GameService {
     public void SaveGame (Game game) {
 
     }
@@ -13,7 +15,7 @@ public class gameService {
 
     }
 
-    public ArrayList<Game> readGames () {
+    public ArrayList<Game> loadGames() {
         ArrayList<Game> games = new ArrayList<>();
 
 
