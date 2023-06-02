@@ -2,7 +2,6 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
-import dk.dtu.compute.se.pisd.roborally.model.Cards.CommandCard;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import org.junit.jupiter.api.AfterEach;
@@ -55,7 +54,7 @@ class GameControllerTest {
         Board board = gameController.board;
         Player current = board.getCurrentPlayer();
 
-        gameController.moveForward(current);
+        gameController.moveForward(current, 1);
 
         Assertions.assertEquals(current, board.getSpace(0, 1).getPlayer(), "Player " + current.getName() + " should beSpace (0,1)!");
         Assertions.assertEquals(Heading.SOUTH, current.getHeading(), "Player 0 should be heading SOUTH!");
@@ -67,9 +66,9 @@ class GameControllerTest {
         Board board = gameController.board;
         Player pusher = board.getCurrentPlayer();
         Player pushed = board.getPlayer(1);
-        gameController.moveForward(pusher);
+        gameController.moveForward(pusher, 1);
         pusher.setHeading(Heading.EAST);
-        gameController.moveForward(pusher);
+        gameController.moveForward(pusher,1);
 
         Assertions.assertEquals(pusher,board.getSpace(1,1).getPlayer(), "Player "+ pusher.getName() + " should be space (1,1)");
         Assertions.assertEquals(pushed,board.getSpace(2,1).getPlayer(), "Player " + pushed.getName() + " should be space (2,1)");
@@ -91,7 +90,7 @@ class GameControllerTest {
         Player current = board.getCurrentPlayer();
         board.getNeighbour(current.getSpace(), current.getHeading()).setWalls(EnumSet.range(Heading.SOUTH, Heading.EAST));
 
-        gameController.moveForward(current);
+        gameController.moveForward(current, 1);
 
         Assertions.assertNotEquals(current, board.getSpace(0, 1).getPlayer(), "Player " + current.getName() + " not have moved!");
         Assertions.assertEquals(current, board.getSpace(0,0).getPlayer(), "Player 0 should be at Space(0,0)");
@@ -116,8 +115,8 @@ class GameControllerTest {
         Assertions.assertEquals(pushed2.getSpace(),board.getSpace(3,3), "Player " + pushed2.getName() + " should be on space (3,3)");
         Assertions.assertEquals(true,board.getSpace(4,3).hasWall(Heading.EAST), "Space " + board.getSpace(3,3) + " should have a wall facing the east side");
         pusher.setHeading(Heading.EAST);
-        gameController.fastForward(board.getCurrentPlayer());
-        gameController.moveForward(board.getCurrentPlayer());
+        gameController.moveForward(board.getCurrentPlayer(),2);
+        gameController.moveForward(board.getCurrentPlayer(), 1);
         Assertions.assertEquals(pusher.getSpace(),board.getSpace(2,3), "Player " + pusher.getName() + " should be on space (2,3)");
         Assertions.assertEquals(pushed1.getSpace(),board.getSpace(3,3), "Player " + pushed1.getName() + " should be on space (3,3)");
         Assertions.assertEquals(pushed2.getSpace(),board.getSpace(4,3), "Player " + pushed2.getName() + " should be on space (4,3)");
@@ -135,7 +134,7 @@ class GameControllerTest {
         Assertions.assertSame(moveOutOfBounds.drawCard().getType(),moveOutOfBounds.getProgramField(0).getCard().getType(), "Player only has command type cards in deck, and the programmed card should alas be a command!");
         //Check to see if player is moved to reboot token square.
         Assertions.assertSame(moveOutOfBounds.getSpace(), board.getSpace(0, 0), "Player " + moveOutOfBounds.getName() + " should be on space (0,0)!");
-        gameController.moveForward(moveOutOfBounds);
+        gameController.moveForward(moveOutOfBounds, 1);
         Assertions.assertSame(moveOutOfBounds.getSpace(), board.getSpace(2, 2), "Player " + moveOutOfBounds.getName() + " should be moved to space (2,2)!");
         //Checking to see if reboot has set card to null!
         Assertions.assertSame(null,moveOutOfBounds.getProgramField(0).getCard(), "Since player is rebooting; Program field should be empty!");
