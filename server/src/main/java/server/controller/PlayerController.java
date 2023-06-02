@@ -11,10 +11,10 @@ import java.util.ArrayList;
 
 @RestController
 public class PlayerController {
-
-    @RequestMapping(value = "/players/{id}/players", method = RequestMethod.GET)
+/*
+    @RequestMapping(value = "/games/{id}/players", method = RequestMethod.GET)
     public ResponseEntity<String> getPlayers() throws HttpServerErrorException.NotImplemented {
         return null;
     }
-
+*/
 }
