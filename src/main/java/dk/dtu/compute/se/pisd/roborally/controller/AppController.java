@@ -25,8 +25,10 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.Game;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.view.GamesView;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -59,10 +61,19 @@ public class AppController implements Observer, EndGame {
 
     final private RoboRally roboRally;
 
+    private GamesView gamesView;
+
 
     private String selectedBoard;
     private GameController gameController;
 
+    public GamesView getGamesView() {
+        return gamesView;
+    }
+
+    public void setGamesView(GamesView gamesView) {
+        this.gamesView = gamesView;
+    }
 
     /**
      * @param roboRally The game
@@ -274,4 +285,22 @@ public class AppController implements Observer, EndGame {
     public void update(Subject subject) {
     }
 
+    public void hostGame() {
+
+    }
+
+    /**
+     * Create the view to show online games
+     *
+     * @author Nilas Thoegersen
+     */
+    public void showOnlineGames() {
+        if (gamesView == null) {
+            gamesView = new GamesView(this);
+        }
+    }
+
+    public void joinGame(Game selectedItem) {
+        System.out.println("Trying to join " + selectedItem);
+    }
 }
