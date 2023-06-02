@@ -37,12 +37,15 @@ class HttpControllerTest {
 
     @Test
     void joinGameTest() {
-        int returnCode = HttpController.joinGame(200, 3);
+        HttpController.setServerUrl("https://dummyjson.com/http");
+        Integer returnCode = HttpController.joinGame(200, 3);
         assertEquals(200,returnCode);
     }
 
     @Test
     void createGameTest() {
-
+        HttpController.setServerUrl("https://dummyjson.com/http");
+        Integer returnCode = HttpController.createGame(gameController);
+        assertEquals(200,returnCode);
     }
 }
