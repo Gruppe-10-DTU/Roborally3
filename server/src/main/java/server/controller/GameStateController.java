@@ -8,12 +8,12 @@ import org.springframework.web.client.HttpServerErrorException;
 
 @RestController
 public class GameStateController {
-    @RequestMapping(value = "/players/{id}/players", method = RequestMethod.GET)
+    @RequestMapping(value = "/games/{id}/gamestates", method = RequestMethod.GET)
     public ResponseEntity<String> getState() throws HttpServerErrorException.NotImplemented {
         return null;
     }
 
-    @RequestMapping(value = "/players/{id}/players", method = RequestMethod.PUT)
+    @RequestMapping(value = "/games/{id}/gamestates", method = RequestMethod.PUT)
     public ResponseEntity<String> updateState() throws HttpServerErrorException.NotImplemented {
         return null;
     }

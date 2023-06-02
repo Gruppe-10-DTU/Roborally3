@@ -15,6 +15,7 @@ public class GameController {
     public ArrayList<String> getGameList(){
         return gameList;
     }
+    /*
     @RequestMapping(value = "/games/{id}", method = RequestMethod.GET)
     public ResponseEntity<String> getSpecificGame() throws HttpServerErrorException.NotImplemented {
         return null;
@@ -26,5 +27,5 @@ public class GameController {
     @RequestMapping(value = "/games/{ID}", method = RequestMethod.DELETE)
     public ResponseEntity<String> removeGame() throws HttpServerErrorException.NotImplemented {
         return null;
-    }
+    }*/
 }
