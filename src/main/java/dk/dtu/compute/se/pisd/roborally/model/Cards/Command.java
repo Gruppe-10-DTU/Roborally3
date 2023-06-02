@@ -41,9 +41,9 @@ public enum Command {
     UTURN("U-Turn", 1),
     FAST_FORWARD("Fast Fwd", 6),
 
+    MOVE_3("Move 3", 1),
     // XXX Assignment P3
     OPTION_LEFT_RIGHT("Left OR Right", 1, LEFT, RIGHT);
-
 
     public String displayName;
 

@@ -4,8 +4,6 @@ import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
-import dk.dtu.compute.se.pisd.roborally.model.Cards.Damage;
-import dk.dtu.compute.se.pisd.roborally.model.Cards.DamageCard;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import org.junit.jupiter.api.Assertions;
@@ -288,7 +286,7 @@ class BoardActionTest {
 
         //Check that player moves to pit
         Assertions.assertSame(pitFall.getSpace(), board.getSpace(0, 0), "Player " + pitFall.getName() + " should space (0,0)");
-        gameController.moveForward(pitFall);
+        gameController.moveForward(pitFall, 1);
         Assertions.assertSame(pitFall.getSpace(), board.getSpace(2, 2), "Player " + pitFall.getName() + " should be moved to space (0,1)");
         //Check that player get moved to reboot square
         pit.doFieldAction(gameController, pitFall);
