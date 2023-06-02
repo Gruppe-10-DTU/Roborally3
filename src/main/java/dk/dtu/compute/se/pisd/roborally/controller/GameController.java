@@ -359,7 +359,11 @@ public class GameController {
                 able = false;
                 break;
             } else {
-                nxt = board.getNeighbour(nxt.getSpace(), pusher.getHeading()).getPlayer();
+                Space space = board.getNeighbour(nxt.getSpace(), pusher.getHeading());
+                if(space == null){
+                    return true;
+                }
+                nxt = space.getPlayer();
             }
         }
         return able;
