@@ -21,15 +21,12 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
-import dk.dtu.compute.se.pisd.roborally.controller.FieldAction.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.*;
 import org.jetbrains.annotations.NotNull;
-import java.util.ArrayList;
-import java.util.EnumSet;
 
 /**
  * ...
@@ -237,7 +234,7 @@ public class GameController {
         if (player != null && player.board == board && command != null) {
             switch (command) {
                 case FORWARD:
-                    this.moveForward(player);
+                    this.moveForward(player, 1);
                     break;
                 case RIGHT:
                     this.turnRight(player);
@@ -246,7 +243,10 @@ public class GameController {
                     this.turnLeft(player);
                     break;
                 case FAST_FORWARD:
-                    this.fastForward(player);
+                    this.moveForward(player,2);
+                    break;
+                case MOVE_3:
+                    this.moveForward(player,3);
                     break;
                 case REVERSE:
                     this.reverse(player);
@@ -300,11 +300,13 @@ public class GameController {
     }
 
     /**
-     * @param player Moves the player forwards, if the target space don't have a wall.
+     * @param player       Moves the player forwards, if the target space don't have a wall.
+     * @param SpacesToMove
      * @author Asbjørn Nielsen
      */
-    public void moveForward(@NotNull Player player) {
-        movePlayer(player, player.getHeading());
+    public void moveForward(@NotNull Player player, int SpacesToMove) {
+        for (int i = 0; i < SpacesToMove; i++)
+            movePlayer(player, player.getHeading());
     }
 
     /**
@@ -316,7 +318,7 @@ public class GameController {
      */
     public void reverse(@NotNull Player player) {
         player.setHeading(player.getHeading().reverse());
-        moveForward(player);
+        moveForward(player, 1);
         player.setHeading(player.getHeading().reverse());
     }
 
@@ -374,15 +376,6 @@ public class GameController {
             sequenceAction.doAction(this);
         }
         checkIfGameIsDone();
-    }
-
-    /**
-     * @param player Moves the player forwards twice.
-     * @author Asbjørn Nielsen
-     */
-    public void fastForward(@NotNull Player player) {
-        moveForward(player);
-        moveForward(player);
     }
 
     /**
