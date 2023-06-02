@@ -37,8 +37,8 @@ class HttpControllerTest {
 
     @Test
     void joinGameTest() {
-        JSONObject returnedObject = HttpController.joinGame(200);
-        assertNotNull(returnedObject);
+        int returnCode = HttpController.joinGame(200, 3);
+        assertEquals(200,returnCode);
     }
 
     @Test
