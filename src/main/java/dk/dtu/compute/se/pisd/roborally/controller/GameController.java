@@ -415,7 +415,7 @@ public class GameController {
         Card targetCard = target.getCard();
 
         //Again is not allowed in the first program field.
-        if(target.equals(target.player.getProgramField(0)) && Command.AGAIN.displayName.equals(sourceCard.getName())){
+        if(target.equals(target.getPlayer().getProgramField(0)) && Command.AGAIN.displayName.equals(sourceCard.getName())){
             return false;
         }
 
