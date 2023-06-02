@@ -78,6 +78,16 @@ public class JSONReader {
     }
 
     public static Board loadGame(String filename) {
+        try {
+            InputStream jsonStream = new FileInputStream(filename);
+            JSONObject object = new JSONObject(IOUtils.toString(jsonStream,StandardCharsets.UTF_8));
+            return parseBoard(object);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+    public static Board parseBoard(JSONObject object){
 
         RuntimeTypeAdapterFactory<Card> cardRuntimeTypeAdapterFactory = RuntimeTypeAdapterFactory.of(Card.class, "cardtype")
                 .registerSubtype(CommandCard.class)
@@ -87,38 +97,30 @@ public class JSONReader {
                 .setPrettyPrinting();
         gson = gsonBuilder.create();
 
-        try {
-            InputStream jsonStream = new FileInputStream(filename);
-            JSONObject object = new JSONObject(IOUtils.toString(jsonStream,StandardCharsets.UTF_8));
-            Board board = new Board(object.getInt("width"), object.getInt("height"), object.getString("boardName"), object.getInt("playerAmount"), object.getJSONArray("spaces"));
+        Board board = new Board(object.getInt("width"), object.getInt("height"), object.getString("boardName"), object.getInt("playerAmount"), object.getJSONArray("spaces"));
 
-            Checkpoint checkpoint = board.getWincondition();
-            String win = object.getJSONObject("wincondition").toString();
-            Checkpoint savedCheckpoint = gson.fromJson(win, Checkpoint.class);
-            while(checkpoint != null){
-                checkpoint.setPlayers(savedCheckpoint.getPlayers());
-                checkpoint = checkpoint.getPrevious();
-                savedCheckpoint = savedCheckpoint.getPrevious();
-            }
-            Type token = new TypeToken<ArrayList<Player>>(){}.getType();
-            String playersString = object.getJSONArray("players").toString();
-
-            List<Player> players = gson.fromJson(playersString, token);
-            for (Player player : players
-                 ) {
-
-                player.board = board;
-                Space space = board.getSpace(player.getSpace());
-                board.addPlayer(player);
-                space.setPlayer(player);
-            }
-            board.setCurrentPlayer(board.getPlayerByName(object.getJSONObject("current").getString("name")));
-            return board;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return null;
+        Checkpoint checkpoint = board.getWincondition();
+        String win = object.getJSONObject("wincondition").toString();
+        Checkpoint savedCheckpoint = gson.fromJson(win, Checkpoint.class);
+        while(checkpoint != null){
+            checkpoint.setPlayers(savedCheckpoint.getPlayers());
+            checkpoint = checkpoint.getPrevious();
+            savedCheckpoint = savedCheckpoint.getPrevious();
         }
+        Type token = new TypeToken<ArrayList<Player>>(){}.getType();
+        String playersString = object.getJSONArray("players").toString();
 
+        List<Player> players = gson.fromJson(playersString, token);
+        for (Player player : players
+        ) {
+
+            player.board = board;
+            Space space = board.getSpace(player.getSpace());
+            board.addPlayer(player);
+            space.setPlayer(player);
+        }
+        board.setCurrentPlayer(board.getPlayerByName(object.getJSONObject("current").getString("name")));
+        return board;
     }
 
 
