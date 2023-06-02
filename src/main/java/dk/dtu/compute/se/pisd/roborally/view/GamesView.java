@@ -14,8 +14,7 @@ import javafx.stage.Stage;
  *
  * @author Nilas
  */
-public class GamesView implements ViewObserver{
-
+public class GamesView extends VBox implements ViewObserver{
     private final AppController appController;
     private final TableView<Game> tableView;
 
@@ -47,11 +46,16 @@ public class GamesView implements ViewObserver{
         tableView.getItems().add(
                 new Game(1, "Test2", 0,4));
 
-        VBox vbox = new VBox(tableView, addButtons());
-        Scene scene = new Scene(vbox);
+        this.getChildren().addAll(tableView, addButtons());
+        Scene scene = new Scene(this);
 
         Stage stage = new Stage();
         stage.setScene(scene);
+        stage.setOnCloseRequest(
+                e -> {
+                    appController.setGamesView(null);
+                    stage.close();
+                });
         stage.show();
     }
 

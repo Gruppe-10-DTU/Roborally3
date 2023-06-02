@@ -67,6 +67,13 @@ public class AppController implements Observer, EndGame {
     private String selectedBoard;
     private GameController gameController;
 
+    public GamesView getGamesView() {
+        return gamesView;
+    }
+
+    public void setGamesView(GamesView gamesView) {
+        this.gamesView = gamesView;
+    }
 
     /**
      * @param roboRally The game
@@ -288,7 +295,7 @@ public class AppController implements Observer, EndGame {
      * @author Nilas Thoegersen
      */
     public void showOnlineGames() {
-        if (gamesView != null) {
+        if (gamesView == null) {
             gamesView = new GamesView(this);
         }
     }
