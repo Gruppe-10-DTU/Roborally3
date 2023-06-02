@@ -9,10 +9,22 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * UI to show all games currently hosted on the server
+ *
+ * @author Nilas
+ */
 public class GamesView implements ViewObserver{
 
     private final AppController appController;
     private final TableView<Game> tableView;
+
+    /**
+     * Controller for the view
+     *
+     * @param appController The appcontroller
+     * @author Nilas Thoegersen
+     */
     public GamesView(AppController appController){
         this.appController = appController;
 
@@ -43,6 +55,12 @@ public class GamesView implements ViewObserver{
         stage.show();
     }
 
+    /**
+     * Setup a bar of buttons
+     *
+     * @return The buttonbar
+     * @author Nilas Thoegersen
+     */
     private ButtonBar addButtons(){
         Button join = new Button("Join");
         join.setOnAction(e -> appController.joinGame(tableView.getSelectionModel().getSelectedItem()));
@@ -55,6 +73,10 @@ public class GamesView implements ViewObserver{
         return buttonBar;
     }
 
+    /**
+     * Method to fetch a new list of items, and set it to the tableview.
+     * @author Nilas Thoegersen
+     */
     private void refreshList() {
         System.out.println("GamesView - Refreshlist not implemented");
     }

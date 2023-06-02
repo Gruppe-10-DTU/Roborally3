@@ -282,6 +282,11 @@ public class AppController implements Observer, EndGame {
 
     }
 
+    /**
+     * Create the view to show online games
+     *
+     * @author Nilas Thoegersen
+     */
     public void showOnlineGames() {
         if (gamesView != null) {
             gamesView = new GamesView(this);
