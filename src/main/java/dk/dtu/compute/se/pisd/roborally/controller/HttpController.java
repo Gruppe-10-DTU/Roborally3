@@ -13,7 +13,7 @@ public class HttpController {
 
     /**
      *
-     * @param url used for changeing url in tests
+     * @param url used for changing url in tests
      * @author Philip Astrup Cramer
      */
     public static void setServerUrl(String url){
@@ -49,7 +49,7 @@ public class HttpController {
         }
         return lastResponse.statusCode();
     }
-    public static void createGame(GameController gameController){
+    public static int createGame(GameController gameController){
         if(gameController.board.getGameId() == null) gameController.board.setGameId((int) (Math.random() * 1_000_000));
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + "/" + gameController.board.getGameId()))
@@ -59,10 +59,12 @@ public class HttpController {
             lastResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception exception){
             exception.printStackTrace();
+            return 418;
         }
+        return lastResponse.statusCode();
     }
 
-    public static void pushNewGamestate(GameController gameController, int gameID){
+    public static int pushNewGameState(GameController gameController, int gameID){
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + "/" + gameID))
                 .PUT(HttpRequest.BodyPublishers.ofString(JSONReader.saveGame(gameController)))
@@ -72,7 +74,9 @@ public class HttpController {
 
         } catch (Exception exception){
             exception.printStackTrace();
+            return 418;
         }
+        return lastResponse.statusCode();
     }
     public static JSONObject getNewGameState(int gameID){
         HttpRequest request = HttpRequest.newBuilder()
