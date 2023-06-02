@@ -1,7 +1,5 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
-import dk.dtu.compute.se.pisd.roborally.model.Board;
-
 import org.json.JSONObject;
 import java.net.URI;
 import java.net.http.*;
@@ -25,38 +23,36 @@ public class HttpController {
     public static List<String> getAvailableGames(){
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + "/AvailableGames"))
-                .header("Content-Type", "application/json")
                 .GET()
                 .build();
         try {
             lastResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception exception){
             exception.printStackTrace();
+            return null;
         }
-        if(lastResponse != null && lastResponse.statusCode() == 200){
-            return Arrays.asList(lastResponse.body().split("SPLIT_CHARACTER"));
+        if(lastResponse.statusCode() < 300 && lastResponse.statusCode() >= 200){
+            // Parsing to correct format
         }
-        return List.of();
+        return null;
     }
-    public static JSONObject joinGame(int gameID){
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(serverUrl + "/" + gameID))
-                .GET()
+    public static int joinGame(int gameID, int playerID){
+        HttpRequest postPlayerRequest = HttpRequest.newBuilder()
+                .uri(URI.create(serverUrl + "/Games/" + gameID + "/Player"+ playerID))
+                .POST(HttpRequest.BodyPublishers.ofString(String.valueOf(playerID)))
                 .build();
         try {
-            lastResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
+            lastResponse = client.send(postPlayerRequest, HttpResponse.BodyHandlers.ofString());
 
         } catch (Exception exception){
             exception.printStackTrace();
         }
-        if(lastResponse != null && lastResponse.statusCode() == 200) {
-            return new JSONObject(lastResponse.body());
-        }
-        return null;
+        return lastResponse.statusCode();
     }
     public static void createGame(GameController gameController){
+        if(gameController.board.getGameId() == null) gameController.board.setGameId((int) (Math.random() * 1_000_000));
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(serverUrl + "/" + (int) (Math.random() * 100_000)))
+                .uri(URI.create(serverUrl + "/" + gameController.board.getGameId()))
                 .POST(HttpRequest.BodyPublishers.ofString(JSONReader.saveGame(gameController)))
                 .build();
         try {
@@ -88,10 +84,15 @@ public class HttpController {
 
         } catch (Exception exception){
             exception.printStackTrace();
+            return null;
         }
-        if(lastResponse != null && lastResponse.statusCode() == 200) {
+        if(lastResponse.statusCode() < 300 && lastResponse.statusCode() >= 200) {
             return new JSONObject(lastResponse.body());
         }
         return null;
+    }
+
+    public static int getLastResponseCode() {
+        return lastResponse.statusCode();
     }
 }
