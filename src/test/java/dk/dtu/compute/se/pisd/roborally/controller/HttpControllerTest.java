@@ -22,7 +22,7 @@ class HttpControllerTest {
 
             }
         });
-        HttpController.setServerUrl("https://dummyjson.com/http");
+        HttpController.setServerUrl("http://localhost:8080");
     }
 
     @AfterEach
@@ -32,19 +32,17 @@ class HttpControllerTest {
 
     @Test
     void getAvailableGamesTest() {
-
+        Object returnedObj = HttpController.getAvailableGames();
     }
 
     @Test
     void joinGameTest() {
-        HttpController.setServerUrl("https://dummyjson.com/http");
         Integer returnCode = HttpController.joinGame(200, 3);
         assertEquals(200,returnCode);
     }
 
     @Test
     void createGameTest() {
-        HttpController.setServerUrl("https://dummyjson.com/http");
         Integer returnCode = HttpController.createGame(gameController);
         assertEquals(200,returnCode);
     }
