@@ -49,9 +49,13 @@ public class RoboRallyMenuBar extends MenuBar {
 
     private final MenuItem exitApp;
 
-    private final MenuItem joinGame;
+    private final MenuItem seeGames;
 
     private final MenuItem hostGame;
+
+    private final MenuItem startServer;
+
+    private final MenuItem connectToServer;
 
     public RoboRallyMenuBar(AppController appController) {
         this.appController = appController;
@@ -89,9 +93,17 @@ public class RoboRallyMenuBar extends MenuBar {
         hostGame.setOnAction(e -> this.appController.hostGame());
         multiplayerMenu.getItems().add(hostGame);
 
-        joinGame = new MenuItem("Join game");
-        joinGame.setOnAction(e -> this.appController.showOnlineGames());
-        multiplayerMenu.getItems().add(joinGame);
+        seeGames = new MenuItem("Join game");
+        seeGames.setOnAction(e -> this.appController.showOnlineGames());
+        multiplayerMenu.getItems().add(seeGames);
+
+        startServer = new MenuItem("Start server");
+        startServer.setOnAction(e -> this.appController.StartServer());
+        multiplayerMenu.getItems().add(startServer);
+
+        connectToServer = new MenuItem("Connect to server");
+        connectToServer.setOnAction(e -> this.appController.setupServer());
+        multiplayerMenu.getItems().add(connectToServer);
 
 
         multiplayerMenu.setOnShowing(e -> update());

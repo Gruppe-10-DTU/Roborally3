@@ -48,6 +48,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static dk.dtu.compute.se.pisd.roborally.controller.HttpController.serverIsConnected;
+
 /**
  * ...
  *
@@ -219,8 +221,14 @@ public class AppController implements Observer, EndGame {
     public boolean stopGame() {
         if (gameController != null) {
 
-            // here we save the game (without asking the user).
-            saveGame();
+            Alert alert = new Alert(AlertType.CONFIRMATION, "Do you want to save the game?", ButtonType.YES, ButtonType.NO );
+            alert.setTitle("Stop game");
+
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.isPresent() && result.get() == ButtonType.YES) {
+                saveGame();
+            }
 
             gameController = null;
             roboRally.createBoardView(null);
@@ -302,5 +310,40 @@ public class AppController implements Observer, EndGame {
 
     public void joinGame(Game selectedItem) {
         System.out.println("Trying to join " + selectedItem);
+    }
+
+    public void StartServer() {
+
+    }
+
+    public void setupServer() {
+        TextInputDialog saveNameDialog = new TextInputDialog();
+        boolean running = serverIsConnected();
+
+        saveNameDialog.setTitle("Server address");
+        saveNameDialog.setHeaderText("Please enter the server ip address");
+
+        while (!running) {
+
+            Optional<String> resultName = saveNameDialog.showAndWait();
+
+            String name = resultName.orElse("");
+            if (name.isEmpty() || name == null) {
+                return;
+            }
+
+            HttpController.setServerUrl("http://" + resultName.get());
+
+            running = serverIsConnected();
+
+            saveNameDialog.setHeaderText("That address did not work, please try another address");
+
+        }
+        if (running) {
+            Alert serverConnected = new Alert(AlertType.INFORMATION);
+            serverConnected.setTitle("Server is connected");
+            serverConnected.setContentText("You can now look for a game to join, or host a game");
+            serverConnected.show();
+        }
     }
 }
