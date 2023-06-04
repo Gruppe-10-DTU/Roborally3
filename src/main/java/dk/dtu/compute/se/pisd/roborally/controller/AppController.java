@@ -36,6 +36,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
 import org.jetbrains.annotations.NotNull;
+import server.ServerApp;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -256,8 +257,9 @@ public class AppController implements Observer, EndGame {
 
         // If the user did not cancel, the RoboRally application will exit
         // after the option to save the game
+
         if (gameController == null || stopGame()) {
-            Platform.exit();
+            System.exit(0);
         }
     }
 
@@ -313,37 +315,8 @@ public class AppController implements Observer, EndGame {
     }
 
     public void StartServer() {
+        String[] args = new String[0];
+        ServerApp.main(args);
 
-    }
-
-    public void setupServer() {
-        TextInputDialog saveNameDialog = new TextInputDialog();
-        boolean running = serverIsConnected();
-
-        saveNameDialog.setTitle("Server address");
-        saveNameDialog.setHeaderText("Please enter the server ip address");
-
-        while (!running) {
-
-            Optional<String> resultName = saveNameDialog.showAndWait();
-
-            String name = resultName.orElse("");
-            if (name.isEmpty() || name == null) {
-                return;
-            }
-
-            HttpController.setServerUrl("http://" + resultName.get());
-
-            running = serverIsConnected();
-
-            saveNameDialog.setHeaderText("That address did not work, please try another address");
-
-        }
-        if (running) {
-            Alert serverConnected = new Alert(AlertType.INFORMATION);
-            serverConnected.setTitle("Server is connected");
-            serverConnected.setContentText("You can now look for a game to join, or host a game");
-            serverConnected.show();
-        }
     }
 }

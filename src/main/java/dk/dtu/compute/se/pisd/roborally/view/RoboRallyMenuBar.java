@@ -55,8 +55,6 @@ public class RoboRallyMenuBar extends MenuBar {
 
     private final MenuItem startServer;
 
-    private final MenuItem connectToServer;
-
     public RoboRallyMenuBar(AppController appController) {
         this.appController = appController;
 
@@ -100,11 +98,6 @@ public class RoboRallyMenuBar extends MenuBar {
         startServer = new MenuItem("Start server");
         startServer.setOnAction(e -> this.appController.StartServer());
         multiplayerMenu.getItems().add(startServer);
-
-        connectToServer = new MenuItem("Connect to server");
-        connectToServer.setOnAction(e -> this.appController.setupServer());
-        multiplayerMenu.getItems().add(connectToServer);
-
 
         multiplayerMenu.setOnShowing(e -> update());
         multiplayerMenu.setOnShown(e -> updateBounds());
