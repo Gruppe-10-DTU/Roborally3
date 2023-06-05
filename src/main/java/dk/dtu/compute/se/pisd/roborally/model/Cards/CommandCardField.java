@@ -32,12 +32,15 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
  */
 public class CommandCardField extends Subject {
 
-    public transient Player player;
+    private transient Player player;
 
     private Card card;
 
     private boolean visible;
 
+    public Player getPlayer() {
+        return player;
+    }
 
     public CommandCardField(Player player) {
         this.player = player;

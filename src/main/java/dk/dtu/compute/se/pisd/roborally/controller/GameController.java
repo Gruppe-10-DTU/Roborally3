@@ -226,9 +226,9 @@ public class GameController {
 
     /**
      * Executes current command from command card for player
-     * @param player
-     * @param command
-     * @auther Søren Wünsche
+     * @param player The player being affected
+     * @param command The command being executed
+     * @author Søren Wünsche
      */
     private void executeCommand(@NotNull Player player, Command command) {
         if (player != null && player.board == board && command != null) {
@@ -301,7 +301,7 @@ public class GameController {
 
     /**
      * @param player       Moves the player forwards, if the target space don't have a wall.
-     * @param SpacesToMove
+     * @param SpacesToMove Amount of steps a player is moving
      * @author Asbjørn Nielsen
      */
     public void moveForward(@NotNull Player player, int SpacesToMove) {
@@ -359,7 +359,11 @@ public class GameController {
                 able = false;
                 break;
             } else {
-                nxt = board.getNeighbour(nxt.getSpace(), pusher.getHeading()).getPlayer();
+                Space space = board.getNeighbour(nxt.getSpace(), pusher.getHeading());
+                if(space == null){
+                    return true;
+                }
+                nxt = space.getPlayer();
             }
         }
         return able;
@@ -413,6 +417,12 @@ public class GameController {
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
         Card sourceCard = source.getCard();
         Card targetCard = target.getCard();
+
+        //Again is not allowed in the first program field.
+        if(target.equals(target.getPlayer().getProgramField(0)) && Command.AGAIN.displayName.equals(sourceCard.getName())){
+            return false;
+        }
+
         if (sourceCard != null && targetCard == null) {
             target.setCard(sourceCard);
             source.setCard(null);
@@ -446,9 +456,9 @@ public class GameController {
     /**
      * @param player The player getting rebooted
      */
-        public void rebootRobot(Player player){
-            player.discardCard(new DamageCard(Damage.SPAM));
-            player.discardCard(new DamageCard(Damage.SPAM));
+    public void rebootRobot(Player player){
+        player.discardCard(new DamageCard(Damage.SPAM));
+        player.discardCard(new DamageCard(Damage.SPAM));
         for (int i = 0; i < 5; i++) {
             CommandCardField field = player.getProgramField(i);
             if (field.getCard() != null) {
@@ -459,5 +469,14 @@ public class GameController {
         }
         board.getRebootToken().doFieldAction(this, player);
 
+    }
+
+    public void again(Player player) {
+        //Get the previous card
+        Card card = player.getProgramField(board.getStep()-1).getCard();
+
+        if(card != null){
+            card.doAction(this);
+        }
     }
 }
