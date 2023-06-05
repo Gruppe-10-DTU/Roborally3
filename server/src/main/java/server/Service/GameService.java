@@ -2,6 +2,7 @@ package server.Service;
 
 import org.springframework.stereotype.Service;
 import server.model.Game;
+import server.model.GameState;
 import server.repository.GameRepository;
 
 import java.util.List;
@@ -22,9 +23,7 @@ public class GameService {
     }
 
     public List<Game> loadGames() {
-        List<Game> games = gameRepository.findAll();
-
-
+        List<Game> games = gameRepository.findAllByState(GameState.INITIALIZING);
         return games;
     }
 }

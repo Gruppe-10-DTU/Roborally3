@@ -17,6 +17,8 @@ public class Game {
     private int maxPlayers;
     private String hostName;
 
+    private GameState state;
+
     /*
     private Board board;
 
@@ -54,6 +56,14 @@ public class Game {
 
     public void setHostName(String hostName) {
         this.hostName = hostName;
+    }
+
+    public GameState getState() {
+        return state;
+    }
+
+    public void setState(GameState state) {
+        this.state = state;
     }
 
     public Game() {
