@@ -1,10 +1,11 @@
 package server.Service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import server.model.Board;
 import server.model.Game;
 import server.model.Player;
-
+import com.google.gson.*;
 import java.util.ArrayList;
 
 @Service
@@ -38,6 +39,7 @@ public class GameService {
     }
         public Game createGame(Game game) {
         Game gm = new Game();
+
         gm.setGameID(game.getGameID());
         gm.setMaxPlayers(game.getMaxPlayers());
         gm.setHostName(game.getHostName());

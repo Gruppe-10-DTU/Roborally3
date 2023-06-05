@@ -21,4 +21,9 @@ public class GameDTO {
         this.hostName = hostName;
         this.gameId = gameId;
     }
+
+
+    public String toString(){
+        return gameId + " , " + hostName;
+    }
 }

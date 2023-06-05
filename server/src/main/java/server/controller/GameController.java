@@ -1,11 +1,9 @@
 package server.controller;
 
+import com.google.gson.JsonArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import server.Service.GameService;
 import server.dto.GameDTO;
 import server.mapper.GameDTOMapper;
@@ -35,8 +33,8 @@ public class GameController {
         return gson.toJson(gameService.getGameById(id));
     }
 
-    @RequestMapping(value = "/games", method = RequestMethod.POST)
-    public String createGame(@PathVariable Game game) {
+    @PostMapping("/games")
+    public String createGame(@RequestBody Game game) {
         gameService.createGame(game);
         return gson.toJson(gameService.getGameById(game.getGameID()));
     }

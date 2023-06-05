@@ -1,5 +1,6 @@
 package server.model;
 
+import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -39,4 +40,5 @@ public class Game {
     public void setGameID(int gameID){
         this.gameID = gameID;
     }
+
 }
