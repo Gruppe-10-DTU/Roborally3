@@ -7,7 +7,7 @@ import java.util.ArrayList;
 @Component
 public class Board {
 
-    private ArrayList<Player> currentPlayers;
+    private ArrayList<Player> currentPlayers = new ArrayList<>();
 
     private String id;
 
@@ -18,4 +18,5 @@ public class Board {
     public String getId() {
         return id;
     }
+
 }

@@ -286,6 +286,32 @@ public class AppController implements Observer, EndGame {
     }
 
     public void hostGame() {
+        ChoiceDialog boardDialog = new ChoiceDialog(BOARD_OPTIONS.get(0), BOARD_OPTIONS);
+        boardDialog.setTitle("Course");
+        boardDialog.setHeaderText("Select course");
+        Optional<String> boardresult = boardDialog.showAndWait();
+
+        if (boardresult.isPresent()) {
+            selectedBoard = boardresult.get();
+        }
+
+        ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
+
+        dialog.setTitle("Player number");
+        dialog.setHeaderText("Select number of players");
+        Optional<Integer> result = dialog.showAndWait();
+
+
+
+
+
+            // XXX the board should eventually be created programmatically or loaded from a file
+            //     here we just create an empty board with the required number of players.
+            Board board = new Board(11, 8, selectedBoard, result.get(), null);
+            gameController = new GameController(board, this);
+            int numberOfPlayers = result.get();
+
+        HttpController.createGame(gameController);
 
     }
 

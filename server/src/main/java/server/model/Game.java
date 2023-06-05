@@ -8,6 +8,8 @@ public class Game {
     private int maxPlayers;
     private String hostName;
 
+    private int gameID;
+
     public Board getBoard() {
         return board;
     }
@@ -30,5 +32,11 @@ public class Game {
 
     public void setHostName(String hostName) {
         this.hostName = hostName;
+    }
+
+    public int getGameID(){return gameID;}
+
+    public void setGameID(int gameID){
+        this.gameID = gameID;
     }
 }
