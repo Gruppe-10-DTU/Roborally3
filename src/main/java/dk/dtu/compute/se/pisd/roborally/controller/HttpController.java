@@ -39,7 +39,7 @@ public class HttpController {
     }
     public static int joinGame(int gameID, int playerID){
         HttpRequest postPlayerRequest = HttpRequest.newBuilder()
-                .uri(URI.create(serverUrl + "/games/" + gameID + "/players"))
+                .uri(URI.create(serverUrl + "/games/" + gameID + "/players"+ playerID))
                 .POST(HttpRequest.BodyPublishers.ofString(String.valueOf(playerID)))
                 .build();
         try {
@@ -68,7 +68,7 @@ public class HttpController {
     public static int createGame(GameController gameController){
         if(gameController.board.getGameId() == null) gameController.board.setGameId((int) (Math.random() * 1_000_000));
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(serverUrl + "/" + gameController.board.getGameId()))
+                .uri(URI.create(serverUrl + "/games/" + gameController.board.getGameId()))
                 .POST(HttpRequest.BodyPublishers.ofString(JSONReader.saveGame(gameController)))
                 .build();
         try {
@@ -82,7 +82,7 @@ public class HttpController {
 
     public static int pushNewGameState(GameController gameController, int gameID){
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(serverUrl + "/" + gameID))
+                .uri(URI.create(serverUrl + "/games/" + gameID))
                 .PUT(HttpRequest.BodyPublishers.ofString(JSONReader.saveGame(gameController)))
                 .build();
         try {
@@ -96,7 +96,7 @@ public class HttpController {
     }
     public static JSONObject getNewGameState(int gameID){
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(serverUrl + "/" + gameID))
+                .uri(URI.create(serverUrl + "/games/" + gameID))
                 .GET()
                 .build();
         try {
