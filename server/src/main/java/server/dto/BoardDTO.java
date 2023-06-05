@@ -1,12 +1,10 @@
-package server.model;
+package server.dto;
 
-import org.springframework.stereotype.Component;
+import server.model.Player;
 
 import java.util.ArrayList;
 
-@Component
-public class Board {
-
+public class BoardDTO {
     private ArrayList<Player> currentPlayers;
 
     private String id;
