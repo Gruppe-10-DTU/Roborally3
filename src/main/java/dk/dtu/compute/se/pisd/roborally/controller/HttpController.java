@@ -8,7 +8,7 @@ import java.util.*;
 public class HttpController {
 
     private static final HttpClient client = HttpClient.newHttpClient();;
-    private static String serverUrl = "http://127.0.0.1";
+    private static String serverUrl = "http://localhost:8080";
     private static HttpResponse<String> lastResponse;
 
     /**
@@ -94,6 +94,27 @@ public class HttpController {
             return new JSONObject(lastResponse.body());
         }
         return null;
+    }
+
+    public static boolean serverIsConnected(){
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverUrl + "/games"))
+                .GET()
+                .build();
+        try {
+            lastResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        } catch (Exception exception){
+            return false;
+        }
+
+        if(lastResponse == null) {
+            return false;
+        } else if (lastResponse.statusCode() < 300 && lastResponse.statusCode() >= 200) {
+            return true;
+        }
+
+        return false;
     }
 
     public static int getLastResponseCode() {

@@ -36,6 +36,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
 import org.jetbrains.annotations.NotNull;
+import server.ServerApp;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -47,6 +48,8 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+import static dk.dtu.compute.se.pisd.roborally.controller.HttpController.serverIsConnected;
 
 /**
  * ...
@@ -218,8 +221,14 @@ public class AppController implements Observer, EndGame {
     public boolean stopGame() {
         if (gameController != null) {
 
-            // here we save the game (without asking the user).
-            saveGame();
+            Alert alert = new Alert(AlertType.CONFIRMATION, "Do you want to save the game?", ButtonType.YES, ButtonType.NO );
+            alert.setTitle("Stop game");
+
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.isPresent() && result.get() == ButtonType.YES) {
+                saveGame();
+            }
 
             gameController = null;
             roboRally.createBoardView(null);
@@ -247,8 +256,9 @@ public class AppController implements Observer, EndGame {
 
         // If the user did not cancel, the RoboRally application will exit
         // after the option to save the game
+
         if (gameController == null || stopGame()) {
-            Platform.exit();
+            System.exit(0);
         }
     }
 
@@ -301,5 +311,11 @@ public class AppController implements Observer, EndGame {
 
     public void joinGame(Game selectedItem) {
         System.out.println("Trying to join " + selectedItem);
+    }
+
+    public void StartServer() {
+        String[] args = new String[0];
+        ServerApp.main(args);
+
     }
 }
