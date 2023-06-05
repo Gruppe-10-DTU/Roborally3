@@ -62,7 +62,7 @@ public class HttpController {
         } catch (Exception exception){
             exception.printStackTrace();
         }
-        return lastResponse.statusCode();
+        return null;
     }
 
     public static int createGame(GameController gameController){
