@@ -21,9 +21,9 @@ public class GameController {
 
     @RequestMapping(value = "/games", method = RequestMethod.GET)
     public String getGameList(){
-        ArrayList<String> gamestring = new ArrayList<>();
+        ArrayList<GameDTO> gamestring = new ArrayList<>();
         for (GameDTO games: gameDTOMapper.mapList(gameService.loadGames())) {
-            gamestring.add(games.toString());
+            gamestring.add(games);
         }
         return gson.toJson(gamestring);
     }
@@ -39,7 +39,7 @@ public class GameController {
         return gson.toJson(gameService.getGameById(game.getGameID()));
     }
 
-    @RequestMapping(value = "/games/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping( "/games/{id}")
     public ResponseEntity<String> removeGame(@PathVariable int id){
         gameService.deleteGame(id);
         return ResponseEntity.ok().body("deleted");
