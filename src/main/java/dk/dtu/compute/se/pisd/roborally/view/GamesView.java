@@ -1,5 +1,6 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
+import com.google.gson.Gson;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.AppController;
 import dk.dtu.compute.se.pisd.roborally.model.Game;
@@ -70,7 +71,14 @@ public class GamesView extends VBox implements ViewObserver{
         join.setOnAction(e -> joinGame());
 
         Button refresh = new Button("Refresh");
-        refresh.setOnAction(e -> refreshList());
+//        refresh.setOnAction(e -> refreshList());
+        refresh.setOnAction(e -> {
+            try {
+                getGameList(tableView);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         ButtonBar buttonBar = new ButtonBar();
         buttonBar.getButtons().addAll(join, refresh);
@@ -95,4 +103,11 @@ public class GamesView extends VBox implements ViewObserver{
     public void updateView(Subject subject) {
 
     }
+
+    private void getGameList(TableView tableView) throws Exception {
+        System.out.println(appController.getGameList());
+        Gson gson = new Gson();
+        tableView.setItems(appController.getGameList());
+    }
+
 }

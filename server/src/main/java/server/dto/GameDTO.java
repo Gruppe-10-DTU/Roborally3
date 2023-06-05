@@ -21,4 +21,16 @@ public class GameDTO {
         this.hostName = hostName;
         this.gameId = gameId;
     }
+    public String getHostName(){
+        return hostName;
+    }
+    public String getGameId(){
+        return gameId;
+    }
+    public int getMaxPlayers(){
+        return maxPlayers;
+    }
+    public int getCurrentPlayers(){
+        return currentPlayers;
+    }
 }

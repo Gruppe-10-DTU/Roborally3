@@ -4,6 +4,8 @@ import org.json.JSONObject;
 import java.net.URI;
 import java.net.http.*;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 public class HttpController {
 
@@ -115,4 +117,16 @@ public class HttpController {
     public static int getLastResponseCode() {
         return lastResponse.statusCode();
     }
+
+    public static String getGameList() throws Exception {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/games2"))
+                .GET()
+                .build();
+        CompletableFuture<HttpResponse<String>> response =
+                client.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+        String result = response.thenApply(HttpResponse::body).get();
+        return result;
+    }
+
 }

@@ -21,6 +21,7 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import com.google.gson.Gson;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
@@ -30,6 +31,8 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.view.GamesView;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import org.jetbrains.annotations.NotNull;
@@ -41,6 +44,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -325,4 +329,12 @@ public class AppController implements Observer, EndGame {
         item.IncCurrPlayer();
         System.out.println("Player: "+ playerID + " trying to join " + selectedItem);
     }
+
+    public ObservableList<String> getGameList() throws Exception {
+
+        Gson gson = new Gson();
+        ObservableList<String> observableList = FXCollections.observableArrayList(HttpController.getGameList());
+        return observableList;
+    }
+
 }
