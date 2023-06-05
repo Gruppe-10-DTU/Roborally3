@@ -301,6 +301,7 @@ public class AppController implements Observer, EndGame {
         Game item = selectedItem;
         int playerID = 232;
         HttpController.joinGame(item.getId(), playerID);
+        item.IncCurrPlayer();
         System.out.println("Player: "+ playerID + " trying to join " + selectedItem);
     }
 }

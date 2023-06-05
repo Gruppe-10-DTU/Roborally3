@@ -50,6 +50,21 @@ public class HttpController {
         }
         return lastResponse.statusCode();
     }
+
+    public static ArrayList<String> isPlayerInGame(int gameID, int playerID){
+        HttpRequest getPlayerRequest = HttpRequest.newBuilder()
+                .uri(URI.create(serverUrl + "/games/" + gameID + "/players"))
+                .GET()
+                .build();
+        try {
+            lastResponse = client.send(getPlayerRequest, HttpResponse.BodyHandlers.ofString());
+
+        } catch (Exception exception){
+            exception.printStackTrace();
+        }
+        return lastResponse.statusCode();
+    }
+
     public static int createGame(GameController gameController){
         if(gameController.board.getGameId() == null) gameController.board.setGameId((int) (Math.random() * 1_000_000));
         HttpRequest request = HttpRequest.newBuilder()

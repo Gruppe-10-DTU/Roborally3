@@ -11,9 +11,11 @@ import java.util.ArrayList;
 
 @RestController
 public class PlayerController {
+
+    private ArrayList<String> playerList = new ArrayList<>();
     @RequestMapping(value = "/games/{id}/players", method = RequestMethod.GET)
-    public ResponseEntity<String> getPlayers() throws HttpServerErrorException.NotImplemented {
-        return null;
+    public ArrayList<String> getPlayers() {
+        return playerList;
     }
     @RequestMapping(value = "/games/{id}/players", method = RequestMethod.POST)
     public ResponseEntity joinPlayers() throws HttpServerErrorException.NotImplemented {

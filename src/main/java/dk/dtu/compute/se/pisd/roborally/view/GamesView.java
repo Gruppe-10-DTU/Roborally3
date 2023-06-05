@@ -67,7 +67,7 @@ public class GamesView extends VBox implements ViewObserver{
      */
     private ButtonBar addButtons(){
         Button join = new Button("Join");
-        join.setOnAction(e -> appController.joinGame(tableView.getSelectionModel().getSelectedItem()));
+        join.setOnAction(e -> joinGame());
 
         Button refresh = new Button("Refresh");
         refresh.setOnAction(e -> refreshList());
@@ -82,7 +82,13 @@ public class GamesView extends VBox implements ViewObserver{
      * @author Nilas Thoegersen
      */
     private void refreshList() {
+        tableView.refresh();
         System.out.println("GamesView - Refreshlist not implemented");
+    }
+
+    private void joinGame(){
+        appController.joinGame(tableView.getSelectionModel().getSelectedItem());
+        tableView.refresh();
     }
 
     @Override
