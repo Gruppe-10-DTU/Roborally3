@@ -8,7 +8,7 @@ import java.util.*;
 public class HttpController {
 
     private static final HttpClient client = HttpClient.newHttpClient();;
-    private static String serverUrl = "http://127.0.0.1";
+    private static String serverUrl = "http://localhost:8080";
     private static HttpResponse<String> lastResponse;
 
     /**
