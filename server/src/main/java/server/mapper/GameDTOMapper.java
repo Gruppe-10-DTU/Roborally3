@@ -4,6 +4,7 @@ import server.dto.GameDTO;
 import server.model.Game;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GameDTOMapper {
     /**
@@ -14,10 +15,13 @@ public class GameDTOMapper {
      * @author Sandie Petersen
      */
     public GameDTO map(Game game) {
+        /*
         int currentPlayers = game.getBoard().getCurrentPlayers().size();
         String gameId = game.getBoard().getId();
 
-        return new GameDTO(game.getMaxPlayers(), currentPlayers, game.getHostName(), gameId);
+         */
+
+        return new GameDTO(game.getMaxPlayers(), 3, game.getHostName(), game.getId().toString());
     }
 
     /**
@@ -27,7 +31,7 @@ public class GameDTOMapper {
      *  Maps a list of games to a list of game dto's using the map method above
      * @author Sandie Petersen
      */
-    public ArrayList<GameDTO> mapList (ArrayList<Game> gameList) {
+    public ArrayList<GameDTO> mapList (List<Game> gameList) {
         ArrayList<GameDTO> gameDtoList = new ArrayList<>();
 
         for ( Game game: gameList) {
