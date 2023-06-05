@@ -11,6 +11,8 @@ import java.util.ArrayList;
 @Service
 public class GameService {
     private ArrayList<Game> games = new ArrayList<>();
+
+    Gson gson = new Gson();
     /*
     TODO på server :
         - Modtag post omkring spil
@@ -37,6 +39,10 @@ public class GameService {
         tstgm2.setBoard(brd);
         createGame(tstgm2);
     }
+        public Game gameUWrap(String game){
+            return gson.fromJson(game,Game.class);
+        }
+
         public Game createGame(Game game) {
         Game gm = new Game();
 

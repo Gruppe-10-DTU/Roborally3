@@ -300,11 +300,6 @@ public class AppController implements Observer, EndGame {
         dialog.setTitle("Player number");
         dialog.setHeaderText("Select number of players");
         Optional<Integer> result = dialog.showAndWait();
-
-
-
-
-
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
             Board board = new Board(11, 8, selectedBoard, result.get(), null);
