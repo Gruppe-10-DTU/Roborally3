@@ -13,6 +13,9 @@ import java.util.ArrayList;
 
 @Service
 public class GameService {
+    Gson gson = new Gson();
+    List<Game> games = null;
+
     private GameRepository gameRepository;
 
     public GameService(GameRepository gameRepository){
@@ -21,12 +24,9 @@ public class GameService {
     public void SaveGame (Game game) {
 
     }
-        public Game gameUWrap(String game){
-            return gson.fromJson(game,Game.class);
-        }
 
         public Game createGame(Game game) {
-        games.add(game.getGameID(),game);
+        games.add(game.getId(),game);
         return game;
     }
     public Game getGameById(int id){
@@ -37,8 +37,8 @@ public class GameService {
     }
 
     public Game updateGame (Game game) {
-        games.get(game.getGameID()).setBoard(game.getBoard());
-        return games.get(game.getGameID());
+        games.get(game.getId()).setBoard(game.getBoard());
+        return games.get(game.getId());
     }
 
     public List<Game> deleteGame(int id){

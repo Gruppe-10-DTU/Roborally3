@@ -47,7 +47,7 @@ public class GameController {
     @PostMapping("/games")
     public String createGame(@RequestBody Game game) {
         gameService.createGame(game);
-        return gson.toJson(gameService.getGameById(game.getGameID()));
+        return gson.toJson(gameService.getGameById(game.getId()));
     }
 
     @DeleteMapping( "/games/{id}")

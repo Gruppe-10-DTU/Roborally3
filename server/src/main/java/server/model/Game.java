@@ -1,13 +1,8 @@
 package server.model;
 
-import org.springframework.http.converter.json.GsonBuilderUtils;
-import org.springframework.stereotype.Component;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.Transient;
-import org.hibernate.annotations.Type;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -15,14 +10,11 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 public class Game {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    private int id;
     private int maxPlayers;
     private String hostName;
 
-    /*
     private Board board;
-
-
 
     public Board getBoard() {
         return board;
@@ -31,14 +23,13 @@ public class Game {
     public void setBoard(Board board) {
         this.board = board;
     }
-     */
 
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -58,6 +49,4 @@ public class Game {
         this.hostName = hostName;
     }
 
-    public Game() {
-    }
 }
