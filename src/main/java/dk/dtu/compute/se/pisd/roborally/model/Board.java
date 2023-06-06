@@ -27,6 +27,7 @@ import dk.dtu.compute.se.pisd.roborally.model.BoardElement.*;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.PriorityAntenna;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
+import javafx.scene.text.Text;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -65,6 +66,7 @@ public class Board extends Subject {
 
     private boolean stepMode;
     private Checkpoint wincondition;
+    private List<Text> gameLog;
 
     private PriorityQueue<Spawn> spawnPriority = new PriorityQueue<>();
 
@@ -122,6 +124,7 @@ public class Board extends Subject {
         this.playerAmount = playerAmount;
         this.width = width;
         this.height = height;
+        this.gameLog = new ArrayList<>();
         JSONArray courseArray = new JSONArray();
 
         if(boardArray == null) {
@@ -513,5 +516,40 @@ public class Board extends Subject {
 
     public int getWidth() {
         return width;
+    }
+    public List<Text> getGameLog(){
+        return gameLog;
+    }
+    public void addGameLogEntry(Player player, String event){
+        Text text = new Text();
+        if(player == null){
+            text.setText("Game: " + event + "\n");
+            text.setStyle("-fx-fill: BLACK; -fx-font-weight:bold;");
+        } else {
+            text.setText(player.getName() + ": " + event + "\n");
+            switch (player.getColor()) {
+                case "red":
+                    text.setStyle("-fx-fill: RED;");
+                    break;
+                case "green":
+                    text.setStyle("-fx-fill: GREEN;");
+                    break;
+                case "blue":
+                    text.setStyle("-fx-fill: BLUE;");
+                    break;
+                case "orange":
+                    text.setStyle("-fx-fill: ORANGE;");
+                    break;
+                case "grey":
+                    text.setStyle("-fx-fill: GREY;");
+                    break;
+                case "magenta":
+                    text.setStyle("-fx-fill: MAGENTA;");
+                    break;
+                default:
+                    text.setStyle("-fx-fill: BLACK;");
+            }
+        }
+        gameLog.add(text);
     }
 }
