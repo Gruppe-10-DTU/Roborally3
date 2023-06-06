@@ -143,7 +143,7 @@ public class AppController implements Observer, EndGame {
                 Space spawnSpace = board.nextSpawn();
                 player.setSpace(board.getSpace(spawnSpace.getX(),spawnSpace.getY()));
             }
-
+            gameController.board.addGameLogEntry(null,"started");
             gameController.startProgrammingPhase();
 
             roboRally.createBoardView(gameController);
