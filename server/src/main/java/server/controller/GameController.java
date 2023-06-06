@@ -47,9 +47,7 @@ public class GameController {
 
     @GetMapping(value = "/games2")
     public ResponseEntity<List<GameDTO>> getGameList2(){
-        List<GameDTO> gamestring = new ArrayList<>();
-        gamestring.addAll(gameDTOMapper.mapList(gameService.loadGames()));
-        System.out.println(gameDTOMapper.mapList(gameService.loadGames()));
+        List<GameDTO> gamestring = new ArrayList<>(gameDTOMapper.mapList(gameService.loadGames()));
         return ResponseEntity.ok().body(gamestring);
     }
 }

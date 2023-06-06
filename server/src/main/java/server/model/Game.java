@@ -1,13 +1,12 @@
 package server.model;
 
-import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Game {
     private Board board;
     private int maxPlayers;
-    private String hostName;
+    private String name;
 
     private int gameID;
 
@@ -27,12 +26,12 @@ public class Game {
         this.maxPlayers = maxPlayers;
     }
 
-    public String getHostName() {
-        return hostName;
+    public String getName() {
+        return name;
     }
 
-    public void setHostName(String hostName) {
-        this.hostName = hostName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getGameID(){return gameID;}

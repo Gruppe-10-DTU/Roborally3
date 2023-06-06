@@ -1,7 +1,6 @@
 package server.Service;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import server.model.Board;
 import server.model.Game;
 import server.model.Player;
@@ -24,7 +23,7 @@ public class GameService {
         Game tstgm = new Game();
         Board brd = new Board();
         tstgm.setMaxPlayers(2);
-        tstgm.setHostName("Test");
+        tstgm.setName("Test");
         tstgm.setGameID(0);
         Player np = new Player();
         np.setpID(1);
@@ -34,7 +33,7 @@ public class GameService {
 
         Game tstgm2 = new Game();
         tstgm2.setMaxPlayers(3);
-        tstgm2.setHostName("Test Multi");
+        tstgm2.setName("Test Multi");
         tstgm2.setGameID(1);
         tstgm2.setBoard(brd);
         createGame(tstgm2);
@@ -48,7 +47,7 @@ public class GameService {
 
         gm.setGameID(game.getGameID());
         gm.setMaxPlayers(game.getMaxPlayers());
-        gm.setHostName(game.getHostName());
+        gm.setName(game.getName());
         gm.setBoard(game.getBoard());
 
         games.add(gm.getGameID(),gm);

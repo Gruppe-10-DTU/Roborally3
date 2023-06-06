@@ -330,11 +330,11 @@ public class AppController implements Observer, EndGame {
         System.out.println("Player: "+ playerID + " trying to join " + selectedItem);
     }
 
-    public ObservableList<String> getGameList() throws Exception {
+    public List<Game> getGameList() throws Exception {
 
-        Gson gson = new Gson();
-        ObservableList<String> observableList = FXCollections.observableArrayList(HttpController.getGameList());
-        return observableList;
+        List<Game> observableList = FXCollections.observableArrayList(HttpController.getGameList());
+//        System.out.println(observableList);
+        return HttpController.getGameList();
     }
 
 }

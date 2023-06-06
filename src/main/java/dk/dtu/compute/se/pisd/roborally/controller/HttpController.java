@@ -1,5 +1,8 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import dk.dtu.compute.se.pisd.roborally.model.Game;
 import org.json.JSONObject;
 import java.net.URI;
 import java.net.http.*;
@@ -13,6 +16,7 @@ public class HttpController {
 //    private static String serverUrl = "http://127.0.0.1";
     private static String serverUrl = "http://localhost:8080";
     private static HttpResponse<String> lastResponse;
+    private static Gson gson = new Gson();
 
     /**
      *
@@ -118,7 +122,7 @@ public class HttpController {
         return lastResponse.statusCode();
     }
 
-    public static String getGameList() throws Exception {
+    public static List<Game> getGameList() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/games2"))
                 .GET()
@@ -126,7 +130,8 @@ public class HttpController {
         CompletableFuture<HttpResponse<String>> response =
                 client.sendAsync(request, HttpResponse.BodyHandlers.ofString());
         String result = response.thenApply(HttpResponse::body).get();
-        return result;
+        List<Game> games = gson.fromJson(result,new TypeToken<List<Game>>(){}.getType());
+        return games;
     }
 
 }

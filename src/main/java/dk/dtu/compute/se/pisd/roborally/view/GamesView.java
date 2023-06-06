@@ -4,11 +4,14 @@ import com.google.gson.Gson;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.AppController;
 import dk.dtu.compute.se.pisd.roborally.model.Game;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.util.List;
 
 /**
  * UI to show all games currently hosted on the server
@@ -32,7 +35,7 @@ public class GamesView extends VBox implements ViewObserver{
         tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
         TableColumn<Game, String> name = new TableColumn<Game, String>("Name");
-        name.setCellValueFactory(new PropertyValueFactory("name"));
+        name.setCellValueFactory(new PropertyValueFactory<>("name"));
 
         TableColumn<Game, Integer> currentPlayers = new TableColumn<Game, Integer>("Current players");
         currentPlayers.setCellValueFactory(new PropertyValueFactory<>("currentPlayers"));
@@ -105,9 +108,9 @@ public class GamesView extends VBox implements ViewObserver{
     }
 
     private void getGameList(TableView tableView) throws Exception {
-        System.out.println(appController.getGameList());
-        Gson gson = new Gson();
-        tableView.setItems(appController.getGameList());
+        tableView.getItems().clear();
+        List<Game> games= appController.getGameList();
+        tableView.getItems().addAll(games);
     }
 
 }
