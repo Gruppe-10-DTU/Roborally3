@@ -12,5 +12,5 @@ public interface GameRepository extends CrudRepository<Game, Long> {
 
     List<Game> findAll();
 
-    //List<Game> findAllByState(GameState stateInit, GameState stateSave);
+    List<Game> findAllByStateIn(List<GameState> states);
 }
