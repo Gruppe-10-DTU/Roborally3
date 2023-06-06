@@ -330,7 +330,7 @@ public class AppController implements Observer, EndGame {
         Space spawnSpace = board.nextSpawn();
         player.setSpace(board.getSpace(spawnSpace.getX(),spawnSpace.getY()));
 
-        Game nG = new Game(1, player.getName(), 1,numberOfPlayers,gson.toJson(board));
+        Game nG = new Game(1, board.getBoardName(), 1,numberOfPlayers,gson.toJson(board));
         HttpController.createGame(nG);
         HttpController.joinGame(nG.getId(),player.getName());
     }

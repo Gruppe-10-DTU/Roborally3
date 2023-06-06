@@ -26,6 +26,7 @@ public class GameService {
         game2.setBoard(game.getBoard());
         game2.setState(GameState.INITIALIZING);
         game2.setName(game.getName());
+        game2.setMaxPlayers(game.getMaxPlayers());
         gameRepository.save(game2);
         return game2;
     }
