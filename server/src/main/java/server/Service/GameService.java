@@ -24,9 +24,8 @@ public class GameService {
     }
 
     public List<Game> loadGames() {
-        List<GameState> states = Arrays.stream(new GameState[]{GameState.INITIALIZING, GameState.SAVED}).toList();
-        //List<Game> games = gameRepository.findAllByStateIn(states);
-        List<Game> games = gameRepository.findAll();
+        List<GameState> states = Arrays.asList(GameState.INITIALIZING, GameState.SAVED);
+        List<Game> games = gameRepository.findAllByStateIn(states);
         return games;
     }
 }
