@@ -3,7 +3,7 @@ package dk.dtu.compute.se.pisd.roborally.model;
 public class Game {
     private final int id;
     private final String name;
-    private final int currentPlayers;
+    private int currentPlayers;
     private final int maxPlayers;
 
     public Game(int id, String name, int currentPlayers, int maxPlayers) {
@@ -28,6 +28,8 @@ public class Game {
     public int getMaxPlayers() {
         return maxPlayers;
     }
+
+    public void IncCurrPlayer(){if(currentPlayers < maxPlayers) currentPlayers++;};
 
     @Override
     public String toString() {

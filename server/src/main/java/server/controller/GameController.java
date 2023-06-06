@@ -15,6 +15,7 @@ import server.model.Game;
 import com.google.gson.Gson;
 import server.model.Game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -53,5 +54,12 @@ public class GameController {
     public ResponseEntity<String> removeGame(@PathVariable int id){
         gameService.deleteGame(id);
         return ResponseEntity.ok().body("deleted");
+    }
+*/
+
+    @GetMapping(value = "/games2")
+    public ResponseEntity<List<GameDTO>> getGameList2(){
+        List<GameDTO> gamestring = new ArrayList<>(gameDTOMapper.mapList(gameService.loadGames()));
+        return ResponseEntity.ok().body(gamestring);
     }
 }

@@ -1,8 +1,12 @@
 package server.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
+import org.hibernate.annotations.Type;
+
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -11,8 +15,7 @@ public class Game {
     @GeneratedValue(strategy = IDENTITY)
     private int id;
     private int maxPlayers;
-    private String hostName;
-
+    private String name;
     private GameState state;
 
 
@@ -47,12 +50,18 @@ public class Game {
         this.maxPlayers = maxPlayers;
     }
 
-    public String getHostName() {
-        return hostName;
+    public String getName() {
+        return name;
     }
 
-    public void setHostName(String hostName) {
-        this.hostName = hostName;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getGameID(){return gameID;}
+
+    public void setGameID(int gameID){
+        this.gameID = gameID;
     }
 
     public GameState getState() {
