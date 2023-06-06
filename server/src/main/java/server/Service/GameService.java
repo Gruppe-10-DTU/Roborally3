@@ -23,7 +23,7 @@ public class GameService {
     }
 
     public List<Game> loadGames() {
-        List<Game> games = gameRepository.findAllByState(GameState.INITIALIZING);
+        List<Game> games = gameRepository.findAllByState(GameState.INITIALIZING, GameState.SAVED);
         return games;
     }
 }
