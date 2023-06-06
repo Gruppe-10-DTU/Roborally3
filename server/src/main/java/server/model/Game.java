@@ -1,8 +1,11 @@
 package server.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
+import org.hibernate.annotations.Type;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -14,7 +17,12 @@ public class Game {
     private int maxPlayers;
     private String hostName;
 
+    private GameState state;
+
+    /*
     private Board board;
+
+
 
     public Board getBoard() {
         return board;
@@ -23,6 +31,7 @@ public class Game {
     public void setBoard(Board board) {
         this.board = board;
     }
+     */
 
 
     public int getId() {
@@ -49,4 +58,14 @@ public class Game {
         this.hostName = hostName;
     }
 
+    public GameState getState() {
+        return state;
+    }
+
+    public void setState(GameState state) {
+        this.state = state;
+    }
+
+    public Game() {
+    }
 }

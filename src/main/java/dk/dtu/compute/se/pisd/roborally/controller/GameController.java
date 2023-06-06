@@ -38,6 +38,7 @@ public class GameController {
 
     final public Board board;
     final public EndGame endGame;
+    private String clientName;
 
     public GameController(@NotNull Board board, EndGame endGame) {
         this.board = board;
@@ -469,6 +470,14 @@ public class GameController {
         }
         board.getRebootToken().doFieldAction(this, player);
 
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+
+    public Player getClient(){
+        return this.board.getPlayerByName(this.clientName);
     }
 
     public void again(Player player) {

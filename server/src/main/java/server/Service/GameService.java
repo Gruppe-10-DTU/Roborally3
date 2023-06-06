@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import server.dto.GameDTO;
 import server.model.Board;
 import server.model.Game;
+import server.model.GameState;
 import server.repository.GameRepository;
 
 import java.util.List;
@@ -48,9 +49,7 @@ public class GameService {
 
 
     public List<Game> loadGames() {
-        List<Game> games = gameRepository.findAll();
-
-
+        List<Game> games = gameRepository.findAllByState(GameState.INITIALIZING, GameState.SAVED);
         return games;
     }
 }
