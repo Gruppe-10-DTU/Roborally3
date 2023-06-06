@@ -22,7 +22,11 @@ public class GameService {
        this.gameRepository = gameRepository;
     }
         public Game createGame(Game game) {
-        Game game2 = gameRepository.save(game);
+        Game game2 = new Game();
+        game2.setBoard(game.getBoard());
+        game2.setState(GameState.INITIALIZING);
+        game2.setName(game.getName());
+        gameRepository.save(game2);
         return game2;
     }
     public Game getGameById(int id){

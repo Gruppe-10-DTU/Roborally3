@@ -72,9 +72,11 @@ public class HttpController {
     }
 
     public static int createGame(Game game){
+        String sGame = gson.toJson(game);
          HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + "/games"))
-                .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(game)))
+                 .setHeader("Content-Type","application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(sGame))
                 .build();
         try {
             lastResponse = client.send(request, HttpResponse.BodyHandlers.ofString());

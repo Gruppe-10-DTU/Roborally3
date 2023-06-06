@@ -1,10 +1,7 @@
 package server.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import org.hibernate.annotations.Type;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -19,7 +16,7 @@ public class Game {
     private GameState state;
 
 
-
+    @Column(columnDefinition = "TEXT")
     private String board;
 
 

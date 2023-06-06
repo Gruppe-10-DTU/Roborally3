@@ -1,5 +1,6 @@
 package server.controller;
 
+import com.google.gson.JsonObject;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,9 +46,9 @@ public class GameController {
     }
 
     @PostMapping("/games")
-    public String createGame(Game game) {
+    public ResponseEntity<String> createGame(@RequestBody Game game) {
         gameService.createGame(game);
-        return gson.toJson(gameService.getGameById(game.getId()));
+        return ResponseEntity.ok().body("Game Created");
     }
 
     @DeleteMapping( "/games/{id}")

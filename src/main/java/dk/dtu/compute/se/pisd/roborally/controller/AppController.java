@@ -57,7 +57,6 @@ import java.util.Optional;
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public class AppController implements Observer, EndGame {
-
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
     final private List<String> BOARD_OPTIONS = Arrays.asList("Burnout", "Risky Crossing");
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
@@ -66,7 +65,7 @@ public class AppController implements Observer, EndGame {
 
     private GamesView gamesView;
 
-
+    private Gson gson = new Gson();
     private String selectedBoard;
     private GameController gameController;
 
@@ -331,7 +330,7 @@ public class AppController implements Observer, EndGame {
         Space spawnSpace = board.nextSpawn();
         player.setSpace(board.getSpace(spawnSpace.getX(),spawnSpace.getY()));
 
-        Game nG = new Game(1, player.getName(), 1,numberOfPlayers,board);
+        Game nG = new Game(1, player.getName(), 1,numberOfPlayers,gson.toJson(board));
         HttpController.createGame(nG);
         HttpController.joinGame(nG.getId(),player.getName());
     }
