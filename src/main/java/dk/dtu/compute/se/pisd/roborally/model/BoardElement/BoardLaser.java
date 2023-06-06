@@ -53,8 +53,10 @@ public class BoardLaser extends Space implements SequenceAction {
             for (int i = 0; i < 4; i++) {
                 //Set isHit in the if statement and add the dmg card inside the statement.
                 if (!space.getOut(heading)) {
-                    if(isHit(gameController.board, space, heading))
-                      space.getPlayer().discardCard(new DamageCard(Damage.SPAM));
+                    if(isHit(gameController.board, space, heading)) {
+                        space.getPlayer().discardCard(new DamageCard(Damage.SPAM));
+                        gameController.board.addGameLogEntry(player, "Was hit by a laser");
+                    }
                 }
                 heading = heading.next();
             }
