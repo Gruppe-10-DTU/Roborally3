@@ -29,7 +29,6 @@ import dk.dtu.compute.se.pisd.roborally.model.Game;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.view.GamesView;
-import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
@@ -48,8 +47,6 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
-import static dk.dtu.compute.se.pisd.roborally.controller.HttpController.serverIsConnected;
 
 /**
  * ...
@@ -274,7 +271,7 @@ public class AppController implements Observer, EndGame {
         won.setTitle("We have a winner");
         won.setHeaderText(null);
         won.setContentText(player.getName() + " has won");
-        won.showAndWait();
+        won.show();
         gameController = null;
         roboRally.createBoardView(null);
     }
@@ -316,6 +313,5 @@ public class AppController implements Observer, EndGame {
     public void StartServer() {
         String[] args = new String[0];
         ServerApp.main(args);
-
     }
 }
