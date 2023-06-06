@@ -12,8 +12,6 @@ public class Game {
     private int maxPlayers;
     private String name;
 
-    private int gameID;
-
     private GameState state;
 
     private String board;
@@ -50,12 +48,6 @@ public class Game {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getGameID(){return gameID;}
-
-    public void setGameID(int gameID){
-        this.gameID = gameID;
     }
 
     public GameState getState() {
