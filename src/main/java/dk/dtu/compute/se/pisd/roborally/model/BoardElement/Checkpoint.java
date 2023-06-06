@@ -29,6 +29,7 @@ public class Checkpoint extends Space implements SequenceAction {
         super(board, x, y);
         this.players = new HashSet<>(board.getPlayersNumber());
         this.number = number;
+        board.addBoardActions(this);
     }
 
     /**

@@ -48,6 +48,7 @@ public class Board extends Subject {
     private String boardName;
 
     private int playerAmount;
+
     private int number = 1;
 
     private Integer gameId;
