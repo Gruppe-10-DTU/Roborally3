@@ -93,6 +93,10 @@ public class BoardView extends VBox implements ViewObserver {
         if (subject == board) {
             Phase phase = board.getPhase();
             statusLabel.setText(board.getStatusMessage());
+            gameLog = new TextFlow();
+            gameLog.setMinWidth(300);
+            gameLog.getChildren().addAll(board.getGameLog());
+            mainBoardPane.add(gameLog,1, 0);
         }
     }
 
