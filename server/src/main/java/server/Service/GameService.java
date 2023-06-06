@@ -12,6 +12,7 @@ import com.google.gson.*;
 
 @Service
 public class GameService {
+
     Gson gson = new Gson();
     List<Game> games = null;
 
@@ -21,8 +22,8 @@ public class GameService {
        this.gameRepository = gameRepository;
     }
         public Game createGame(Game game) {
-        games.add(game.getId(),game);
-        return game;
+        Game game2 = gameRepository.save(game);
+        return game2;
     }
     public Game getGameById(int id){
         return games.get(id);

@@ -36,7 +36,6 @@ public class GameController {
     public List<GameDTO> getGameList(){
         List<Game> games = gameService.loadGames();
         return dtoMapper.gameToGameDto(games);
-        //return gameDTOMapper.mapList(gameService.loadGames());
     }
 
     @RequestMapping(value = "/games/{id}", method = RequestMethod.GET)
