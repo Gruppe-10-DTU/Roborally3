@@ -205,7 +205,6 @@ public class AppController implements Observer, EndGame {
 
             roboRally.createBoardView(gameController);
         }
-        gameController.startByPhase();
     }
 
     /**
