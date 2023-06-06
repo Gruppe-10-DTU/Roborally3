@@ -1,1 +1,1 @@
-insert into GAME (MAX_PLAYERS, HOST_NAME) values (3, 'test1'), (4, 'Not a test');
+//insert into GAME (MAX_PLAYERS, HOST_NAME) values (3, 'test1'), (4, 'Not a test');
