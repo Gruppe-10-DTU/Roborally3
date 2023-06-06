@@ -29,14 +29,12 @@ import dk.dtu.compute.se.pisd.roborally.model.Game;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.view.GamesView;
-import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
 import org.jetbrains.annotations.NotNull;
-import server.ServerApp;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -48,8 +46,6 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
-import static dk.dtu.compute.se.pisd.roborally.controller.HttpController.serverIsConnected;
 
 /**
  * ...
@@ -315,7 +311,7 @@ public class AppController implements Observer, EndGame {
 
     public void StartServer() {
         String[] args = new String[0];
-        ServerApp.main(args);
+        //ServerApp.main(args);
 
     }
 }
