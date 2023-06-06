@@ -38,7 +38,7 @@ class HttpControllerTest {
 
     @Test
     void joinGameTest() {
-        Integer returnCode = HttpController.joinGame(200, 3);
+        Integer returnCode = HttpController.joinGame(200, "playerMan");
         assertEquals(200,returnCode);
     }
 

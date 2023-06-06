@@ -311,7 +311,24 @@ public class AppController implements Observer, EndGame {
             gameController = new GameController(board, this);
             int numberOfPlayers = result.get();
 
+        TextInputDialog nameDialog = new TextInputDialog("");
+        nameDialog.setTitle("Player name");
+        nameDialog.setHeaderText("Select player name");
+        Optional<String> resultName = nameDialog.showAndWait();
+
+        String entered = "";
+        if (resultName.isPresent()) {
+            entered = resultName.get();
+        }
+
+        Player player = new Player(board, PLAYER_COLORS.get(0), entered);
+        board.addPlayer(player);
+        Space spawnSpace = board.nextSpawn();
+        player.setSpace(board.getSpace(spawnSpace.getX(),spawnSpace.getY()));
+
+
         HttpController.createGame(gameController);
+        HttpController.joinGame(gameController.board.getGameId(),player.getName());
 
     }
 

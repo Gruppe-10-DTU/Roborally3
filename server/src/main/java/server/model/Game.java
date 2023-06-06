@@ -1,12 +1,8 @@
 package server.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.Transient;
-import org.hibernate.annotations.Type;
-
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -19,19 +15,20 @@ public class Game {
 
     private GameState state;
 
-    /*
-    private Board board;
+
+
+    private String board;
 
 
 
-    public Board getBoard() {
+    public String getBoard() {
         return board;
     }
 
-    public void setBoard(Board board) {
+    public void setBoard(String board) {
         this.board = board;
     }
-     */
+
 
 
     public int getId() {

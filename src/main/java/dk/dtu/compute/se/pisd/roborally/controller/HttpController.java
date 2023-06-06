@@ -36,10 +36,10 @@ public class HttpController {
         }
         return null;
     }
-    public static int joinGame(int gameID, int playerID){
+    public static int joinGame(int gameID, String playerName){
         HttpRequest postPlayerRequest = HttpRequest.newBuilder()
-                .uri(URI.create(serverUrl + "/games/" + gameID + "/players"+ playerID))
-                .POST(HttpRequest.BodyPublishers.ofString(String.valueOf(playerID)))
+                .uri(URI.create(serverUrl + "/games/" + gameID + "/players"+ playerName))
+                .POST(HttpRequest.BodyPublishers.ofString(playerName))
                 .build();
         try {
             lastResponse = client.send(postPlayerRequest, HttpResponse.BodyHandlers.ofString());

@@ -1,16 +1,13 @@
 package server.Service;
 
 import org.springframework.stereotype.Service;
-import server.dto.GameDTO;
-import server.model.Board;
 import server.model.Game;
 import server.model.GameState;
 import server.repository.GameRepository;
 
 import java.util.List;
-import server.model.Player;
+
 import com.google.gson.*;
-import java.util.ArrayList;
 
 @Service
 public class GameService {
@@ -22,10 +19,6 @@ public class GameService {
     public GameService(GameRepository gameRepository){
        this.gameRepository = gameRepository;
     }
-    public void SaveGame (Game game) {
-
-    }
-
         public Game createGame(Game game) {
         games.add(game.getId(),game);
         return game;
@@ -49,7 +42,7 @@ public class GameService {
 
 
     public List<Game> loadGames() {
-        List<Game> games = gameRepository.findAllByState(GameState.INITIALIZING, GameState.SAVED);
+        //List<Game> games = gameRepository.findAllByState(GameState.INITIALIZING, GameState.SAVED);
         return games;
     }
 }
