@@ -1,6 +1,8 @@
 package server.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +14,7 @@ import server.model.Game;
 import com.google.gson.Gson;
 import server.model.Game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -35,7 +38,7 @@ public class GameController {
         return dtoMapper.gameToGameDto(games);
         //return gameDTOMapper.mapList(gameService.loadGames());
     }
-
+/*
     @RequestMapping(value = "/games/{id}", method = RequestMethod.GET)
     public String getSpecificGame(@PathVariable int id) {
         return gson.toJson(gameService.getGameById(id));
@@ -52,7 +55,7 @@ public class GameController {
         gameService.deleteGame(id);
         return ResponseEntity.ok().body("deleted");
     }
-
+*/
 
     @GetMapping(value = "/games2")
     public ResponseEntity<List<GameDTO>> getGameList2(){

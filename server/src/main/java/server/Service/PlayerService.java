@@ -6,4 +6,10 @@ import server.model.Player;
 @Service
 public class PlayerService {
 
+    public PlayerService() {
+    }
+
+    public void addPlayer(Player player){
+        
+    }
 }
