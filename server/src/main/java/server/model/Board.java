@@ -13,15 +13,15 @@ public class Board {
 
     private int gameId;
 
-    private String gameBoard;
+    private String clientBoard;
 
     public Board(){
 
     }
-    public Board(int id, int gameId, String gameBoard) {
+    public Board(int id, int gameId, String clientBoard) {
         this.id = id;
         this.gameId = gameId;
-        this.gameBoard = gameBoard;
+        this.clientBoard = clientBoard;
     }
 
     public int getId() {
@@ -40,11 +40,11 @@ public class Board {
         this.gameId = gameId;
     }
 
-    public String getGameBoard() {
-        return gameBoard;
+    public String getClientBoard() {
+        return clientBoard;
     }
 
-    public void setGameBoard(String gameBoard) {
-        this.gameBoard = gameBoard;
+    public void setClientBoard(String clientBoard) {
+        this.clientBoard = clientBoard;
     }
 }

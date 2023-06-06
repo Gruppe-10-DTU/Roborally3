@@ -16,10 +16,7 @@ public class Game {
 
     private GameState state;
 
-
     private String board;
-
-
 
     public String getBoard() {
         return board;
