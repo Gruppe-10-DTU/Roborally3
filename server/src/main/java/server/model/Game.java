@@ -13,9 +13,10 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 public class Game {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private Long id;
     private int maxPlayers;
-    private String hostName;
+    private String name;
+
+    private int gameID;
 
     private GameState state;
 
@@ -31,16 +32,8 @@ public class Game {
     public void setBoard(Board board) {
         this.board = board;
     }
-     */
+    */
 
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public int getMaxPlayers() {
         return maxPlayers;
@@ -50,12 +43,18 @@ public class Game {
         this.maxPlayers = maxPlayers;
     }
 
-    public String getHostName() {
-        return hostName;
+    public String getName() {
+        return name;
     }
 
-    public void setHostName(String hostName) {
-        this.hostName = hostName;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getGameID(){return gameID;}
+
+    public void setGameID(int gameID){
+        this.gameID = gameID;
     }
 
     public GameState getState() {

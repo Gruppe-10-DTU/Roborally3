@@ -7,15 +7,16 @@ import java.util.ArrayList;
 @Component
 public class Board {
 
-    private ArrayList<Player> currentPlayers;
+    private ArrayList<Player> currentPlayers = new ArrayList<>();
 
-    private String id;
+    private int id;
 
     public ArrayList<Player> getCurrentPlayers() {
         return currentPlayers;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
+
 }
