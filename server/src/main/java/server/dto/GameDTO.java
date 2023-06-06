@@ -4,7 +4,7 @@ public class GameDTO {
     int maxPlayers;
     int currentPlayers;
     String hostName;
-    String gameId;
+    int gameId;
 
     /**
      *
@@ -15,7 +15,7 @@ public class GameDTO {
      *  Creates the game dto
      * @author Sandie Petersen
      */
-    public GameDTO(int maxPlayers, int currentPlayers, String hostName, String gameId) {
+    public GameDTO(int maxPlayers, int currentPlayers, String hostName, int gameId) {
         this.maxPlayers = maxPlayers;
         this.currentPlayers = currentPlayers;
         this.hostName = hostName;

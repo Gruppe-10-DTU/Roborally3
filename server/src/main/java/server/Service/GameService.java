@@ -1,7 +1,7 @@
 package server.Service;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
+import server.dto.GameDTO;
 import server.model.Board;
 import server.model.Game;
 import server.model.Player;
@@ -11,7 +11,6 @@ import java.util.ArrayList;
 @Service
 public class GameService {
     private ArrayList<Game> games = new ArrayList<>();
-
     Gson gson = new Gson();
     /*
     TODO på server :
@@ -44,15 +43,8 @@ public class GameService {
         }
 
         public Game createGame(Game game) {
-        Game gm = new Game();
-
-        gm.setGameID(game.getGameID());
-        gm.setMaxPlayers(game.getMaxPlayers());
-        gm.setHostName(game.getHostName());
-        gm.setBoard(game.getBoard());
-
-        games.add(gm.getGameID(),gm);
-        return gm;
+        games.add(game.getGameID(),game);
+        return game;
     }
     public Game getGameById(int id){
         return games.get(id);
