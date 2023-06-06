@@ -26,7 +26,11 @@ public class GameService {
         return game2;
     }
     public Game getGameById(int id){
-        return games.get(id);
+        for (Game gms: gameRepository.findAll()) {
+            if(gms.getGameID() == id)
+                return gms;
+        }
+        return null;
     }
     public Game SaveGame (int id) {
         return games.get(id);

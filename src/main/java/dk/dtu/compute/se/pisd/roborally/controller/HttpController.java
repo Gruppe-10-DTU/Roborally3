@@ -71,11 +71,10 @@ public class HttpController {
         return null;
     }
 
-    public static int createGame(GameController gameController){
-        if(gameController.board.getGameId() == null) gameController.board.setGameId((int) (Math.random() * 1_000_000));
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(serverUrl + "/games/" + gameController.board.getGameId()))
-                .POST(HttpRequest.BodyPublishers.ofString(JSONReader.saveGame(gameController)))
+    public static int createGame(Game game){
+         HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverUrl + "/games"))
+                .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(game)))
                 .build();
         try {
             lastResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -145,7 +144,7 @@ public class HttpController {
 
     public static List<Game> getGameList() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/games2"))
+                .uri(URI.create("http://localhost:8080/games"))
                 .GET()
                 .build();
         CompletableFuture<HttpResponse<String>> response =

@@ -5,12 +5,13 @@ public class Game {
     private final String name;
     private int currentPlayers;
     private final int maxPlayers;
-
-    public Game(int id, String name, int currentPlayers, int maxPlayers) {
+    private final Board board;
+    public Game(int id, String name, int currentPlayers, int maxPlayers, Board board) {
         this.id = id;
         this.name = name;
         this.currentPlayers = currentPlayers;
         this.maxPlayers = maxPlayers;
+        this.board = board;
     }
 
     public int getId(){

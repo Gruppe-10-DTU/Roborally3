@@ -143,7 +143,6 @@ public class AppController implements Observer, EndGame {
                 Space spawnSpace = board.nextSpawn();
                 player.setSpace(board.getSpace(spawnSpace.getX(),spawnSpace.getY()));
             }
-
             gameController.startProgrammingPhase();
 
             roboRally.createBoardView(gameController);
@@ -296,6 +295,7 @@ public class AppController implements Observer, EndGame {
     }
 
     public void hostGame() {
+
         ChoiceDialog boardDialog = new ChoiceDialog(BOARD_OPTIONS.get(0), BOARD_OPTIONS);
         boardDialog.setTitle("Course");
         boardDialog.setHeaderText("Select course");
@@ -331,10 +331,9 @@ public class AppController implements Observer, EndGame {
         Space spawnSpace = board.nextSpawn();
         player.setSpace(board.getSpace(spawnSpace.getX(),spawnSpace.getY()));
 
-
-        HttpController.createGame(gameController);
-        HttpController.joinGame(gameController.board.getGameId(),player.getName());
-
+        Game nG = new Game(1, player.getName(), 1,numberOfPlayers,board);
+        HttpController.createGame(nG);
+        HttpController.joinGame(nG.getId(),player.getName());
     }
 
     /**
@@ -351,9 +350,9 @@ public class AppController implements Observer, EndGame {
     public void joinGame(Game selectedItem) {
         Game item = selectedItem;
         int playerID = 232;
-        HttpController.joinGame(item.getId(), playerID);
+        HttpController.joinGame(item.getId(), "" + playerID);
 //        item.IncCurrPlayer();
-        HttpController.joinGame(item.getId(),playerID);
+        HttpController.joinGame(item.getId(),"" + playerID);
         System.out.println("Player: "+ playerID + " trying to join " + selectedItem);
     }
 

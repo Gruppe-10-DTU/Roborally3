@@ -58,10 +58,10 @@ public class Game {
         this.name = name;
     }
 
-    public int getGameID(){return gameID;}
+    public int getGameID(){return id;}
 
     public void setGameID(int gameID){
-        this.gameID = gameID;
+        this.id = gameID;
     }
 
     public GameState getState() {

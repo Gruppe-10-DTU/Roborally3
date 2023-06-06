@@ -34,9 +34,9 @@ public class GameController {
     }
 
     @RequestMapping(value = "/games", method = RequestMethod.GET)
-    public List<GameDTO> getGameList(){
-        List<Game> games = gameService.loadGames();
-        return dtoMapper.gameToGameDto(games);
+    public ResponseEntity<List<GameDTO>> getGameList(){
+        List<GameDTO> gamestring = new ArrayList<>(gameDTOMapper.mapList(gameService.loadGames()));
+        return ResponseEntity.ok().body(gamestring);
     }
 
     @RequestMapping(value = "/games/{id}", method = RequestMethod.GET)
@@ -45,7 +45,7 @@ public class GameController {
     }
 
     @PostMapping("/games")
-    public String createGame(@RequestBody Game game) {
+    public String createGame(Game game) {
         gameService.createGame(game);
         return gson.toJson(gameService.getGameById(game.getId()));
     }
@@ -55,11 +55,5 @@ public class GameController {
         gameService.deleteGame(id);
         return ResponseEntity.ok().body("deleted");
     }
-*/
 
-    @GetMapping(value = "/games2")
-    public ResponseEntity<List<GameDTO>> getGameList2(){
-        List<GameDTO> gamestring = new ArrayList<>(gameDTOMapper.mapList(gameService.loadGames()));
-        return ResponseEntity.ok().body(gamestring);
-    }
 }
