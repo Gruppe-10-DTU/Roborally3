@@ -3,7 +3,6 @@ package server.repository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import server.model.Game;
-import server.model.GameState;
 
 import java.util.List;
 
@@ -12,5 +11,5 @@ public interface GameRepository extends CrudRepository<Game, Long> {
 
     List<Game> findAll();
 
-    List<Game> findAllByState(GameState stateInit, GameState stateSave);
+    //List<Game> findAllByState(GameState stateInit, GameState stateSave);
 }
