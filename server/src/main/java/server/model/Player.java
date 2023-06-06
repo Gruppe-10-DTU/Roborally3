@@ -9,7 +9,7 @@ public class Player {
 
     @Id
     @GeneratedValue
-    private int Id;
+    private int id;
     private String name;
     private int gameId;
 
