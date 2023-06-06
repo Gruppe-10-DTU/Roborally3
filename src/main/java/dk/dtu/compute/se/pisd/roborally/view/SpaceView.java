@@ -66,13 +66,13 @@ public class SpaceView extends StackPane implements ViewObserver {
 
         if (space instanceof BoardLaser boardLaser) {
 
-            if (boardLaser.getShootingDirection() == Heading.EAST) {
+            if (boardLaser.getDirection() == Heading.EAST) {
                 spaceImg = new Image("spaces/laser/lazer1_EAST.png");
-            } else if (boardLaser.getShootingDirection() == Heading.SOUTH) {
+            } else if (boardLaser.getDirection() == Heading.SOUTH) {
                 spaceImg = new Image("spaces/laser/lazer1_SOUTH.png");
-            } else if (boardLaser.getShootingDirection() == Heading.WEST) {
+            } else if (boardLaser.getDirection() == Heading.WEST) {
                 spaceImg = new Image("spaces/laser/lazer1_WEST.png");
-            } else if (boardLaser.getShootingDirection() == Heading.NORTH) {
+            } else if (boardLaser.getDirection() == Heading.NORTH) {
                 spaceImg = new Image("spaces/laser/lazer1_NORTH.png");
             }
         } else if (space instanceof Checkpoint checkpoint) {
@@ -180,7 +180,7 @@ public class SpaceView extends StackPane implements ViewObserver {
 
         } else if (space instanceof Gear gear) {
 
-            if (gear.getHeading() == Heading.EAST) {
+            if (gear.getDirection() == Heading.EAST) {
                 spaceImg = new Image("spaces/gear_EAST.png");
             } else {
                 spaceImg = new Image("spaces/gear_WEST.png");
@@ -205,7 +205,7 @@ public class SpaceView extends StackPane implements ViewObserver {
             spaceImg =new Image("spaces/Spawn.png");
         } else if (space instanceof RebootToken) {
             RebootToken rebootToken = (RebootToken) space;
-            Heading exit = rebootToken.getExit();
+            Heading exit = rebootToken.getDirection();
 
             if (exit == Heading.EAST) {
                 spaceImg = new Image("spaces/reboot_EAST.png");

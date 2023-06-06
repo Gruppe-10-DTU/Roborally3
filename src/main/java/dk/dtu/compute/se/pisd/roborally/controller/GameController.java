@@ -488,4 +488,12 @@ public class GameController {
             card.doAction(this);
         }
     }
+
+    public void startByPhase() {
+        switch (board.getPhase()){
+            case ACTIVATION -> executeNextStep();
+            case PROGRAMMING, INITIALISATION -> startProgrammingPhase();
+            case PLAYER_INTERACTION -> executeStep();
+        }
+    }
 }

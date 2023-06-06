@@ -12,6 +12,7 @@ import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.Card;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.CommandCard;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.DamageCard;
+import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import org.apache.commons.io.IOUtils;
@@ -64,7 +65,7 @@ public class JSONReader {
                 .registerSubtype(Pit.class)
                 .registerSubtype(PriorityAntenna.class, "Priority")
                 .registerSubtype(Spawn.class)
-                .registerSubtype(RebootToken.class);
+                .registerSubtype(RebootToken.class, "Reboot");
         RuntimeTypeAdapterFactory<Card> cardRuntimeTypeAdapterFactory = RuntimeTypeAdapterFactory.of(Card.class, "cardtype")
                 .registerSubtype(CommandCard.class)
                 .registerSubtype(DamageCard.class);
@@ -113,13 +114,21 @@ public class JSONReader {
         List<Player> players = gson.fromJson(playersString, token);
         for (Player player : players
         ) {
-
             player.board = board;
             Space space = board.getSpace(player.getSpace());
             board.addPlayer(player);
             space.setPlayer(player);
+            player.setPlayer();
+        }
+        JSONArray jsonArray = object.getJSONArray("playerOrder");
+        for (int i = 0; i < jsonArray.length(); i++) {
+            String player = jsonArray.getJSONObject(i).getString("name");
+            board.addPlayerToOder(board.getPlayerByName(player));
         }
         board.setCurrentPlayer(board.getPlayerByName(object.getJSONObject("current").getString("name")));
+        board.setStep(object.getInt("step"));
+        board.setPhase(Phase.valueOf(object.getString("phase")));
+
         return board;
     }
 

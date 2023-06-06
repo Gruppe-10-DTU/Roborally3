@@ -44,6 +44,10 @@ public class CommandCard extends Subject implements Card{
     public CommandCard(@NotNull Command command) {
         this.command = command;
     }
+
+    public CommandCard(){
+
+    }
     @Override
     public String getName() {
         return command.displayName;
@@ -81,8 +85,10 @@ public class CommandCard extends Subject implements Card{
                 break;
             case AGAIN:
                 gameController.again(player);
+                break;
             case OPTION_LEFT_RIGHT:
                 gameController.board.setPhase(Phase.PLAYER_INTERACTION);
+                break;
             default:
                 // DO NOTHING (for now)
         }

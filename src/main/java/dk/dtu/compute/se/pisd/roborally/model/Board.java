@@ -161,11 +161,10 @@ public class Board extends Subject {
         JSONArray tmp;
         Checkpoint[] checkpoints = new Checkpoint[3];
         for (int i = 0; i < courseArray.length(); i++) {
-
+            System.out.println(i);
             JSONObject current = courseArray.getJSONObject(i);
             int x = current.getInt("x");
             int y = current.getInt("y");
-
             switch (current.getString("type")) {
                 case "Wall":
                     EnumSet<Heading> walls = EnumSet.copyOf(List.of(Heading.valueOf(current.getString("direction"))));
@@ -223,15 +222,18 @@ public class Board extends Subject {
                 case "Pit":
                     Pit pit = new Pit(this, x, y);
                     spaces[x][y] = pit;
+                    this.pit = pit;
                     break;
                 case "Priority":
                     this.priorityAntenna = new PriorityAntenna(this, x, y);
                     spaces[x][y] = priorityAntenna;
+                    this.priorityAntenna = priorityAntenna;
                     break;
                 case "Reboot" :
                     Heading exit = Heading.valueOf(current.getString("direction"));
                     RebootToken rebootToken = new RebootToken(this, x, y, exit);
                     spaces[x][y] = rebootToken;
+                    this.rebootToken = rebootToken;
                     break;
                 case "Spawn":
                     int priority = current.getInt("number");
@@ -513,5 +515,9 @@ public class Board extends Subject {
 
     public int getWidth() {
         return width;
+    }
+
+    public void addPlayerToOder(Player playerByName) {
+        playerOrder.add(playerByName);
     }
 }

@@ -41,7 +41,7 @@ class BoardActionTest {
         gear.setPlayer(board.getPlayer(0));
         gear.doAction(gameController);
         assertEquals(Heading.SOUTH,board.getPlayer(0).getHeading());
-        gear.setHeading(Heading.WEST);
+        gear.setDirection(Heading.WEST);
         gear.doAction(gameController);
         assertEquals(Heading.EAST, board.getPlayer(0).getHeading() );
         assertNotEquals(Heading.NORTH, board.getPlayer(0).getHeading());
