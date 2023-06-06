@@ -79,6 +79,8 @@ public class CommandCard extends Subject implements Card{
             case UTURN:
                 gameController.uTurn(player);
                 break;
+            case AGAIN:
+                gameController.again(player);
             case OPTION_LEFT_RIGHT:
                 gameController.board.setPhase(Phase.PLAYER_INTERACTION);
             default:

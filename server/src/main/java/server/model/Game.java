@@ -1,14 +1,29 @@
 package server.model;
 
-import org.springframework.stereotype.Component;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
+import org.hibernate.annotations.Type;
 
-@Component
+import static jakarta.persistence.GenerationType.IDENTITY;
+
+@Entity
 public class Game {
-    private Board board;
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
     private int maxPlayers;
     private String name;
 
     private int gameID;
+
+    private GameState state;
+
+    /*
+    private Board board;
+
+
 
     public Board getBoard() {
         return board;
@@ -17,6 +32,8 @@ public class Game {
     public void setBoard(Board board) {
         this.board = board;
     }
+    */
+
 
     public int getMaxPlayers() {
         return maxPlayers;
@@ -40,4 +57,14 @@ public class Game {
         this.gameID = gameID;
     }
 
+    public GameState getState() {
+        return state;
+    }
+
+    public void setState(GameState state) {
+        this.state = state;
+    }
+
+    public Game() {
+    }
 }

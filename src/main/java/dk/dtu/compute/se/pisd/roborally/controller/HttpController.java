@@ -118,6 +118,27 @@ public class HttpController {
         return null;
     }
 
+    public static boolean serverIsConnected(){
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverUrl + "/games"))
+                .GET()
+                .build();
+        try {
+            lastResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        } catch (Exception exception){
+            return false;
+        }
+
+        if(lastResponse == null) {
+            return false;
+        } else if (lastResponse.statusCode() < 300 && lastResponse.statusCode() >= 200) {
+            return true;
+        }
+
+        return false;
+    }
+
     public static int getLastResponseCode() {
         return lastResponse.statusCode();
     }
