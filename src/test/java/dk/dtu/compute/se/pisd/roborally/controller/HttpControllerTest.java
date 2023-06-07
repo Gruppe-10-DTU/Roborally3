@@ -1,6 +1,8 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import com.google.gson.Gson;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.Game;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import org.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
@@ -11,8 +13,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class HttpControllerTest {
     GameController gameController;
-
-
 
     @BeforeEach
     void setUp() {
@@ -41,11 +41,12 @@ class HttpControllerTest {
         Integer returnCode = HttpController.joinGame(200, "playerMan");
         assertEquals(200,returnCode);
     }
-/*
     @Test
     void createGameTest() {
-        Integer returnCode = HttpController.createGame();
+        Board testBoard = new Board();
+        Gson gson = new Gson();
+        Game testGame = new Game(1, "test", 1,2,gson.toJson(testBoard));
+        Integer returnCode = HttpController.createGame(testGame);
         assertEquals(200,returnCode);
     }
- */
 }

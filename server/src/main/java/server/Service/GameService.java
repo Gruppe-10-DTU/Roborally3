@@ -15,7 +15,6 @@ import com.google.gson.*;
 public class GameService {
 
     Gson gson = new Gson();
-    List<Game> games = null;
 
     private GameRepository gameRepository;
 
@@ -43,8 +42,7 @@ public class GameService {
     }
 
     public Game updateGame (Game game) {
-        games.get(game.getId()).setBoard(game.getBoard());
-        return games.get(game.getId());
+        return null;
     }
 
     public ResponseEntity<String> deleteGame(int id){
