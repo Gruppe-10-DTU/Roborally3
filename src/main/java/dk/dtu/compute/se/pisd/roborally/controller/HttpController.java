@@ -71,23 +71,12 @@ public class HttpController {
         return Player;
     }
 
-    /*
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/games2"))
-                .GET()
-                .build();
-        CompletableFuture<HttpResponse<String>> response =
-                client.sendAsync(request, HttpResponse.BodyHandlers.ofString());
-        String result = response.thenApply(HttpResponse::body).get();
-        List<Game> games = gson.fromJson(result,new TypeToken<List<Game>>(){}.getType());
-        return games;
-    * */
-
-    public static int createGame(GameController gameController){
-        if(gameController.board.getGameId() == null) gameController.board.setGameId((int) (Math.random() * 1_000_000));
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(serverUrl + "/games/" + gameController.board.getGameId()))
-                .POST(HttpRequest.BodyPublishers.ofString(JSONReader.saveGame(gameController)))
+    public static int createGame(Game game){
+        String sGame = gson.toJson(game);
+         HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverUrl + "/games"))
+                 .setHeader("Content-Type","application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(sGame))
                 .build();
         try {
             lastResponse = client.send(request, HttpResponse.BodyHandlers.ofString());

@@ -47,13 +47,6 @@ public class GamesView extends VBox implements ViewObserver{
 
         tableView.getColumns().setAll(name, currentPlayers, maxPlayers);
 
-
-        tableView.getItems().add(
-                new Game(1, "Test1", 4,5));
-        tableView.getItems().add(
-                new Game(1, "Test2", 0,4));
-//        tableView.setMinWidth(500);
-
         this.getChildren().addAll(tableView, addButtons());
         Scene scene = new Scene(this);
 

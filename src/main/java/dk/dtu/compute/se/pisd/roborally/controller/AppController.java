@@ -67,7 +67,7 @@ public class AppController implements Observer, EndGame {
 
     private GamesView gamesView;
 
-
+    private Gson gson = new Gson();
     private String selectedBoard;
     private GameController gameController;
 
@@ -137,15 +137,13 @@ public class AppController implements Observer, EndGame {
                 String entered = "Player" + (i + 1);
                 if (resultName.isPresent()) {
                     entered = resultName.get();
-                }
-*/
-                Player player = new Player(board, PLAYER_COLORS.get(i), playerName(i));
-//                Player player = newPlayer(board, i);
+                }*/
+
+                Player player = new Player(board, PLAYER_COLORS.get(i), entered);
                 board.addPlayer(player);
                 Space spawnSpace = board.nextSpawn();
                 player.setSpace(board.getSpace(spawnSpace.getX(),spawnSpace.getY()));
             }
-
             gameController.startProgrammingPhase();
 
             roboRally.createBoardView(gameController);
@@ -318,8 +316,24 @@ public class AppController implements Observer, EndGame {
             gameController = new GameController(board, this);
             int numberOfPlayers = result.get();
 
-        HttpController.createGame(gameController);
+        TextInputDialog nameDialog = new TextInputDialog("");
+        nameDialog.setTitle("Player name");
+        nameDialog.setHeaderText("Select player name");
+        Optional<String> resultName = nameDialog.showAndWait();
 
+        String entered = "";
+        if (resultName.isPresent()) {
+            entered = resultName.get();
+        }
+
+        Player player = new Player(board, PLAYER_COLORS.get(0), entered);
+        board.addPlayer(player);
+        Space spawnSpace = board.nextSpawn();
+        player.setSpace(board.getSpace(spawnSpace.getX(),spawnSpace.getY()));
+
+        Game nG = new Game(1, board.getBoardName(), 0,numberOfPlayers,gson.toJson(board));
+        HttpController.createGame(nG);
+        HttpController.joinGame(nG.getId(),player.getName());
     }
 
     /**

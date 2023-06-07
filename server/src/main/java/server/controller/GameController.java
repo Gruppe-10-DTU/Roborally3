@@ -1,5 +1,11 @@
 package server.controller;
 
+import com.google.gson.JsonObject;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import com.google.gson.JsonArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,10 +36,9 @@ public class GameController {
     }
 
     @RequestMapping(value = "/games", method = RequestMethod.GET)
-    public List<GameDTO> getGameList(){
-        List<Game> games = gameService.loadGames();
-        return dtoMapper.gameToGameDto(games);
-        //return gameDTOMapper.mapList(gameService.loadGames());
+    public ResponseEntity<List<GameDTO>> getGameList(){
+        List<GameDTO> gamestring = new ArrayList<>(gameDTOMapper.mapList(gameService.loadGames()));
+        return ResponseEntity.ok().body(gamestring);
     }
 
     @RequestMapping(value = "/games/{id}", method = RequestMethod.GET)
@@ -42,9 +47,9 @@ public class GameController {
     }
 /*
     @PostMapping("/games")
-    public String createGame(@RequestBody Game game) {
+    public ResponseEntity<String> createGame(@RequestBody Game game) {
         gameService.createGame(game);
-        return gson.toJson(gameService.getGameById(game.getGameID()));
+        return ResponseEntity.ok().body("Game Created");
     }
 
     @DeleteMapping( "/games/{id}")
@@ -52,11 +57,5 @@ public class GameController {
         gameService.deleteGame(id);
         return ResponseEntity.ok().body("deleted");
     }
-*/
 
-    @GetMapping(value = "/games2")
-    public ResponseEntity<List<GameDTO>> getGameList2(){
-        List<GameDTO> gamestring = new ArrayList<>(gameDTOMapper.mapList(gameService.loadGames()));
-        return ResponseEntity.ok().body(gamestring);
-    }
 }

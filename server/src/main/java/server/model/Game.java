@@ -3,12 +3,17 @@ package server.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.persistence.*;
+import org.hibernate.annotations.Type;
+
+import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 public class Game {
     @Id
     @GeneratedValue
-    private Integer id;
+    private int id;
 
     private int currentPlayers;
 
@@ -17,6 +22,7 @@ public class Game {
 
     private GameState state;
 
+    @Column(columnDefinition = "TEXT")
     private String board;
 
     public String getBoard() {
@@ -29,11 +35,11 @@ public class Game {
 
 
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -51,6 +57,12 @@ public class Game {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getGameID(){return id;}
+
+    public void setGameID(int gameID){
+        this.id = gameID;
     }
 
     public GameState getState() {
