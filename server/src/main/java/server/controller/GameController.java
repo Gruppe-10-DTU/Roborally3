@@ -1,11 +1,14 @@
 package server.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import com.google.gson.JsonObject;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import com.google.gson.JsonArray;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import server.Service.GameService;
 import server.dto.GameDTO;
 import server.mapper.DtoMapper;
@@ -33,21 +36,20 @@ public class GameController {
     }
 
     @RequestMapping(value = "/games", method = RequestMethod.GET)
-    public List<GameDTO> getGameList(){
-        List<Game> games = gameService.loadGames();
-        return dtoMapper.gameToGameDto(games);
-        //return gameDTOMapper.mapList(gameService.loadGames());
-    }
-/*
-    @RequestMapping(value = "/games/{id}", method = RequestMethod.GET)
-    public String getSpecificGame(@PathVariable int id) {
-        return gson.toJson(gameService.getGameById(id));
+    public ResponseEntity<List<GameDTO>> getGameList(){
+        List<GameDTO> gamestring = new ArrayList<>(gameDTOMapper.mapList(gameService.loadGames()));
+        return ResponseEntity.ok().body(gamestring);
     }
 
+    @GetMapping( "/games/{id}")
+        public ResponseEntity<String> retrieveGame(@PathVariable int id){
+            return ResponseEntity.ok().body(gson.toJson(gameService.getGameById(id)));
+        }
+
     @PostMapping("/games")
-    public String createGame(@RequestBody Game game) {
+    public ResponseEntity<String> createGame(@RequestBody Game game) {
         gameService.createGame(game);
-        return gson.toJson(gameService.getGameById(game.getGameID()));
+        return ResponseEntity.ok().body("Game Created");
     }
 
     @DeleteMapping( "/games/{id}")
@@ -55,11 +57,5 @@ public class GameController {
         gameService.deleteGame(id);
         return ResponseEntity.ok().body("deleted");
     }
-*/
 
-    @GetMapping(value = "/games2")
-    public ResponseEntity<List<GameDTO>> getGameList2(){
-        List<GameDTO> gamestring = new ArrayList<>(gameDTOMapper.mapList(gameService.loadGames()));
-        return ResponseEntity.ok().body(gamestring);
-    }
 }

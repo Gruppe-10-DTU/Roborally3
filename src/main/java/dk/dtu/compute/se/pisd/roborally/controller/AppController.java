@@ -57,7 +57,6 @@ import java.util.Optional;
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public class AppController implements Observer, EndGame {
-
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
     final private List<String> BOARD_OPTIONS = Arrays.asList("Burnout", "Risky Crossing");
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
@@ -66,7 +65,7 @@ public class AppController implements Observer, EndGame {
 
     private GamesView gamesView;
 
-
+    private Gson gson = new Gson();
     private String selectedBoard;
     private GameController gameController;
 
@@ -143,7 +142,6 @@ public class AppController implements Observer, EndGame {
                 Space spawnSpace = board.nextSpawn();
                 player.setSpace(board.getSpace(spawnSpace.getX(),spawnSpace.getY()));
             }
-
             gameController.startProgrammingPhase();
 
             roboRally.createBoardView(gameController);
@@ -316,8 +314,24 @@ public class AppController implements Observer, EndGame {
             gameController = new GameController(board, this);
             int numberOfPlayers = result.get();
 
-        HttpController.createGame(gameController);
+        TextInputDialog nameDialog = new TextInputDialog("");
+        nameDialog.setTitle("Player name");
+        nameDialog.setHeaderText("Select player name");
+        Optional<String> resultName = nameDialog.showAndWait();
 
+        String entered = "";
+        if (resultName.isPresent()) {
+            entered = resultName.get();
+        }
+
+        Player player = new Player(board, PLAYER_COLORS.get(0), entered);
+        board.addPlayer(player);
+        Space spawnSpace = board.nextSpawn();
+        player.setSpace(board.getSpace(spawnSpace.getX(),spawnSpace.getY()));
+
+        Game nG = new Game(1, board.getBoardName(), 0,numberOfPlayers,gson.toJson(board));
+        HttpController.createGame(nG);
+        HttpController.joinGame(nG.getId(),player.getName());
     }
 
     /**
@@ -334,9 +348,9 @@ public class AppController implements Observer, EndGame {
     public void joinGame(Game selectedItem) {
         Game item = selectedItem;
         int playerID = 232;
-        HttpController.joinGame(item.getId(), playerID);
+        HttpController.joinGame(item.getId(), "" + playerID);
 //        item.IncCurrPlayer();
-        HttpController.joinGame(item.getId(),playerID);
+        HttpController.joinGame(item.getId(),"" + playerID);
         System.out.println("Player: "+ playerID + " trying to join " + selectedItem);
     }
 
