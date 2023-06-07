@@ -97,7 +97,9 @@ public class Checkpoint extends Space implements SequenceAction {
         for (Player player : board.getPlayers()
         ) {
             if (player.getSpace().getClass().equals(this.getClass())) {
-                ((Checkpoint) player.getSpace()).addPlayer(player);
+                if(((Checkpoint) player.getSpace()).addPlayer(player)){
+                    gameController.board.addGameLogEntry(player, "Reached checkpoint " + this.number);
+                }
             }
         }
     }

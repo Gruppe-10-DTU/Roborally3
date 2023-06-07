@@ -27,6 +27,7 @@ import dk.dtu.compute.se.pisd.roborally.model.BoardElement.*;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.PriorityAntenna;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
+import javafx.util.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -65,6 +66,7 @@ public class Board extends Subject {
 
     private boolean stepMode;
     private Checkpoint wincondition;
+    private List<Pair<String, String>> gameLog;
 
     private PriorityQueue<Spawn> spawnPriority = new PriorityQueue<>();
 
@@ -122,6 +124,7 @@ public class Board extends Subject {
         this.playerAmount = playerAmount;
         this.width = width;
         this.height = height;
+        this.gameLog = new ArrayList<>();
         JSONArray courseArray = new JSONArray();
 
         if(boardArray == null) {
@@ -520,4 +523,16 @@ public class Board extends Subject {
     }
 
 
+    public List<Pair<String, String>> getGameLog(){
+        return gameLog;
+    }
+    public void addGameLogEntry(Player player, String event){
+        if(gameLog == null) return; //Allows testing without instantiating log
+        if(gameLog.size() == 50) gameLog.remove(0);
+        if(player == null){
+            gameLog.add(new Pair<>("black", event + "\n"));
+        } else {
+            gameLog.add(new Pair<>(player.getColor(), player.getName() + ": "+ event + "\n"));
+        }
+    }
 }
