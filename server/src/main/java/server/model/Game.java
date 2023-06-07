@@ -1,5 +1,8 @@
 package server.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Type;
@@ -9,16 +12,15 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Entity
 public class Game {
     @Id
-    @GeneratedValue(strategy = IDENTITY)
+    @GeneratedValue
     private int id;
     private int maxPlayers;
     private String name;
+
     private GameState state;
-
-
+    
     @Column(columnDefinition = "TEXT")
     private String board;
-
 
     public String getBoard() {
         return board;
