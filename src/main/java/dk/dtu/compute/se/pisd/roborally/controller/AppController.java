@@ -25,10 +25,7 @@ import com.google.gson.Gson;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
-import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Game;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.view.GamesView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -50,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 /**
  * ...
@@ -57,6 +55,7 @@ import java.util.Optional;
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public class AppController implements Observer, EndGame {
+
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
     final private List<String> BOARD_OPTIONS = Arrays.asList("Burnout", "Risky Crossing");
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
@@ -127,7 +126,7 @@ public class AppController implements Observer, EndGame {
             for (int i = 0; i < numberOfPlayers; i++) {
 
 
-                TextInputDialog nameDialog = new TextInputDialog("Player" + (i + 1));
+                /*TextInputDialog nameDialog = new TextInputDialog("Player" + (i + 1));
                 nameDialog.setTitle("Player name");
                 nameDialog.setHeaderText("Select player name");
                 Optional<String> resultName = nameDialog.showAndWait();
@@ -135,9 +134,9 @@ public class AppController implements Observer, EndGame {
                 String entered = "Player" + (i + 1);
                 if (resultName.isPresent()) {
                     entered = resultName.get();
-                }
+                }*/
 
-                Player player = new Player(board, PLAYER_COLORS.get(i), entered);
+                Player player = new Player(board, PLAYER_COLORS.get(i), playerName(i));
                 board.addPlayer(player);
                 Space spawnSpace = board.nextSpawn();
                 player.setSpace(board.getSpace(spawnSpace.getX(),spawnSpace.getY()));
@@ -330,8 +329,9 @@ public class AppController implements Observer, EndGame {
         player.setSpace(board.getSpace(spawnSpace.getX(),spawnSpace.getY()));
 
         Game nG = new Game(1, board.getBoardName(), 0,numberOfPlayers,gson.toJson(board));
+        PlayerDTO playerDTO = new PlayerDTO(player.getName());
         HttpController.createGame(nG);
-        HttpController.joinGame(nG.getId(),player.getName());
+        HttpController.joinGame(nG.getId(),playerDTO);
     }
 
     /**
@@ -346,18 +346,27 @@ public class AppController implements Observer, EndGame {
     }
 
     public void joinGame(Game selectedItem) {
-        Game item = selectedItem;
-        int playerID = 232;
-        HttpController.joinGame(item.getId(), "" + playerID);
-//        item.IncCurrPlayer();
-        HttpController.joinGame(item.getId(),"" + playerID);
-        System.out.println("Player: "+ playerID + " trying to join " + selectedItem);
+        List<PlayerDTO> playerList = new ArrayList<PlayerDTO>();
+        String playerName = playerName(0);
+        try {
+            playerList = HttpController.playersInGame(selectedItem.getId());
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        String finalPlayerName = playerName;
+        int count = (int) playerList.stream().filter(x -> x.getName().startsWith(finalPlayerName)).count();
+        if (count > 0) playerName = playerName + " [" + count + "]";
+
+        PlayerDTO player = new PlayerDTO(playerName);
+
+        if(count == selectedItem.getMaxPlayers()){
+            HttpController.joinGame(selectedItem.getId(),player);
+            System.out.println("Player: "+ playerName + " trying to join " + selectedItem);
+        }
     }
 
     public List<Game> getGameList() throws Exception {
-
-        List<Game> observableList = FXCollections.observableArrayList(HttpController.getGameList());
-//        System.out.println(observableList);
         return HttpController.getGameList();
     }
 
@@ -366,5 +375,18 @@ public class AppController implements Observer, EndGame {
         String[] args = new String[0];
         //ServerApp.main(args);
 
+    }
+
+    public String playerName(int playerIndex){
+        TextInputDialog nameDialog = new TextInputDialog("Player" + (playerIndex + 1));
+        nameDialog.setTitle("Player name");
+        nameDialog.setHeaderText("Select player name");
+        Optional<String> resultName = nameDialog.showAndWait();
+
+        String entered = "Player" + (playerIndex + 1);
+        if (resultName.isPresent()) {
+            entered = resultName.get();
+        }
+        return entered;
     }
 }
