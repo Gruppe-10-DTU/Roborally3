@@ -467,7 +467,6 @@ public class GameController {
     public void rebootRobot(Player player){
         player.discardCard(new DamageCard(Damage.SPAM));
         player.discardCard(new DamageCard(Damage.SPAM));
-        player.setRebooting(true);
         for (int i = 0; i < 5; i++) {
             CommandCardField field = player.getProgramField(i);
             if (field.getCard() != null) {

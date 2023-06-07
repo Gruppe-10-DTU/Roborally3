@@ -36,6 +36,7 @@ public class Energy extends Space implements SequenceAction {
                 if (energy) {
                     energy = false;
                     player.incrementEnergy();
+                    gameController.board.addGameLogEntry(player, "Picked up energy");
                 } else if (board.getStep() == 5) {
                     player.incrementEnergy();
                 }
