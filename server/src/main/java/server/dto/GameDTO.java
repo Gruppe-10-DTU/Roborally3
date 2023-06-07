@@ -4,28 +4,28 @@ public class GameDTO {
     int maxPlayers;
     int currentPlayers;
     String name;
-    int gameId;
+    int id;
 
     /**
      *
      * @param maxPlayers
      * @param currentPlayers
      * @param name
-     * @param gameId
+     * @param id
      *  Creates the game dto
      * @author Sandie Petersen
      */
-    public GameDTO(int maxPlayers, int currentPlayers, String name, int gameId) {
+    public GameDTO(int maxPlayers, int currentPlayers, String name, int id) {
         this.name = name;
         this.currentPlayers = currentPlayers;
         this.maxPlayers = maxPlayers;
-        this.gameId = gameId;
+        this.id = id;
     }
     public String getName(){
         return name;
     }
-    public int getGameId(){
-        return gameId;
+    public int getId(){
+        return id;
     }
     public int getMaxPlayers(){
         return maxPlayers;

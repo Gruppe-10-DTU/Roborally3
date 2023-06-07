@@ -45,7 +45,7 @@ public class HttpController {
     }
     public static int joinGame(int gameID, int playerID){
         HttpRequest postPlayerRequest = HttpRequest.newBuilder()
-                .uri(URI.create(serverUrl + "/games/" + gameID + "/players/"))
+                .uri(URI.create(serverUrl + "/games/" + gameID + "/players"))
                 .POST(HttpRequest.BodyPublishers.ofString(String.valueOf(playerID)))
                 .build();
         try {
