@@ -350,7 +350,6 @@ public class AppController implements Observer, EndGame {
         String playerName = playerName(0);
         try {
             playerList = HttpController.playersInGame(selectedItem.getId());
-            System.out.println(playerList);
         } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -361,9 +360,10 @@ public class AppController implements Observer, EndGame {
 
         PlayerDTO player = new PlayerDTO(playerName);
 
-//        item.IncCurrPlayer();
-        HttpController.joinGame(selectedItem.getId(),player);
-        System.out.println("Player: "+ playerName + " trying to join " + selectedItem);
+        if(count == selectedItem.getMaxPlayers()){
+            HttpController.joinGame(selectedItem.getId(),player);
+            System.out.println("Player: "+ playerName + " trying to join " + selectedItem);
+        }
     }
 
     public List<Game> getGameList() throws Exception {
