@@ -1,6 +1,7 @@
 @startuml
 'https://plantuml.com/class-diagram
 skinparam linetype ortho
+package "Server"{
 package "Model"{
 class Board{
     - id : int
@@ -97,5 +98,5 @@ GameStateController --> GameDTOMapper
 PlayerController "1 " -->" *" Player
 
 "Service" --> "Repository"
-
+}
 @enduml

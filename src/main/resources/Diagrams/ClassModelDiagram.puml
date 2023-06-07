@@ -1,6 +1,7 @@
 @startuml
 skinparam linetype ortho
 
+package "Model"{
 enum Heading {
   SOUTH
   WEST
@@ -167,5 +168,5 @@ Phase "1" *-- "1" Board
 PlayerCardDeck "1" *-- "1" Player
 CommandCard "20" *-- "1" PlayerCardDeck
 DamageCard "*" *-- "1" PlayerCardDeck
-
+}
 @enduml
