@@ -47,9 +47,9 @@ public class GameController {
     }
 
     @PostMapping("/games")
-    public ResponseEntity<String> createGame(@RequestBody Game game) {
+    public ResponseEntity<GameDTO> createGame(@RequestBody Game game) {
         gameService.createGame(game);
-        return ResponseEntity.ok().body("Game Created");
+        return ResponseEntity.ok().body(gameDTOMapper.map(game));
     }
 
     @DeleteMapping( "/games/{id}")

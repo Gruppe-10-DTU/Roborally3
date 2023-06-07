@@ -331,7 +331,9 @@ public class AppController implements Observer, EndGame {
         Game nG = new Game(1, board.getBoardName(), 0,numberOfPlayers,gson.toJson(board));
         PlayerDTO playerDTO = new PlayerDTO(player.getName());
         HttpController.createGame(nG);
-        HttpController.joinGame(nG.getId(),playerDTO);
+        String response = HttpController.joinGame(nG.getId(),playerDTO);
+        Game game = gson.fromJson(response, Game.class);
+
     }
 
     /**

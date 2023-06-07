@@ -46,7 +46,7 @@ public class HttpController {
         }
         return null;
     }
-    public static int joinGame(int gameID, PlayerDTO player){
+    public static String joinGame(int gameID, PlayerDTO player){
         HttpRequest postPlayerRequest = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + "/games/" + gameID + "/players"))
                 .setHeader("Content-Type","application/json")
@@ -58,7 +58,8 @@ public class HttpController {
         } catch (Exception exception){
             exception.printStackTrace();
         }
-        return lastResponse.statusCode();
+        //return lastResponse.statusCode();
+        return lastResponse.body();
     }
 
     public static List<PlayerDTO> playersInGame(int gameID) throws ExecutionException, InterruptedException {
