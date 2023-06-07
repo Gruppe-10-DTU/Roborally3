@@ -517,6 +517,12 @@ public class Board extends Subject {
     public int getWidth() {
         return width;
     }
+
+    public String getBoardName(){
+        return boardName;
+    }
+
+
     public List<Pair<String, String>> getGameLog(){
         return gameLog;
     }

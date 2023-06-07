@@ -1,10 +1,10 @@
 package server.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.Transient;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.persistence.*;
 import org.hibernate.annotations.Type;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -12,28 +12,33 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Entity
 public class Game {
     @Id
-    @GeneratedValue(strategy = IDENTITY)
+    @GeneratedValue
+    private int id;
     private int maxPlayers;
     private String name;
 
-    private int gameID;
-
     private GameState state;
+    
+    @Column(columnDefinition = "TEXT")
+    private String board;
 
-    /*
-    private Board board;
-
-
-
-    public Board getBoard() {
+    public String getBoard() {
         return board;
     }
 
-    public void setBoard(Board board) {
+    public void setBoard(String board) {
         this.board = board;
     }
-    */
 
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getMaxPlayers() {
         return maxPlayers;
@@ -51,10 +56,10 @@ public class Game {
         this.name = name;
     }
 
-    public int getGameID(){return gameID;}
+    public int getGameID(){return id;}
 
     public void setGameID(int gameID){
-        this.gameID = gameID;
+        this.id = gameID;
     }
 
     public GameState getState() {
