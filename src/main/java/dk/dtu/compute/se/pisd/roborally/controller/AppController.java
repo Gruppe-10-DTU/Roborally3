@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 /**
  * ...
@@ -128,7 +129,7 @@ public class AppController implements Observer, EndGame {
             for (int i = 0; i < numberOfPlayers; i++) {
 
 
-                TextInputDialog nameDialog = new TextInputDialog("Player" + (i + 1));
+                /*TextInputDialog nameDialog = new TextInputDialog("Player" + (i + 1));
                 nameDialog.setTitle("Player name");
                 nameDialog.setHeaderText("Select player name");
                 Optional<String> resultName = nameDialog.showAndWait();
@@ -137,8 +138,9 @@ public class AppController implements Observer, EndGame {
                 if (resultName.isPresent()) {
                     entered = resultName.get();
                 }
-
-                Player player = new Player(board, PLAYER_COLORS.get(i), entered);
+*/
+                Player player = new Player(board, PLAYER_COLORS.get(i), playerName(i));
+//                Player player = newPlayer(board, i);
                 board.addPlayer(player);
                 Space spawnSpace = board.nextSpawn();
                 player.setSpace(board.getSpace(spawnSpace.getX(),spawnSpace.getY()));
@@ -332,18 +334,24 @@ public class AppController implements Observer, EndGame {
     }
 
     public void joinGame(Game selectedItem) {
-        Game item = selectedItem;
-        int playerID = 232;
-        HttpController.joinGame(item.getId(), playerID);
+        List<Player> playerList = new ArrayList<Player>();
+        String playerName = playerName(0);
+        try {
+            playerList = HttpController.playersInGame(selectedItem.getId());
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        String finalPlayerName = playerName;
+        int count = (int) playerList.stream().filter(x -> x.getName().startsWith(finalPlayerName)).count();
+        if (count > 0) playerName = playerName + " [" + count + "]";
+
 //        item.IncCurrPlayer();
-        HttpController.joinGame(item.getId(),playerID);
-        System.out.println("Player: "+ playerID + " trying to join " + selectedItem);
+        HttpController.joinGame(selectedItem.getId(),playerName);
+        System.out.println("Player: "+ playerName + " trying to join " + selectedItem);
     }
 
     public List<Game> getGameList() throws Exception {
-
-        List<Game> observableList = FXCollections.observableArrayList(HttpController.getGameList());
-//        System.out.println(observableList);
         return HttpController.getGameList();
     }
 
@@ -352,5 +360,18 @@ public class AppController implements Observer, EndGame {
         String[] args = new String[0];
         //ServerApp.main(args);
 
+    }
+
+    public String playerName(int playerIndex){
+        TextInputDialog nameDialog = new TextInputDialog("Player" + (playerIndex + 1));
+        nameDialog.setTitle("Player name");
+        nameDialog.setHeaderText("Select player name");
+        Optional<String> resultName = nameDialog.showAndWait();
+
+        String entered = "Player" + (playerIndex + 1);
+        if (resultName.isPresent()) {
+            entered = resultName.get();
+        }
+        return entered;
     }
 }
