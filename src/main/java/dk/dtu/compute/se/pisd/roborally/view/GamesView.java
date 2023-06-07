@@ -33,15 +33,19 @@ public class GamesView extends VBox implements ViewObserver{
 
         tableView = new TableView<Game>();
         tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        tableView.prefWidthProperty().bind(tableView.widthProperty().add(300));
 
         TableColumn<Game, String> name = new TableColumn<Game, String>("Name");
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        name.prefWidthProperty().bind(tableView.widthProperty().multiply(0.3));
 
         TableColumn<Game, Integer> currentPlayers = new TableColumn<Game, Integer>("Current players");
         currentPlayers.setCellValueFactory(new PropertyValueFactory<>("currentPlayers"));
+        currentPlayers.prefWidthProperty().bind(tableView.widthProperty().multiply(0.3));
 
         TableColumn<Game, Integer> maxPlayers = new TableColumn<Game, Integer>("Max players");
         maxPlayers.setCellValueFactory(new PropertyValueFactory<>("maxPlayers"));
+        maxPlayers.prefWidthProperty().bind(tableView.widthProperty().multiply(0.3));
 
         tableView.getColumns().setAll(name, currentPlayers, maxPlayers);
 

@@ -33,10 +33,10 @@ public class GameController {
         return ResponseEntity.ok().body(gamestring);
     }
 
-    @GetMapping( "/games/{id}")
-        public ResponseEntity<String> retrieveGame(@PathVariable int id){
-            return ResponseEntity.ok().body(gson.toJson(gameService.getGameById(id)));
-        }
+    @RequestMapping(value = "/games/{id}", method = RequestMethod.GET)
+    public Game getSpecificGame(@PathVariable int id) {
+        return gameService.getGame(id);
+    }
 
     @PostMapping("/games")
     public ResponseEntity<GameDTO> createGame(@RequestBody Game game) {
@@ -50,5 +50,6 @@ public class GameController {
         gameService.deleteGame(id);
         return ResponseEntity.ok().body("deleted");
     }
+
 
 }

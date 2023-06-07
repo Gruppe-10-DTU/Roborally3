@@ -3,11 +3,14 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import dk.dtu.compute.se.pisd.roborally.model.Game;
+import dk.dtu.compute.se.pisd.roborally.model.Player;
+import dk.dtu.compute.se.pisd.roborally.model.PlayerDTO;
 import org.json.JSONObject;
 import java.net.URI;
 import java.net.http.*;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 public class HttpController {
@@ -43,10 +46,11 @@ public class HttpController {
         }
         return null;
     }
-    public static int joinGame(int gameID, String playerName){
+    public static int joinGame(int gameID, PlayerDTO player){
         HttpRequest postPlayerRequest = HttpRequest.newBuilder()
-                .uri(URI.create(serverUrl + "/games/" + gameID + "/players"+ playerName))
-                .POST(HttpRequest.BodyPublishers.ofString(playerName))
+                .uri(URI.create(serverUrl + "/games/" + gameID + "/players"))
+                .setHeader("Content-Type","application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(player)))
                 .build();
         try {
             lastResponse = client.send(postPlayerRequest, HttpResponse.BodyHandlers.ofString());
@@ -57,18 +61,16 @@ public class HttpController {
         return lastResponse.statusCode();
     }
 
-    public static ArrayList<String> isPlayerInGame(int gameID, int playerID){
+    public static List<PlayerDTO> playersInGame(int gameID) throws ExecutionException, InterruptedException {
         HttpRequest getPlayerRequest = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + "/games/" + gameID + "/players"))
                 .GET()
                 .build();
-        try {
-            lastResponse = client.send(getPlayerRequest, HttpResponse.BodyHandlers.ofString());
-
-        } catch (Exception exception){
-            exception.printStackTrace();
-        }
-        return null;
+        CompletableFuture<HttpResponse<String>> response =
+                client.sendAsync(getPlayerRequest, HttpResponse.BodyHandlers.ofString());
+        String result = response.thenApply(HttpResponse::body).get();
+        List<PlayerDTO> Player = gson.fromJson(result,new TypeToken<List<PlayerDTO>>(){}.getType());
+        return Player;
     }
 
     public static int createGame(Game game){
@@ -146,14 +148,13 @@ public class HttpController {
 
     public static List<Game> getGameList() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/games"))
+                .uri(URI.create(serverUrl + "/games"))
                 .GET()
                 .build();
         CompletableFuture<HttpResponse<String>> response =
                 client.sendAsync(request, HttpResponse.BodyHandlers.ofString());
         String result = response.thenApply(HttpResponse::body).get();
-        List<Game> games = gson.fromJson(result,new TypeToken<List<Game>>(){}.getType());
-        return games;
+        return gson.fromJson(result,new TypeToken<List<Game>>(){}.getType());
     }
 
 }

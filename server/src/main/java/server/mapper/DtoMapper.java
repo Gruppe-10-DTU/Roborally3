@@ -3,8 +3,10 @@ package server.mapper;
 import org.mapstruct.Mapper;
 import server.dto.BoardDTO;
 import server.dto.GameDTO;
+import server.dto.PlayerDTO;
 import server.model.Board;
 import server.model.Game;
+import server.model.Player;
 
 import java.util.List;
 
@@ -22,4 +24,6 @@ public interface DtoMapper {
     BoardDTO boardToBoardDto(Board board);
 
     Board boardDtoToBoard(BoardDTO boardDTO);
+
+    List<PlayerDTO> playerToPlayerDto(List<Player> player);
 }

@@ -8,6 +8,7 @@ import server.repository.GameRepository;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GameService {
@@ -16,29 +17,31 @@ public class GameService {
 
     private GameRepository gameRepository;
 
-    public GameService(GameRepository gameRepository){
-       this.gameRepository = gameRepository;
+    public GameService(GameRepository gameRepository) {
+        this.gameRepository = gameRepository;
     }
     public Game createGame(Game game) {
         gameRepository.save(game);
         return game;
     }
-    public Game getGameById(int id){
-        for (Game gms: gameRepository.findAll()) {
-            if(gms.getGameID() == id)
+
+    public Game getGameById(int id) {
+        for (Game gms : gameRepository.findAll()) {
+            if (gms.getGameID() == id)
                 return gms;
         }
         return null;
     }
-    public Game SaveGame (int id) {
+
+    public Game SaveGame(int id) {
         return getGameById(id);
     }
 
-    public Game updateGame (Game game) {
+    public Game updateGame(Game game) {
         return null;
     }
 
-    public List<Game> deleteGame(int id){
+    public List<Game> deleteGame(int id) {
         gameRepository.delete(getGameById(id));
         return gameRepository.findAll();
     }
@@ -47,4 +50,17 @@ public class GameService {
         List<GameState> states = Arrays.asList(GameState.INITIALIZING, GameState.SAVED);
         return gameRepository.findAllByStateIn(states);
     }
+
+    public Game getGame(int id) {
+        return gameRepository.findById(id).orElse(null);
+    }
+
+    public void updateCurrPlayers(int gameId, int count) {
+        Game game = gameRepository.findById(gameId).orElse(null);
+        if (game != null) {
+            game.setCurrentPlayers(count);
+            gameRepository.save(game);
+        }
+    }
+
 }
