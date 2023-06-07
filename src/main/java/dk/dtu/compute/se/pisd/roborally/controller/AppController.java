@@ -29,6 +29,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Game;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.utils.BoardUpdateThread;
 import dk.dtu.compute.se.pisd.roborally.view.GamesView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -332,6 +333,8 @@ public class AppController implements Observer, EndGame {
         Game nG = new Game(1, board.getBoardName(), 0,numberOfPlayers,gson.toJson(board));
         HttpController.createGame(nG);
         HttpController.joinGame(nG.getId(),player.getName());
+        
+        BoardUpdateThread boardUpdateThread = new BoardUpdateThread()
     }
 
     /**

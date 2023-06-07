@@ -22,7 +22,7 @@ public class GameService {
     public GameService(GameRepository gameRepository){
        this.gameRepository = gameRepository;
     }
-        public Game createGame(Game game) {
+    public Game createGame(Game game) {
         Game game2 = new Game();
         game2.setBoard(game.getBoard());
         game2.setState(GameState.INITIALIZING);
