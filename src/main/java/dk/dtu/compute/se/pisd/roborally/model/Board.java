@@ -527,6 +527,7 @@ public class Board extends Subject {
         return gameLog;
     }
     public void addGameLogEntry(Player player, String event){
+        if(gameLog == null) return; //Allows testing without instantiating log
         if(gameLog.size() == 50) gameLog.remove(0);
         if(player == null){
             gameLog.add(new Pair<>("black", event + "\n"));
