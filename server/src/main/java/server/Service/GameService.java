@@ -2,6 +2,7 @@ package server.Service;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import server.model.Board;
 import server.model.Game;
 import server.model.GameState;
 import server.repository.GameRepository;
@@ -45,14 +46,13 @@ public class GameService {
         return null;
     }
 
-    public ResponseEntity<String> deleteGame(int id){
+    public List<Game> deleteGame(int id){
         gameRepository.delete(getGameById(id));
-        return ResponseEntity.ok().body("Game Deleted");
+        return gameRepository.findAll();
     }
 
     public List<Game> loadGames() {
         List<GameState> states = Arrays.asList(GameState.INITIALIZING, GameState.SAVED);
-        List<Game> games = gameRepository.findAllByStateIn(states);
-        return games;
+        return gameRepository.findAllByStateIn(states);
     }
 }

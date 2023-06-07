@@ -19,5 +19,7 @@ public class Board {
     public int getId() {
         return id;
     }
+    public int setId(int newId) { return this.id = newId; }
+
 
 }

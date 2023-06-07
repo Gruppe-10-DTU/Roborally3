@@ -20,7 +20,6 @@ public class Game {
     private String board;
 
 
-
     public String getBoard() {
         return board;
     }

@@ -1,6 +1,7 @@
 package server.controller;
 
 import com.google.gson.JsonObject;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,10 +41,10 @@ public class GameController {
         return ResponseEntity.ok().body(gamestring);
     }
 
-    @RequestMapping(value = "/games/{id}", method = RequestMethod.GET)
-    public String getSpecificGame(@PathVariable int id) {
-        return gson.toJson(gameService.getGameById(id));
-    }
+    @GetMapping( "/games/{id}")
+        public ResponseEntity<String> retrieveGame(@PathVariable int id){
+            return ResponseEntity.ok().body(gson.toJson(gameService.getGameById(id)));
+        }
 
     @PostMapping("/games")
     public ResponseEntity<String> createGame(@RequestBody Game game) {
