@@ -25,10 +25,7 @@ import com.google.gson.Gson;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
-import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Game;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.view.GamesView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -139,7 +136,7 @@ public class AppController implements Observer, EndGame {
                     entered = resultName.get();
                 }*/
 
-                Player player = new Player(board, PLAYER_COLORS.get(i), entered);
+                Player player = new Player(board, PLAYER_COLORS.get(i), playerName(i));
                 board.addPlayer(player);
                 Space spawnSpace = board.nextSpawn();
                 player.setSpace(board.getSpace(spawnSpace.getX(),spawnSpace.getY()));
@@ -332,8 +329,9 @@ public class AppController implements Observer, EndGame {
         player.setSpace(board.getSpace(spawnSpace.getX(),spawnSpace.getY()));
 
         Game nG = new Game(1, board.getBoardName(), 0,numberOfPlayers,gson.toJson(board));
+        PlayerDTO playerDTO = new PlayerDTO(player.getName());
         HttpController.createGame(nG);
-        HttpController.joinGame(nG.getId(),player.getName());
+        HttpController.joinGame(nG.getId(),playerDTO);
     }
 
     /**
@@ -348,10 +346,11 @@ public class AppController implements Observer, EndGame {
     }
 
     public void joinGame(Game selectedItem) {
-        List<Player> playerList = new ArrayList<Player>();
+        List<PlayerDTO> playerList = new ArrayList<PlayerDTO>();
         String playerName = playerName(0);
         try {
             playerList = HttpController.playersInGame(selectedItem.getId());
+            System.out.println(playerList);
         } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -360,8 +359,10 @@ public class AppController implements Observer, EndGame {
         int count = (int) playerList.stream().filter(x -> x.getName().startsWith(finalPlayerName)).count();
         if (count > 0) playerName = playerName + " [" + count + "]";
 
+        PlayerDTO player = new PlayerDTO(playerName);
+
 //        item.IncCurrPlayer();
-        HttpController.joinGame(selectedItem.getId(),playerName);
+        HttpController.joinGame(selectedItem.getId(),player);
         System.out.println("Player: "+ playerName + " trying to join " + selectedItem);
     }
 

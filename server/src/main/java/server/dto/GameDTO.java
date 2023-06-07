@@ -47,7 +47,7 @@ public class GameDTO {
     }
 
 
-    public void setGameId(int gameId) {
-        this.gameId = gameId;
+    public void setId(int id) {
+        this.id = id;
     }
 }

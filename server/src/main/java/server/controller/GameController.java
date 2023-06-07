@@ -45,7 +45,7 @@ public class GameController {
     public Game getSpecificGame(@PathVariable int id) {
         return gameService.getGame(id);
     }
-/*
+
     @PostMapping("/games")
     public ResponseEntity<String> createGame(@RequestBody Game game) {
         gameService.createGame(game);
@@ -57,5 +57,6 @@ public class GameController {
         gameService.deleteGame(id);
         return ResponseEntity.ok().body("deleted");
     }
+
 
 }

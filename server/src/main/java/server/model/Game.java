@@ -6,6 +6,10 @@ import jakarta.persistence.Id;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Type;
+import server.dto.PlayerDTO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -81,5 +85,10 @@ public class Game {
 
     public void setCurrentPlayers(int currentPlayers) {
         this.currentPlayers = currentPlayers;
+    }
+
+    public List<PlayerDTO> getPlayers() {
+        List<PlayerDTO> playerlst = new ArrayList<PlayerDTO>();
+        return playerlst;
     }
 }
