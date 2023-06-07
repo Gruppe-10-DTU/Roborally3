@@ -21,6 +21,7 @@ public class BoardLaser extends Space implements SequenceAction {
     public BoardLaser(Board board, int x, int y, Heading shootingDirection) {
         super(board, x, y);
         this.shootingDirection = shootingDirection;
+        board.getSpace(x,y).setWall(shootingDirection.prev().prev());
         board.addBoardActions(this);
     }
 
