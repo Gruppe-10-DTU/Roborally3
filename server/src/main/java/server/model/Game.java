@@ -17,6 +17,8 @@ public class Game {
     private int maxPlayers;
     private String hostName;
 
+    int version = 0;
+
     /*
     private Board board;
 

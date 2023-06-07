@@ -3,6 +3,8 @@ package dk.dtu.compute.se.pisd.roborally.model;
 public class Game {
     private final int id;
     private final String name;
+
+    private int version;
     private final int currentPlayers;
     private final int maxPlayers;
 
@@ -27,6 +29,14 @@ public class Game {
 
     public int getMaxPlayers() {
         return maxPlayers;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 
     @Override
