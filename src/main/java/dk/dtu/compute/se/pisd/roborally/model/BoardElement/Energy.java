@@ -1,6 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally.model.BoardElement;
 
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally.controller.SequenceActions.SequenceVisitor;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
@@ -46,5 +47,10 @@ public class Energy extends Space implements SequenceAction {
     @Override
     public int getPrio() {
         return 7;
+    }
+
+    @Override
+    public void accept(Player[] players, SequenceVisitor visitor){
+        visitor.visit(players, this);
     }
 }

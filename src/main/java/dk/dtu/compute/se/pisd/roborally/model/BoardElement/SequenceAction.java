@@ -1,6 +1,8 @@
 package dk.dtu.compute.se.pisd.roborally.model.BoardElement;
 
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally.controller.SequenceActions.SequenceVisitor;
+import dk.dtu.compute.se.pisd.roborally.model.Player;
 
 public interface SequenceAction {
     /**
@@ -16,4 +18,6 @@ public interface SequenceAction {
      * @return The priority of the action.
      */
     int getPrio();
+
+    void accept(Player[] players, SequenceVisitor visitor);
 }

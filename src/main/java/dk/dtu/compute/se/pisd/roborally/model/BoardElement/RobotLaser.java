@@ -1,6 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally.model.BoardElement;
 
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally.controller.SequenceActions.SequenceVisitor;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.Damage;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.DamageCard;
@@ -56,5 +57,10 @@ public class RobotLaser implements SequenceAction{
     @Override
     public int getPrio() {
         return 6;
+    }
+
+    @Override
+    public void accept(Player[] players, SequenceVisitor visitor){
+        visitor.visit(players, this);
     }
 }
