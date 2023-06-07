@@ -26,7 +26,7 @@ public class Game {
 
     int version = 0;
 
-    /*
+
     private Board board;
 
     private GameState state;
@@ -41,7 +41,7 @@ public class Game {
     public void setBoard(String board) {
         this.board = board;
     }
-     */
+
 
 
 
