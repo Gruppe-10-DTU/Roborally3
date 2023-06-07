@@ -6,6 +6,10 @@ import jakarta.persistence.Id;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Type;
+import server.dto.PlayerDTO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -14,11 +18,14 @@ public class Game {
     @Id
     @GeneratedValue
     private int id;
+
+    private int currentPlayers;
+
     private int maxPlayers;
     private String name;
 
     private GameState state;
-    
+
     @Column(columnDefinition = "TEXT")
     private String board;
 
@@ -71,5 +78,17 @@ public class Game {
     }
 
     public Game() {
+    }
+    public int getCurrentPlayers() {
+        return currentPlayers;
+    }
+
+    public void setCurrentPlayers(int currentPlayers) {
+        this.currentPlayers = currentPlayers;
+    }
+
+    public List<PlayerDTO> getPlayers() {
+        List<PlayerDTO> playerlst = new ArrayList<PlayerDTO>();
+        return playerlst;
     }
 }
