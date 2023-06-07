@@ -515,4 +515,10 @@ public class Board extends Subject {
     public int getWidth() {
         return width;
     }
+
+    public String getBoardName(){
+        return boardName;
+    }
+
+
 }

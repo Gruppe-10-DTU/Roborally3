@@ -17,11 +17,11 @@ public class GameDTOMapper {
     public GameDTO map(Game game) {
         /*
         int currentPlayers = game.getBoard().getCurrentPlayers().size();
-        String gameId = game.getBoard().getId();
+        int gameId = game.getGameID();
 
          */
 
-        return new GameDTO(game.getMaxPlayers(), 3, game.getHostName(), game.getId().toString());
+        return new GameDTO(game.getMaxPlayers(), 3, game.getName(), game.getId());
     }
 
     /**
