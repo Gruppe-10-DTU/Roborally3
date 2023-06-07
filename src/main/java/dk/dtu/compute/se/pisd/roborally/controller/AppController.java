@@ -27,6 +27,7 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.view.GamesView;
+import javafx.scene.control.Alert;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -119,7 +120,6 @@ public class AppController implements Observer, EndGame {
             //     here we just create an empty board with the required number of players.
 
             Board board = new Board(11, 8, selectedBoard, result.get(), null);
-
 
             gameController = new GameController(board, this);
             int numberOfPlayers = result.get();
@@ -262,7 +262,7 @@ public class AppController implements Observer, EndGame {
         won.setTitle("We have a winner");
         won.setHeaderText(null);
         won.setContentText(player.getName() + " has won");
-        won.showAndWait();
+        won.show();
         gameController = null;
         roboRally.createBoardView(null);
     }

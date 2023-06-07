@@ -1,20 +1,12 @@
 package server.controller;
 
-import com.google.gson.JsonObject;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-import com.google.gson.JsonArray;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.google.gson.Gson;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.Service.GameService;
 import server.dto.GameDTO;
 import server.mapper.DtoMapper;
 import server.mapper.GameDTOMapper;
-import server.model.Game;
-import com.google.gson.Gson;
 import server.model.Game;
 
 import java.util.ArrayList;
@@ -23,7 +15,7 @@ import java.util.List;
 @RestController
 public class GameController {
     Gson gson = new Gson();
-    @Autowired
+
     private GameService gameService;
 
     private DtoMapper dtoMapper;
@@ -47,9 +39,10 @@ public class GameController {
     }
 
     @PostMapping("/games")
-    public ResponseEntity<String> createGame(@RequestBody Game game) {
-        gameService.createGame(game);
-        return ResponseEntity.ok().body("Game Created");
+    public ResponseEntity<GameDTO> createGame(@RequestBody Game game) {
+        game = gameService.createGame(game);
+        GameDTO gameDTO = dtoMapper.gameToGameDto(game);
+        return ResponseEntity.ok().body(gameDTO);
     }
 
     @DeleteMapping( "/games/{id}")

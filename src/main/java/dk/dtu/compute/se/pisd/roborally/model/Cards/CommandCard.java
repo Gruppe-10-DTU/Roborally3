@@ -81,8 +81,10 @@ public class CommandCard extends Subject implements Card{
                 break;
             case AGAIN:
                 gameController.again(player);
+                break;
             case OPTION_LEFT_RIGHT:
                 gameController.board.setPhase(Phase.PLAYER_INTERACTION);
+                break;
             default:
                 // DO NOTHING (for now)
         }
