@@ -26,13 +26,10 @@ public class Game {
 
     int version = 0;
 
-
-    private Board board;
-
-    private GameState state;
-
     @Column(columnDefinition = "TEXT")
     private String board;
+
+    private GameState state;
 
     public String getBoard() {
         return board;
