@@ -521,4 +521,7 @@ public class Board extends Subject {
     }
 
 
+    public void addPlayerToOder(Player player) {
+        playerOrder.add(player);
+    }
 }
