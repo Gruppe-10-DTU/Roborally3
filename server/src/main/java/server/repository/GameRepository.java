@@ -8,7 +8,7 @@ import server.model.GameState;
 import java.util.List;
 
 @Repository
-public interface GameRepository extends CrudRepository<Game, Long> {
+public interface GameRepository extends CrudRepository<Game, Integer> {
 
     List<Game> findAll();
 

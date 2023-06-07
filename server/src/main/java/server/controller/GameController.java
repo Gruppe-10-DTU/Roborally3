@@ -2,10 +2,7 @@ package server.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import server.Service.GameService;
 import server.dto.GameDTO;
 import server.mapper.DtoMapper;
@@ -38,12 +35,12 @@ public class GameController {
         return dtoMapper.gameToGameDto(games);
         //return gameDTOMapper.mapList(gameService.loadGames());
     }
-/*
-    @RequestMapping(value = "/games/{id}", method = RequestMethod.GET)
-    public String getSpecificGame(@PathVariable int id) {
-        return gson.toJson(gameService.getGameById(id));
-    }
 
+    @RequestMapping(value = "/games/{id}", method = RequestMethod.GET)
+    public Game getSpecificGame(@PathVariable int id) {
+        return gameService.getGame(id);
+    }
+/*
     @PostMapping("/games")
     public String createGame(@RequestBody Game game) {
         gameService.createGame(game);

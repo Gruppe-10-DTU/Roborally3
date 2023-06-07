@@ -28,4 +28,9 @@ public class GameService {
         List<Game> games = gameRepository.findAllByStateIn(states);
         return games;
     }
+
+    public Game getGame(int id){
+        return gameRepository.findById(id).orElse(null);
+    }
+
 }

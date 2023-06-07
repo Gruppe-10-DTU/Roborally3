@@ -9,6 +9,9 @@ public class Game {
     @Id
     @GeneratedValue
     private Integer id;
+
+    private int currentPlayers;
+
     private int maxPlayers;
     private String name;
 
@@ -59,5 +62,12 @@ public class Game {
     }
 
     public Game() {
+    }
+    public int getCurrentPlayers() {
+        return currentPlayers;
+    }
+
+    public void setCurrentPlayers(int currentPlayers) {
+        this.currentPlayers = currentPlayers;
     }
 }
