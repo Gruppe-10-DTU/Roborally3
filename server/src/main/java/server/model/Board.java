@@ -1,21 +1,52 @@
 package server.model;
 
-import org.springframework.stereotype.Component;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 
-import java.util.ArrayList;
-
-@Component
+@Entity
 public class Board {
 
-    private ArrayList<Player> currentPlayers;
+    @Id
+    @GeneratedValue
+    private int id;
 
-    private String id;
+    private int gameId;
 
-    public ArrayList<Player> getCurrentPlayers() {
-        return currentPlayers;
+    @Column(columnDefinition = "TEXT")
+    private String clientBoard;
+
+    public Board(){
+
+    }
+    public Board(int id, int gameId, String clientBoard) {
+        this.id = id;
+        this.gameId = gameId;
+        this.clientBoard = clientBoard;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
+    }
+
+    public String getClientBoard() {
+        return clientBoard;
+    }
+
+    public void setClientBoard(String clientBoard) {
+        this.clientBoard = clientBoard;
     }
 }

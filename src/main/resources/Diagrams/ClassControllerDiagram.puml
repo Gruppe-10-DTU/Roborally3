@@ -1,0 +1,88 @@
+@startuml
+'https://plantuml.com/class-diagram
+skinparam linetype ortho
+
+package "Controller"{
+class GameController{
+    - clientName : String
+    +moveCurrentPlayerToSpace()
+    +startProgrammingPhase()
+    +finishProgrammingPhase()
+    -makeProgramFieldsVisible()
+    -makeProgramFieldsInvisible()
+    +executePrograms()
+    +executeStep()
+    -continuePrograms()
+    -executeNextStep()
+    +incrementStep()
+    -executeCommand()
+    +executeCommandOptionAndContinue()
+    +movePlayer()
+    +moveForwards()
+    +reverse()
+    +pushRobot()
+    +pushable()
+    +executeBoardActions()
+    +turnRight()
+    +turnLeft()
+    +uTurn()
+    +moveCards()
+    +checkIfGameIsDone()
+    +rebootRobot()
+    +again()
+}
+class AppController{
+    - PLAYER_NUMBER_OPTIONS : List<Integer>
+    - BOARD_OPTIONS : List<String>
+    - PLAYER_COLOURS : List<String>
+    - selectedBoard : String
+    + newGame()
+    + saveGame()
+    + loadGame()
+    + stopGame()
+    + exit()
+    + isGameRunning()
+    + update()
+    + postGame()
+    + showOnlineGames()
+    + joinGame()
+    + getGameList()
+    + startServer()
+}
+class HttpController{
+    -{static} Client : HttpClient
+    -{static} ServerURL : String
+    -{static} lastResponse : HttpResponse
+    +{static} joinGame()
+    +{static} isPlayerInGame()
+    +{static} createGame()
+    +{static} pushNewGameState()
+    +{static} getNewGameState()
+    +{static} serverIsConnected
+    +{static} getGameList()
+}
+class JSONReader{
+    - JsonSpace : JsonObject
+    - spacesArray : JsonArray
+    +{static} saveGame()
+    +{static} loadGame()
+    +{static} parseBoard()
+}
+interface EndGame{
+    +endGame()
+}
+}
+package "View"{
+}
+
+package "Model"{
+}
+
+AppController --|> EndGame
+AppController --> GameController
+GameController --> "Model"
+AppController --> HttpController
+AppController --> JSONReader
+HttpController --> JSONReader
+"View" --> AppController
+@enduml

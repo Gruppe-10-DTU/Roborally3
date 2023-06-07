@@ -1,0 +1,172 @@
+@startuml
+skinparam linetype ortho
+
+package "Model"{
+enum Heading {
+  SOUTH
+  WEST
+  NORTH
+  EAST
+  next()
+  prev()
+  reverse()
+}
+
+enum Phase {
+  INITIALISATION
+  PROGRAMMING
+  ACTIVATION
+  PLAYER_INTERACTION
+}
+package "Cards" {
+enum Command {
+  FORWARD
+  REVERSE
+  RIGHT
+  LEFT
+  UTURN
+  FAST_FORWARD
+  MOVE_3
+  AGAIN
+  OPTION_LEFT_RIGHT
+}
+
+enum Damage {
+  SPAM
+  TROJAN_HORSE
+  WORM
+  VIRUS
+}
+}
+
+
+
+interface Card {
+  doAction()
+  isInteractive()
+}
+
+interface SequenceAction {
+  doAction()
+  getPrio()
+}
+
+
+
+
+class Player {
+  - name : String
+  - color : String
+  - priority : int
+}
+
+class Board {
+  - gameId : int
+  - width : int
+  - height : int
+  - boardName : String
+  - currentPlayer : Player
+}
+package "Cards" {
+class PlayerCardDeck {
+  + drawCards()
+  + discard()
+  - reShuffle()
+  - generateDeck()
+}
+
+
+class CommandCard {
+  type : String
+}
+
+class DamageCard {
+
+}
+}
+
+class Space {
+  # board : Board
+  # x : int
+  # y : int
+  # walls : Heading
+}
+
+package "BoardElement"{
+class BoardLaser {
+  hit()
+  getShootingDirection()
+}
+
+class Checkpoint {
+  - previous : Checkpoint
+  - number : int
+  # addPlayer()
+  + checkPlayer()
+}
+
+class Conveyorbelt {
+  # turnPlayer()
+  # getExit()
+}
+
+class FastConveyorbelt {
+  - number : int
+}
+
+class Energy {
+  - energy : bool
+}
+
+class Gear {
+  - turnPlayer()
+}
+
+class RobotLaser {
+  + shootLaser()
+}
+
+class Spawn
+
+class Pit
+
+class PriorityAntenna
+
+class RebootToken
+}
+
+"BoardElement" --> Space : Except RobotLaser
+"BoardElement" --> SequenceAction : Except PriorityAntenna
+
+FastConveyorbelt --|> Conveyorbelt
+
+class CommandCardField {
+  - player : Player
+  - card : Card
+  - visible :
+}
+
+Gear --* Heading
+Conveyorbelt --* Heading
+BoardLaser --* Heading
+RobotLaser "1" --* "1" Player
+RebootToken --* Heading
+
+
+
+Card <|-- CommandCard
+Card <|-- DamageCard
+
+PriorityAntenna "1" *-- "1" Board
+RebootToken "1" *-- "1" Board
+Space "*" *-- "1" Board
+Player "2...6" *-- "1" Board
+Heading "1" *-- "2...6" Player
+Damage "1" *-- "*" DamageCard
+Command "1" *-- "*" CommandCard
+Phase "1" *-- "1" Board
+PlayerCardDeck "1" *-- "1" Player
+CommandCard "20" *-- "1" PlayerCardDeck
+DamageCard "*" *-- "1" PlayerCardDeck
+}
+@enduml

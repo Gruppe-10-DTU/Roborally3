@@ -1,10 +1,10 @@
 package server.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.Transient;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.persistence.*;
 import org.hibernate.annotations.Type;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -12,33 +12,37 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Entity
 public class Game {
     @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    @GeneratedValue
+    private int id;
     private int maxPlayers;
-    private String hostName;
+    private String name;
 
     int version = 0;
 
     /*
     private Board board;
 
+    private GameState state;
 
+    @Column(columnDefinition = "TEXT")
+    private String board;
 
-    public Board getBoard() {
+    public String getBoard() {
         return board;
     }
 
-    public void setBoard(Board board) {
+    public void setBoard(String board) {
         this.board = board;
     }
      */
 
 
-    public Long getId() {
+
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -50,12 +54,26 @@ public class Game {
         this.maxPlayers = maxPlayers;
     }
 
-    public String getHostName() {
-        return hostName;
+    public String getName() {
+        return name;
     }
 
-    public void setHostName(String hostName) {
-        this.hostName = hostName;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getGameID(){return id;}
+
+    public void setGameID(int gameID){
+        this.id = gameID;
+    }
+
+    public GameState getState() {
+        return state;
+    }
+
+    public void setState(GameState state) {
+        this.state = state;
     }
 
     public Game() {

@@ -1,36 +1,36 @@
 package server.dto;
 
 public class GameDTO {
-    private int maxPlayers;
-    private int currentPlayers;
-    private String hostName;
-    private String gameId;
+    int maxPlayers;
+    int currentPlayers;
+    String name;
+    int gameId;
 
     /**
      *
      * @param maxPlayers
      * @param currentPlayers
-     * @param hostName
+     * @param name
      * @param gameId
      *  Creates the game dto
      * @author Sandie Petersen
      */
-    public GameDTO(int maxPlayers, int currentPlayers, String hostName, String gameId) {
-        this.maxPlayers = maxPlayers;
+    public GameDTO(int maxPlayers, int currentPlayers, String name, int gameId) {
+        this.name = name;
         this.currentPlayers = currentPlayers;
-        this.hostName = hostName;
+        this.maxPlayers = maxPlayers;
         this.gameId = gameId;
     }
-
-    public int getMaxPlayers() {
+    public String getName(){
+        return name;
+    }
+    public int getGameId(){
+        return gameId;
+    }
+    public int getMaxPlayers(){
         return maxPlayers;
     }
-
-    public void setMaxPlayers(int maxPlayers) {
-        this.maxPlayers = maxPlayers;
-    }
-
-    public int getCurrentPlayers() {
+    public int getCurrentPlayers(){
         return currentPlayers;
     }
 
@@ -39,18 +39,15 @@ public class GameDTO {
     }
 
     public String getHostName() {
-        return hostName;
+        return name;
     }
 
     public void setHostName(String hostName) {
-        this.hostName = hostName;
+        this.name = hostName;
     }
 
-    public String getGameId() {
-        return gameId;
-    }
 
-    public void setGameId(String gameId) {
+    public void setGameId(int gameId) {
         this.gameId = gameId;
     }
 }
