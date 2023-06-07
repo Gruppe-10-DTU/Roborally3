@@ -33,4 +33,21 @@ public class GameDTO {
     public int getCurrentPlayers(){
         return currentPlayers;
     }
+
+    public void setCurrentPlayers(int currentPlayers) {
+        this.currentPlayers = currentPlayers;
+    }
+
+    public String getHostName() {
+        return name;
+    }
+
+    public void setHostName(String hostName) {
+        this.name = hostName;
+    }
+
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
+    }
 }

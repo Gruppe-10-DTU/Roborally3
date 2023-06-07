@@ -43,10 +43,10 @@ public class HttpController {
         }
         return null;
     }
-    public static int joinGame(int gameID, int playerID){
+    public static int joinGame(int gameID, String playerName){
         HttpRequest postPlayerRequest = HttpRequest.newBuilder()
-                .uri(URI.create(serverUrl + "/games/" + gameID + "/players/"))
-                .POST(HttpRequest.BodyPublishers.ofString(String.valueOf(playerID)))
+                .uri(URI.create(serverUrl + "/games/" + gameID + "/players"+ playerName))
+                .POST(HttpRequest.BodyPublishers.ofString(playerName))
                 .build();
         try {
             lastResponse = client.send(postPlayerRequest, HttpResponse.BodyHandlers.ofString());
@@ -71,11 +71,12 @@ public class HttpController {
         return null;
     }
 
-    public static int createGame(GameController gameController){
-        if(gameController.board.getGameId() == null) gameController.board.setGameId((int) (Math.random() * 1_000_000));
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(serverUrl + "/games/" + gameController.board.getGameId()))
-                .POST(HttpRequest.BodyPublishers.ofString(JSONReader.saveGame(gameController)))
+    public static int createGame(Game game){
+        String sGame = gson.toJson(game);
+         HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverUrl + "/games"))
+                 .setHeader("Content-Type","application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(sGame))
                 .build();
         try {
             lastResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -145,7 +146,7 @@ public class HttpController {
 
     public static List<Game> getGameList() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/games2"))
+                .uri(URI.create("http://localhost:8080/games"))
                 .GET()
                 .build();
         CompletableFuture<HttpResponse<String>> response =

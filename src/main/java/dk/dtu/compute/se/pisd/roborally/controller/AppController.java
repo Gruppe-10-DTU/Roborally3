@@ -21,6 +21,7 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import com.google.gson.Gson;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
@@ -30,6 +31,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.view.GamesView;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
@@ -44,6 +46,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -140,7 +143,7 @@ public class AppController implements Observer, EndGame {
                 Space spawnSpace = board.nextSpawn();
                 player.setSpace(board.getSpace(spawnSpace.getX(),spawnSpace.getY()));
             }
-            gameController.board.addGameLogEntry(null,"started");
+            gameController.board.addGameLogEntry(null,"Game started");
             gameController.startProgrammingPhase();
 
             roboRally.createBoardView(gameController);
@@ -313,8 +316,24 @@ public class AppController implements Observer, EndGame {
             gameController = new GameController(board, this);
             int numberOfPlayers = result.get();
 
-        HttpController.createGame(gameController);
+        TextInputDialog nameDialog = new TextInputDialog("");
+        nameDialog.setTitle("Player name");
+        nameDialog.setHeaderText("Select player name");
+        Optional<String> resultName = nameDialog.showAndWait();
 
+        String entered = "";
+        if (resultName.isPresent()) {
+            entered = resultName.get();
+        }
+
+        Player player = new Player(board, PLAYER_COLORS.get(0), entered);
+        board.addPlayer(player);
+        Space spawnSpace = board.nextSpawn();
+        player.setSpace(board.getSpace(spawnSpace.getX(),spawnSpace.getY()));
+
+        Game nG = new Game(1, board.getBoardName(), 0,numberOfPlayers,gson.toJson(board));
+        HttpController.createGame(nG);
+        HttpController.joinGame(nG.getId(),player.getName());
     }
 
     /**
@@ -331,9 +350,9 @@ public class AppController implements Observer, EndGame {
     public void joinGame(Game selectedItem) {
         Game item = selectedItem;
         int playerID = 232;
-        HttpController.joinGame(item.getId(), playerID);
+        HttpController.joinGame(item.getId(), "" + playerID);
 //        item.IncCurrPlayer();
-        HttpController.joinGame(item.getId(),playerID);
+        HttpController.joinGame(item.getId(),"" + playerID);
         System.out.println("Player: "+ playerID + " trying to join " + selectedItem);
     }
 

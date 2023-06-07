@@ -1,31 +1,40 @@
 package server.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+
+@Entity
 public class Player {
 
-    private int pID, gameID;
+    @Id
+    @GeneratedValue
+    private int id;
     private String name;
+    private int gameId;
 
-    public Player(int pID, int gameID) {
-        this.pID = pID;
-        this.gameID = gameID;
+    public Player(){
+
     }
 
-    public Player(String name, int gameID) {
+    public Player(String name, int gameId) {
         this.name = name;
-        this.gameID = gameID;
+        this.gameId = gameId;
     }
 
-
-    public Player() {
-
+    public String getName() {
+        return name;
     }
-
-    public void setpID(int pID) {
-        this.pID = pID;
-    }
-    public void setGameID(int gameID){this.gameID = gameID;}
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
     }
 }
