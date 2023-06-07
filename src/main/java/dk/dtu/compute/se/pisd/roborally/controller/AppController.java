@@ -294,7 +294,6 @@ public class AppController implements Observer, EndGame {
     }
 
     public void hostGame() {
-
         ChoiceDialog boardDialog = new ChoiceDialog(BOARD_OPTIONS.get(0), BOARD_OPTIONS);
         boardDialog.setTitle("Course");
         boardDialog.setHeaderText("Select course");

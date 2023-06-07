@@ -1,5 +1,6 @@
 package server.Service;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import server.model.Game;
 import server.model.GameState;
@@ -38,7 +39,7 @@ public class GameService {
         return null;
     }
     public Game SaveGame (int id) {
-        return games.get(id);
+        return getGameById(id);
     }
 
     public Game updateGame (Game game) {
@@ -46,9 +47,9 @@ public class GameService {
         return games.get(game.getId());
     }
 
-    public List<Game> deleteGame(int id){
-        games.remove(getGameById(id));
-        return games;
+    public ResponseEntity<String> deleteGame(int id){
+        gameRepository.delete(getGameById(id));
+        return ResponseEntity.ok().body("Game Deleted");
     }
 
     public List<Game> loadGames() {
