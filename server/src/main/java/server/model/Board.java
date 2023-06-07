@@ -1,22 +1,50 @@
 package server.model;
 
-import org.springframework.stereotype.Component;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 
-import java.util.ArrayList;
-
-@Component
+@Entity
 public class Board {
 
-    private ArrayList<Player> currentPlayers = new ArrayList<>();
-
+    @Id
+    @GeneratedValue
     private int id;
 
-    public ArrayList<Player> getCurrentPlayers() {
-        return currentPlayers;
+    private int gameId;
+
+    private String clientBoard;
+
+    public Board(){
+
+    }
+    public Board(int id, int gameId, String clientBoard) {
+        this.id = id;
+        this.gameId = gameId;
+        this.clientBoard = clientBoard;
     }
 
     public int getId() {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
+    }
+
+    public String getClientBoard() {
+        return clientBoard;
+    }
+
+    public void setClientBoard(String clientBoard) {
+        this.clientBoard = clientBoard;
+    }
 }
