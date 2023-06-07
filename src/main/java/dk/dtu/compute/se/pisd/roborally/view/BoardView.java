@@ -138,6 +138,7 @@ public class BoardView extends VBox implements ViewObserver {
                     text.setStyle("-fx-fill: BLACK; -fx-font-weight: BOLD");
             }
             result.add(text);
+            //comment
         }
         return result;
     }
