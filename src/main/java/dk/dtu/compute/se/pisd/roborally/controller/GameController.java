@@ -25,6 +25,7 @@ import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -70,6 +71,9 @@ public class GameController {
      */
     // XXX: V2
     public void startProgrammingPhase() {
+        for (Player players: board.getPlayers()) {
+            players.setRebooting(false);
+        }
         board.setPhase(Phase.PROGRAMMING);
         board.setCurrentPlayer(board.getPlayer(0));
         board.setStep(0);
@@ -306,8 +310,11 @@ public class GameController {
      * @author Asbjørn Nielsen
      */
     public void moveForward(@NotNull Player player, int SpacesToMove) {
-        for (int i = 0; i < SpacesToMove; i++)
+        for (int i = 0; i < SpacesToMove; i++){
             movePlayer(player, player.getHeading());
+            if(player.getIsRebooting())
+                break;
+        }
     }
 
     /**
@@ -460,7 +467,6 @@ public class GameController {
     public void rebootRobot(Player player){
         player.discardCard(new DamageCard(Damage.SPAM));
         player.discardCard(new DamageCard(Damage.SPAM));
-        this.board.addGameLogEntry(player, "Took 2 Spam damage");
         for (int i = 0; i < 5; i++) {
             CommandCardField field = player.getProgramField(i);
             if (field.getCard() != null) {
