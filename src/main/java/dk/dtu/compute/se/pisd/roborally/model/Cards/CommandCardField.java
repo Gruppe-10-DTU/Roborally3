@@ -48,6 +48,10 @@ public class CommandCardField extends Subject {
         this.visible = true;
     }
 
+    public CommandCardField(){
+
+    }
+
     public Card getCard() {
         return card;
     }
@@ -68,5 +72,9 @@ public class CommandCardField extends Subject {
             this.visible = visible;
             notifyChange();
         }
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 }

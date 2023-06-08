@@ -12,6 +12,7 @@ import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.Card;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.CommandCard;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.DamageCard;
+import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import org.apache.commons.io.IOUtils;
@@ -32,7 +33,33 @@ public class JSONReader {
 
     private JSONObject jsonSpaces;
     private JSONArray spacesArray;
-    private static Gson gson;
+    private static Gson gson = setupGson();
+
+    private static Gson setupGson(){
+        RuntimeTypeAdapterFactory<Space> spaceRuntimeTypeAdapterFactory = RuntimeTypeAdapterFactory.of(
+                        Space.class)
+                .registerSubtype(Space.class)
+                .registerSubtype(BoardLaser.class, "Lazer")
+                .registerSubtype(Checkpoint.class)
+                .registerSubtype(Conveyorbelt.class, "Conveyor")
+                .registerSubtype(Energy.class)
+                .registerSubtype(FastConveyorbelt.class)
+                .registerSubtype(Gear.class)
+                .registerSubtype(Push.class)
+                .registerSubtype(Pit.class)
+                .registerSubtype(PriorityAntenna.class, "Priority")
+                .registerSubtype(Spawn.class)
+                .registerSubtype(RebootToken.class, "Reboot");
+        RuntimeTypeAdapterFactory<Card> cardRuntimeTypeAdapterFactory = RuntimeTypeAdapterFactory.of(Card.class, "cardtype")
+                .registerSubtype(CommandCard.class)
+                .registerSubtype(DamageCard.class);
+
+        GsonBuilder gsonBuilder = new GsonBuilder()
+                .registerTypeAdapterFactory(spaceRuntimeTypeAdapterFactory)
+                .registerTypeAdapterFactory(cardRuntimeTypeAdapterFactory)
+                .setPrettyPrinting();
+        return gsonBuilder.create();
+    }
 
     /**
      * Contructor for the json reader
@@ -51,29 +78,7 @@ public class JSONReader {
     }
 
     public static String saveGame(GameController gameController) {
-        RuntimeTypeAdapterFactory<Space> spaceRuntimeTypeAdapterFactory = RuntimeTypeAdapterFactory.of(
-                        Space.class)
-                .registerSubtype(Space.class)
-                .registerSubtype(BoardLaser.class, "Lazer")
-                .registerSubtype(Checkpoint.class)
-                .registerSubtype(Conveyorbelt.class, "Conveyor")
-                .registerSubtype(Energy.class)
-                .registerSubtype(FastConveyorbelt.class)
-                .registerSubtype(Gear.class)
-                .registerSubtype(Push.class)
-                .registerSubtype(Pit.class)
-                .registerSubtype(PriorityAntenna.class, "Priority")
-                .registerSubtype(Spawn.class)
-                .registerSubtype(RebootToken.class);
-        RuntimeTypeAdapterFactory<Card> cardRuntimeTypeAdapterFactory = RuntimeTypeAdapterFactory.of(Card.class, "cardtype")
-                .registerSubtype(CommandCard.class)
-                .registerSubtype(DamageCard.class);
 
-        GsonBuilder gsonBuilder = new GsonBuilder()
-                .registerTypeAdapterFactory(spaceRuntimeTypeAdapterFactory)
-                .registerTypeAdapterFactory(cardRuntimeTypeAdapterFactory)
-                .setPrettyPrinting();
-        gson = gsonBuilder.create();
         return gson.toJson(gameController.board, Board.class);
     }
 
@@ -88,14 +93,6 @@ public class JSONReader {
         }
     }
     public static Board parseBoard(JSONObject object){
-
-        RuntimeTypeAdapterFactory<Card> cardRuntimeTypeAdapterFactory = RuntimeTypeAdapterFactory.of(Card.class, "cardtype")
-                .registerSubtype(CommandCard.class)
-                .registerSubtype(DamageCard.class);
-        GsonBuilder gsonBuilder = new GsonBuilder()
-                .registerTypeAdapterFactory(cardRuntimeTypeAdapterFactory)
-                .setPrettyPrinting();
-        gson = gsonBuilder.create();
 
         Board board = new Board(object.getInt("width"), object.getInt("height"), object.getString("boardName"), object.getInt("playerAmount"), object.getJSONArray("spaces"));
 
@@ -113,13 +110,21 @@ public class JSONReader {
         List<Player> players = gson.fromJson(playersString, token);
         for (Player player : players
         ) {
-
             player.board = board;
             Space space = board.getSpace(player.getSpace());
             board.addPlayer(player);
             space.setPlayer(player);
+            player.setPlayer();
+        }
+        JSONArray jsonArray = object.getJSONArray("playerOrder");
+        for (int i = 0; i < jsonArray.length(); i++) {
+            String player = jsonArray.getJSONObject(i).getString("name");
+            board.addPlayerToOder(board.getPlayerByName(player));
         }
         board.setCurrentPlayer(board.getPlayerByName(object.getJSONObject("current").getString("name")));
+        board.setStep(object.getInt("step"));
+        board.setPhase(Phase.valueOf(object.getString("phase")));
+
         return board;
     }
 

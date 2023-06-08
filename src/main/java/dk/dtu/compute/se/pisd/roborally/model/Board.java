@@ -49,6 +49,7 @@ public class Board extends Subject {
     private String boardName;
 
     private int playerAmount;
+
     private int number = 1;
 
     private Integer gameId;
@@ -534,5 +535,8 @@ public class Board extends Subject {
         } else {
             gameLog.add(new Pair<>(player.getColor(), player.getName() + ": "+ event + "\n"));
         }
+    }
+    public void addPlayerToOder(Player player) {
+        playerOrder.add(player);
     }
 }

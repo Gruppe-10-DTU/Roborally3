@@ -221,6 +221,7 @@ public class GameController {
                 board.setStep(step);
                 board.calculatePlayerOrder();
                 board.nextPlayer();
+                checkIfGameIsDone();
             } else {
                 startProgrammingPhase();
             }
@@ -387,7 +388,6 @@ public class GameController {
         ) {
             sequenceAction.doAction(this);
         }
-        checkIfGameIsDone();
     }
 
     /**
@@ -447,6 +447,8 @@ public class GameController {
         ) {
             if (checkpoint.checkPlayer(player)) {
                 endGame.endGame(player);
+                board.setPhase(Phase.FINISHED);
+                return;
             }
         }
     }
