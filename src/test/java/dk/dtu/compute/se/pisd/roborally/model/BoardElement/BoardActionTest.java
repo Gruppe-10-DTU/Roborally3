@@ -220,7 +220,7 @@ class BoardActionTest {
         BoardLaser lsr = new BoardLaser(board,board.getSpace(1,1).getX(),board.getSpace(1,1).getY(),Heading.NORTH);
 
         //Test to see if lsr can hit player
-        assertTrue(lsr.isHit(board, board.getNeighbour(target.getSpace(),Heading.SOUTH), Heading.SOUTH), "Should hit the target player on space (1,0)!");
+        assertTrue(lsr.isHit(board, board.getSpace(target.getSpace()), Heading.SOUTH), "Should hit the target player on space (1,0)!");
 
         //Test to see if lsr has added a SPAM card to target's discard-pile.
         String drawn = "";
@@ -239,7 +239,7 @@ class BoardActionTest {
 
         //Test to see if lsr will be stopped by walls.
         board.getNeighbour(board.getSpace(1,0),Heading.SOUTH).setWalls(EnumSet.range(Heading.SOUTH,Heading.NORTH));
-        assertFalse(lsr.isHit(board,board.getNeighbour(target.getSpace(), Heading.SOUTH),Heading.SOUTH),"Should not hit the target player on space (1,0)!");
+        assertFalse(lsr.isHit(board,board.getSpace(target.getSpace()),Heading.SOUTH),"Should not hit the target player on space (1,0)!");
 
 
     }
