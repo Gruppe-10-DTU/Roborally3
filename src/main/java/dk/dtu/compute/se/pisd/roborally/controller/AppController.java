@@ -36,6 +36,8 @@ import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
 import org.jetbrains.annotations.NotNull;
 
+import javax.swing.*;
+import java.awt.Menu;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -292,7 +294,7 @@ public class AppController implements Observer, EndGame {
     public void update(Subject subject) {
     }
 
-    public void hostGame() {
+    public Board initBoardinfo(){
         ChoiceDialog boardDialog = new ChoiceDialog(BOARD_OPTIONS.get(0), BOARD_OPTIONS);
         boardDialog.setTitle("Course");
         boardDialog.setHeaderText("Select course");
@@ -307,12 +309,14 @@ public class AppController implements Observer, EndGame {
         dialog.setTitle("Player number");
         dialog.setHeaderText("Select number of players");
         Optional<Integer> result = dialog.showAndWait();
-            // XXX the board should eventually be created programmatically or loaded from a file
-            //     here we just create an empty board with the required number of players.
-            Board board = new Board(11, 8, selectedBoard, result.get(), null);
-            gameController = new GameController(board, this);
-            int numberOfPlayers = result.get();
+        // XXX the board should eventually be created programmatically or loaded from a file
+        //     here we just create an empty board with the required number of players.
+        Board board = new Board(11, 8, selectedBoard, result.get(), null);
+        board.setMaxPlayers(result.get());
+        return board;
+    }
 
+    public void initPlayerInfo(Board board){
         TextInputDialog nameDialog = new TextInputDialog("");
         nameDialog.setTitle("Player name");
         nameDialog.setHeaderText("Select player name");
@@ -326,12 +330,56 @@ public class AppController implements Observer, EndGame {
         Player player = new Player(board, PLAYER_COLORS.get(0), entered);
         board.addPlayer(player);
         Space spawnSpace = board.nextSpawn();
-        player.setSpace(board.getSpace(spawnSpace.getX(),spawnSpace.getY()));
+        player.setSpace(board.getSpace(spawnSpace.getX(), spawnSpace.getY()));
+    }
 
-        Game nG = new Game(1, board.getBoardName(), 0,numberOfPlayers,gson.toJson(board));
-        PlayerDTO playerDTO = new PlayerDTO(player.getName());
+    public void hostGame() {
+        Game nG = null;
+        Board board = null;
+        ButtonType newGame = new ButtonType("New Game");
+        ButtonType loadGame = new ButtonType("Load Game");
+        Alert alert = new Alert(AlertType.CONFIRMATION,"Do you want to create a new game, or load an old game",newGame,loadGame);
+        alert.setTitle("Stop game");
+
+        Optional<ButtonType> choice = alert.showAndWait();
+        if (choice.isPresent() && choice.get() == newGame) {
+            board = initBoardinfo();
+            gameController = new GameController(board, this);
+            initPlayerInfo(board);
+
+            nG = new Game(1, board.getBoardName(), 0, board.getMaxPlayers(), gson.toJson(board));
+        }else if(choice.isPresent() && choice.get() == loadGame) {
+            board = retrieveSavedGame();
+            if (board != null) {
+                nG = new Game(1, board.getBoardName(), 0, board.getMaxPlayers(), gson.toJson(board));
+            }else{
+
+            }
+        }
+        PlayerDTO playerDTO = new PlayerDTO(board.getPlayer(0).getName());
         HttpController.createGame(nG);
-        HttpController.joinGame(nG.getId(),playerDTO);
+        HttpController.joinGame(nG.getId(), playerDTO);
+    }
+
+    public Board retrieveSavedGame(){
+        File file;
+        URI pathUri;
+        try {
+            //TODO: Gør stien dynamisk.
+            file = new File("src/main/java/dk/dtu/compute/se/pisd/roborally/controller/savedGames");
+        }catch (Exception e){
+            System.out.println("No files found");
+            return null;
+        }
+        boolean test2 = file.isDirectory();
+        String[] test = file.list();
+
+        Optional<String> gameName = new ChoiceDialog<String>("None", file.list()).showAndWait();
+        if(!gameName.equals("None")) {
+            Board board = JSONReader.loadGame(Path.of(file.getPath(), gameName.get()).toString());
+            return board;
+        }
+        return null;
     }
 
     /**
@@ -376,6 +424,7 @@ public class AppController implements Observer, EndGame {
         //ServerApp.main(args);
 
     }
+
 
     public String playerName(int playerIndex){
         TextInputDialog nameDialog = new TextInputDialog("Player" + (playerIndex + 1));
