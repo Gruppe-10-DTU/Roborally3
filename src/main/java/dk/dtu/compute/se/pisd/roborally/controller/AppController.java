@@ -58,7 +58,8 @@ import java.util.concurrent.ExecutionException;
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  */
-public class AppController implements Observer, EndGame {
+public class
+AppController implements Observer, EndGame {
 
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
     final private List<String> BOARD_OPTIONS = Arrays.asList("Burnout", "Risky Crossing");
