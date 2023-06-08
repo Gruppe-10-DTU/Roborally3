@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @author Nilas
  */
-public class GamesView extends VBox implements ViewObserver{
+public class GamesView extends VBox implements ViewObserver {
     private final AppController appController;
     private final TableView<Game> tableView;
 
@@ -28,8 +28,10 @@ public class GamesView extends VBox implements ViewObserver{
      * @param appController The appcontroller
      * @author Nilas Thoegersen
      */
-    public GamesView(AppController appController){
+    public GamesView(AppController appController) {
         this.appController = appController;
+
+
 
         tableView = new TableView<Game>();
         tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -39,7 +41,7 @@ public class GamesView extends VBox implements ViewObserver{
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         name.prefWidthProperty().bind(tableView.widthProperty().multiply(0.3));
 
-        TableColumn<Game, Integer> currentPlayers = new TableColumn<Game, Integer>("Current players");
+        TableColumn<Game, Integer> currentPlayers = new TableColumn<Game, Integer>("Players");
         currentPlayers.setCellValueFactory(new PropertyValueFactory<>("currentPlayers"));
         currentPlayers.prefWidthProperty().bind(tableView.widthProperty().multiply(0.3));
 
@@ -48,6 +50,7 @@ public class GamesView extends VBox implements ViewObserver{
         maxPlayers.prefWidthProperty().bind(tableView.widthProperty().multiply(0.3));
 
         tableView.getColumns().setAll(name, currentPlayers, maxPlayers);
+        refreshList(tableView);
 
         this.getChildren().addAll(tableView, addButtons());
         Scene scene = new Scene(this);
@@ -59,6 +62,7 @@ public class GamesView extends VBox implements ViewObserver{
                     appController.setGamesView(null);
                     stage.close();
                 });
+        stage.setTitle("Game list");
         stage.show();
     }
 
@@ -68,18 +72,14 @@ public class GamesView extends VBox implements ViewObserver{
      * @return The buttonbar
      * @author Nilas Thoegersen
      */
-    private ButtonBar addButtons(){
+    private ButtonBar addButtons() {
         Button join = new Button("Join");
         join.setOnAction(e -> joinGame());
 
         Button refresh = new Button("Refresh");
 //        refresh.setOnAction(e -> refreshList());
         refresh.setOnAction(e -> {
-            try {
-                getGameList(tableView);
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
+            refreshList(tableView);
         });
 
         ButtonBar buttonBar = new ButtonBar();
@@ -89,14 +89,18 @@ public class GamesView extends VBox implements ViewObserver{
 
     /**
      * Method to fetch a new list of items, and set it to the tableview.
+     *
      * @author Nilas Thoegersen
      */
-    private void refreshList() {
-        tableView.refresh();
-        System.out.println("GamesView - Refreshlist not implemented");
+    private void refreshList(TableView tableView) {
+        try {
+            getGameList(tableView);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private void joinGame(){
+    private void joinGame() {
         appController.joinGame(tableView.getSelectionModel().getSelectedItem());
         tableView.refresh();
     }
@@ -108,7 +112,7 @@ public class GamesView extends VBox implements ViewObserver{
 
     private void getGameList(TableView tableView) throws Exception {
         tableView.getItems().clear();
-        List<Game> games= appController.getGameList();
+        List<Game> games = appController.getGameList();
         tableView.getItems().addAll(games);
     }
 
