@@ -44,6 +44,8 @@ import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
 public class Board extends Subject {
     private int width;
 
+    private int maxPlayers;
+
     private int height;
 
     private String boardName;
@@ -523,6 +525,12 @@ public class Board extends Subject {
         return boardName;
     }
 
+    public int getMaxPlayers(){
+        return this.maxPlayers;
+    }
+    public void setMaxPlayers(int maxPlayers){
+        this.maxPlayers = maxPlayers;
+    }
 
     public List<Pair<String, String>> getGameLog(){
         return gameLog;
