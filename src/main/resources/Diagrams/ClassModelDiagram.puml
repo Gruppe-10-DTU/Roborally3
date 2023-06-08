@@ -37,14 +37,18 @@ enum Damage {
   WORM
   VIRUS
 }
+class CommandCard {
+  type : String
 }
-
-
-
 interface Card {
   doAction()
   isInteractive()
 }
+}
+
+
+
+
 
 interface SequenceAction {
   doAction()
@@ -76,9 +80,7 @@ class PlayerCardDeck {
 }
 
 
-class CommandCard {
-  type : String
-}
+
 
 class DamageCard {
 
@@ -157,16 +159,18 @@ RebootToken --* Heading
 Card <|-- CommandCard
 Card <|-- DamageCard
 
-PriorityAntenna "1" *-- "1" Board
-RebootToken "1" *-- "1" Board
-Space "*" *-- "1" Board
-Player "2...6" *-- "1" Board
-Heading "1" *-- "2...6" Player
-Damage "1" *-- "*" DamageCard
-Command "1" *-- "*" CommandCard
-Phase "1" *-- "1" Board
-PlayerCardDeck "1" *-- "1" Player
-CommandCard "20" *-- "1" PlayerCardDeck
-DamageCard "*" *-- "1" PlayerCardDeck
+PriorityAntenna "1" --o "1" Board
+RebootToken "1" --o "1" Board
+Space "40" --o "1" Board
+Player "2...6" -- "1" Board
+Heading --> Player
+Damage --> DamageCard
+Command --> CommandCard
+Phase "1" --> "1" Board
+PlayerCardDeck --o Player
+Card --o PlayerCardDeck
+Card --o CommandCardField
+CommandCardField --o Player
+CommandCardField -- Card
 }
 @enduml
