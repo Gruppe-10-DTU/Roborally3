@@ -28,10 +28,17 @@ import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
+import javafx.util.Pair;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ...
@@ -41,8 +48,11 @@ import org.jetbrains.annotations.NotNull;
 public class BoardView extends VBox implements ViewObserver {
 
     private final Board board;
+    private TextFlow gameLog;
+    private ScrollPane logPane;
 
-    private final GridPane mainBoardPane;
+    private final GridPane mainPane;
+    private final GridPane boardPane;
     private final SpaceView[][] spaces;
 
     private final PlayersView playersView;
@@ -54,11 +64,20 @@ public class BoardView extends VBox implements ViewObserver {
     public BoardView(@NotNull GameController gameController) {
         board = gameController.board;
 
-        mainBoardPane = new GridPane();
+        mainPane = new GridPane();
         playersView = new PlayersView(gameController);
         statusLabel = new Label("<no status>");
+        boardPane = new GridPane();
+        logPane = new ScrollPane();
+        gameLog = new TextFlow();
 
-        this.getChildren().add(mainBoardPane);
+        gameLog.getChildren().addAll(logAsText(board.getGameLog()));
+        logPane.setContent(gameLog);
+        logPane.setMinWidth(250);
+        logPane.setMaxHeight(480);
+
+
+        this.getChildren().add(mainPane);
         this.getChildren().add(playersView);
         this.getChildren().add(statusLabel);
 
@@ -71,11 +90,12 @@ public class BoardView extends VBox implements ViewObserver {
                 Space space = board.getSpace(x, y);
                 SpaceView spaceView = new SpaceView(space);
                 spaces[x][y] = spaceView;
-                mainBoardPane.add(spaceView, x, y);
+                boardPane.add(spaceView, x, y);
                 spaceView.setOnMouseClicked(spaceEventHandler);
             }
         }
-
+        mainPane.add(boardPane, 0,0);
+        mainPane.add(logPane,1, 0);
         board.attach(this);
         update(board);
     }
@@ -85,7 +105,42 @@ public class BoardView extends VBox implements ViewObserver {
         if (subject == board) {
             Phase phase = board.getPhase();
             statusLabel.setText(board.getStatusMessage());
+            gameLog = new TextFlow();
+            gameLog.getChildren().addAll(logAsText(board.getGameLog()));
+            logPane.setContent(gameLog);
         }
+    }
+    private List<Text> logAsText(List<Pair<String, String>> log){
+        List<Text> result = new ArrayList<>();
+        for (Pair<String, String> entry : log) {
+            Text text = new Text();
+            text.setText(entry.getValue());
+            switch (entry.getKey()) {
+                case "red":
+                    text.setStyle("-fx-fill: RED;");
+                    break;
+                case "green":
+                    text.setStyle("-fx-fill: GREEN;");
+                    break;
+                case "blue":
+                    text.setStyle("-fx-fill: BLUE;");
+                    break;
+                case "orange":
+                    text.setStyle("-fx-fill: ORANGE;");
+                    break;
+                case "grey":
+                    text.setStyle("-fx-fill: GREY;");
+                    break;
+                case "magenta":
+                    text.setStyle("-fx-fill: MAGENTA;");
+                    break;
+                default:
+                    text.setStyle("-fx-fill: BLACK; -fx-font-weight: BOLD");
+            }
+            result.add(text);
+            //comment
+        }
+        return result;
     }
 
     // XXX this handler and its uses should eventually be deleted! This is just to help test the

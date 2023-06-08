@@ -29,6 +29,7 @@ public class Checkpoint extends Space implements SequenceAction {
         super(board, x, y);
         this.players = new HashSet<>(board.getPlayersNumber());
         this.number = number;
+        board.addBoardActions(this);
     }
 
     /**
@@ -66,11 +67,9 @@ public class Checkpoint extends Space implements SequenceAction {
      */
     protected boolean addPlayer(Player player) {
         if (previous == null) {
-            players.add(player);
-            return true;
+            return players.add(player);
         } else if (previous.checkPlayer(player)) {
-            players.add(player);
-            return true;
+            return players.add(player);
         }
         return false;
     }
@@ -97,7 +96,9 @@ public class Checkpoint extends Space implements SequenceAction {
         for (Player player : board.getPlayers()
         ) {
             if (player.getSpace().getClass().equals(this.getClass())) {
-                ((Checkpoint) player.getSpace()).addPlayer(player);
+                if(((Checkpoint) player.getSpace()).addPlayer(player)){
+                    gameController.board.addGameLogEntry(player, "Reached checkpoint " + ((Checkpoint) player.getSpace()).getNumber());
+                }
             }
         }
     }

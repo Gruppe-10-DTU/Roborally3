@@ -105,14 +105,8 @@ public class Player extends Subject implements Comparable<Player> {
         this.energy = 0;
 
         program = new CommandCardField[NO_REGISTERS];
-        for (int i = 0; i < program.length; i++) {
-            program[i] = new CommandCardField(this);
-        }
-
         cards = new CommandCardField[NO_CARDS];
-        for (int i = 0; i < cards.length; i++) {
-            cards[i] = new CommandCardField(this);
-        }
+
     }
 
     public String getName() {
@@ -227,6 +221,16 @@ public class Player extends Subject implements Comparable<Player> {
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    public void setPlayer(){
+        for (int i = 0; i < program.length; i++) {
+            program[i].setPlayer(this);
+        }
+
+        for (int i = 0; i < cards.length; i++) {
+            cards[i].setPlayer(this);
+        }
     }
 
     /**
