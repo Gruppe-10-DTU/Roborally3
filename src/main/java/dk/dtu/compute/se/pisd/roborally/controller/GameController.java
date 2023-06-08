@@ -37,7 +37,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class GameController {
 
-    final public Board board;
+    public Board board;
     final public EndGame endGame;
     private String clientName;
 
@@ -496,5 +496,9 @@ public class GameController {
         if(card != null){
             card.doAction(this);
         }
+    }
+
+    public void replaceBoard (Board board) {
+        this.board = board;
     }
 }

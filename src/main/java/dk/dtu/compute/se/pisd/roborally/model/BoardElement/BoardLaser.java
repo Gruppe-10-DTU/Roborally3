@@ -8,7 +8,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 public class BoardLaser extends Space implements SequenceAction {
-    private final Heading shootingDirection;
+    private final Heading direction;
 
 
     /**
@@ -20,7 +20,7 @@ public class BoardLaser extends Space implements SequenceAction {
      */
     public BoardLaser(Board board, int x, int y, Heading shootingDirection) {
         super(board, x, y);
-        this.shootingDirection = shootingDirection;
+        this.direction = shootingDirection;
         board.getSpace(x,y).setWall(shootingDirection.prev().prev());
         board.addBoardActions(this);
     }
@@ -33,11 +33,11 @@ public class BoardLaser extends Space implements SequenceAction {
      * @author Nilas Thoegersen
      */
     public boolean hit(Heading heading) {
-        return this.shootingDirection == heading.reverse();
+        return this.direction == heading.reverse();
     }
 
     public Heading getShootingDirection() {
-        return shootingDirection;
+        return direction;
     }
 
     /**

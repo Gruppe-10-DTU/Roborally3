@@ -7,6 +7,7 @@ import server.Service.GameService;
 import server.dto.GameDTO;
 import server.mapper.DtoMapper;
 import server.mapper.GameDTOMapper;
+import server.model.Board;
 import server.model.Game;
 
 import java.util.ArrayList;
@@ -36,6 +37,16 @@ public class GameController {
     @RequestMapping(value = "/games/{id}", method = RequestMethod.GET)
     public Game getSpecificGame(@PathVariable int id) {
         return gameService.getGame(id);
+    }
+
+    @RequestMapping(value = "/games/{id}/info", method = RequestMethod.GET)
+    public GameDTO getGameInfo(@PathVariable int id) {
+        return gameDTOMapper.map(gameService.getGameById(id));
+    }
+
+    @RequestMapping(value = "/games/{id}/bords", method = RequestMethod.GET)
+    public String getGameBoard(@PathVariable int id) {
+        return gameService.getGameById(id).getBoard();
     }
 
     @PostMapping("/games")

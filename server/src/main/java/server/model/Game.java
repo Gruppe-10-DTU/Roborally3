@@ -16,10 +16,12 @@ public class Game {
     private int maxPlayers;
     private String name;
 
-    private GameState state;
+    private int version = 1;
 
     @Column(columnDefinition = "TEXT")
     private String board;
+
+    private GameState state;
 
     public String getBoard() {
         return board;
@@ -28,6 +30,7 @@ public class Game {
     public void setBoard(String board) {
         this.board = board;
     }
+
 
 
 
@@ -77,6 +80,14 @@ public class Game {
 
     public void setCurrentPlayers(int currentPlayers) {
         this.currentPlayers = currentPlayers;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 
     public List<PlayerDTO> getPlayers() {

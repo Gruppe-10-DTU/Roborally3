@@ -19,7 +19,7 @@ public class HttpController {
 //    private static String serverUrl = "http://127.0.0.1";
     private static String serverUrl = "http://localhost:8080";
     private static HttpResponse<String> lastResponse;
-    private static Gson gson = new Gson();
+    private static Gson gson = JSONReader.setupGson();
 
     /**
      *
@@ -46,7 +46,7 @@ public class HttpController {
         }
         return null;
     }
-    public static int joinGame(int gameID, PlayerDTO player){
+    public static String joinGame(int gameID, PlayerDTO player){
         HttpRequest postPlayerRequest = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + "/games/" + gameID + "/players"))
                 .setHeader("Content-Type","application/json")
@@ -58,7 +58,8 @@ public class HttpController {
         } catch (Exception exception){
             exception.printStackTrace();
         }
-        return lastResponse.statusCode();
+        //return lastResponse.statusCode();
+        return lastResponse.body();
     }
 
     public static List<PlayerDTO> playersInGame(int gameID) throws ExecutionException, InterruptedException {
@@ -74,19 +75,22 @@ public class HttpController {
     }
 
     public static int createGame(Game game){
-        String sGame = gson.toJson(game);
+         String sGame = gson.toJson(game);
          HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + "/games"))
                  .setHeader("Content-Type","application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(sGame))
                 .build();
-        try {
+         Game createdGameId;
+
+         try {
             lastResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
+            createdGameId = gson.fromJson(lastResponse.body(), Game.class);
+            return createdGameId.getId();
         } catch (Exception exception){
             exception.printStackTrace();
             return 418;
         }
-        return lastResponse.statusCode();
     }
 
     public static int pushNewGameState(GameController gameController, int gameID){
