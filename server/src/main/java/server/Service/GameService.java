@@ -38,8 +38,8 @@ public class GameService {
         return getGameById(id);
     }
 
-    public Game updateGame(Game game) {
-        return null;
+    public void updateGame(Game game) {
+        gameRepository.save(game);
     }
 
     public List<Game> deleteGame(int id) {

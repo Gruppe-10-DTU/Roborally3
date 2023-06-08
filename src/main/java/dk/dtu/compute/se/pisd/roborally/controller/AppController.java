@@ -156,7 +156,7 @@ AppController implements Observer, EndGame {
      */
     public void saveGame() {
         String file = "";
-        String savedGameController = JSONReader.saveGame(gameController);
+        String savedGameController = JSONReader.saveGame(gameController.board);
         TextInputDialog saveNameDialog = new TextInputDialog();
         saveNameDialog.setTitle("Save game");
 
@@ -421,6 +421,7 @@ AppController implements Observer, EndGame {
      */
     public void joinGame(Game selectedItem) {
         List<PlayerDTO> playerList = new ArrayList<PlayerDTO>();
+        int gameId = selectedItem.getId();
         String playerName = playerName(0);
         if (playerName != null) {
             try {
@@ -436,8 +437,9 @@ AppController implements Observer, EndGame {
             PlayerDTO player = new PlayerDTO(playerName);
 //            System.out.println(selectedItem.getCurrentPlayers());
             if (selectedItem.getCurrentPlayers() < selectedItem.getMaxPlayers()) {
-                HttpController.joinGame(selectedItem.getId(), player);
+                HttpController.joinGame(gameId, player);
                 System.out.println("Player: " + playerName + " trying to join " + selectedItem);
+                updateGame(gameId,player);
                 showLobby(selectedItem.getId(), selectedItem.getMaxPlayers());
             }
         }
@@ -498,4 +500,25 @@ AppController implements Observer, EndGame {
             lobbyView = new LobbyView(this, id, maxPlayers);
         }
     }
+
+    public void updateGame(int gameId, PlayerDTO playerDTO){
+        Game game = HttpController.getGame(gameId);
+        Board board = null;
+        if (game != null) {
+            board = gson.fromJson(game.getBoard(),Board.class);
+            initJoinedPlayerInfo(board,playerDTO);
+            game.setBoard(gson.toJson(board));
+            int gameVersion = game.getVersion()+1;
+            game.setVersion(gameVersion);
+            HttpController.pushGameUpdate(game,gameId);
+        }
+    }
+    public void initJoinedPlayerInfo(Board board, PlayerDTO playerDTO){
+        int playerColor = board.getPlayersNumber();
+        Player player = new Player(board, PLAYER_COLORS.get(playerColor), playerDTO.getName());
+        board.addPlayer(player);
+        Space spawnSpace = board.nextSpawn();
+        player.setSpace(board.getSpace(spawnSpace.getX(), spawnSpace.getY()));
+    }
+
 }
