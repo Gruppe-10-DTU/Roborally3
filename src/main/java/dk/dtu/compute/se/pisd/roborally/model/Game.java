@@ -5,7 +5,6 @@ public class Game {
     private final String name;
 
     private int version;
-    //private final int currentPlayers;
     private int currentPlayers;
     private final int maxPlayers;
     private final String board;
