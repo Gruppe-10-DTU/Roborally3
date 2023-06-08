@@ -13,6 +13,7 @@ import server.Service.GameService;
 import server.dto.GameDTO;
 import server.mapper.DtoMapper;
 import server.mapper.GameDTOMapper;
+import server.model.Board;
 import server.model.Game;
 import com.google.gson.Gson;
 import server.model.Game;
@@ -46,10 +47,20 @@ public class GameController {
         return gameService.getGame(id);
     }
 
+    @RequestMapping(value = "/games/{id}/info", method = RequestMethod.GET)
+    public GameDTO getGameInfo(@PathVariable int id) {
+        return gameDTOMapper.map(gameService.getGameById(id));
+    }
+
+    @RequestMapping(value = "/games/{id}/bords", method = RequestMethod.GET)
+    public String getGameBoard(@PathVariable int id) {
+        return gameService.getGameById(id).getBoard();
+    }
+
     @PostMapping("/games")
-    public ResponseEntity<GameDTO> createGame(@RequestBody Game game) {
-        gameService.createGame(game);
-        return ResponseEntity.ok().body(gameDTOMapper.map(game));
+    public ResponseEntity<Integer> createGame(@RequestBody Game game) {
+        Game createdGame = gameService.createGame(game);
+        return ResponseEntity.ok().body(createdGame.getId());
     }
 
     @DeleteMapping( "/games/{id}")

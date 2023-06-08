@@ -2,9 +2,12 @@ package dk.dtu.compute.se.pisd.roborally.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally.controller.JSONReader;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Game;
+import org.json.JSONObject;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -24,11 +27,13 @@ public class BoardUpdateThread extends Thread {
 
     private static GameController gameController;
 
-    private Integer currentVersion = null;
+
+    private Integer currentVersion =  -1;
 
     public BoardUpdateThread(int gameId, GameController gameController) {
         this.gameController = gameController;
         this.gameId = gameId;
+
     }
 
 
@@ -36,7 +41,7 @@ public class BoardUpdateThread extends Thread {
         while (!gameEnded) {
 
             HttpRequest requestGame = HttpRequest.newBuilder()
-                    .uri(URI.create(serverUrl + "/games/" + gameId))
+                    .uri(URI.create(serverUrl + "/games/" + gameId + "/info"))
                     .GET()
                     .build();
             try {
@@ -44,12 +49,14 @@ public class BoardUpdateThread extends Thread {
                 Game game = gson.fromJson(gameResponse.body(), Game.class);
                 if (currentVersion < game.getVersion()) {
                     HttpRequest request = HttpRequest.newBuilder()
-                            .uri(URI.create(serverUrl + "/games/" + gameId + "/boards"))
+                            .uri(URI.create(serverUrl + "/games/" + gameId))
                             .GET()
                             .build();
                     try {
                         lastResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
-                        Board board = gson.fromJson(lastResponse.body(), Board.class);
+                        Game gameJson = gson.fromJson(lastResponse.body(), Game.class);
+                        JSONObject jsonBoard = new JSONObject(gameJson.getBoard());
+                        Board board = JSONReader.parseBoard(jsonBoard);
                         gameController.replaceBoard(board);
                     } catch (Exception exception){
                         exception.printStackTrace();

@@ -24,7 +24,7 @@ public class Game {
     private int maxPlayers;
     private String name;
 
-    int version = 0;
+    int version = 1;
 
     @Column(columnDefinition = "TEXT")
     private String board;
@@ -88,6 +88,14 @@ public class Game {
 
     public void setCurrentPlayers(int currentPlayers) {
         this.currentPlayers = currentPlayers;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 
     public List<PlayerDTO> getPlayers() {

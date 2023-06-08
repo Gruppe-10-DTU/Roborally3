@@ -31,8 +31,7 @@ public class GameService {
         game2.setName(game.getName());
         game2.setCurrentPlayers(game.getCurrentPlayers());
         game2.setMaxPlayers(game.getMaxPlayers());
-        gameRepository.save(game2);
-        return game2;
+        return gameRepository.save(game2);
     }
 
     public Game getGameById(int id) {

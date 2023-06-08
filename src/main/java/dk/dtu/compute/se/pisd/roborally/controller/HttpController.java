@@ -81,13 +81,16 @@ public class HttpController {
                  .setHeader("Content-Type","application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(sGame))
                 .build();
+
+         int createdGameId;
         try {
             lastResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
+            createdGameId = Integer.parseInt(lastResponse.body());
+            return createdGameId;
         } catch (Exception exception){
             exception.printStackTrace();
             return 418;
         }
-        return lastResponse.statusCode();
     }
 
     public static int pushNewGameState(GameController gameController, int gameID){
