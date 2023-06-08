@@ -294,6 +294,11 @@ AppController implements Observer, EndGame {
     public void update(Subject subject) {
     }
 
+    /**
+     * Creates a board from the available list of board options and the user selection of aforementioned board.
+     * @return Board
+     * @author Asbjørn Nielsen
+     */
     public Board initBoardinfo(){
         ChoiceDialog boardDialog = new ChoiceDialog(BOARD_OPTIONS.get(0), BOARD_OPTIONS);
         boardDialog.setTitle("Course");
@@ -316,6 +321,10 @@ AppController implements Observer, EndGame {
         return board;
     }
 
+    /**
+     * Adds a player to specified board.
+     * @param board
+     */
     public void initPlayerInfo(Board board){
         TextInputDialog nameDialog = new TextInputDialog("");
         nameDialog.setTitle("Player name");
@@ -333,6 +342,10 @@ AppController implements Observer, EndGame {
         player.setSpace(board.getSpace(spawnSpace.getX(), spawnSpace.getY()));
     }
 
+    /**
+     * Main method for creating an online game and handling the functionality that comes with it.
+     * @author Asbjørn Nielsen
+     */
     public void hostGame() {
         Game nG = null;
         Board board = null;
@@ -363,6 +376,11 @@ AppController implements Observer, EndGame {
         boardUpdateThread.start();
     }
 
+    /**
+     * Retrieves a list of available boards and lets the player chose one of them to play.
+     * @return Board
+     * @author Asbjørn Nielsen
+     */
     public Board retrieveSavedGame(){
         File file;
         URI pathUri;
@@ -470,6 +488,11 @@ AppController implements Observer, EndGame {
         return HttpController.playersInGame(gameId);
     }
 
+    /**
+     * Lounge of players who've joined the game.
+     * @param id
+     * @param maxPlayers
+     */
     public void showLobby(int id, int maxPlayers) {
         if (lobbyView == null) {
             lobbyView = new LobbyView(this, id, maxPlayers);
