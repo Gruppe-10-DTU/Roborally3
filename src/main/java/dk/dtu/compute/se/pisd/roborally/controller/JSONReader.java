@@ -123,7 +123,9 @@ public class JSONReader {
             String player = jsonArray.getJSONObject(i).getString("name");
             board.addPlayerToOder(board.getPlayerByName(player));
         }
-        board.setCurrentPlayer(board.getPlayerByName(object.getJSONObject("current").getString("name")));
+        if (object.has("current")) {
+            board.setCurrentPlayer(board.getPlayerByName(object.getJSONObject("current").getString("name")));
+        }
         board.setStep(object.getInt("step"));
         board.setPhase(Phase.valueOf(object.getString("phase")));
 

@@ -66,7 +66,7 @@ public class AppController implements Observer, EndGame {
     final private RoboRally roboRally;
 
     private GamesView gamesView;
-    private Gson gson = new Gson();
+    private Gson gson = JSONReader.setupGson();
     private String selectedBoard;
     private GameController gameController;
 

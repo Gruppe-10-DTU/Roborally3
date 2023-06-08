@@ -75,15 +75,15 @@ public class HttpController {
     }
 
     public static int createGame(Game game){
-        String sGame = gson.toJson(game);
+         String sGame = gson.toJson(game);
          HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + "/games"))
                  .setHeader("Content-Type","application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(sGame))
                 .build();
+         Game createdGameId;
 
-         int createdGameId;
-        try {
+         try {
             lastResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
             createdGameId = gson.fromJson(lastResponse.body(), Game.class);
             return createdGameId.getId();

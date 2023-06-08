@@ -16,7 +16,7 @@ public class Game {
     private int maxPlayers;
     private String name;
 
-    int version = 1;
+    private int version = 1;
 
     @Column(columnDefinition = "TEXT")
     private String board;

@@ -8,6 +8,10 @@ public class GameDTO {
 
     int version;
 
+    public GameDTO(){
+
+    }
+
     /**
      *
      * @param maxPlayers
@@ -24,6 +28,7 @@ public class GameDTO {
         this.id = id;
         this.version = version;
     }
+
     public String getName(){
         return name;
     }
