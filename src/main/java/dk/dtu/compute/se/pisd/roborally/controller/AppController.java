@@ -28,6 +28,7 @@ import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.utils.BoardUpdateThread;
 import dk.dtu.compute.se.pisd.roborally.view.GamesView;
+import dk.dtu.compute.se.pisd.roborally.view.LobbyView;
 import javafx.scene.control.Alert;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -69,6 +70,7 @@ public class AppController implements Observer, EndGame {
     private Gson gson = JSONReader.setupGson();
     private String selectedBoard;
     private GameController gameController;
+    private LobbyView lobbyView;
 
     public GamesView getGamesView() {
         return gamesView;
@@ -76,6 +78,14 @@ public class AppController implements Observer, EndGame {
 
     public void setGamesView(GamesView gamesView) {
         this.gamesView = gamesView;
+    }
+
+    public LobbyView getLobbyView() {
+        return lobbyView;
+    }
+
+    public void setLobbyView(LobbyView lobbyView) {
+        this.lobbyView = lobbyView;
     }
 
     /**
@@ -359,10 +369,11 @@ public class AppController implements Observer, EndGame {
             if (count > 0) playerName = playerName + " [" + count + "]";
 
             PlayerDTO player = new PlayerDTO(playerName);
-
-            if (count < selectedItem.getMaxPlayers()) {
+            System.out.println(selectedItem.getCurrentPlayers());
+            if (selectedItem.getCurrentPlayers() < selectedItem.getMaxPlayers()) {
                 HttpController.joinGame(selectedItem.getId(), player);
                 System.out.println("Player: " + playerName + " trying to join " + selectedItem);
+                showLobby(selectedItem.getId(), selectedItem.getMaxPlayers());
             }
         }
     }
@@ -406,5 +417,15 @@ public class AppController implements Observer, EndGame {
             return entered;
         }
         return null;
+    }
+
+    public List<PlayerDTO> getPlayerList(int gameId) throws ExecutionException, InterruptedException {
+        return HttpController.playersInGame(gameId);
+    }
+
+    public void showLobby(int id, int maxPlayers) {
+        if (lobbyView == null) {
+            lobbyView = new LobbyView(this, id, maxPlayers);
+        }
     }
 }
