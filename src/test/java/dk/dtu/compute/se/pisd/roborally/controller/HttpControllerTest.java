@@ -40,7 +40,7 @@ class HttpControllerTest {
     void createGameTest() {
         Board testBoard = new Board();
         Gson gson = new Gson();
-        Game testGame = new Game(1, "test", 1, 2, gson.toJson(testBoard));
+        Game testGame = new Game("test", 1, 2, gson.toJson(testBoard));
         Integer returnCode = HttpController.createGame(testGame);
         assertEquals(200, returnCode);
     }

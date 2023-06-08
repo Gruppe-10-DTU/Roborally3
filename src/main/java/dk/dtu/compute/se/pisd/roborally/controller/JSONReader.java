@@ -36,7 +36,7 @@ public class JSONReader {
     private JSONArray spacesArray;
     private static Gson gson = setupGson();
 
-    private static Gson setupGson(){
+    public static Gson setupGson(){
         RuntimeTypeAdapterFactory<Space> spaceRuntimeTypeAdapterFactory = RuntimeTypeAdapterFactory.of(
                         Space.class)
                 .registerSubtype(Space.class)

@@ -19,7 +19,7 @@ public class HttpController {
 //    private static String serverUrl = "http://127.0.0.1";
     private static String serverUrl = "http://localhost:8080";
     private static HttpResponse<String> lastResponse;
-    private static Gson gson = new Gson();
+    private static Gson gson = JSONReader.setupGson();
 
     /**
      *
@@ -85,8 +85,8 @@ public class HttpController {
          int createdGameId;
         try {
             lastResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
-            createdGameId = Integer.parseInt(lastResponse.body());
-            return createdGameId;
+            createdGameId = gson.fromJson(lastResponse.body(), Game.class);
+            return createdGameId.getId();
         } catch (Exception exception){
             exception.printStackTrace();
             return 418;

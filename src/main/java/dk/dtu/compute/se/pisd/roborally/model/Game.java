@@ -1,7 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 public class Game {
-    private final int id;
+    private int id;
     private final String name;
 
     private int version;
@@ -9,8 +9,7 @@ public class Game {
     private int currentPlayers;
     private final int maxPlayers;
     private final String board;
-    public Game(int id, String name, int currentPlayers, int maxPlayers, String board) {
-        this.id = id;
+    public Game(String name, int currentPlayers, int maxPlayers, String board) {
         this.name = name;
         this.currentPlayers = currentPlayers;
         this.maxPlayers = maxPlayers;
