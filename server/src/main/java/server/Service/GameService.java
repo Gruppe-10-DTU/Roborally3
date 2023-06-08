@@ -1,8 +1,7 @@
 package server.Service;
 
-import org.springframework.http.ResponseEntity;
+import com.google.gson.Gson;
 import org.springframework.stereotype.Service;
-import server.model.Board;
 import server.model.Game;
 import server.model.GameState;
 import server.repository.GameRepository;
@@ -10,8 +9,6 @@ import server.repository.GameRepository;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
-import com.google.gson.*;
 
 @Service
 public class GameService {
@@ -23,15 +20,9 @@ public class GameService {
     public GameService(GameRepository gameRepository) {
         this.gameRepository = gameRepository;
     }
-
     public Game createGame(Game game) {
-        Game game2 = new Game();
-        game2.setBoard(game.getBoard());
-        game2.setState(GameState.INITIALIZING);
-        game2.setName(game.getName());
-        game2.setCurrentPlayers(game.getCurrentPlayers());
-        game2.setMaxPlayers(game.getMaxPlayers());
-        return gameRepository.save(game2);
+        gameRepository.save(game);
+        return game;
     }
 
     public Game getGameById(int id) {

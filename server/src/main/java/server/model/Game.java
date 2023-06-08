@@ -1,24 +1,16 @@
 package server.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Type;
 import server.dto.PlayerDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static jakarta.persistence.GenerationType.IDENTITY;
-
 @Entity
 public class Game {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     private int currentPlayers;
 
     private int maxPlayers;

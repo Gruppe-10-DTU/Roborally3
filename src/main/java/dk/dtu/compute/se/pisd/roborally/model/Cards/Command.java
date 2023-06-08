@@ -48,9 +48,9 @@ public enum Command {
     // XXX Assignment P3
     OPTION_LEFT_RIGHT("Left OR Right", 1, LEFT, RIGHT);
 
-    public String displayName;
+    public final String displayName;
 
-    int cardAmount;
+    final int cardAmount;
 
     // XXX Assignment P3
     // Command(String displayName) {

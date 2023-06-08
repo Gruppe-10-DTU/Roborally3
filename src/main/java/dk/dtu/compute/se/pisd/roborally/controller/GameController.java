@@ -221,6 +221,7 @@ public class GameController {
                 board.setStep(step);
                 board.calculatePlayerOrder();
                 board.nextPlayer();
+                checkIfGameIsDone();
             } else {
                 startProgrammingPhase();
             }
@@ -387,7 +388,6 @@ public class GameController {
         ) {
             sequenceAction.doAction(this);
         }
-        checkIfGameIsDone();
     }
 
     /**
@@ -447,6 +447,8 @@ public class GameController {
         ) {
             if (checkpoint.checkPlayer(player)) {
                 endGame.endGame(player);
+                board.setPhase(Phase.FINISHED);
+                return;
             }
         }
     }
@@ -467,7 +469,6 @@ public class GameController {
     public void rebootRobot(Player player){
         player.discardCard(new DamageCard(Damage.SPAM));
         player.discardCard(new DamageCard(Damage.SPAM));
-        player.setRebooting(true);
         for (int i = 0; i < 5; i++) {
             CommandCardField field = player.getProgramField(i);
             if (field.getCard() != null) {
