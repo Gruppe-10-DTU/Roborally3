@@ -21,7 +21,7 @@ public class GameDTOMapper {
 
          */
 
-        return new GameDTO(game.getMaxPlayers(), 3, game.getName(), game.getId(), game.getVersion());
+        return new GameDTO(game.getMaxPlayers(), game.getCurrentPlayers(), game.getName(), game.getId(), game.getVersion());
     }
 
     /**

@@ -28,6 +28,10 @@ public class Game {
         return currentPlayers;
     }
 
+    public void setCurrentPlayers(int currentPlayers) {
+        this.currentPlayers = currentPlayers;
+    }
+
     public int getMaxPlayers() {
         return maxPlayers;
     }

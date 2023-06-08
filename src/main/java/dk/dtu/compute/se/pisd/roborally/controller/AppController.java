@@ -369,7 +369,7 @@ public class AppController implements Observer, EndGame {
             if (count > 0) playerName = playerName + " [" + count + "]";
 
             PlayerDTO player = new PlayerDTO(playerName);
-            System.out.println(selectedItem.getCurrentPlayers());
+//            System.out.println(selectedItem.getCurrentPlayers());
             if (selectedItem.getCurrentPlayers() < selectedItem.getMaxPlayers()) {
                 HttpController.joinGame(selectedItem.getId(), player);
                 System.out.println("Player: " + playerName + " trying to join " + selectedItem);
