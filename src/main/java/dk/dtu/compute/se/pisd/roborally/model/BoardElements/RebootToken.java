@@ -10,14 +10,14 @@ import dk.dtu.compute.se.pisd.roborally.model.Space;
 public class RebootToken extends Space implements FieldAction {
 
     public Heading getExit() {
-        return exit;
+        return direction;
     }
 
     public void setExit(Heading exit) {
-        this.exit = exit;
+        this.direction = exit;
     }
 
-    Heading exit;
+    Heading direction;
 
     /**
      * @param board The playing board
@@ -29,7 +29,7 @@ public class RebootToken extends Space implements FieldAction {
     public RebootToken(Board board, int x, int y, Heading exit) {
         super(board, x, y);
         board.setRebootToken(this);
-        this.exit = exit;
+        this.direction = exit;
     }
 
     /**
@@ -41,11 +41,11 @@ public class RebootToken extends Space implements FieldAction {
      */
     @Override
     public void doFieldAction(GameController gameController, Player player) {
-        player.setHeading(this.exit);
+        player.setHeading(this.direction);
         if (this.player != null) {
             //TODO: Move the old player out
             Player pmove = board.getRebootToken().getPlayer();
-            gameController.movePlayer(pmove,exit);
+            gameController.movePlayer(pmove, direction);
         }
         player.setSpace(this);
     }

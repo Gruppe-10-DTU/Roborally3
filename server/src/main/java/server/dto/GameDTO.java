@@ -6,6 +6,12 @@ public class GameDTO {
     String name;
     int id;
 
+    int version;
+
+    public GameDTO(){
+
+    }
+
     /**
      *
      * @param maxPlayers
@@ -15,12 +21,14 @@ public class GameDTO {
      *  Creates the game dto
      * @author Sandie Petersen
      */
-    public GameDTO(int maxPlayers, int currentPlayers, String name, int id) {
+    public GameDTO(int maxPlayers, int currentPlayers, String name, int id, int version) {
         this.name = name;
         this.currentPlayers = currentPlayers;
         this.maxPlayers = maxPlayers;
         this.id = id;
+        this.version = version;
     }
+
     public String getName(){
         return name;
     }
@@ -49,5 +57,21 @@ public class GameDTO {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setMaxPlayers(int maxPlayers) {
+        this.maxPlayers = maxPlayers;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 }

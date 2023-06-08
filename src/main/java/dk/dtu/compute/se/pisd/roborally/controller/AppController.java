@@ -26,6 +26,7 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.utils.BoardUpdateThread;
 import dk.dtu.compute.se.pisd.roborally.view.GamesView;
 import dk.dtu.compute.se.pisd.roborally.view.LobbyView;
 import javafx.scene.control.Alert;
@@ -66,7 +67,7 @@ public class AppController implements Observer, EndGame {
     final private RoboRally roboRally;
 
     private GamesView gamesView;
-    private Gson gson = new Gson();
+    private Gson gson = JSONReader.setupGson();
     private String selectedBoard;
     private GameController gameController;
     private LobbyView lobbyView;
@@ -345,18 +346,20 @@ public class AppController implements Observer, EndGame {
             gameController = new GameController(board, this);
             initPlayerInfo(board);
 
-            nG = new Game(1, board.getBoardName(), 0, board.getMaxPlayers(), gson.toJson(board));
+            nG = new Game(board.getBoardName(), 0, board.getMaxPlayers(), gson.toJson(board));
         }else if(choice.isPresent() && choice.get() == loadGame) {
             board = retrieveSavedGame();
             if (board != null) {
-                nG = new Game(1, board.getBoardName(), 0, board.getMaxPlayers(), gson.toJson(board));
+                nG = new Game(board.getBoardName(), 0, board.getMaxPlayers(), gson.toJson(board));
             }else{
 
             }
         }
         PlayerDTO playerDTO = new PlayerDTO(board.getPlayer(0).getName());
-        HttpController.createGame(nG);
-        HttpController.joinGame(nG.getId(), playerDTO);
+        int gameId = HttpController.createGame(nG);
+        HttpController.joinGame(gameId, playerDTO);
+        BoardUpdateThread boardUpdateThread = new BoardUpdateThread(gameId, gameController);
+        boardUpdateThread.start();
     }
 
     public Board retrieveSavedGame(){
