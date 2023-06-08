@@ -30,15 +30,12 @@ import dk.dtu.compute.se.pisd.roborally.utils.BoardUpdateThread;
 import dk.dtu.compute.se.pisd.roborally.view.GamesView;
 import dk.dtu.compute.se.pisd.roborally.view.LobbyView;
 import javafx.scene.control.Alert;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -505,7 +502,7 @@ AppController implements Observer, EndGame {
         Game game = HttpController.getGame(gameId);
         Board board = null;
         if (game != null) {
-            board = gson.fromJson(game.getBoard(),Board.class);
+            board = JSONReader.parseBoard(new JSONObject(game.getBoard()));
             initJoinedPlayerInfo(board,playerDTO);
             game.setBoard(gson.toJson(board));
             int gameVersion = game.getVersion()+1;
