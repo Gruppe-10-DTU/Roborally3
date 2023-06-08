@@ -16,7 +16,7 @@ public class LobbyView extends VBox implements ViewObserver{
     private final AppController appController;
     private final TableView<Game> tableView;
 
-    private int gameId;
+    private final int gameId;
     public LobbyView(AppController appController, int gameId, int maxPlayers) {
         this.appController = appController;
         this.gameId = gameId;
@@ -28,12 +28,8 @@ public class LobbyView extends VBox implements ViewObserver{
         name.prefWidthProperty().bind(tableView.widthProperty());
 
         tableView.getColumns().setAll(name);
-        int currentPlayers = tableView.getItems().size();
-        refreshList(tableView, currentPlayers, maxPlayers);
-
-        name.setText(playerOnServer(tableView.getItems().size(),maxPlayers));
-
-        this.getChildren().addAll(tableView, addButtons(maxPlayers));
+        refreshList(tableView, name, maxPlayers);
+        this.getChildren().addAll(tableView, addButtons(name, maxPlayers));
         Scene scene = new Scene(this);
 
         Stage stage = new Stage();
@@ -55,12 +51,12 @@ public class LobbyView extends VBox implements ViewObserver{
     public void updateView(Subject subject) {
 
     }
-    private ButtonBar addButtons(int maxPlayers){
+    private ButtonBar addButtons(TableColumn<Game, String> nameColumn, int maxPlayers){
         Button leave = new Button("Leave");
         leave.setOnAction(e -> leaveGame());
 
         Button refresh = new Button("Refresh");
-        refresh.setOnAction(e -> { refreshList(tableView, tableView.getItems().size(), maxPlayers);
+        refresh.setOnAction(e -> { refreshList(tableView,nameColumn, maxPlayers);
         });
 
         ButtonBar buttonBar = new ButtonBar();
@@ -71,10 +67,10 @@ public class LobbyView extends VBox implements ViewObserver{
     private void leaveGame(){
 
     }
-    private void refreshList(TableView tableView, int currentPlayers, int maxPlayers) {
+    private void refreshList(TableView tableView, TableColumn<Game, String> nameColumn, int maxPlayers) {
         try {
             getPlayerList(tableView);
-            playerOnServer(currentPlayers, maxPlayers);
+            nameColumn.setText(playerOnServer(tableView.getItems().size(), maxPlayers));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
