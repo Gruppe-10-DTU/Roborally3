@@ -41,6 +41,7 @@ public class LobbyView extends VBox implements ViewObserver{
                     stage.close();
                 });
         stage.setTitle("Lobby");
+        stage.setMinWidth(300);
         stage.show();
     }
 
@@ -55,7 +56,7 @@ public class LobbyView extends VBox implements ViewObserver{
     private ButtonBar addButtons(TableColumn<Game, String> nameColumn, int maxPlayers){
         Button leave = new Button("Leave");
         leave.setOnAction(e -> leaveGame());
-
+        ButtonBar buttonBar = new ButtonBar();
         Button refresh = new Button("Refresh");
         refresh.setOnAction(e -> { refreshList(tableView,nameColumn, maxPlayers);
             if(maxPlayers == tableView.getItems().size()){
@@ -63,16 +64,14 @@ public class LobbyView extends VBox implements ViewObserver{
                 start.setOnAction(event -> { System.out.println("Start Game");
                     startGame();
                 });
-                this.getChildren().remove(leave);
-                this.getChildren().remove(refresh);
-                ButtonBar buttonBar = new ButtonBar();
-                buttonBar.getButtons().addAll(start,leave, refresh);
-                this.getChildren().add(buttonBar);
+                if(buttonBar.getButtons().size() < 3) {
+                    buttonBar.getButtons().add(start);
+                }
                 this.setPrefWidth(buttonBar.getWidth());
             }
         });
 
-        ButtonBar buttonBar = new ButtonBar();
+
         buttonBar.getButtons().addAll(leave, refresh);
         return buttonBar;
     }
