@@ -1,0 +1,33 @@
+@startuml
+
+package "Controller layer" {
+	[controller]
+
+	[service]
+
+	[mapper]
+}
+
+package "Model layer"{
+
+	[model]
+
+	[dto]
+
+	[repository]
+}
+
+[repository] -- [model]
+
+[service] -- [repository]
+
+[controller] -- service
+
+[controller] -- mapper
+
+[mapper] -- dto
+
+[mapper] -- model
+
+
+@enduml
