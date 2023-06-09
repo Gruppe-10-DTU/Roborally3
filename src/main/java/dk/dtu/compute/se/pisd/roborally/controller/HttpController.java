@@ -132,7 +132,8 @@ public class HttpController {
             return null;
         }
         if(lastResponse.statusCode() < 300 && lastResponse.statusCode() >= 200) {
-            return new JSONObject(lastResponse.body());
+            Game gameJson = gson.fromJson(lastResponse.body(), Game.class);
+            return new JSONObject(gameJson.getBoard());
         }
         return null;
     }
