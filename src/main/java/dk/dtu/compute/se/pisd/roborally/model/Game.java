@@ -7,7 +7,7 @@ public class Game {
     private int version;
     private int currentPlayers;
     private final int maxPlayers;
-    private final String board;
+    private String board;
     public Game(String name, int currentPlayers, int maxPlayers, String board) {
         this.name = name;
         this.currentPlayers = currentPlayers;
@@ -48,6 +48,9 @@ public class Game {
     public String getBoard() {
         return board;
     }
+    public void setBoard(String board){
+        this.board = board;
+    }
 
     @Override
     public String toString() {
@@ -58,4 +61,5 @@ public class Game {
                 ", maxPlayers=" + maxPlayers +
                 '}';
     }
+
 }
