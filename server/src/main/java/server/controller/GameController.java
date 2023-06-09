@@ -44,7 +44,7 @@ public class GameController {
         return gameDTOMapper.map(gameService.getGameById(id));
     }
 
-    @RequestMapping(value = "/games/{id}/bords", method = RequestMethod.GET)
+    @RequestMapping(value = "/games/{id}/boards", method = RequestMethod.GET)
     public String getGameBoard(@PathVariable int id) {
         return gameService.getGameById(id).getBoard();
     }

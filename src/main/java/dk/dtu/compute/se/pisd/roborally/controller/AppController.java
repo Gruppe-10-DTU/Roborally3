@@ -443,7 +443,6 @@ AppController implements Observer, EndGame {
         }
     }
 
-
     /**
      *
      * @return gets the game list from the server

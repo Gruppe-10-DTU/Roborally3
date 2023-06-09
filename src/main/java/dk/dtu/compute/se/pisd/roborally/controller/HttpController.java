@@ -61,7 +61,23 @@ public class HttpController {
         //return lastResponse.statusCode();
         return lastResponse.body();
     }
-
+    public static String leaveGame(int gameId, PlayerDTO player){
+        HttpRequest deletePlayerRequest = HttpRequest.newBuilder()
+                .DELETE()
+                .uri(URI.create(serverUrl + "/games/" + gameId + "players/" + gson.toJson(player)))
+                .setHeader("Content-Type","application/json")
+                .build();
+        CompletableFuture<HttpResponse<String>> response =
+                client.sendAsync(deletePlayerRequest, HttpResponse.BodyHandlers.ofString());
+        try {
+            String result = response.thenApply(HttpResponse::body).get();
+            return result;
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public static List<PlayerDTO> playersInGame(int gameID) throws ExecutionException, InterruptedException {
         HttpRequest getPlayerRequest = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + "/games/" + gameID + "/players"))
