@@ -89,7 +89,8 @@ public class LobbyView extends VBox implements ViewObserver{
         }
     }
     private void startGame(){
-        if (HttpController.startGame(gameId) % 200 < 100) appController.launchGame();
+        int responseCode = HttpController.startGame(gameId);
+        if (responseCode >= 200 && responseCode < 300) appController.launchGame(gameId);
         else {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Connection Error");
