@@ -30,9 +30,11 @@ public class GameStateController {
             switch (state) {
                 case "STARTED":
                     requestedGame.setState(GameState.STARTED);
+                    requestedGame.setVersion(requestedGame.getVersion() + 1);
                     return ResponseEntity.ok().build();
                 default:
                     requestedGame.setState(GameState.valueOf(state));
+                    requestedGame.setVersion(requestedGame.getVersion() + 1);
                     return ResponseEntity.ok().build();
             }
         }else return ResponseEntity.badRequest().build();
