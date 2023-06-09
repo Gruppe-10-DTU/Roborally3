@@ -3,6 +3,7 @@ package dk.dtu.compute.se.pisd.roborally.view;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.AppController;
 import dk.dtu.compute.se.pisd.roborally.model.Game;
+import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.PlayerDTO;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -15,11 +16,12 @@ import java.util.List;
 public class LobbyView extends VBox implements ViewObserver{
     private final AppController appController;
     private final TableView<Game> tableView;
-
+    private final PlayerDTO playerDTO;
     private final int gameId;
-    public LobbyView(AppController appController, int gameId, int maxPlayers) {
+    public LobbyView(AppController appController, int gameId, int maxPlayers, PlayerDTO playerDTO) {
         this.appController = appController;
         this.gameId = gameId;
+        this.playerDTO = playerDTO;
         tableView = new TableView<Game>();
         tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 //        tableView.prefWidthProperty().bind(tableView.widthProperty().add(300));
@@ -53,7 +55,7 @@ public class LobbyView extends VBox implements ViewObserver{
     }
     private ButtonBar addButtons(TableColumn<Game, String> nameColumn, int maxPlayers){
         Button leave = new Button("Leave");
-        leave.setOnAction(e -> leaveGame(tableView));
+        leave.setOnAction(e -> leaveGame(tableView,playerDTO));
 
         Button refresh = new Button("Refresh");
         refresh.setOnAction(e -> { refreshList(tableView,nameColumn, maxPlayers);
@@ -64,7 +66,8 @@ public class LobbyView extends VBox implements ViewObserver{
         return buttonBar;
     }
 
-    private void leaveGame(TableView tableview){
+    private void leaveGame(TableView tableview, PlayerDTO playerDTO){
+        appController.leaveGame(gameId,playerDTO);
         appController.setLobbyView(null);
         ((Stage) tableview.getScene().getWindow()).close();
     }

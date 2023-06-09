@@ -63,7 +63,7 @@ AppController implements Observer, EndGame {
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
 
     final private RoboRally roboRally;
-
+    private PlayerDTO me;
     private GamesView gamesView;
     private Gson gson = JSONReader.setupGson();
     private String selectedBoard;
@@ -369,7 +369,7 @@ AppController implements Observer, EndGame {
         PlayerDTO playerDTO = new PlayerDTO(board.getPlayer(0).getName());
         int gameId = HttpController.createGame(nG);
         HttpController.joinGame(gameId, playerDTO);
-        showLobby(gameId, gameController.board.getMaxPlayers());
+        showLobby(gameId, gameController.board.getMaxPlayers(),playerDTO);
         BoardUpdateThread boardUpdateThread = new BoardUpdateThread(gameId, gameController);
         boardUpdateThread.start();
     }
@@ -438,7 +438,7 @@ AppController implements Observer, EndGame {
                 HttpController.joinGame(gameId, player);
                 System.out.println("Player: " + playerName + " trying to join " + selectedItem);
                 updateGame(gameId,player);
-                showLobby(selectedItem.getId(), selectedItem.getMaxPlayers());
+                showLobby(selectedItem.getId(), selectedItem.getMaxPlayers(),player);
             }
         }
     }
@@ -492,9 +492,9 @@ AppController implements Observer, EndGame {
      * @param id
      * @param maxPlayers
      */
-    public void showLobby(int id, int maxPlayers) {
+    public void showLobby(int id, int maxPlayers,PlayerDTO playerDTO) {
         if (lobbyView == null) {
-            lobbyView = new LobbyView(this, id, maxPlayers);
+            lobbyView = new LobbyView(this, id, maxPlayers,playerDTO);
         }
     }
 
@@ -520,10 +520,15 @@ AppController implements Observer, EndGame {
     public void leaveGame(int gameId, PlayerDTO playerDTO){
         Game game = HttpController.getGame(gameId);
         Board board = JSONReader.parseBoard(new JSONObject(game.getBoard()));
-        Player player = gson.fromJson(String.valueOf(playerDTO),Player.class);
-        board.removePlayer(player);
+        for (Player player: board.getPlayers()) {
+            if(player.getName().equals(playerDTO.getName())){
+                board.removePlayer(player);
+                break;
+            }
+        }
         game.setVersion(game.getVersion()+1);
         game.setBoard(gson.toJson(board));
+        HttpController.leaveGame(gameId,playerDTO);
         HttpController.pushGameUpdate(game,gameId);
     }
 }

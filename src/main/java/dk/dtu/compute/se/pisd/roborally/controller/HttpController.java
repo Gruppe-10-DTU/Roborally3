@@ -64,9 +64,9 @@ public class HttpController {
     }
     public static String leaveGame(int gameId, PlayerDTO player){
         HttpRequest deletePlayerRequest = HttpRequest.newBuilder()
-                .DELETE()
-                .uri(URI.create(serverUrl + "/games/" + gameId + "players/" + gson.toJson(player)))
+                .uri(URI.create(serverUrl + "/games/" + gameId + "/players/" + player.getName()))
                 .setHeader("Content-Type","application/json")
+                .DELETE()
                 .build();
         CompletableFuture<HttpResponse<String>> response =
                 client.sendAsync(deletePlayerRequest, HttpResponse.BodyHandlers.ofString());
