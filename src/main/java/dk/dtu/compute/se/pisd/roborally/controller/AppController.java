@@ -314,7 +314,6 @@ AppController implements Observer, EndGame {
         // XXX the board should eventually be created programmatically or loaded from a file
         //     here we just create an empty board with the required number of players.
         Board board = new Board(11, 8, selectedBoard, result.get(), null);
-        board.setMaxPlayers(result.get());
         return board;
     }
 
@@ -525,7 +524,7 @@ AppController implements Observer, EndGame {
         }
     }
     public void initJoinedPlayerInfo(Board board, PlayerDTO playerDTO){
-        int playerColor = board.getPlayersNumber();
+        int playerColor = board.getNumberOfPlayers();
         Player player = new Player(board, PLAYER_COLORS.get(playerColor), playerDTO.getName());
         board.addPlayer(player);
         Space spawnSpace = board.nextSpawn();
