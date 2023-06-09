@@ -92,6 +92,18 @@ public class HttpController {
             return 418;
         }
     }
+    public static int startGame(int gameID){
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverUrl + "/games/" + gameID + "/gamestates"))
+                .PUT(HttpRequest.BodyPublishers.ofString("STARTED"))
+                .build();
+        try{
+            lastResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return lastResponse.statusCode();
+    }
 
     public static int pushNewGameState(GameController gameController, int gameID){
         HttpRequest request = HttpRequest.newBuilder()
