@@ -335,6 +335,7 @@ public class AppController implements Observer, EndGame {
         HttpController.joinGame(gameId, playerDTO);
         BoardUpdateThread boardUpdateThread = new BoardUpdateThread(gameId, gameController);
         boardUpdateThread.start();
+        showLobby(gameId,numberOfPlayers);
     }
 
     /**
