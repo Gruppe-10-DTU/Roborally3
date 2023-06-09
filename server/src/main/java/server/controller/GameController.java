@@ -3,6 +3,7 @@ package server.controller;
 import com.google.gson.Gson;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpServerErrorException;
 import server.Service.GameService;
 import server.dto.GameDTO;
 import server.mapper.DtoMapper;
@@ -60,6 +61,12 @@ public class GameController {
     public ResponseEntity<String> removeGame(@PathVariable int id){
         gameService.deleteGame(id);
         return ResponseEntity.ok().body("deleted");
+    }
+
+    @RequestMapping(value = "/games/{id}", method = RequestMethod.PUT)
+    public ResponseEntity updateGame(@RequestBody Game game) {
+        gameService.updateGame(game);
+        return ResponseEntity.ok().body(game);
     }
 
 

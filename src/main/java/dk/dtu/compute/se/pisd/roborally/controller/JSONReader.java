@@ -78,9 +78,9 @@ public class JSONReader {
         }
     }
 
-    public static String saveGame(GameController gameController) {
+    public static String saveGame(Board board) {
 
-        return gson.toJson(gameController.board, Board.class);
+        return gson.toJson(board, Board.class);
     }
 
     public static Board loadGame(String filename) {
