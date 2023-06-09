@@ -369,6 +369,7 @@ AppController implements Observer, EndGame {
         PlayerDTO playerDTO = new PlayerDTO(board.getPlayer(0).getName());
         int gameId = HttpController.createGame(nG);
         HttpController.joinGame(gameId, playerDTO);
+        showLobby(gameId, gameController.board.getMaxPlayers());
         BoardUpdateThread boardUpdateThread = new BoardUpdateThread(gameId, gameController);
         boardUpdateThread.start();
     }
