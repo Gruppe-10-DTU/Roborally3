@@ -62,6 +62,14 @@ public class HttpController {
         //return lastResponse.statusCode();
         return lastResponse.body();
     }
+
+    /**
+     *
+     * @param gameId
+     * @param player
+     * @return statues code
+     * @author Asbjørn Nielsen
+     */
     public static String leaveGame(int gameId, PlayerDTO player){
         HttpRequest deletePlayerRequest = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + "/games/" + gameId + "/players/" + player.getName()))

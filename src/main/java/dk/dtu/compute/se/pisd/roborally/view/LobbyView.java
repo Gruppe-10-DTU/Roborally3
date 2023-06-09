@@ -66,6 +66,12 @@ public class LobbyView extends VBox implements ViewObserver{
         return buttonBar;
     }
 
+    /**
+     * When pressing the leave button in the game lobby, this method is called. Leaves the game from the server side,
+     * updates the board and returns a board without the leaving player.
+     * @param tableview
+     * @param playerDTO
+     */
     private void leaveGame(TableView tableview, PlayerDTO playerDTO){
         appController.leaveGame(gameId,playerDTO);
         appController.setLobbyView(null);

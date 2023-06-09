@@ -517,6 +517,14 @@ AppController implements Observer, EndGame {
         Space spawnSpace = board.nextSpawn();
         player.setSpace(board.getSpace(spawnSpace.getX(), spawnSpace.getY()));
     }
+
+    /**
+     * Once the player chooses to leave the game; the board is retrieved from the server and returned anew without the
+     * player present.
+     * @param gameId
+     * @param playerDTO
+     * @uahtor Asbjørn Nielsen
+     */
     public void leaveGame(int gameId, PlayerDTO playerDTO){
         Game game = HttpController.getGame(gameId);
         Board board = JSONReader.parseBoard(new JSONObject(game.getBoard()));
