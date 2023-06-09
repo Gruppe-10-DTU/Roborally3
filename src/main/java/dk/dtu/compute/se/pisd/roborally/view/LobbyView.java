@@ -65,6 +65,7 @@ public class LobbyView extends VBox implements ViewObserver{
     }
 
     private void leaveGame(TableView tableview){
+        appController.setLobbyView(null);
         ((Stage) tableview.getScene().getWindow()).close();
     }
     private void refreshList(TableView tableView, TableColumn<Game, String> nameColumn, int maxPlayers) {
