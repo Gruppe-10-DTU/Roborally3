@@ -349,6 +349,12 @@ public class Board extends Subject {
             notifyChange();
         }
     }
+    public void removePlayer(@NotNull Player player){
+        if(player.board == this && players.contains(player)){
+            players.remove(player);
+            notifyChange();
+        }
+    }
 
     public Player getPlayer(int i) {
         if (i >= 0 && i < players.size()) {

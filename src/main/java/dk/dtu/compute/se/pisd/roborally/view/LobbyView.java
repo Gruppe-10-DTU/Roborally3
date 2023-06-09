@@ -53,7 +53,7 @@ public class LobbyView extends VBox implements ViewObserver{
     }
     private ButtonBar addButtons(TableColumn<Game, String> nameColumn, int maxPlayers){
         Button leave = new Button("Leave");
-        leave.setOnAction(e -> leaveGame());
+        leave.setOnAction(e -> leaveGame(tableView));
 
         Button refresh = new Button("Refresh");
         refresh.setOnAction(e -> { refreshList(tableView,nameColumn, maxPlayers);
@@ -64,8 +64,8 @@ public class LobbyView extends VBox implements ViewObserver{
         return buttonBar;
     }
 
-    private void leaveGame(){
-
+    private void leaveGame(TableView tableview){
+        ((Stage) tableview.getScene().getWindow()).close();
     }
     private void refreshList(TableView tableView, TableColumn<Game, String> nameColumn, int maxPlayers) {
         try {

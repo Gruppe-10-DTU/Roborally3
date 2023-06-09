@@ -517,5 +517,13 @@ AppController implements Observer, EndGame {
         Space spawnSpace = board.nextSpawn();
         player.setSpace(board.getSpace(spawnSpace.getX(), spawnSpace.getY()));
     }
-
+    public void leaveGame(int gameId, PlayerDTO playerDTO){
+        Game game = HttpController.getGame(gameId);
+        Board board = JSONReader.parseBoard(new JSONObject(game.getBoard()));
+        Player player = gson.fromJson(String.valueOf(playerDTO),Player.class);
+        board.removePlayer(player);
+        game.setVersion(game.getVersion()+1);
+        game.setBoard(gson.toJson(board));
+        HttpController.pushGameUpdate(game,gameId);
+    }
 }
