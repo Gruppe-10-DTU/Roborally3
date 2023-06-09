@@ -109,6 +109,7 @@ public class HttpController {
     public static int pushGameUpdate(Game game, int gameID){
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + "/games/" + gameID))
+                .setHeader("Content-Type","application/json")
                 .PUT(HttpRequest.BodyPublishers.ofString(gson.toJson(game)))
                 .build();
         try {
