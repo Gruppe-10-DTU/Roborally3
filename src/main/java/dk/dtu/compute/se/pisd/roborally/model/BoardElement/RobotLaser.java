@@ -61,7 +61,7 @@ public class RobotLaser implements SequenceAction{
     }
 
     @Override
-    public void accept(Player[] players, SequenceVisitor visitor){
-        visitor.visit(players, this);
+    public void accept(GameController gameController, SequenceVisitor visitor){
+        visitor.visit(gameController, this);
     }
 }

@@ -6,7 +6,6 @@ import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.Damage;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.DamageCard;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 public class BoardLaser extends Space implements SequenceAction {
@@ -99,7 +98,7 @@ public class BoardLaser extends Space implements SequenceAction {
         return false;
     }
     @Override
-    public void accept(Player[] players, SequenceVisitor visitor){
-        visitor.visit(players, this);
+    public void accept(GameController gameController, SequenceVisitor visitor){
+        visitor.visit(gameController, this);
     }
 }
