@@ -12,7 +12,6 @@ import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.Card;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.CommandCard;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.DamageCard;
-import dk.dtu.compute.se.pisd.roborally.model.Game;
 import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
@@ -117,6 +116,7 @@ public class JSONReader {
             board.addPlayer(player);
             space.setPlayer(player);
             player.setPlayer();
+            board.nextSpawn();
         }
         JSONArray jsonArray = object.getJSONArray("playerOrder");
         for (int i = 0; i < jsonArray.length(); i++) {
