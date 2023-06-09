@@ -50,7 +50,6 @@ public class Board extends Subject {
 
     private String boardName;
 
-    private int playerAmount;
 
     private int number = 1;
 
@@ -124,7 +123,7 @@ public class Board extends Subject {
     public Board(int width, int height, @NotNull String boardName, int playerAmount, JSONArray boardArray) {
         this.boardActions = new TreeSet<>(new SequenceActionComparator());
         this.boardName = boardName;
-        this.playerAmount = playerAmount;
+        this.maxPlayers = playerAmount;
         this.width = width;
         this.height = height;
         this.gameLog = new ArrayList<>();

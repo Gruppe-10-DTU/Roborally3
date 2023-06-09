@@ -95,7 +95,7 @@ public class JSONReader {
     }
     public static Board parseBoard(JSONObject object){
 
-        Board board = new Board(object.getInt("width"), object.getInt("height"), object.getString("boardName"), object.getInt("playerAmount"), object.getJSONArray("spaces"));
+        Board board = new Board(object.getInt("width"), object.getInt("height"), object.getString("boardName"), object.getInt("maxPlayers"), object.getJSONArray("spaces"));
 
         Checkpoint checkpoint = board.getWincondition();
         String win = object.getJSONObject("wincondition").toString();
