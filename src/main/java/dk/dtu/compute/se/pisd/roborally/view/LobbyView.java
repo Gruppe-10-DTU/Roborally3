@@ -2,6 +2,7 @@ package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.AppController;
+import dk.dtu.compute.se.pisd.roborally.controller.HttpController;
 import dk.dtu.compute.se.pisd.roborally.model.Game;
 import dk.dtu.compute.se.pisd.roborally.model.PlayerDTO;
 import javafx.scene.Scene;
@@ -59,7 +60,8 @@ public class LobbyView extends VBox implements ViewObserver{
         refresh.setOnAction(e -> { refreshList(tableView,nameColumn, maxPlayers);
             if(maxPlayers == tableView.getItems().size()){
                 Button start = new Button("Start");
-                start.setOnAction(event -> { System.out.println("2");
+                start.setOnAction(event -> { System.out.println("Start Game");
+                    startGame();
                 });
                 this.getChildren().remove(leave);
                 this.getChildren().remove(refresh);
@@ -84,6 +86,15 @@ public class LobbyView extends VBox implements ViewObserver{
             nameColumn.setText(playerOnServer(tableView.getItems().size(), maxPlayers));
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+    private void startGame(){
+        if (HttpController.startGame(gameId) % 200 < 100) appController.launchGame();
+        else {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Connection Error");
+            error.setHeaderText("Server response not OK.\nPlease try again!");
+            error.showAndWait();
         }
     }
     private void getPlayerList(TableView<PlayerDTO> tableView) throws Exception {
