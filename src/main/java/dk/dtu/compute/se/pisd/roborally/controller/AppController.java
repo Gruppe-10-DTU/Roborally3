@@ -375,14 +375,14 @@ AppController implements Observer, EndGame {
         showLobby(gameId, board.getMaxPlayers());
     }
     public void launchGame(int id){
-        JSONObject newBoardObj = HttpController.getNewGameState(id);
-        if(newBoardObj != null) {
-            gameController.replaceBoard(JSONReader.parseBoard(newBoardObj));
+        Game game = HttpController.getGame(id);
+        if(game != null) {
+            gameController.replaceBoard(JSONReader.parseBoard(new JSONObject(game.getBoard())));
             this.roboRally.createBoardView(gameController);
         } else {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Connection Error");
-            error.setHeaderText("Server response not OK.\nPlease try again!");
+            error.setHeaderText("Could not retrive game from server.\nPlease try again!");
             error.showAndWait();
         }
     }
