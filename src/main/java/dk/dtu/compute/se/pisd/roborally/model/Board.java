@@ -547,4 +547,14 @@ public class Board extends Subject {
     public void addPlayerToOder(Player player) {
         playerOrder.add(player);
     }
+
+    public void updatePlayers(List<Player> newPlayers, String clientName) {
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i).getName() != clientName) {
+                players.set(i, newPlayers.get(i));
+            }
+        }
+    }
+
+
 }

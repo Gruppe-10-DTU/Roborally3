@@ -8,6 +8,7 @@ import dk.dtu.compute.se.pisd.roborally.controller.HttpController;
 import dk.dtu.compute.se.pisd.roborally.controller.JSONReader;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Game;
+import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import org.json.JSONObject;
 
 import java.net.URI;
@@ -46,8 +47,17 @@ public class BoardUpdateThread extends Thread {
             if (result != null) {
                 currentVersion = result.getVersion();
                 JSONObject jsonBoard = new JSONObject(result.getBoard());
-                Board board = JSONReader.parseBoard(jsonBoard);
-                gameController.replaceBoard(board);
+                Board newBoard = JSONReader.parseBoard(jsonBoard);
+
+                Board currentBoard = gameController.getBoard();
+
+                if (currentBoard.getPhase() == Phase.PROGRAMMING) {
+
+                } else {
+                    gameController.replaceBoard(newBoard);
+                }
+
+
             }
 
             try {
