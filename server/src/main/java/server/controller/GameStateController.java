@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpServerErrorException;
 import server.Service.GameService;
 import server.mapper.GameDTOMapper;
+import server.model.Game;
+import server.model.GameState;
 
 @RestController
 public class GameStateController {
@@ -22,7 +24,18 @@ public class GameStateController {
     }
 */
     @RequestMapping(value = "/games/{id}/gamestates", method = RequestMethod.PUT)
-    public ResponseEntity updateState() throws HttpServerErrorException.NotImplemented {
-        return ResponseEntity.ok().build();
+    public ResponseEntity updateState(@PathVariable int id, @RequestBody String state) throws HttpServerErrorException.NotImplemented {
+        Game requestedGame = gameService.getGameById(id);
+        if (requestedGame.getState() != GameState.ENDED) {
+            switch (state) {
+                case "STARTED":
+                    requestedGame.setState(GameState.STARTED);
+                    return ResponseEntity.ok().build();
+                default:
+                    requestedGame.setState(GameState.valueOf(state));
+                    return ResponseEntity.ok().build();
+            }
+        }else return ResponseEntity.badRequest().build();
+
     }
 }
