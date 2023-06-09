@@ -57,6 +57,17 @@ public class LobbyView extends VBox implements ViewObserver{
 
         Button refresh = new Button("Refresh");
         refresh.setOnAction(e -> { refreshList(tableView,nameColumn, maxPlayers);
+            if(maxPlayers == tableView.getItems().size()){
+                Button start = new Button("Start");
+                start.setOnAction(event -> { System.out.println("2");
+                });
+                this.getChildren().remove(leave);
+                this.getChildren().remove(refresh);
+                ButtonBar buttonBar = new ButtonBar();
+                buttonBar.getButtons().addAll(start,leave, refresh);
+                this.getChildren().add(buttonBar);
+                this.setPrefWidth(buttonBar.getWidth());
+            }
         });
 
         ButtonBar buttonBar = new ButtonBar();
@@ -75,7 +86,7 @@ public class LobbyView extends VBox implements ViewObserver{
             throw new RuntimeException(e);
         }
     }
-    private void getPlayerList(TableView tableView) throws Exception {
+    private void getPlayerList(TableView<PlayerDTO> tableView) throws Exception {
         tableView.getItems().clear();
         List<PlayerDTO> playerList = appController.getPlayerList(gameId);
         tableView.getItems().addAll(playerList);
