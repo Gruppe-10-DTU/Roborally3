@@ -143,6 +143,9 @@ public class Board extends Subject {
                 case "Burnout":
                     courseArray = new JSONReader("src/main/resources/boards/Burnout.json").getJsonSpaces();
                     break;
+                case "Fractionation":
+                    courseArray = new JSONReader("src/main/resources/boards/Fractionation.json").getJsonSpaces();
+                    break;
                 default:
                     courseArray = new JSONReader("src/main/resources/boards/RiskyCrossing.json").getJsonSpaces();
             }
