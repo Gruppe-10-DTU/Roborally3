@@ -11,7 +11,7 @@ public class Push extends Space implements SequenceAction {
 
     //TODO: Sæt step til at være array
     private final int step;
-    private final Heading heading;
+    private final Heading direction;
 
     /**
      * @param board   The playing board
@@ -24,7 +24,7 @@ public class Push extends Space implements SequenceAction {
     public Push(Board board, int x, int y, int step, Heading heading) {
         super(board, x, y);
         this.step = step;
-        this.heading = heading;
+        this.direction = heading;
         board.addBoardActions(this);
     }
 
@@ -37,7 +37,7 @@ public class Push extends Space implements SequenceAction {
     }
 
     public Heading getHeading() {
-        return heading;
+        return direction;
     }
 
     /**
@@ -68,7 +68,7 @@ public class Push extends Space implements SequenceAction {
      */
     private void pushPlayer(GameController gameController, Player player) {
         if (gameController.board.getStep() == step) {
-            gameController.movePlayer(player, heading);
+            gameController.movePlayer(player, direction);
         }
     }
 

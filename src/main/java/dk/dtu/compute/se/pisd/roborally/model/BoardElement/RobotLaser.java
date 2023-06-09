@@ -49,6 +49,7 @@ public class RobotLaser implements SequenceAction{
             RobotLaser rblsr = new RobotLaser(gameController.board,player);
             if(rblsr.shootLaser(player.getSpace(),player.getHeading()) != null){
                 rblsr.shootLaser(player.getSpace(),player.getHeading()).discardCard(new DamageCard(Damage.SPAM));
+                gameController.board.addGameLogEntry(rblsr.shootLaser(player.getSpace(),player.getHeading()), "Was shot by " + player.getName());
             }
         });
     }

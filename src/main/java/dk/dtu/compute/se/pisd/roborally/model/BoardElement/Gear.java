@@ -9,7 +9,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 public class Gear extends Space implements SequenceAction {
 
-    private Heading heading;
+    private Heading direction;
 
     /**
      * @param heading Which way to turn the player
@@ -20,16 +20,16 @@ public class Gear extends Space implements SequenceAction {
      */
     public Gear(Heading heading, Board board, int x, int y) {
         super(board, x, y);
-        this.heading = heading;
+        this.direction = heading;
         board.addBoardActions(this);
     }
 
     public Heading getHeading() {
-        return heading;
+        return direction;
     }
 
     public void setHeading(Heading heading) {
-        this.heading = heading;
+        this.direction = heading;
     }
 
     /**
@@ -63,7 +63,7 @@ public class Gear extends Space implements SequenceAction {
      * @author Nilas
      */
     private void turnPlayer(Player player) {
-        if (heading == Heading.EAST) {
+        if (direction == Heading.EAST) {
             player.setHeading(player.getHeading().next());
         } else {
             player.setHeading(player.getHeading().prev());

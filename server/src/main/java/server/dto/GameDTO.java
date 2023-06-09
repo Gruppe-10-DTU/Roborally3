@@ -4,28 +4,36 @@ public class GameDTO {
     int maxPlayers;
     int currentPlayers;
     String name;
-    int gameId;
+    int id;
+
+    int version;
+
+    public GameDTO(){
+
+    }
 
     /**
      *
      * @param maxPlayers
      * @param currentPlayers
      * @param name
-     * @param gameId
+     * @param id
      *  Creates the game dto
      * @author Sandie Petersen
      */
-    public GameDTO(int maxPlayers, int currentPlayers, String name, int gameId) {
+    public GameDTO(int maxPlayers, int currentPlayers, String name, int id, int version) {
         this.name = name;
         this.currentPlayers = currentPlayers;
         this.maxPlayers = maxPlayers;
-        this.gameId = gameId;
+        this.id = id;
+        this.version = version;
     }
+
     public String getName(){
         return name;
     }
-    public int getGameId(){
-        return gameId;
+    public int getId(){
+        return id;
     }
     public int getMaxPlayers(){
         return maxPlayers;
@@ -47,7 +55,23 @@ public class GameDTO {
     }
 
 
-    public void setGameId(int gameId) {
-        this.gameId = gameId;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setMaxPlayers(int maxPlayers) {
+        this.maxPlayers = maxPlayers;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 }

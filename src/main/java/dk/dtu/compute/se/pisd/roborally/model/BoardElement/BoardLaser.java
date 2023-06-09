@@ -10,7 +10,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 public class BoardLaser extends Space implements SequenceAction {
-    private final Heading shootingDirection;
+    private final Heading direction;
 
 
     /**
@@ -22,7 +22,8 @@ public class BoardLaser extends Space implements SequenceAction {
      */
     public BoardLaser(Board board, int x, int y, Heading shootingDirection) {
         super(board, x, y);
-        this.shootingDirection = shootingDirection;
+        this.direction = shootingDirection;
+        board.getSpace(x,y).setWall(shootingDirection.prev().prev());
         board.addBoardActions(this);
     }
 
@@ -34,11 +35,11 @@ public class BoardLaser extends Space implements SequenceAction {
      * @author Nilas Thoegersen
      */
     public boolean hit(Heading heading) {
-        return this.shootingDirection == heading.reverse();
+        return this.direction == heading.reverse();
     }
 
     public Heading getShootingDirection() {
-        return shootingDirection;
+        return direction;
     }
 
     /**
@@ -52,13 +53,20 @@ public class BoardLaser extends Space implements SequenceAction {
         gameController.board.getPlayers().parallelStream().forEach(player -> {
             Space space = player.getSpace();
             Heading heading = Heading.WEST;
-            for (int i = 0; i < 4; i++) {
-                //Set isHit in the if statement and add the dmg card inside the statement.
-                if (!space.getOut(heading)) {
-                    if(isHit(gameController.board, space, heading))
-                      space.getPlayer().discardCard(new DamageCard(Damage.SPAM));
+            if(space instanceof BoardLaser){
+                player.discardCard(new DamageCard(Damage.SPAM));
+                board.addGameLogEntry(player, "Was hit by a laser");
+            }else {
+                for (int i = 0; i < 4; i++) {
+                    //Set isHit in the if statement and add the dmg card inside the statement.
+                    if (!space.getOut(heading)) {
+                        if (isHit(board, space, heading)) {
+                            player.discardCard(new DamageCard(Damage.SPAM));
+                            board.addGameLogEntry(player, "Was hit by a laser");
+                        }
+                    }
+                    heading = heading.next();
                 }
-                heading = heading.next();
             }
         });
     }
@@ -79,11 +87,11 @@ public class BoardLaser extends Space implements SequenceAction {
      */
     protected boolean isHit(Board board, Space space, Heading heading) {
         Space oSpace = space;
+        space = board.getNeighbour(space,heading);
         while (space != null){
-            if (space.getPlayer() != null && space.getPlayer() != oSpace.getPlayer() || hasWall(heading) || space.getOut(heading)) {
+            if (space.getPlayer() != null || space.hasWall(heading)){
                 return false;
-            }
-            if(space instanceof BoardLaser && ((BoardLaser) space).hit(heading)) {
+            } else if (space instanceof BoardLaser && ((BoardLaser) space).hit(heading)) {
                 return true;
             }
             space = board.getNeighbour(space, heading);

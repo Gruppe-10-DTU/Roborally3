@@ -25,6 +25,7 @@ import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -36,7 +37,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class GameController {
 
-    final public Board board;
+    public Board board;
     final public EndGame endGame;
     private String clientName;
 
@@ -70,6 +71,9 @@ public class GameController {
      */
     // XXX: V2
     public void startProgrammingPhase() {
+        for (Player players: board.getPlayers()) {
+            players.setRebooting(false);
+        }
         board.setPhase(Phase.PROGRAMMING);
         board.setCurrentPlayer(board.getPlayer(0));
         board.setStep(0);
@@ -217,6 +221,7 @@ public class GameController {
                 board.setStep(step);
                 board.calculatePlayerOrder();
                 board.nextPlayer();
+                checkIfGameIsDone();
             } else {
                 startProgrammingPhase();
             }
@@ -306,8 +311,11 @@ public class GameController {
      * @author Asbjørn Nielsen
      */
     public void moveForward(@NotNull Player player, int SpacesToMove) {
-        for (int i = 0; i < SpacesToMove; i++)
+        for (int i = 0; i < SpacesToMove; i++){
             movePlayer(player, player.getHeading());
+            if(player.getIsRebooting())
+                break;
+        }
     }
 
     /**
@@ -380,7 +388,6 @@ public class GameController {
         ) {
             sequenceAction.doAction(this);
         }
-        checkIfGameIsDone();
     }
 
     /**
@@ -440,6 +447,8 @@ public class GameController {
         ) {
             if (checkpoint.checkPlayer(player)) {
                 endGame.endGame(player);
+                board.setPhase(Phase.FINISHED);
+                return;
             }
         }
     }
@@ -487,5 +496,9 @@ public class GameController {
         if(card != null){
             card.doAction(this);
         }
+    }
+
+    public void replaceBoard (Board board) {
+        this.board = board;
     }
 }

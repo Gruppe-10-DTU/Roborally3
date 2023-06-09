@@ -1,26 +1,27 @@
 package server.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Type;
+import server.dto.PlayerDTO;
 
-import static jakarta.persistence.GenerationType.IDENTITY;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Game {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    private int currentPlayers;
+
     private int maxPlayers;
     private String name;
 
-    private GameState state;
-    
+    private int version = 1;
+
     @Column(columnDefinition = "TEXT")
     private String board;
+
+    private GameState state;
 
     public String getBoard() {
         return board;
@@ -29,6 +30,7 @@ public class Game {
     public void setBoard(String board) {
         this.board = board;
     }
+
 
 
 
@@ -71,5 +73,25 @@ public class Game {
     }
 
     public Game() {
+    }
+    public int getCurrentPlayers() {
+        return currentPlayers;
+    }
+
+    public void setCurrentPlayers(int currentPlayers) {
+        this.currentPlayers = currentPlayers;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    public List<PlayerDTO> getPlayers() {
+        List<PlayerDTO> playerlst = new ArrayList<PlayerDTO>();
+        return playerlst;
     }
 }

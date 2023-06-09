@@ -25,19 +25,17 @@ import com.google.gson.Gson;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
-import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Game;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.utils.BoardUpdateThread;
 import dk.dtu.compute.se.pisd.roborally.view.GamesView;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.*;
+import dk.dtu.compute.se.pisd.roborally.view.LobbyView;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -50,13 +48,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 /**
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  */
-public class AppController implements Observer, EndGame {
+public class
+AppController implements Observer, EndGame {
+
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
     final private List<String> BOARD_OPTIONS = Arrays.asList("Burnout", "Risky Crossing");
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
@@ -64,10 +65,10 @@ public class AppController implements Observer, EndGame {
     final private RoboRally roboRally;
 
     private GamesView gamesView;
-
-    private Gson gson = new Gson();
+    private Gson gson = JSONReader.setupGson();
     private String selectedBoard;
     private GameController gameController;
+    private LobbyView lobbyView;
 
     public GamesView getGamesView() {
         return gamesView;
@@ -75,6 +76,14 @@ public class AppController implements Observer, EndGame {
 
     public void setGamesView(GamesView gamesView) {
         this.gamesView = gamesView;
+    }
+
+    public LobbyView getLobbyView() {
+        return lobbyView;
+    }
+
+    public void setLobbyView(LobbyView lobbyView) {
+        this.lobbyView = lobbyView;
     }
 
     /**
@@ -121,27 +130,16 @@ public class AppController implements Observer, EndGame {
 
             Board board = new Board(11, 8, selectedBoard, result.get(), null);
 
-
             gameController = new GameController(board, this);
             int numberOfPlayers = result.get();
             for (int i = 0; i < numberOfPlayers; i++) {
 
-
-                TextInputDialog nameDialog = new TextInputDialog("Player" + (i + 1));
-                nameDialog.setTitle("Player name");
-                nameDialog.setHeaderText("Select player name");
-                Optional<String> resultName = nameDialog.showAndWait();
-
-                String entered = "Player" + (i + 1);
-                if (resultName.isPresent()) {
-                    entered = resultName.get();
-                }
-
-                Player player = new Player(board, PLAYER_COLORS.get(i), entered);
+                Player player = new Player(board, PLAYER_COLORS.get(i), playerName(i));
                 board.addPlayer(player);
                 Space spawnSpace = board.nextSpawn();
                 player.setSpace(board.getSpace(spawnSpace.getX(),spawnSpace.getY()));
             }
+            gameController.board.addGameLogEntry(null,"Game started");
             gameController.startProgrammingPhase();
 
             roboRally.createBoardView(gameController);
@@ -155,7 +153,7 @@ public class AppController implements Observer, EndGame {
      */
     public void saveGame() {
         String file = "";
-        String savedGameController = JSONReader.saveGame(gameController);
+        String savedGameController = JSONReader.saveGame(gameController.board);
         TextInputDialog saveNameDialog = new TextInputDialog();
         saveNameDialog.setTitle("Save game");
 
@@ -273,7 +271,7 @@ public class AppController implements Observer, EndGame {
         won.setTitle("We have a winner");
         won.setHeaderText(null);
         won.setContentText(player.getName() + " has won");
-        won.showAndWait();
+        won.show();
         gameController = null;
         roboRally.createBoardView(null);
     }
@@ -293,7 +291,12 @@ public class AppController implements Observer, EndGame {
     public void update(Subject subject) {
     }
 
-    public void hostGame() {
+    /**
+     * Creates a board from the available list of board options and the user selection of aforementioned board.
+     * @return Board
+     * @author Asbjørn Nielsen
+     */
+    public Board initBoardinfo(){
         ChoiceDialog boardDialog = new ChoiceDialog(BOARD_OPTIONS.get(0), BOARD_OPTIONS);
         boardDialog.setTitle("Course");
         boardDialog.setHeaderText("Select course");
@@ -308,12 +311,18 @@ public class AppController implements Observer, EndGame {
         dialog.setTitle("Player number");
         dialog.setHeaderText("Select number of players");
         Optional<Integer> result = dialog.showAndWait();
-            // XXX the board should eventually be created programmatically or loaded from a file
-            //     here we just create an empty board with the required number of players.
-            Board board = new Board(11, 8, selectedBoard, result.get(), null);
-            gameController = new GameController(board, this);
-            int numberOfPlayers = result.get();
+        // XXX the board should eventually be created programmatically or loaded from a file
+        //     here we just create an empty board with the required number of players.
+        Board board = new Board(11, 8, selectedBoard, result.get(), null);
+        board.setMaxPlayers(result.get());
+        return board;
+    }
 
+    /**
+     * Adds a player to specified board.
+     * @param board
+     */
+    public void initPlayerInfo(Board board){
         TextInputDialog nameDialog = new TextInputDialog("");
         nameDialog.setTitle("Player name");
         nameDialog.setHeaderText("Select player name");
@@ -327,11 +336,68 @@ public class AppController implements Observer, EndGame {
         Player player = new Player(board, PLAYER_COLORS.get(0), entered);
         board.addPlayer(player);
         Space spawnSpace = board.nextSpawn();
-        player.setSpace(board.getSpace(spawnSpace.getX(),spawnSpace.getY()));
+        player.setSpace(board.getSpace(spawnSpace.getX(), spawnSpace.getY()));
+    }
 
-        Game nG = new Game(1, board.getBoardName(), 0,numberOfPlayers,gson.toJson(board));
-        HttpController.createGame(nG);
-        HttpController.joinGame(nG.getId(),player.getName());
+    /**
+     * Main method for creating an online game and handling the functionality that comes with it.
+     * @author Asbjørn Nielsen
+     */
+    public void hostGame() {
+        Game nG = null;
+        Board board = null;
+        ButtonType newGame = new ButtonType("New Game");
+        ButtonType loadGame = new ButtonType("Load Game");
+        Alert alert = new Alert(AlertType.CONFIRMATION,"Do you want to create a new game, or load an old game",newGame,loadGame);
+        alert.setTitle("Stop game");
+
+        Optional<ButtonType> choice = alert.showAndWait();
+        if (choice.isPresent() && choice.get() == newGame) {
+            board = initBoardinfo();
+            gameController = new GameController(board, this);
+            initPlayerInfo(board);
+
+            nG = new Game(board.getBoardName(), 0, board.getMaxPlayers(), gson.toJson(board));
+        }else if(choice.isPresent() && choice.get() == loadGame) {
+            board = retrieveSavedGame();
+            if (board != null) {
+                nG = new Game(board.getBoardName(), 0, board.getMaxPlayers(), gson.toJson(board));
+            }else{
+
+            }
+        }
+        PlayerDTO playerDTO = new PlayerDTO(board.getPlayer(0).getName());
+        int gameId = HttpController.createGame(nG);
+        HttpController.joinGame(gameId, playerDTO);
+        showLobby(gameId, gameController.board.getMaxPlayers());
+        BoardUpdateThread boardUpdateThread = new BoardUpdateThread(gameId, gameController);
+        boardUpdateThread.start();
+    }
+
+    /**
+     * Retrieves a list of available boards and lets the player chose one of them to play.
+     * @return Board
+     * @author Asbjørn Nielsen
+     */
+    public Board retrieveSavedGame(){
+        File file;
+        URI pathUri;
+        try {
+            //TODO: Gør stien dynamisk.
+            file = new File("src/main/java/dk/dtu/compute/se/pisd/roborally/controller/savedGames");
+        }catch (Exception e){
+            System.out.println("No files found");
+            return null;
+        }
+        boolean test2 = file.isDirectory();
+        String[] test = file.list();
+
+        Optional<String> gameName = new ChoiceDialog<String>("None", file.list()).showAndWait();
+        if(!gameName.equals("None")) {
+            Board board = JSONReader.loadGame(Path.of(file.getPath(), gameName.get()).toString());
+            return board;
+        }
+        return null;
     }
 
     /**
@@ -345,19 +411,46 @@ public class AppController implements Observer, EndGame {
         }
     }
 
+    /**
+     *
+     * @param selectedItem
+     * This is the logic for when a player tries to join a server
+     * @author Søren Friis Wünsche
+     */
     public void joinGame(Game selectedItem) {
-        Game item = selectedItem;
-        int playerID = 232;
-        HttpController.joinGame(item.getId(), "" + playerID);
-//        item.IncCurrPlayer();
-        HttpController.joinGame(item.getId(),"" + playerID);
-        System.out.println("Player: "+ playerID + " trying to join " + selectedItem);
+        List<PlayerDTO> playerList = new ArrayList<PlayerDTO>();
+        int gameId = selectedItem.getId();
+        String playerName = playerName(0);
+        if (playerName != null) {
+            try {
+                playerList = HttpController.playersInGame(selectedItem.getId());
+            } catch (ExecutionException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            String finalPlayerName = playerName;
+            int count = (int) playerList.stream().filter(x -> x.getName().startsWith(finalPlayerName)).count();
+            if (count > 0) playerName = playerName + " [" + count + "]";
+
+            PlayerDTO player = new PlayerDTO(playerName);
+//            System.out.println(selectedItem.getCurrentPlayers());
+            if (selectedItem.getCurrentPlayers() < selectedItem.getMaxPlayers()) {
+                HttpController.joinGame(gameId, player);
+                System.out.println("Player: " + playerName + " trying to join " + selectedItem);
+                updateGame(gameId,player);
+                showLobby(selectedItem.getId(), selectedItem.getMaxPlayers());
+            }
+        }
     }
 
-    public List<Game> getGameList() throws Exception {
 
-        List<Game> observableList = FXCollections.observableArrayList(HttpController.getGameList());
-//        System.out.println(observableList);
+    /**
+     *
+     * @return gets the game list from the server
+     * @throws Exception
+     * @author Søren Friis Wünsche
+     */
+    public List<Game> getGameList() throws Exception {
         return HttpController.getGameList();
     }
 
@@ -367,4 +460,63 @@ public class AppController implements Observer, EndGame {
         //ServerApp.main(args);
 
     }
+
+    /**
+     *
+     * @param playerIndex
+     * @return returns either the input or player + index
+     * This is the dialog box for player name
+     * @author Søren Friis Wünsche
+     */
+    public String playerName(int playerIndex){
+        TextInputDialog nameDialog = new TextInputDialog("Player" + (playerIndex + 1));
+        nameDialog.setTitle("Player name");
+        nameDialog.setHeaderText("Select player name");
+        Optional<String> resultName = nameDialog.showAndWait();
+
+        String entered = "Player" + (playerIndex + 1);
+        if (resultName.isPresent()) {
+            if (!resultName.equals(entered)){
+                entered = resultName.get();
+            }
+            return entered;
+        }
+        return null;
+    }
+
+    public List<PlayerDTO> getPlayerList(int gameId) throws ExecutionException, InterruptedException {
+        return HttpController.playersInGame(gameId);
+    }
+
+    /**
+     * Lounge of players who've joined the game.
+     * @param id
+     * @param maxPlayers
+     */
+    public void showLobby(int id, int maxPlayers) {
+        if (lobbyView == null) {
+            lobbyView = new LobbyView(this, id, maxPlayers);
+        }
+    }
+
+    public void updateGame(int gameId, PlayerDTO playerDTO){
+        Game game = HttpController.getGame(gameId);
+        Board board = null;
+        if (game != null) {
+            board = JSONReader.parseBoard(new JSONObject(game.getBoard()));
+            initJoinedPlayerInfo(board,playerDTO);
+            game.setBoard(gson.toJson(board));
+            int gameVersion = game.getVersion()+1;
+            game.setVersion(gameVersion);
+            HttpController.pushGameUpdate(game,gameId);
+        }
+    }
+    public void initJoinedPlayerInfo(Board board, PlayerDTO playerDTO){
+        int playerColor = board.getPlayersNumber();
+        Player player = new Player(board, PLAYER_COLORS.get(playerColor), playerDTO.getName());
+        board.addPlayer(player);
+        Space spawnSpace = board.nextSpawn();
+        player.setSpace(board.getSpace(spawnSpace.getX(), spawnSpace.getY()));
+    }
+
 }

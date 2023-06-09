@@ -40,7 +40,7 @@ public class Player extends Subject implements Comparable<Player> {
     final public static int NO_CARDS = 8;
 
     transient public Board board;
-
+    private boolean isRebooting = false;
     private String name;
     private String color;
 
@@ -105,14 +105,8 @@ public class Player extends Subject implements Comparable<Player> {
         this.energy = 0;
 
         program = new CommandCardField[NO_REGISTERS];
-        for (int i = 0; i < program.length; i++) {
-            program[i] = new CommandCardField(this);
-        }
-
         cards = new CommandCardField[NO_CARDS];
-        for (int i = 0; i < cards.length; i++) {
-            cards[i] = new CommandCardField(this);
-        }
+
     }
 
     public String getName() {
@@ -229,6 +223,16 @@ public class Player extends Subject implements Comparable<Player> {
         this.priority = priority;
     }
 
+    public void setPlayer(){
+        for (int i = 0; i < program.length; i++) {
+            program[i].setPlayer(this);
+        }
+
+        for (int i = 0; i < cards.length; i++) {
+            cards[i].setPlayer(this);
+        }
+    }
+
     /**
      * @author Sandie Petersen
      * @param o the object to be compared.
@@ -238,5 +242,12 @@ public class Player extends Subject implements Comparable<Player> {
     @Override
     public int compareTo(@NotNull Player o) {
         return Integer.compare(this.priority, o.priority);
+    }
+
+    public void setRebooting(boolean rebootStatus){
+        this.isRebooting = rebootStatus;
+    }
+    public boolean getIsRebooting(){
+        return isRebooting;
     }
 }
