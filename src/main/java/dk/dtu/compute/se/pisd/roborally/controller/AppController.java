@@ -39,6 +39,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -374,7 +375,19 @@ AppController implements Observer, EndGame {
         HttpController.joinGame(gameId, playerDTO);
         BoardUpdateThread boardUpdateThread = new BoardUpdateThread(gameId, gameController);
         boardUpdateThread.start();
-        showLobby(gameId,numberOfPlayers);
+        showLobby(gameId, board.getMaxPlayers());
+    }
+    public void launchGame(int id){
+        JSONObject newBoardObj = HttpController.getNewGameState(id);
+        if(newBoardObj != null) {
+            gameController.replaceBoard(JSONReader.parseBoard(newBoardObj));
+            this.roboRally.createBoardView(gameController);
+        } else {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Connection Error");
+            error.setHeaderText("Server response not OK.\nPlease try again!");
+            error.showAndWait();
+        }
     }
 
     /**
