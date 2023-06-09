@@ -368,6 +368,7 @@ AppController implements Observer, EndGame {
         PlayerDTO playerDTO = new PlayerDTO(board.getPlayer(0).getName());
         int gameId = HttpController.createGame(nG);
         HttpController.joinGame(gameId, playerDTO);
+        gameController.setClientName(playerDTO.getName());
         showLobby(gameId, gameController.board.getMaxPlayers());
         BoardUpdateThread boardUpdateThread = new BoardUpdateThread(gameId, gameController);
         boardUpdateThread.start();
@@ -377,6 +378,7 @@ AppController implements Observer, EndGame {
         Game game = HttpController.getGame(id);
         if(game != null) {
             gameController.replaceBoard(JSONReader.parseBoard(new JSONObject(game.getBoard())));
+            gameController.startProgrammingPhase();
             this.roboRally.createBoardView(gameController);
         } else {
             Alert error = new Alert(Alert.AlertType.ERROR);
@@ -450,7 +452,11 @@ AppController implements Observer, EndGame {
                 HttpController.joinGame(gameId, player);
                 System.out.println("Player: " + playerName + " trying to join " + selectedItem);
                 updateGame(gameId,player);
+                getOnlineGame(gameId);
+                if(gameController != null) gameController.setClientName(playerName);
                 showLobby(selectedItem.getId(), selectedItem.getMaxPlayers());
+
+
             }
         }
     }
@@ -516,6 +522,7 @@ AppController implements Observer, EndGame {
         Board board = null;
         if (game != null) {
             board = JSONReader.parseBoard(new JSONObject(game.getBoard()));
+            board.setGameId(gameId);
             initJoinedPlayerInfo(board,playerDTO);
             game.setBoard(gson.toJson(board));
             int gameVersion = game.getVersion()+1;
@@ -529,6 +536,16 @@ AppController implements Observer, EndGame {
         board.addPlayer(player);
         Space spawnSpace = board.nextSpawn();
         player.setSpace(board.getSpace(spawnSpace.getX(), spawnSpace.getY()));
+    }
+    public void getOnlineGame(int gameID){
+        Game game = HttpController.getGame(gameID);
+        if(game == null) return;
+        Board board = JSONReader.parseBoard(new JSONObject(game.getBoard()));
+        if(gameController == null){
+            gameController = new GameController(board,this);
+        }else{
+            gameController.replaceBoard(board);
+        }
     }
 
 }
