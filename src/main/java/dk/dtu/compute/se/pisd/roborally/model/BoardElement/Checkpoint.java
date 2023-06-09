@@ -66,7 +66,7 @@ public class Checkpoint extends Space implements SequenceAction {
      * @return True if it was possible to add the player
      * @author Nilas
      */
-    protected boolean addPlayer(Player player) {
+    public boolean addPlayer(Player player) {
         if (previous == null) {
             return players.add(player);
         } else if (previous.checkPlayer(player)) {
@@ -94,14 +94,7 @@ public class Checkpoint extends Space implements SequenceAction {
      */
     @Override
     public void doAction(GameController gameController) {
-        for (Player player : board.getPlayers()
-        ) {
-            if (player.getSpace().getClass().equals(this.getClass())) {
-                if(((Checkpoint) player.getSpace()).addPlayer(player)){
-                    gameController.board.addGameLogEntry(player, "Reached checkpoint " + ((Checkpoint) player.getSpace()).getNumber());
-                }
-            }
-        }
+
     }
 
     public void setPlayers(List<Player> players){

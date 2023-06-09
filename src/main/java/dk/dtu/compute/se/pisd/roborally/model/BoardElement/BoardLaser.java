@@ -3,8 +3,6 @@ package dk.dtu.compute.se.pisd.roborally.model.BoardElement;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.controller.SequenceActions.SequenceVisitor;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Cards.Damage;
-import dk.dtu.compute.se.pisd.roborally.model.Cards.DamageCard;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
@@ -49,25 +47,7 @@ public class BoardLaser extends Space implements SequenceAction {
      */
     @Override
     public void doAction(GameController gameController) {
-        gameController.board.getPlayers().parallelStream().forEach(player -> {
-            Space space = player.getSpace();
-            Heading heading = Heading.WEST;
-            if(space instanceof BoardLaser){
-                player.discardCard(new DamageCard(Damage.SPAM));
-                board.addGameLogEntry(player, "Was hit by a laser");
-            }else {
-                for (int i = 0; i < 4; i++) {
-                    //Set isHit in the if statement and add the dmg card inside the statement.
-                    if (!space.getOut(heading)) {
-                        if (isHit(board, space, heading)) {
-                            player.discardCard(new DamageCard(Damage.SPAM));
-                            board.addGameLogEntry(player, "Was hit by a laser");
-                        }
-                    }
-                    heading = heading.next();
-                }
-            }
-        });
+
     }
 
     @Override
@@ -84,7 +64,7 @@ public class BoardLaser extends Space implements SequenceAction {
      * @return boolean saying if the player is hit
      * @author Nilas
      */
-    protected boolean isHit(Board board, Space space, Heading heading) {
+    public boolean isHit(Board board, Space space, Heading heading) {
         Space oSpace = space;
         space = board.getNeighbour(space,heading);
         while (space != null){
