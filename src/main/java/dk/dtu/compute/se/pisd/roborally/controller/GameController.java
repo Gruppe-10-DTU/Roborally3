@@ -26,9 +26,10 @@ import dk.dtu.compute.se.pisd.roborally.model.BoardElement.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.*;
+import javafx.application.Platform;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * ...
@@ -39,12 +40,14 @@ import java.util.List;
 public class GameController {
 
     public Board board;
-    final public EndGame endGame;
+    final public AppController appController;
     private String clientName;
+    private AtomicInteger version;
 
-    public GameController(@NotNull Board board, EndGame endGame) {
+    public GameController(@NotNull Board board, AppController appController) {
         this.board = board;
-        this.endGame = endGame;
+        this.appController = appController;
+        this.version = new AtomicInteger(-1);
     }
 
 
@@ -75,6 +78,7 @@ public class GameController {
         for (Player players: board.getPlayers()) {
             players.setRebooting(false);
         }
+        board.programmingItemsLeft = board.getNumberOfPlayers();
         board.setPhase(Phase.PROGRAMMING);
         board.setCurrentPlayer(board.getPlayer(0));
         board.setStep(0);
@@ -107,13 +111,18 @@ public class GameController {
      * @author Ekkart Kindler, ekki@dtu.dk
      */
     public void finishProgrammingPhase() {
-        makeProgramFieldsInvisible();
-        makeProgramFieldsVisible(0);
-        board.setPhase(Phase.ACTIVATION);
-        board.calculatePlayerOrder();
-        board.nextPlayer();
-        //board.setCurrentPlayer(board.getPlayer(0));
-        board.setStep(0);
+        if(clientName == null || board.allDoneProgramming()) {
+            makeProgramFieldsInvisible();
+            makeProgramFieldsVisible(0);
+            board.setPhase(Phase.ACTIVATION);
+            board.calculatePlayerOrder();
+            board.nextPlayer();
+            //board.setCurrentPlayer(board.getPlayer(0));
+            board.setStep(0);
+        }else {
+            board.setPhase(Phase.WAITING);
+        }
+        updateBoard();
     }
 
     /**
@@ -177,10 +186,11 @@ public class GameController {
     private void continuePrograms() {
         do {
             executeNextStep();
+            if(clientName != null){
+                updateBoard();
+            }
         } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode());
     }
-
-    // XXX: V2
 
     /**
      * Execute a card and then increment the step by one
@@ -228,7 +238,6 @@ public class GameController {
             }
 
         }
-
     }
 
     /**
@@ -447,7 +456,7 @@ public class GameController {
         for (Player player : board.getPlayers()
         ) {
             if (checkpoint.checkPlayer(player)) {
-                endGame.endGame(player);
+                appController.endGame(player);
                 board.setPhase(Phase.FINISHED);
                 return;
             }
@@ -499,15 +508,31 @@ public class GameController {
         }
     }
 
-    public void replaceBoard (Board board) {
+    public void replaceBoard (Board board, int version) {
+        if (board.getCurrentPlayer() != null && !board.getCurrentPlayer().getName().equals(clientName)){
+            board.setPhase(Phase.WAITING);
+        }
         this.board = board;
+        this.version.set(version);
+        Platform.runLater(appController::updateBoard);
     }
 
-    public  void updatePlayers (Board newBoard) {
+    public void updatePlayers (Board newBoard, int version) {
         board.updatePlayers(newBoard.getPlayers(), clientName);
+        this.version.set(version);
+        board.setProgrammingItemsLeft(newBoard.programmingItemsLeft);
     }
 
-    public Board getBoard () {
-        return this.board;
+    public void updateBoard(){
+        if(clientName != null) {
+            HttpController.updateBoard(board, version.incrementAndGet());
+        }
+    }
+
+
+
+
+    public boolean hasTurn(Player player) {
+        return board.getCurrentPlayer().getName().equals(player.getName());
     }
 }

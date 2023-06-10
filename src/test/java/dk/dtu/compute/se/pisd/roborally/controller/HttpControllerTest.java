@@ -3,26 +3,18 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 import com.google.gson.Gson;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Game;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.PlayerDTO;
-import org.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class HttpControllerTest {
     GameController gameController;
 
     @BeforeEach
     void setUp() {
-        gameController = new GameController(new Board(8, 8), new EndGame() {
-            @Override
-            public void endGame(Player player) {
-
-            }
-        });
+        gameController = new GameController(new Board(8, 8), null);
         HttpController.setServerUrl("http://localhost:8080");
     }
 

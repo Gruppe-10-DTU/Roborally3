@@ -56,7 +56,7 @@ import java.util.concurrent.ExecutionException;
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public class
-AppController implements Observer, EndGame {
+AppController implements Observer {
 
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
     final private List<String> BOARD_OPTIONS = Arrays.asList("Burnout", "Risky Crossing");
@@ -69,6 +69,8 @@ AppController implements Observer, EndGame {
     private String selectedBoard;
     private GameController gameController;
     private LobbyView lobbyView;
+
+    private BoardUpdateThread boardUpdateThread;
 
     public GamesView getGamesView() {
         return gamesView;
@@ -259,13 +261,18 @@ AppController implements Observer, EndGame {
         }
     }
 
+    public void updateBoard(){
+        if(gameController != null){
+            roboRally.createBoardView(gameController);
+        }
+    }
+
     /**
      * Implement the method from the interface, which will be passsed to the game controller, closing the program.
      *
      * @param player The player who have won
      * @author Nilas Thoegersen
      */
-    @Override
     public void endGame(Player player) {
         Alert won = new Alert(AlertType.INFORMATION);
         won.setTitle("We have a winner");
@@ -289,6 +296,7 @@ AppController implements Observer, EndGame {
 
     @Override
     public void update(Subject subject) {
+
     }
 
     /**
@@ -314,6 +322,7 @@ AppController implements Observer, EndGame {
         // XXX the board should eventually be created programmatically or loaded from a file
         //     here we just create an empty board with the required number of players.
         Board board = new Board(11, 8, selectedBoard, result.get(), null);
+        board.setProgrammingItemsLeft(result.get());
         return board;
     }
 
@@ -369,17 +378,18 @@ AppController implements Observer, EndGame {
         int gameId = HttpController.createGame(nG);
         HttpController.joinGame(gameId, playerDTO);
         gameController.setClientName(playerDTO.getName());
+        gameController.board.setGameId(gameId);
         showLobby(gameId, gameController.board.getMaxPlayers());
-        BoardUpdateThread boardUpdateThread = new BoardUpdateThread(gameId, gameController);
-        boardUpdateThread.start();
         showLobby(gameId, board.getMaxPlayers());
     }
     public void launchGame(int id){
         Game game = HttpController.getGame(id);
         if(game != null) {
-            gameController.replaceBoard(JSONReader.parseBoard(new JSONObject(game.getBoard())));
+            gameController.replaceBoard(JSONReader.parseBoard(new JSONObject(game.getBoard())), game.getVersion());
             gameController.startProgrammingPhase();
             this.roboRally.createBoardView(gameController);
+            boardUpdateThread = new BoardUpdateThread(id, gameController);
+            boardUpdateThread.start();
         } else {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Connection Error");
@@ -455,8 +465,6 @@ AppController implements Observer, EndGame {
                 getOnlineGame(gameId);
                 if(gameController != null) gameController.setClientName(playerName);
                 showLobby(selectedItem.getId(), selectedItem.getMaxPlayers());
-
-
             }
         }
     }
@@ -530,6 +538,7 @@ AppController implements Observer, EndGame {
             HttpController.pushGameUpdate(game,gameId);
         }
     }
+
     public void initJoinedPlayerInfo(Board board, PlayerDTO playerDTO){
         int playerColor = board.getNumberOfPlayers();
         Player player = new Player(board, PLAYER_COLORS.get(playerColor), playerDTO.getName());
@@ -541,10 +550,11 @@ AppController implements Observer, EndGame {
         Game game = HttpController.getGame(gameID);
         if(game == null) return;
         Board board = JSONReader.parseBoard(new JSONObject(game.getBoard()));
+        board.setGameId(gameID);
         if(gameController == null){
             gameController = new GameController(board,this);
         }else{
-            gameController.replaceBoard(board);
+            gameController.replaceBoard(board, game.getVersion());
         }
     }
 

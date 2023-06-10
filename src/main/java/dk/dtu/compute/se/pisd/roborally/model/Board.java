@@ -54,7 +54,8 @@ public class Board extends Subject {
     private int number = 1;
 
     private Integer gameId;
-    private PriorityAntenna priorityAntenna;
+    public int programmingItemsLeft;
+    private transient PriorityAntenna priorityAntenna;
 
     private Space[][] spaces;
 
@@ -89,7 +90,7 @@ public class Board extends Subject {
     private final TreeSet<SequenceAction> boardActions;
 
 
-    private RebootToken rebootToken;
+    private transient RebootToken rebootToken;
 
     public RebootToken getRebootToken() {
         return rebootToken;
@@ -547,6 +548,10 @@ public class Board extends Subject {
         playerOrder.add(player);
     }
 
+    public void updateView(){
+        notifyChange();
+    }
+
     public void updatePlayers(List<Player> newPlayers, String clientName) {
         for (int i = 0; i < players.size(); i++) {
             if (players.get(i).getName() != clientName) {
@@ -555,5 +560,15 @@ public class Board extends Subject {
         }
     }
 
+    public boolean allDoneProgramming(){
+        return --programmingItemsLeft == 0;
+    }
 
+    public int getProgrammingItemsLeft() {
+        return programmingItemsLeft;
+    }
+
+    public void setProgrammingItemsLeft(int programmingItemsLeft) {
+        this.programmingItemsLeft = programmingItemsLeft;
+    }
 }

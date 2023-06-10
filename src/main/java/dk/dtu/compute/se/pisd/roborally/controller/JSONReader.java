@@ -118,6 +118,9 @@ public class JSONReader {
             player.setPlayer();
             board.nextSpawn();
         }
+        if(object.has("gameId")) {
+            board.setGameId(object.getInt("gameId"));
+        }
         JSONArray jsonArray = object.getJSONArray("playerOrder");
         for (int i = 0; i < jsonArray.length(); i++) {
             String player = jsonArray.getJSONObject(i).getString("name");
@@ -128,7 +131,9 @@ public class JSONReader {
         }
         board.setStep(object.getInt("step"));
         board.setPhase(Phase.valueOf(object.getString("phase")));
-
+        if(object.has("programmingItemsLeft")){
+            board.setProgrammingItemsLeft(object.getInt("programmingItemsLeft"));
+        }
         return board;
     }
 

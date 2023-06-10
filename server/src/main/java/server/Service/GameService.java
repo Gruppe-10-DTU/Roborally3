@@ -1,6 +1,5 @@
 package server.Service;
 
-import com.google.gson.Gson;
 import org.springframework.stereotype.Service;
 import server.model.Game;
 import server.model.GameState;
@@ -8,13 +7,9 @@ import server.repository.GameRepository;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class GameService {
-
-    Gson gson = new Gson();
-
     private GameRepository gameRepository;
 
     public GameService(GameRepository gameRepository) {
@@ -26,25 +21,12 @@ public class GameService {
         return game;
     }
 
-    public Game getGameById(int id) {
-        for (Game gms : gameRepository.findAll()) {
-            if (gms.getGameID() == id)
-                return gms;
-        }
-        return null;
-    }
-
-    public Game SaveGame(int id) {
-        return getGameById(id);
-    }
-
     public void updateGame(Game game) {
         gameRepository.save(game);
     }
 
-    public List<Game> deleteGame(int id) {
-        gameRepository.delete(getGameById(id));
-        return gameRepository.findAll();
+    public void deleteGame(int id) {
+        gameRepository.deleteById(id);
     }
 
     public List<Game> loadGames() {
@@ -56,6 +38,10 @@ public class GameService {
         return gameRepository.findById(id).orElse(null);
     }
 
+    public Game getGameWithVersion(int id, int version){
+        return gameRepository.findGameByIdAndVersionGreaterThan(id, version);
+    }
+
     public void updateCurrPlayers(int gameId, int count) {
         Game game = gameRepository.findById(gameId).orElse(null);
         if (game != null) {
@@ -63,5 +49,4 @@ public class GameService {
             gameRepository.save(game);
         }
     }
-
 }

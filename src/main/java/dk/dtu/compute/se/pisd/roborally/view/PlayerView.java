@@ -96,7 +96,9 @@ public class PlayerView extends Tab implements ViewObserver {
         //      refactored.
 
         finishButton = new Button("Finish Programming");
-        finishButton.setOnAction(e -> gameController.finishProgrammingPhase());
+        finishButton.setOnAction(e -> {
+            gameController.finishProgrammingPhase();
+        });
 
         executeButton = new Button("Execute Program");
         executeButton.setOnAction(e -> gameController.executePrograms());
@@ -163,6 +165,7 @@ public class PlayerView extends Tab implements ViewObserver {
                 }
             }
 
+
             if (player.board.getPhase() != Phase.PLAYER_INTERACTION) {
                 if (!programPane.getChildren().contains(buttonPanel)) {
                     programPane.getChildren().remove(playerInteractionPanel);
@@ -189,6 +192,10 @@ public class PlayerView extends Tab implements ViewObserver {
                         stepButton.setDisable(false);
                         break;
 
+                    case WAITING:
+                        finishButton.setDisable(true);
+                        executeButton.setDisable(true);
+                        stepButton.setDisable(true);
                     default:
                         finishButton.setDisable(true);
                         executeButton.setDisable(true);
