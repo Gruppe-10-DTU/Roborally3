@@ -39,8 +39,6 @@ public class BoardUpdateThread extends Thread {
 
                 if (currentBoard.getPhase() == Phase.PROGRAMMING) {
                     gameController.updatePlayers(newBoard, currentVersion);
-                } else if (currentBoard.getPhase() == Phase.WAITING && newBoard.getPhase() == Phase.PROGRAMMING) {
-                    gameController.updatePlayers(newBoard, currentVersion);
                 } else {
                     gameController.replaceBoard(newBoard, currentVersion);
                 }

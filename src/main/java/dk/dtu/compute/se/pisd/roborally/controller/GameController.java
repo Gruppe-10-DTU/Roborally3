@@ -188,6 +188,7 @@ public class GameController {
             executeNextStep();
             if(clientName != null){
                 updateBoard();
+                board.setPhase(Phase.WAITING);
             }
         } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode());
     }
@@ -209,7 +210,6 @@ public class GameController {
                 card.doAction(this);
             }
             incrementStep(step);
-
         }
     }
 
@@ -236,8 +236,8 @@ public class GameController {
             } else {
                 startProgrammingPhase();
             }
-
         }
+
     }
 
     /**
@@ -509,8 +509,8 @@ public class GameController {
     }
 
     public void replaceBoard (Board board, int version) {
-        if (board.getCurrentPlayer() != null && !board.getCurrentPlayer().getName().equals(clientName)){
-            board.setPhase(Phase.WAITING);
+        if (board.getPhase() == Phase.ACTIVATION && !board.getCurrentPlayer().getName().equals(clientName)){
+            board.setPhase(Phase.ACTIVATION);
         }
         this.board = board;
         this.version.set(version);
