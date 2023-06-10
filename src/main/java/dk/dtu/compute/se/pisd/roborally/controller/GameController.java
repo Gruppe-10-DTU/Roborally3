@@ -31,6 +31,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static dk.dtu.compute.se.pisd.roborally.model.Phase.WAITING;
+
 /**
  * ...
  *
@@ -119,11 +121,10 @@ public class GameController {
             board.nextPlayer();
             //board.setCurrentPlayer(board.getPlayer(0));
             board.setStep(0);
-            updateBoard();
-        }else {
-            updateBoard();
-            board.setPhase(Phase.WAITING);
+            //updateBoard();
         }
+            updateBoard();
+            board.setPhase(WAITING);
     }
 
     /**
@@ -190,6 +191,9 @@ public class GameController {
         } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode());
         if(clientName != null){
             updateBoard();
+            if(board.getPhase() == Phase.ACTIVATION){
+                board.setPhase(WAITING);
+            }
         }
     }
 
@@ -510,7 +514,7 @@ public class GameController {
 
     public void replaceBoard (Board board, int version) {
         if (board.getPhase() == Phase.ACTIVATION && !board.getCurrentPlayer().getName().equals(clientName)){
-            board.setPhase(Phase.WAITING);
+            board.setPhase(WAITING);
         }
         this.board = board;
         this.version.set(version);
