@@ -188,7 +188,7 @@ public class GameController {
             executeNextStep();
             if(clientName != null){
                 updateBoard();
-                board.setPhase(Phase.WAITING);
+                break;
             }
         } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode());
     }
@@ -233,11 +233,11 @@ public class GameController {
                 board.calculatePlayerOrder();
                 board.nextPlayer();
                 checkIfGameIsDone();
+
             } else {
                 startProgrammingPhase();
             }
         }
-
     }
 
     /**
@@ -510,7 +510,7 @@ public class GameController {
 
     public void replaceBoard (Board board, int version) {
         if (board.getPhase() == Phase.ACTIVATION && !board.getCurrentPlayer().getName().equals(clientName)){
-            board.setPhase(Phase.ACTIVATION);
+            board.setPhase(Phase.WAITING);
         }
         this.board = board;
         this.version.set(version);

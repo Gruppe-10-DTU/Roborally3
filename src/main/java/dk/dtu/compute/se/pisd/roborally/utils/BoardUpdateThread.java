@@ -36,11 +36,13 @@ public class BoardUpdateThread extends Thread {
                 Board newBoard = JSONReader.parseBoard(jsonBoard);
 
                 Board currentBoard = gameController.board;
-
                 if (currentBoard.getPhase() == Phase.PROGRAMMING) {
+                    gameController.updatePlayers(newBoard, currentVersion);
+                } else if (currentBoard.getPhase() == Phase.WAITING && newBoard.getPhase() == Phase.PROGRAMMING && currentBoard.getProgrammingItemsLeft() != 0) {
                     gameController.updatePlayers(newBoard, currentVersion);
                 } else {
                     gameController.replaceBoard(newBoard, currentVersion);
+
                 }
 
 
