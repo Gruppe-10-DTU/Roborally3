@@ -385,9 +385,12 @@ AppController implements Observer {
     public void launchGame(int id){
         Game game = HttpController.getGame(id);
         if(game != null) {
-            gameController.replaceBoard(JSONReader.parseBoard(new JSONObject(game.getBoard())), game.getVersion());
-            gameController.startProgrammingPhase();
-            gameController.updateBoard();
+            Board board = JSONReader.parseBoard(new JSONObject(game.getBoard()));
+            gameController.replaceBoard(board, game.getVersion());
+            if(board.getPhase()==Phase.INITIALISATION){
+                gameController.startProgrammingPhase();
+                gameController.updateBoard();
+            }
             this.roboRally.createBoardView(gameController);
             boardUpdateThread = new BoardUpdateThread(id, gameController);
             boardUpdateThread.start();

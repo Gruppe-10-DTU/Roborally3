@@ -21,7 +21,6 @@ public class BoardUpdateThread extends Thread {
     public BoardUpdateThread(int gameId, GameController gameController) {
         this.gameController = gameController;
         this.gameId = gameId;
-
     }
 
 
