@@ -162,4 +162,23 @@ public class HttpController {
         return gson.fromJson(result,new TypeToken<List<Game>>(){}.getType());
     }
 
+    public static Game getGameUpdate(int id, int version) {
+
+        Game game = null;
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverUrl + "/games/" + id + "?version=" + version ))
+                .GET()
+                .build();
+        try {
+            lastResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (!lastResponse.body().equals("")) {
+                game = gson.fromJson(lastResponse.body(), Game.class);
+            }
+        } catch (Exception exception){
+            exception.printStackTrace();
+        }
+        return game;
+    }
+
 }
