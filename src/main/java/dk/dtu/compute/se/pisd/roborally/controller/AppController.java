@@ -314,7 +314,6 @@ AppController implements Observer, EndGame {
         // XXX the board should eventually be created programmatically or loaded from a file
         //     here we just create an empty board with the required number of players.
         Board board = new Board(11, 8, selectedBoard, result.get(), null);
-        board.setMaxPlayers(result.get());
         return board;
     }
 
@@ -369,9 +368,24 @@ AppController implements Observer, EndGame {
         PlayerDTO playerDTO = new PlayerDTO(board.getPlayer(0).getName());
         int gameId = HttpController.createGame(nG);
         HttpController.joinGame(gameId, playerDTO);
+        gameController.setClientName(playerDTO.getName());
         showLobby(gameId, gameController.board.getMaxPlayers());
         BoardUpdateThread boardUpdateThread = new BoardUpdateThread(gameId, gameController);
         boardUpdateThread.start();
+        showLobby(gameId, board.getMaxPlayers());
+    }
+    public void launchGame(int id){
+        Game game = HttpController.getGame(id);
+        if(game != null) {
+            gameController.replaceBoard(JSONReader.parseBoard(new JSONObject(game.getBoard())));
+            gameController.startProgrammingPhase();
+            this.roboRally.createBoardView(gameController);
+        } else {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Connection Error");
+            error.setHeaderText("Could not retrive game from server.\nPlease try again!");
+            error.showAndWait();
+        }
     }
 
     /**
@@ -438,7 +452,11 @@ AppController implements Observer, EndGame {
                 HttpController.joinGame(gameId, player);
                 System.out.println("Player: " + playerName + " trying to join " + selectedItem);
                 updateGame(gameId,player);
+                getOnlineGame(gameId);
+                if(gameController != null) gameController.setClientName(playerName);
                 showLobby(selectedItem.getId(), selectedItem.getMaxPlayers());
+
+
             }
         }
     }
@@ -504,6 +522,7 @@ AppController implements Observer, EndGame {
         Board board = null;
         if (game != null) {
             board = JSONReader.parseBoard(new JSONObject(game.getBoard()));
+            board.setGameId(gameId);
             initJoinedPlayerInfo(board,playerDTO);
             game.setBoard(gson.toJson(board));
             int gameVersion = game.getVersion()+1;
@@ -512,11 +531,21 @@ AppController implements Observer, EndGame {
         }
     }
     public void initJoinedPlayerInfo(Board board, PlayerDTO playerDTO){
-        int playerColor = board.getPlayersNumber();
+        int playerColor = board.getNumberOfPlayers();
         Player player = new Player(board, PLAYER_COLORS.get(playerColor), playerDTO.getName());
         board.addPlayer(player);
         Space spawnSpace = board.nextSpawn();
         player.setSpace(board.getSpace(spawnSpace.getX(), spawnSpace.getY()));
+    }
+    public void getOnlineGame(int gameID){
+        Game game = HttpController.getGame(gameID);
+        if(game == null) return;
+        Board board = JSONReader.parseBoard(new JSONObject(game.getBoard()));
+        if(gameController == null){
+            gameController = new GameController(board,this);
+        }else{
+            gameController.replaceBoard(board);
+        }
     }
 
 }

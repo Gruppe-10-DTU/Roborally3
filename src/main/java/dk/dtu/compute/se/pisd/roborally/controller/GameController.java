@@ -25,7 +25,6 @@ import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -61,7 +60,7 @@ public class GameController {
             if (!currentPlayer.getSpace().equals(space) || !space.hasWall(currentPlayer.getHeading())) {
                 board.setStep(board.getStep() + 1);
                 currentPlayer.setSpace(space);
-                board.setCurrentPlayer(board.getPlayer((board.getPlayerNumber(currentPlayer) + 1) % board.getPlayersNumber()));
+                board.setCurrentPlayer(board.getPlayer((board.getPlayerNumber(currentPlayer) + 1) % board.getNumberOfPlayers()));
             }
         }
     }
@@ -80,7 +79,7 @@ public class GameController {
         board.setCurrentPlayer(board.getPlayer(0));
         board.setStep(0);
 
-        for (int i = 0; i < board.getPlayersNumber(); i++) {
+        for (int i = 0; i < board.getNumberOfPlayers(); i++) {
             Player player = board.getPlayer(i);
             if (player != null) {
                 for (int j = 0; j < Player.NO_REGISTERS; j++) {
@@ -126,7 +125,7 @@ public class GameController {
     // XXX: V2
     private void makeProgramFieldsVisible(int register) {
         if (register >= 0 && register < Player.NO_REGISTERS) {
-            for (int i = 0; i < board.getPlayersNumber(); i++) {
+            for (int i = 0; i < board.getNumberOfPlayers(); i++) {
                 Player player = board.getPlayer(i);
                 CommandCardField field = player.getProgramField(register);
                 field.setVisible(true);
@@ -140,7 +139,7 @@ public class GameController {
      * @author Ekkart Kindler, ekki@dtu.dk
      */
     private void makeProgramFieldsInvisible() {
-        for (int i = 0; i < board.getPlayersNumber(); i++) {
+        for (int i = 0; i < board.getNumberOfPlayers(); i++) {
             Player player = board.getPlayer(i);
             for (int j = 0; j < Player.NO_REGISTERS; j++) {
                 CommandCardField field = player.getProgramField(j);

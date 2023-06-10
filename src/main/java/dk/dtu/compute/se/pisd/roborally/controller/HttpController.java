@@ -93,10 +93,23 @@ public class HttpController {
             return 418;
         }
     }
+    public static int startGame(int gameID){
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverUrl + "/games/" + gameID + "/gamestates"))
+                .PUT(HttpRequest.BodyPublishers.ofString("STARTED"))
+                .build();
+        try{
+            lastResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return lastResponse.statusCode();
+    }
 
     public static int pushGameUpdate(Game game, int gameID){
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + "/games/" + gameID))
+                .setHeader("Content-Type","application/json")
                 .PUT(HttpRequest.BodyPublishers.ofString(gson.toJson(game)))
                 .build();
         try {

@@ -2,6 +2,7 @@ package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.AppController;
+import dk.dtu.compute.se.pisd.roborally.controller.HttpController;
 import dk.dtu.compute.se.pisd.roborally.model.Game;
 import dk.dtu.compute.se.pisd.roborally.model.PlayerDTO;
 import javafx.scene.Scene;
@@ -40,6 +41,7 @@ public class LobbyView extends VBox implements ViewObserver{
                     stage.close();
                 });
         stage.setTitle("Lobby");
+        stage.setMinWidth(300);
         stage.show();
     }
 
@@ -54,12 +56,22 @@ public class LobbyView extends VBox implements ViewObserver{
     private ButtonBar addButtons(TableColumn<Game, String> nameColumn, int maxPlayers){
         Button leave = new Button("Leave");
         leave.setOnAction(e -> leaveGame());
-
+        ButtonBar buttonBar = new ButtonBar();
         Button refresh = new Button("Refresh");
         refresh.setOnAction(e -> { refreshList(tableView,nameColumn, maxPlayers);
+            if(maxPlayers == tableView.getItems().size()){
+                Button start = new Button("Start");
+                start.setOnAction(event -> { System.out.println("Start Game");
+                    startGame();
+                });
+                if(buttonBar.getButtons().size() < 3) {
+                    buttonBar.getButtons().add(start);
+                }
+                this.setPrefWidth(buttonBar.getWidth());
+            }
         });
 
-        ButtonBar buttonBar = new ButtonBar();
+
         buttonBar.getButtons().addAll(leave, refresh);
         return buttonBar;
     }
@@ -75,7 +87,17 @@ public class LobbyView extends VBox implements ViewObserver{
             throw new RuntimeException(e);
         }
     }
-    private void getPlayerList(TableView tableView) throws Exception {
+    private void startGame(){
+        int responseCode = HttpController.startGame(gameId);
+        if (responseCode >= 200 && responseCode < 300) appController.launchGame(gameId);
+        else {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Connection Error");
+            error.setHeaderText("Server response not OK.\nPlease try again!");
+            error.showAndWait();
+        }
+    }
+    private void getPlayerList(TableView<PlayerDTO> tableView) throws Exception {
         tableView.getItems().clear();
         List<PlayerDTO> playerList = appController.getPlayerList(gameId);
         tableView.getItems().addAll(playerList);

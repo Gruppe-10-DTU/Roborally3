@@ -27,7 +27,7 @@ public class Checkpoint extends Space implements SequenceAction {
      */
     public Checkpoint(Board board, int x, int y, int number) {
         super(board, x, y);
-        this.players = new HashSet<>(board.getPlayersNumber());
+        this.players = new HashSet<>(board.getNumberOfPlayers());
         this.number = number;
         board.addBoardActions(this);
     }
@@ -43,7 +43,7 @@ public class Checkpoint extends Space implements SequenceAction {
      */
     public Checkpoint(Board board, int x, int y, int number, Checkpoint previous) {
         super(board, x, y);
-        this.players = new HashSet<>(board.getPlayersNumber());
+        this.players = new HashSet<>(board.getNumberOfPlayers());
         this.number = number;
         this.previous = previous;
         board.addBoardActions(this);
