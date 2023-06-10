@@ -119,10 +119,11 @@ public class GameController {
             board.nextPlayer();
             //board.setCurrentPlayer(board.getPlayer(0));
             board.setStep(0);
+            updateBoard();
         }else {
+            updateBoard();
             board.setPhase(Phase.WAITING);
         }
-        updateBoard();
     }
 
     /**
@@ -186,11 +187,10 @@ public class GameController {
     private void continuePrograms() {
         do {
             executeNextStep();
-            if(clientName != null){
-                updateBoard();
-                break;
-            }
         } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode());
+        if(clientName != null){
+            updateBoard();
+        }
     }
 
     /**
