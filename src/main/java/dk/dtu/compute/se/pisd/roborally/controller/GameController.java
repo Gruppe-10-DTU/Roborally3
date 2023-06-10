@@ -28,6 +28,8 @@ import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 /**
  * ...
  *
@@ -499,5 +501,13 @@ public class GameController {
 
     public void replaceBoard (Board board) {
         this.board = board;
+    }
+
+    public  void updatePlayers (Board newBoard) {
+        board.updatePlayers(newBoard.getPlayers(), clientName);
+    }
+
+    public Board getBoard () {
+        return this.board;
     }
 }

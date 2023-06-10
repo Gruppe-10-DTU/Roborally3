@@ -35,14 +35,21 @@ public class GameController {
         return ResponseEntity.ok().body(gamestring);
     }
 
-    @RequestMapping(value = "/games/{id}", method = RequestMethod.GET)
-    public Game getSpecificGame(@PathVariable int id) {
-        return gameService.getGame(id);
-    }
+//    @RequestMapping(value = "/games/{id}", method = RequestMethod.GET)
+//    public Game getSpecificGame(@PathVariable int id) {
+//        return gameService.getGame(id);
+//    }
 
-    @RequestMapping(value = "/games/{id}/info", method = RequestMethod.GET)
-    public GameDTO getGameInfo(@PathVariable int id) {
-        return gameDTOMapper.map(gameService.getGameById(id));
+    @RequestMapping(value = "/games/{id}", method = RequestMethod.GET)
+    public Game getGameInfo(@RequestParam(name = "version") String version, @PathVariable int id) {
+        Game game = gameService.getGameById(id);;
+        if (!version.isEmpty()) {
+            if (game.getVersion() <= Integer.parseInt(version)) {
+                game = null;
+            }
+        }
+
+        return game;
     }
 
     @RequestMapping(value = "/games/{id}/bords", method = RequestMethod.GET)
@@ -68,6 +75,8 @@ public class GameController {
         gameService.updateGame(game);
         return ResponseEntity.ok().body(game);
     }
+
+
 
 
 }
