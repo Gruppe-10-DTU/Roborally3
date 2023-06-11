@@ -293,6 +293,8 @@ public class GameController {
         board.setPhase(Phase.ACTIVATION);
         executeCommand(board.getCurrentPlayer(), command);
         incrementStep(board.getStep());
+        updateBoard();
+        board.setPhase(WAITING);
     }
 
     /**
