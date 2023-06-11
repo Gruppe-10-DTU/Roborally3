@@ -360,6 +360,7 @@ AppController implements Observer {
             board = initBoardinfo();
 
             nG = new Game(board.getBoardName(), 0, board.getMaxPlayers(), gson.toJson(board));
+            nG.setState("INITIALIZING");
         }else if(choice.isPresent() && choice.get() == loadGame) {
             board = retrieveSavedGame();
             if (board != null) {
@@ -389,7 +390,11 @@ AppController implements Observer {
         Game game = HttpController.getGame(id);
         if(game != null) {
             Board board = JSONReader.parseBoard(new JSONObject(game.getBoard()));
-            board.setGameId(id);
+            try {
+                board.setGameId(id);
+            }catch (Exception e){
+
+            }
             List<PlayerDTO> players;
             Player newPlayer;
             try {
@@ -397,19 +402,29 @@ AppController implements Observer {
             } catch (Exception e){
                 return -1;
             }
+
             for (int i = 0; i < players.size(); i++) {
-                newPlayer = new Player(board, PLAYER_COLORS.get(i), players.get(i).getName());
-                board.addPlayer(newPlayer);
-                Space spawnSpace = board.nextSpawn();
-                newPlayer.setSpace(spawnSpace);
+                if(game.getState().equals("SAVED")){
+                    board.getPlayer(i).setName(players.get(i).getName());
+                }else {
+                    newPlayer = new Player(board, PLAYER_COLORS.get(i), players.get(i).getName());
+                    board.addPlayer(newPlayer);
+                    Space spawnSpace = board.nextSpawn();
+                    newPlayer.setSpace(spawnSpace);
+                }
             }
+            int statusCode = HttpController.startGame(id);
+            if (statusCode != 200){
+                return statusCode;
+            }
+
             gameController.replaceBoard(board, game.getVersion());
 
             if(board.getPhase()==Phase.INITIALISATION){
                 gameController.startProgrammingPhase();
-                gameController.updateBoard();
             }
-            return HttpController.startGame(id);
+            gameController.updateBoard();
+            return statusCode;
         } else {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Connection Error");
@@ -564,7 +579,11 @@ AppController implements Observer {
         Game game = HttpController.getGame(gameID);
         if(game == null) return;
         Board board = JSONReader.parseBoard(new JSONObject(game.getBoard()));
-        board.setGameId(gameID);
+        try {
+            board.setGameId(gameID);
+        } catch (Exception e){
+
+        }
         if(gameController == null){
             gameController = new GameController(board,this);
         }else{

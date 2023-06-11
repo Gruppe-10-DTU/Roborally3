@@ -16,7 +16,6 @@ public class GameService {
         this.gameRepository = gameRepository;
     }
     public Game createGame(Game game) {
-        game.setState(GameState.INITIALIZING);
         gameRepository.save(game);
         return game;
     }

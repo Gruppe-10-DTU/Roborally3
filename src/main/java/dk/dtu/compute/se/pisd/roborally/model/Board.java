@@ -316,15 +316,7 @@ public class Board extends Subject {
     }
 
     public void setGameId(int gameId) {
-        if (this.gameId == null) {
-            this.gameId = gameId;
-        } else {
-            if (!this.gameId.equals(gameId)) {
-
-                //TODO custom exception?
-                throw new IllegalStateException("A game with a set id may not be assigned a new id!");
-            }
-        }
+        this.gameId = gameId;
     }
 
     public Space getSpace(Space space){
