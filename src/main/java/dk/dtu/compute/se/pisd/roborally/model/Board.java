@@ -386,6 +386,7 @@ public class Board extends Subject {
     public boolean nextPlayer() {
         if (playerOrder.size() > 0) {
             current = playerOrder.poll();
+            notifyChange();
             return true;
         } else return false;
     }
