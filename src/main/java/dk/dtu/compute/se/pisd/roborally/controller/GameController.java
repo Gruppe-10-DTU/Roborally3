@@ -32,7 +32,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Phase.PLAYER_INTERACTION;
-import static dk.dtu.compute.se.pisd.roborally.model.Phase.WAITING;
 
 /**
  * ...
@@ -81,9 +80,8 @@ public class GameController {
         for (Player players: board.getPlayers()) {
             players.setRebooting(false);
         }
-        board.programmingItemsLeft = board.getNumberOfPlayers();
         board.setPhase(Phase.PROGRAMMING);
-        board.setCurrentPlayer(board.getPlayer(0));
+        board.calculatePlayerOrder();
         board.setStep(0);
 
         for (int i = 0; i < board.getNumberOfPlayers(); i++) {
@@ -106,6 +104,8 @@ public class GameController {
                 }
             }
         }
+        board.nextPlayer();
+
     }
 
     /**
@@ -114,7 +114,7 @@ public class GameController {
      * @author Ekkart Kindler, ekki@dtu.dk
      */
     public void finishProgrammingPhase() {
-        if(clientName == null || board.allDoneProgramming()) {
+        if(clientName == null || !board.nextPlayer()) {
             makeProgramFieldsInvisible();
             makeProgramFieldsVisible(0);
             board.setPhase(Phase.ACTIVATION);
@@ -126,7 +126,6 @@ public class GameController {
         }
         if(clientName != null){
             updateBoard();
-            board.setPhase(WAITING);
         }
     }
 
@@ -191,12 +190,10 @@ public class GameController {
     private void continuePrograms() {
         do {
             executeNextStep();
+
         } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode());
         if(clientName != null){
             updateBoard();
-            if(board.getPhase() == Phase.ACTIVATION){
-                board.setPhase(WAITING);
-            }
         }
     }
 
@@ -295,7 +292,6 @@ public class GameController {
         executeCommand(board.getCurrentPlayer(), command);
         incrementStep(board.getStep());
         updateBoard();
-        board.setPhase(WAITING);
     }
 
     /**
@@ -518,18 +514,12 @@ public class GameController {
     }
 
     public void replaceBoard (Board board, int version) {
-        if (board.getPhase() == Phase.ACTIVATION && !board.getCurrentPlayer().getName().equals(clientName)){
-            board.setPhase(WAITING);
-        }
         this.board = board;
         this.version.set(version);
-        Platform.runLater(appController::updateBoard);
+
     }
 
-    public void updatePlayers (Board newBoard, int version) {
-        board.updatePlayers(newBoard.getPlayers(), clientName);
-        this.version.set(version);
-        board.setProgrammingItemsLeft(newBoard.programmingItemsLeft);
+    public void refreshView(){
         Platform.runLater(appController::updateBoard);
     }
 

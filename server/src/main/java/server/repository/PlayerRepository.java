@@ -11,5 +11,7 @@ public interface PlayerRepository extends CrudRepository<Player, Integer> {
 
     int countPlayerByGameId(int id);
 
+    int countPlayerByGameIdAndName(int id, String name);
+
 
 }

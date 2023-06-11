@@ -121,9 +121,7 @@ public class JSONReader {
         }
         board.setStep(object.getInt("step"));
         board.setPhase(Phase.valueOf(object.getString("phase")));
-        if(object.has("programmingItemsLeft")){
-            board.setProgrammingItemsLeft(object.getInt("programmingItemsLeft"));
-        }
+
         if(object.has("gameLog")){
             Type token = new TypeToken<List<Pair<String, String>>>(){}.getType();
             List<Pair<String, String>> log = gson.fromJson(object.getJSONArray("gameLog").toString(), token);

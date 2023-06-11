@@ -2,7 +2,6 @@ package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.AppController;
-import dk.dtu.compute.se.pisd.roborally.controller.HttpController;
 import dk.dtu.compute.se.pisd.roborally.model.Game;
 import dk.dtu.compute.se.pisd.roborally.model.PlayerDTO;
 import javafx.scene.Scene;
@@ -58,21 +57,21 @@ public class LobbyView extends VBox implements ViewObserver{
         leave.setOnAction(e -> leaveGame());
         ButtonBar buttonBar = new ButtonBar();
         Button refresh = new Button("Refresh");
+        Button start = new Button("Start");
+        start.setVisible(false);
+        start.setOnAction(event -> {
+            System.out.println("Start Game");
+            startGame();
+        });
         refresh.setOnAction(e -> { refreshList(tableView,nameColumn, maxPlayers);
             if(maxPlayers == tableView.getItems().size()){
-                Button start = new Button("Start");
-                start.setOnAction(event -> { System.out.println("Start Game");
-                    startGame();
-                });
-                if(buttonBar.getButtons().size() < 3) {
-                    buttonBar.getButtons().add(start);
-                }
-                this.setPrefWidth(buttonBar.getWidth());
+
+                start.setVisible(true);
             }
         });
 
 
-        buttonBar.getButtons().addAll(leave, refresh);
+        buttonBar.getButtons().addAll(leave, refresh, start);
         return buttonBar;
     }
 
@@ -88,9 +87,8 @@ public class LobbyView extends VBox implements ViewObserver{
         }
     }
     private void startGame(){
-        int responseCode = HttpController.startGame(gameId);
-        if (responseCode >= 200 && responseCode < 300) appController.launchGame(gameId);
-        else {
+        int responseCode = appController.launchGame(gameId);
+        if (responseCode < 200 || responseCode > 300) {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Connection Error");
             error.setHeaderText("Server response not OK.\nPlease try again!");

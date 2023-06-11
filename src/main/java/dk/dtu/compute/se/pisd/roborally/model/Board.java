@@ -54,7 +54,6 @@ public class Board extends Subject {
     private int number = 1;
 
     private Integer gameId;
-    public int programmingItemsLeft;
     private transient PriorityAntenna priorityAntenna;
 
     private Space[][] spaces;
@@ -560,17 +559,5 @@ public class Board extends Subject {
                 players.set(i, newPlayers.get(i));
             }
         }
-    }
-
-    public boolean allDoneProgramming(){
-        return --programmingItemsLeft == 0;
-    }
-
-    public int getProgrammingItemsLeft() {
-        return programmingItemsLeft;
-    }
-
-    public void setProgrammingItemsLeft(int programmingItemsLeft) {
-        this.programmingItemsLeft = programmingItemsLeft;
     }
 }
