@@ -11,7 +11,7 @@ import org.json.JSONObject;
 public class BoardUpdateThread extends Thread {
 
     private int gameId;
-    private boolean gameEnded = false;
+    private volatile boolean gameEnded = false;
 
     private GameController gameController;
 
@@ -29,16 +29,15 @@ public class BoardUpdateThread extends Thread {
 
             Game result = HttpController.getGameUpdate(gameId, currentVersion);
 
-            if (result != null) {
+            if (result != null && result.getState().equals("STARTED")) {
+
                 currentVersion = result.getVersion();
                 JSONObject jsonBoard = new JSONObject(result.getBoard());
                 Board newBoard = JSONReader.parseBoard(jsonBoard);
 
                 Board currentBoard = gameController.board;
-                if(newBoard.getPhase() == Phase.PLAYER_INTERACTION){
 
-                }
-                else if (currentBoard.getPhase() == Phase.PROGRAMMING) {
+                if (currentBoard.getPhase() == Phase.PROGRAMMING) {
                     gameController.updatePlayers(newBoard, currentVersion);
                 } else if (currentBoard.getPhase() == Phase.WAITING && newBoard.getPhase() == Phase.PROGRAMMING && currentBoard.getProgrammingItemsLeft() != 0) {
                 //} else if (currentBoard.getPhase() == Phase.WAITING && currentBoard.getProgrammingItemsLeft() != 0) {
@@ -51,7 +50,7 @@ public class BoardUpdateThread extends Thread {
             }
 
             try {
-                Thread.sleep(1000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

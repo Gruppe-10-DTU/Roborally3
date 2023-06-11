@@ -381,6 +381,8 @@ AppController implements Observer {
         gameController.board.setGameId(gameId);
         showLobby(gameId, gameController.board.getMaxPlayers());
         showLobby(gameId, board.getMaxPlayers());
+        boardUpdateThread = new BoardUpdateThread(gameId, gameController);
+        boardUpdateThread.start();
     }
     public void launchGame(int id){
         Game game = HttpController.getGame(id);
@@ -391,9 +393,6 @@ AppController implements Observer {
                 gameController.startProgrammingPhase();
                 gameController.updateBoard();
             }
-            this.roboRally.createBoardView(gameController);
-            boardUpdateThread = new BoardUpdateThread(id, gameController);
-            boardUpdateThread.start();
         } else {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Connection Error");
@@ -469,6 +468,8 @@ AppController implements Observer {
                 getOnlineGame(gameId);
                 if(gameController != null) gameController.setClientName(playerName);
                 showLobby(selectedItem.getId(), selectedItem.getMaxPlayers());
+                boardUpdateThread = new BoardUpdateThread(gameId, gameController);
+                boardUpdateThread.start();
             }
         }
     }

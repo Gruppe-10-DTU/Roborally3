@@ -31,6 +31,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static dk.dtu.compute.se.pisd.roborally.model.Phase.PLAYER_INTERACTION;
 import static dk.dtu.compute.se.pisd.roborally.model.Phase.WAITING;
 
 /**
@@ -533,6 +534,9 @@ public class GameController {
     }
 
     public void updateBoard(){
+        if(board.getPhase() == PLAYER_INTERACTION){
+            return;
+        }
         if(clientName != null) {
             HttpController.updateBoard(board, version.incrementAndGet());
         }
