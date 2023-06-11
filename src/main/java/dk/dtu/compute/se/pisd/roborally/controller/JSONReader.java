@@ -15,6 +15,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Cards.DamageCard;
 import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import javafx.util.Pair;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -122,6 +123,11 @@ public class JSONReader {
         board.setPhase(Phase.valueOf(object.getString("phase")));
         if(object.has("programmingItemsLeft")){
             board.setProgrammingItemsLeft(object.getInt("programmingItemsLeft"));
+        }
+        if(object.has("gameLog")){
+            Type token = new TypeToken<List<Pair<String, String>>>(){}.getType();
+            List<Pair<String, String>> log = gson.fromJson(object.getString("gameLog"), token);
+            board.setGameLog(log);
         }
         return board;
     }

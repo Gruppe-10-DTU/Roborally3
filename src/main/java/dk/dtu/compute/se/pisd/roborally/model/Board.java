@@ -534,6 +534,9 @@ public class Board extends Subject {
     public List<Pair<String, String>> getGameLog(){
         return gameLog;
     }
+    public void setGameLog(List<Pair<String, String>> gameLog){
+        this.gameLog = gameLog;
+    }
     public void addGameLogEntry(Player player, String event){
         if(gameLog == null) return; //Allows testing without instantiating log
         if(gameLog.size() == 50) gameLog.remove(0);
@@ -545,10 +548,6 @@ public class Board extends Subject {
     }
     public void addPlayerToOder(Player player) {
         playerOrder.add(player);
-    }
-
-    public void updateView(){
-        notifyChange();
     }
 
     public void updatePlayers(List<Player> newPlayers, String clientName) {

@@ -123,8 +123,10 @@ public class GameController {
             board.setStep(0);
             //updateBoard();
         }
-        updateBoard();
-        board.setPhase(WAITING);
+        if(clientName != null){
+            updateBoard();
+            board.setPhase(WAITING);
+        }
     }
 
     /**
@@ -532,12 +534,5 @@ public class GameController {
         if(clientName != null) {
             HttpController.updateBoard(board, version.incrementAndGet());
         }
-    }
-
-
-
-
-    public boolean hasTurn(Player player) {
-        return board.getCurrentPlayer().getName().equals(player.getName());
     }
 }
