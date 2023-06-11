@@ -196,6 +196,7 @@ public class PlayerView extends Tab implements ViewObserver {
                         finishButton.setDisable(true);
                         executeButton.setDisable(true);
                         stepButton.setDisable(true);
+                        break;
                     default:
                         finishButton.setDisable(true);
                         executeButton.setDisable(true);

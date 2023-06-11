@@ -123,8 +123,8 @@ public class GameController {
             board.setStep(0);
             //updateBoard();
         }
-            updateBoard();
-            board.setPhase(WAITING);
+        updateBoard();
+        board.setPhase(WAITING);
     }
 
     /**
@@ -525,6 +525,7 @@ public class GameController {
         board.updatePlayers(newBoard.getPlayers(), clientName);
         this.version.set(version);
         board.setProgrammingItemsLeft(newBoard.programmingItemsLeft);
+        Platform.runLater(appController::updateBoard);
     }
 
     public void updateBoard(){

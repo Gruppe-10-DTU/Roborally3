@@ -104,20 +104,9 @@ public class JSONReader {
             checkpoint = checkpoint.getPrevious();
             savedCheckpoint = savedCheckpoint.getPrevious();
         }
-        Type token = new TypeToken<ArrayList<Player>>(){}.getType();
-        String playersString = object.getJSONArray("players").toString();
+        parsePlayers(board, object);
 
-        List<Player> players = gson.fromJson(playersString, token);
-        for (Player player : players
-        ) {
 
-            player.board = board;
-            Space space = board.getSpace(player.getSpace());
-            board.addPlayer(player);
-            space.setPlayer(player);
-            player.setPlayer();
-            board.nextSpawn();
-        }
         if(object.has("gameId")) {
             board.setGameId(object.getInt("gameId"));
         }
@@ -135,6 +124,22 @@ public class JSONReader {
             board.setProgrammingItemsLeft(object.getInt("programmingItemsLeft"));
         }
         return board;
+    }
+
+    private static void parsePlayers(Board board, JSONObject object){
+        Type token = new TypeToken<ArrayList<Player>>(){}.getType();
+        String playersString = object.getJSONArray("players").toString();
+        List<Player> players = gson.fromJson(playersString, token);
+        for (Player player : players
+        ) {
+
+            player.board = board;
+            Space space = board.getSpace(player.getSpace());
+            board.addPlayer(player);
+            space.setPlayer(player);
+            player.setPlayer();
+            board.nextSpawn();
+        }
     }
 
 

@@ -346,7 +346,6 @@ public class Board extends Subject {
     public void addPlayer(@NotNull Player player) {
         if (player.board == this && !players.contains(player)) {
             players.add(player);
-            notifyChange();
         }
     }
 
@@ -554,7 +553,8 @@ public class Board extends Subject {
 
     public void updatePlayers(List<Player> newPlayers, String clientName) {
         for (int i = 0; i < players.size(); i++) {
-            if (players.get(i).getName() != clientName) {
+            if (!players.get(i).getName().equals(clientName)) {
+                newPlayers.get(i).board = this;
                 players.set(i, newPlayers.get(i));
             }
         }
