@@ -321,6 +321,8 @@ public class Board extends Subject {
             this.gameId = gameId;
         } else {
             if (!this.gameId.equals(gameId)) {
+
+                //TODO custom exception?
                 throw new IllegalStateException("A game with a set id may not be assigned a new id!");
             }
         }

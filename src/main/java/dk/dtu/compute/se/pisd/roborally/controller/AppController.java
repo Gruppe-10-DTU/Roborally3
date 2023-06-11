@@ -362,7 +362,6 @@ AppController implements Observer {
         Optional<ButtonType> choice = alert.showAndWait();
         if (choice.isPresent() && choice.get() == newGame) {
             board = initBoardinfo();
-            gameController = new GameController(board, this);
             initPlayerInfo(board);
 
             nG = new Game(board.getBoardName(), 0, board.getMaxPlayers(), gson.toJson(board));
@@ -370,15 +369,22 @@ AppController implements Observer {
             board = retrieveSavedGame();
             if (board != null) {
                 nG = new Game(board.getBoardName(), 0, board.getMaxPlayers(), gson.toJson(board));
+                nG.setState("SAVED");
             }else{
 
             }
         }
+        gameController = new GameController(board, this);
+
         PlayerDTO playerDTO = new PlayerDTO(board.getPlayer(0).getName());
         int gameId = HttpController.createGame(nG);
         HttpController.joinGame(gameId, playerDTO);
         gameController.setClientName(playerDTO.getName());
-        gameController.board.setGameId(gameId);
+        try {
+            board.setGameId(gameId);
+        } catch (IllegalStateException e){
+
+        }
         showLobby(gameId, gameController.board.getMaxPlayers());
         showLobby(gameId, board.getMaxPlayers());
         boardUpdateThread = new BoardUpdateThread(gameId, gameController);
