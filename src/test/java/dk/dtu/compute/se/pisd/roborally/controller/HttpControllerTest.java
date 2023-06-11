@@ -36,23 +36,36 @@ class HttpControllerTest {
         Object returnedObj = HttpController.getAvailableGames();
         assertEquals(200, HttpController.getLastResponseCode());
     }
-
     @Test
     void createGameTest() {
         Board testBoard = new Board();
         Gson gson = new Gson();
         Game testGame = new Game("test", 1, 2, gson.toJson(testBoard));
-        Integer returnCode = HttpController.createGame(testGame);
-        assertEquals(200, returnCode);
+        HttpController.createGame(testGame);
+        assertEquals(200, HttpController.getLastResponseCode());
     }
-/*
     @Test
     void joinGameTest() {
         Board testBoard = new Board();
         Gson gson = new Gson();
-        Game testGame = new Game(1, "test", 1, 2, gson.toJson(testBoard));
-        Integer returnCode = HttpController.joinGame(1, new PlayerDTO("player"));
-        assertEquals(200, returnCode);
+        Game testGame = new Game( "test", 1, 2, gson.toJson(testBoard));
+        HttpController.createGame(testGame);
+        HttpController.joinGame(1,new PlayerDTO("TestPlayer"));
+        assertEquals(200,HttpController.getLastResponseCode());
     }
-    */
+    @Test
+    void leaveGameTest(){
+        Board testBoard = new Board();
+        Gson gson = new Gson();
+        Game tGame = new Game("Test1",1,2,gson.toJson(testBoard));
+        HttpController.createGame(tGame);
+        PlayerDTO pDTO = new PlayerDTO("TestPlayer1");
+        PlayerDTO pDTO2 = new PlayerDTO("TestPlayer2");
+        HttpController.joinGame(2,pDTO);
+        HttpController.joinGame(2,pDTO2);
+        HttpController.leaveGame(2,pDTO2);
+        assertEquals(200,HttpController.getLastResponseCode());
+        assertEquals(1,HttpController.getGame(2).getCurrentPlayers());
+    }
+
 }
