@@ -38,7 +38,7 @@ public class HttpController {
      * @return
      * @author Sandie Petersen & Philip Astrup Cramer
      */
-    public static String joinGame(int gameID, PlayerDTO player){
+    public static PlayerDTO joinGame(int gameID, PlayerDTO player){
         HttpRequest postPlayerRequest = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + "/games/" + gameID + "/players"))
                 .setHeader("Content-Type","application/json")
@@ -46,12 +46,12 @@ public class HttpController {
                 .build();
         try {
             lastResponse = client.send(postPlayerRequest, HttpResponse.BodyHandlers.ofString());
-
+            return gson.fromJson(lastResponse.body(), PlayerDTO.class);
         } catch (Exception exception){
             exception.printStackTrace();
         }
         //return lastResponse.statusCode();
-        return lastResponse.body();
+        return null;
     }
 
     /**
@@ -71,7 +71,7 @@ public class HttpController {
      */
     public static String leaveGame(int gameId, PlayerDTO player){
         HttpRequest deletePlayerRequest = HttpRequest.newBuilder()
-                .uri(URI.create(serverUrl + "/games/" + gameId + "/players/" + player.getName()))
+                .uri(URI.create(serverUrl + "/games/" + gameId + "/players/" + player.getId()))
                 .setHeader("Content-Type","application/json")
                 .DELETE()
                 .build();

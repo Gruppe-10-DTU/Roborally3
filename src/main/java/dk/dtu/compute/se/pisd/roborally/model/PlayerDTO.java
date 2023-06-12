@@ -4,6 +4,10 @@ public class PlayerDTO {
     private String name;
 
     private int id;
+
+    public PlayerDTO(){
+
+    }
     public PlayerDTO(String name) {
         this.name = name;
     }

@@ -374,9 +374,8 @@ AppController implements Observer {
 
         PlayerDTO playerDTO = initPlayerInfo();
         int gameId = HttpController.createGame(nG);
-        HttpController.joinGame(gameId, playerDTO);
+        playerDTO = HttpController.joinGame(gameId, playerDTO);
         showLobby(gameId, gameController.board.getMaxPlayers(),playerDTO);
-        BoardUpdateThread boardUpdateThread = new BoardUpdateThread(gameId, gameController);
         gameController.setClientName(playerDTO.getName());
         try {
             board.setGameId(gameId);
@@ -488,7 +487,7 @@ AppController implements Observer {
         PlayerDTO player = initPlayerInfo();
 //            System.out.println(selectedItem.getCurrentPlayers());
         if (selectedItem.getCurrentPlayers() < selectedItem.getMaxPlayers()) {
-            player = gson.fromJson(HttpController.joinGame(gameId, player), PlayerDTO.class);
+            player = HttpController.joinGame(gameId, player);
             System.out.println("Player: " + player.getName() + " trying to join " + selectedItem);
             //updateGame(gameId,player);
             if(gameController != null) gameController.setClientName(player.getName());
@@ -601,8 +600,9 @@ AppController implements Observer {
     public void leaveGame(int gameId, PlayerDTO playerDTO){
         HttpController.leaveGame(gameId,playerDTO);
         try {
+            boardUpdateThread.interrupt();
             boardUpdateThread.join();
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | SecurityException e) {
             throw new RuntimeException(e);
         }
     }

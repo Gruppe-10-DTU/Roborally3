@@ -3,7 +3,6 @@ package dk.dtu.compute.se.pisd.roborally.view;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.AppController;
 import dk.dtu.compute.se.pisd.roborally.model.Game;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.PlayerDTO;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -86,8 +85,8 @@ public class LobbyView extends VBox implements ViewObserver{
      */
     private void leaveGame(TableView tableview, PlayerDTO playerDTO){
         appController.leaveGame(gameId,playerDTO);
-        appController.setLobbyView(null);
         ((Stage) tableview.getScene().getWindow()).close();
+        appController.setLobbyView(null);
     }
 
     /**
