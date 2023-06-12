@@ -59,12 +59,13 @@ public class LobbyView extends VBox implements ViewObserver{
         ButtonBar buttonBar = new ButtonBar();
         Button refresh = new Button("Refresh");
         Button start = new Button("Start");
-        start.setVisible(false);
+        start.setVisible(maxPlayers == tableView.getItems().size());
         start.setOnAction(event -> {
             System.out.println("Start Game");
             startGame();
         });
-        refresh.setOnAction(e -> { refreshList(tableView,nameColumn, maxPlayers);
+        refresh.setOnAction(e -> {
+            refreshList(tableView,nameColumn, maxPlayers);
             if(maxPlayers == tableView.getItems().size()){
 
                 start.setVisible(true);

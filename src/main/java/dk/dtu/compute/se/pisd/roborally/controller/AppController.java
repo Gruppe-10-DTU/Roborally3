@@ -490,7 +490,7 @@ AppController implements Observer {
         PlayerDTO player = initPlayerInfo();
 //            System.out.println(selectedItem.getCurrentPlayers());
         if (selectedItem.getCurrentPlayers() < selectedItem.getMaxPlayers()) {
-            player = gson.fromJson(HttpController.joinGame(gameId, player), PlayerDTO.class);
+            player = HttpController.joinGame(gameId, player);
             System.out.println("Player: " + player.getName() + " trying to join " + selectedItem);
             //updateGame(gameId,player);
             if (gameController != null) gameController.setClientName(player.getName());
