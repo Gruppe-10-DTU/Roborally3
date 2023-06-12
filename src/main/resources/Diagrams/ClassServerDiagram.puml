@@ -3,11 +3,7 @@
 skinparam linetype ortho
 package "Server"{
 package "Model"{
-class Board{
-    - id : int
-    - gameId : int
-    - clientBoard : String
-}
+
 
 class Game{
     - id : Integer
@@ -45,9 +41,6 @@ class PlayerController{
 }
 
 package "DTO"{
-class BoardDTO{
-    - id : String
-}
 class GameDTO{
     - maxPlayers : int
     - currentPlayers : int
@@ -82,15 +75,12 @@ class PlayerService{
 }
 
 Game --> GameState
-Game --> Board
 Player --> Game
 
 GameController --> GameService
 GameController --> "Mapper"
 
 GameDTOMapper --|> DtoMapper
-
-BoardDTO --> Player
 
 GameStateController --> GameService
 GameStateController --> GameDTOMapper

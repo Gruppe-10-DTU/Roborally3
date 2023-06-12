@@ -15,11 +15,12 @@ import java.util.List;
 public class LobbyView extends VBox implements ViewObserver{
     private final AppController appController;
     private final TableView<Game> tableView;
-
+    private final PlayerDTO playerDTO;
     private final int gameId;
-    public LobbyView(AppController appController, int gameId, int maxPlayers, Stage stageNew) {
+    public LobbyView(AppController appController, int gameId, int maxPlayers, Stage stageNew, PlayerDTO playerDTO) {
         this.appController = appController;
         this.gameId = gameId;
+        this.playerDTO = playerDTO;
         tableView = new TableView<Game>();
         tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 //        tableView.prefWidthProperty().bind(tableView.widthProperty().add(300));
@@ -32,7 +33,6 @@ public class LobbyView extends VBox implements ViewObserver{
         this.getChildren().addAll(tableView, addButtons(name, maxPlayers));
         Scene scene = new Scene(this);
 
-//        Stage stage = new Stage();
         stageNew.setScene(scene);
         stageNew.setOnCloseRequest(
                 e -> {
@@ -54,7 +54,8 @@ public class LobbyView extends VBox implements ViewObserver{
     }
     private ButtonBar addButtons(TableColumn<Game, String> nameColumn, int maxPlayers){
         Button leave = new Button("Leave");
-        leave.setOnAction(e -> leaveGame());
+        leave.setOnAction(e -> leaveGame(tableView,playerDTO));
+
         ButtonBar buttonBar = new ButtonBar();
         Button refresh = new Button("Refresh");
         Button start = new Button("Start");
@@ -75,8 +76,16 @@ public class LobbyView extends VBox implements ViewObserver{
         return buttonBar;
     }
 
-    private void leaveGame(){
-
+    /**
+     * When pressing the leave button in the game lobby, this method is called. Leaves the game from the server side,
+     * updates the board and returns a board without the leaving player.
+     * @param tableview
+     * @param playerDTO
+     */
+    private void leaveGame(TableView tableview, PlayerDTO playerDTO){
+        appController.leaveGame(gameId,playerDTO);
+        ((Stage) tableview.getScene().getWindow()).close();
+        appController.setLobbyView(null);
     }
 
     /**

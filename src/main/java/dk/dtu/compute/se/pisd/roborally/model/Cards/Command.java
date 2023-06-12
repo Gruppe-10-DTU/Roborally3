@@ -43,10 +43,9 @@ public enum Command {
 
     MOVE_3("Move 3", 1),
 
-    AGAIN("Repeat", 1),
-
     // XXX Assignment P3
-    OPTION_LEFT_RIGHT("Left OR Right", 1, LEFT, RIGHT);
+    OPTION_LEFT_RIGHT("Left OR Right", 1, LEFT, RIGHT),
+    AGAIN("Repeat", 1, OPTION_LEFT_RIGHT);
 
     public final String displayName;
 
