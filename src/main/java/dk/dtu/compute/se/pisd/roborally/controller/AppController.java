@@ -334,12 +334,16 @@ AppController implements Observer {
         TextInputDialog nameDialog = new TextInputDialog("");
         nameDialog.setTitle("Player name");
         nameDialog.setHeaderText("Select player name");
-        Optional<String> resultName = nameDialog.showAndWait();
+        Optional<String> resultName;
 
         String entered = "";
-        if (resultName.isPresent()) {
-            entered = resultName.get();
+        while(entered.equals("")){
+            resultName = nameDialog.showAndWait();
+            if (resultName.isPresent()) {
+                entered = resultName.get();
+            }
         }
+
 
         PlayerDTO player = new PlayerDTO(entered);
         return player;
@@ -552,10 +556,10 @@ AppController implements Observer {
     public void showLobby(int id, int maxPlayers) {
         if (lobbyView == null) {
             if (gamesView != null) {
-                lobbyView = new LobbyView(this, id, maxPlayers,gamesView.getStageHolder());
+                lobbyView = new LobbyView(this, id, maxPlayers, gamesView.getStageHolder());
                 return;
             }
-                lobbyView = new LobbyView(this, id, maxPlayers, new Stage());
+            lobbyView = new LobbyView(this, id, maxPlayers, new Stage());
         }
     }
 
@@ -599,5 +603,10 @@ AppController implements Observer {
 
     public boolean isThreadRunning(){
         return !(boardUpdateThread != null && boardUpdateThread.isAlive());
+    }
+
+    public void terminateClient() {
+        gameController = null;
+        roboRally.createBoardView(null);
     }
 }
