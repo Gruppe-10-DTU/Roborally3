@@ -12,7 +12,7 @@ public interface PlayerRepository extends CrudRepository<Player, Integer> {
 
     int countPlayerByGameId(int id);
     @Transactional
-    void deletePlayerByNameAndGameId(String name, int GameId);
+    void deletePlayerByIdAndGameId(int playerId, int GameId);
 
     int countPlayerByGameIdAndName(int id, String name);
 

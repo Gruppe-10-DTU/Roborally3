@@ -599,18 +599,7 @@ AppController implements Observer {
      * @uahtor Asbjørn Nielsen
      */
     public void leaveGame(int gameId, PlayerDTO playerDTO){
-        Game game = HttpController.getGame(gameId);
-        Board board = JSONReader.parseBoard(new JSONObject(game.getBoard()));
-        for (Player player: board.getPlayers()) {
-            if(player.getName().equals(playerDTO.getName())){
-                board.removePlayer(player);
-                break;
-            }
-        }
-        game.setVersion(game.getVersion()+1);
-        game.setBoard(gson.toJson(board));
         HttpController.leaveGame(gameId,playerDTO);
-        HttpController.pushGameUpdate(game,gameId);
         try {
             boardUpdateThread.join();
         } catch (InterruptedException e) {
