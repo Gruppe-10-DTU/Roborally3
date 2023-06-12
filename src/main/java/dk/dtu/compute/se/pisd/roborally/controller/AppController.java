@@ -567,6 +567,7 @@ AppController implements Observer {
             HttpController.pushGameUpdate(game,gameId);
         }
     }
+
     public void initJoinedPlayerInfo(Board board, PlayerDTO playerDTO){
         int playerColor = board.getNumberOfPlayers();
         Player player = new Player(board, PLAYER_COLORS.get(playerColor), playerDTO.getName());
@@ -605,5 +606,9 @@ AppController implements Observer {
         } catch (InterruptedException | SecurityException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public boolean isThreadRunning(){
+        return !(boardUpdateThread != null && boardUpdateThread.isAlive());
     }
 }
