@@ -58,7 +58,6 @@ public class LobbyView extends VBox implements ViewObserver{
         Button leave = new Button("Leave");
         leave.setOnAction(e -> leaveGame(tableView,playerDTO));
 
-        leave.setOnAction(e -> leaveGame());
         ButtonBar buttonBar = new ButtonBar();
         Button refresh = new Button("Refresh");
         Button start = new Button("Start");

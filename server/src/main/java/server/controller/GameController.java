@@ -9,7 +9,6 @@ import server.dto.GameDTO;
 import server.dto.GamePatchDTO;
 import server.mapper.DtoMapper;
 import server.mapper.GameDTOMapper;
-import server.model.Board;
 import server.model.Game;
 import server.model.GameState;
 

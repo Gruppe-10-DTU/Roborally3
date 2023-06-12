@@ -383,7 +383,7 @@ AppController implements Observer {
         } catch (IllegalStateException e){
 
         }
-        showLobby(gameId, board.getMaxPlayers());
+        showLobby(gameId, board.getMaxPlayers(),playerDTO);
         boardUpdateThread = new BoardUpdateThread(gameId, gameController);
         boardUpdateThread.start();
     }
@@ -611,5 +611,6 @@ AppController implements Observer {
         game.setBoard(gson.toJson(board));
         HttpController.leaveGame(gameId,playerDTO);
         HttpController.pushGameUpdate(game,gameId);
+        boardUpdateThread.setGameEnded(true);
     }
 }
