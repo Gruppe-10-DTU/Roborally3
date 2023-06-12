@@ -531,4 +531,11 @@ public class GameController {
             HttpController.updateBoard(board, version.incrementAndGet());
         }
     }
+
+    public boolean endProgramming(Player player) {
+        boolean client = clientName != null;
+        boolean current = !player.board.getCurrentPlayer().equals(player);
+
+        return client && current;
+    }
 }
