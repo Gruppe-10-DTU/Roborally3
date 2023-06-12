@@ -42,11 +42,11 @@ public class RebootToken extends Space implements FieldAction {
     @Override
     public void doFieldAction(GameController gameController, Player player) {
         player.setHeading(this.direction);
+        player.setRebooting(true);
         if (this.player != null) {
             //TODO: Move the old player out
             Player pmove = board.getRebootToken().getPlayer();
             gameController.movePlayer(pmove, direction);
-            pmove.setRebooting(true);
         }
         player.setSpace(this);
     }
