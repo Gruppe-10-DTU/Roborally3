@@ -52,7 +52,7 @@ public class Conveyorbelt extends Space implements SequenceAction {
      * @param player The player to be turned
      * @author Nilas
      */
-    protected void turnPlayer(Player player) {
+    public void turnPlayer(Player player) {
         Heading heading1 = player.getHeading();
         if (turn == Heading.EAST) {
             player.setHeading(heading1.prev());
@@ -68,7 +68,7 @@ public class Conveyorbelt extends Space implements SequenceAction {
      * @author Nilas Thoegersen
      * @author Sandie Petersen
      */
-    protected Heading getExit(){
+    public Heading getExit(){
         if (turn == null){
             return direction;
         }

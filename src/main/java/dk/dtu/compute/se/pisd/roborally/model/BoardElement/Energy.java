@@ -31,18 +31,26 @@ public class Energy extends Space implements SequenceAction {
      */
     @Override
     public void doAction(GameController gameController) {
-        for (Player player : board.getPlayers()
+        Space space;
+        for (Player player : gameController.board.getPlayers()
         ) {
+            space = player.getSpace();
             if (player.getSpace().getClass().equals(this.getClass())) {
-                if (energy) {
-                    energy = false;
+                if (gameController.board.getStep() == 5) {
                     player.incrementEnergy();
-                    gameController.board.addGameLogEntry(player, "Picked up energy");
-                } else if (board.getStep() == 5) {
-                    player.incrementEnergy();
+                } else if (((Energy) space).getEnergyAndStop()) {
+                    player.getEnergy();
                 }
             }
         }
+    }
+
+    public Boolean getEnergyAndStop(){
+        if(energy){
+            energy = false;
+            return true;
+        }
+        return false;
     }
 
     @Override

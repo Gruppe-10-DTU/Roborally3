@@ -66,7 +66,7 @@ public class Push extends Space implements SequenceAction {
      * @param player         the player to be moved
      * @author Nilas
      */
-    private void pushPlayer(GameController gameController, Player player) {
+    public void pushPlayer(GameController gameController, Player player) {
         if (gameController.board.getStep() == step) {
             gameController.movePlayer(player, direction);
         }

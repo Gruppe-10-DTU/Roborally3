@@ -62,7 +62,7 @@ public class Gear extends Space implements SequenceAction {
      * @param player The player to be turned
      * @author Nilas
      */
-    private void turnPlayer(Player player) {
+    public void turnPlayer(Player player) {
         if (direction == Heading.EAST) {
             player.setHeading(player.getHeading().next());
         } else {
