@@ -1,6 +1,5 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
-import com.google.gson.Gson;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.AppController;
 import dk.dtu.compute.se.pisd.roborally.controller.JSONReader;
@@ -26,6 +25,8 @@ import java.util.List;
 public class GamesView extends VBox implements ViewObserver {
     private final AppController appController;
     private final TableView<Game> tableView;
+
+    private Stage stageHolder;
 
     /**
      * Controller for the view
@@ -69,6 +70,7 @@ public class GamesView extends VBox implements ViewObserver {
                 });
         stage.setTitle("Game list");
         stage.show();
+        stageHolder = stage;
     }
 
     /**
@@ -106,7 +108,11 @@ public class GamesView extends VBox implements ViewObserver {
     }
 
     private void joinGame() {
-        appController.joinGame(tableView.getSelectionModel().getSelectedItem());
+        Game item = tableView.getSelectionModel().getSelectedItem();
+        if (item == null){
+            return;
+        }
+        appController.joinGame(item);
         tableView.refresh();
     }
 
@@ -121,4 +127,7 @@ public class GamesView extends VBox implements ViewObserver {
         tableView.getItems().addAll(games);
     }
 
+    public Stage getStageHolder() {
+        return stageHolder;
+    }
 }
