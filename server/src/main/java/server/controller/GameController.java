@@ -28,6 +28,9 @@ public class GameController {
         this.gameDTOMapper = gameDTOMapper;
     }
 
+    /**
+     * @author Nilas Thoegersen & Asbjørn Nielsen
+     */
     @RequestMapping(value = "/games", method = RequestMethod.GET)
     public ResponseEntity<List<GameDTO>> getGameList(){
         List<Game> games = gameService.loadGames();
@@ -35,6 +38,9 @@ public class GameController {
         return ResponseEntity.ok().body(gameString);
     }
 
+    /**
+     * @author Nilas Thoegersen & Sandie Petersen & Søren Wünsche
+     */
     @RequestMapping(value = "/games/{id}", method = RequestMethod.GET)
     public ResponseEntity<Game> getSpecificGame(@RequestParam(name = "version") Optional<Integer> version, @PathVariable int id) {
         Game game;
@@ -52,6 +58,9 @@ public class GameController {
    }
 
 
+    /**
+     * @author Nilas Thoegersen
+     */
     @PostMapping("/games")
     public ResponseEntity<GameDTO> createGame(@RequestBody Game game) {
         game = gameService.createGame(game);
@@ -59,12 +68,18 @@ public class GameController {
         return ResponseEntity.ok().body(gameDTO);
     }
 
+    /**
+     * @author Asbjørn Nielsen
+     */
     @DeleteMapping( "/games/{id}")
     public ResponseEntity<String> removeGame(@PathVariable int id){
         gameService.deleteGame(id);
         return ResponseEntity.ok().body("deleted");
     }
 
+    /**
+     * @author Søren Wünsche
+     */
     @RequestMapping(value = "/games/{id}", method = RequestMethod.PUT)
     public ResponseEntity updateGame(@RequestBody Game game) {
         gameService.updateGame(game);
@@ -72,6 +87,10 @@ public class GameController {
     }
 
     //This SHOULD be a patch request but our http client doesn't support that method.
+
+    /**
+     * @author Nilas Thoegersen
+     */
     @RequestMapping(value = "/games/{id}/gamestates", method = RequestMethod.PUT)
     public ResponseEntity updateState(@PathVariable int id, @RequestBody String state) throws HttpServerErrorException.NotImplemented {
         Game requestedGame = gameService.getGame(id);
@@ -86,6 +105,9 @@ public class GameController {
         }
     }
 
+    /**
+     * @author Nilas Thoegersen
+     */
     @PatchMapping(value = "games/{id}")
     public ResponseEntity patchGame(@PathVariable int id, @RequestBody GamePatchDTO gamePatch){
         Game game = gameService.getGame(id);

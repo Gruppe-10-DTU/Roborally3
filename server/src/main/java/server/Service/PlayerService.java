@@ -6,6 +6,10 @@ import server.repository.PlayerRepository;
 
 import java.util.List;
 
+/**
+ *
+ * @author Nilas Thoegersen & Søren Wünsche
+ */
 @Service
 public class PlayerService {
     private PlayerRepository playerRepository;

@@ -2,6 +2,10 @@ package server.model;
 
 import jakarta.persistence.*;
 
+/**
+ *
+ * @author Sandie Petersen & Nilas Thoegersen & Søren Wünsche & Asbjørn
+ */
 @Entity
 public class Game {
     @Id

@@ -596,4 +596,8 @@ AppController implements Observer {
             gameController.replaceBoard(board, game.getVersion());
         }
     }
+
+    public boolean isThreadRunning(){
+        return !(boardUpdateThread != null && boardUpdateThread.isAlive());
+    }
 }
