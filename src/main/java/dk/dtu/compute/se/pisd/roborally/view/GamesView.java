@@ -1,10 +1,8 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
-import com.google.gson.Gson;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.AppController;
 import dk.dtu.compute.se.pisd.roborally.model.Game;
-import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -104,7 +102,11 @@ public class GamesView extends VBox implements ViewObserver {
     }
 
     private void joinGame() {
-        appController.joinGame(tableView.getSelectionModel().getSelectedItem());
+        Game item = tableView.getSelectionModel().getSelectedItem();
+        if (item == null){
+            return;
+        }
+        appController.joinGame(item);
         tableView.refresh();
     }
 

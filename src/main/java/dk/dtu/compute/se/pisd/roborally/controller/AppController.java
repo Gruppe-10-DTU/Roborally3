@@ -553,6 +553,7 @@ AppController implements Observer {
         if (lobbyView == null) {
             if (gamesView != null) {
                 lobbyView = new LobbyView(this, id, maxPlayers,gamesView.getStageHolder());
+                return;
             }
                 lobbyView = new LobbyView(this, id, maxPlayers, new Stage());
         }
