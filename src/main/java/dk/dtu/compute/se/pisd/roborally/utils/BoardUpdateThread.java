@@ -24,6 +24,12 @@ public class BoardUpdateThread extends Thread {
     }
 
 
+    /**
+     * Used for polling the server for game updates in a separate thread from the
+     * main thread running the application.
+     *
+     * @author Sandie Petersen & Nilas Thoegersen
+     */
     public void run() {
         while (!gameEnded) {
 

@@ -78,6 +78,11 @@ public class LobbyView extends VBox implements ViewObserver{
     private void leaveGame(){
 
     }
+
+    /**
+     *
+     * @author Søren Wünsche
+     */
     private void refreshList(TableView tableView, TableColumn<Game, String> nameColumn, int maxPlayers) {
         try {
             getPlayerList(tableView);
@@ -86,6 +91,11 @@ public class LobbyView extends VBox implements ViewObserver{
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     *
+     * @author Nilas Thoegersen & Philip Astrup Cramer
+     */
     private void startGame(){
         int responseCode = appController.launchGame(gameId);
         if (responseCode < 200 || responseCode > 300) {
@@ -95,6 +105,11 @@ public class LobbyView extends VBox implements ViewObserver{
             error.showAndWait();
         }
     }
+
+    /**
+     *
+     * @author Søren Wünsche
+     */
     private void getPlayerList(TableView<PlayerDTO> tableView) throws Exception {
         tableView.getItems().clear();
         List<PlayerDTO> playerList = appController.getPlayerList(gameId);

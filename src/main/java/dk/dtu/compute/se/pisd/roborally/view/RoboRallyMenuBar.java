@@ -53,6 +53,10 @@ public class RoboRallyMenuBar extends MenuBar {
 
     private final MenuItem hostGame;
 
+    /**
+     *
+     * @author Ekkart Kindler & Nilas Thoegersen
+     */
     public RoboRallyMenuBar(AppController appController) {
         this.appController = appController;
 

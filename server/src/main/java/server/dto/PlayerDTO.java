@@ -5,6 +5,8 @@ public class PlayerDTO {
     private int gameId;
     private String name;
 
+
+    private boolean Rebooting;
     /**
      *
      * @param id
@@ -41,5 +43,12 @@ public class PlayerDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+    public boolean isRebooting() {
+        return Rebooting;
+    }
+
+    public void setRebooting(boolean rebooting) {
+        Rebooting = rebooting;
     }
 }

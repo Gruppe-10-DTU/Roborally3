@@ -2,6 +2,9 @@ package server.dto;
 
 import server.model.GameState;
 
+/**
+ * @author Nilas Thoegersen
+ */
 public class GamePatchDTO {
     GameState gameState;
 
