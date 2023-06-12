@@ -68,12 +68,6 @@ class Board {
   - currentPlayer : Player
 }
 package "Cards" {
-class PlayerCardDeck {
-  + drawCards()
-  + discard()
-  - reShuffle()
-  - generateDeck()
-}
 
 
 class CommandCard {
@@ -122,9 +116,6 @@ class Gear {
   - turnPlayer()
 }
 
-class RobotLaser {
-  + shootLaser()
-}
 
 class Spawn
 
@@ -135,9 +126,14 @@ class PriorityAntenna
 class RebootToken
 }
 
-"BoardElement" --> Space : Except RobotLaser
-"BoardElement" --> SequenceAction : Except PriorityAntenna
+"BoardElement" -right-> Space
+"BoardElement" --down-|> SequenceAction : Except PriorityAntenna
 
+class RobotLaser {
+  + shootLaser()
+}
+RobotLaser --|> "BoardElement"
+RobotLaser "1" -up-* "1" Player
 FastConveyorbelt --|> Conveyorbelt
 
 class CommandCardField {
@@ -146,10 +142,17 @@ class CommandCardField {
   - visible :
 }
 
+class PlayerCardDeck {
+  + drawCards()
+  + discard()
+  - reShuffle()
+  - generateDeck()
+}
+
+
 Gear --* Heading
 Conveyorbelt --* Heading
 BoardLaser --* Heading
-RobotLaser "1" --* "1" Player
 RebootToken --* Heading
 
 
@@ -168,5 +171,9 @@ Phase "1" *-- "1" Board
 PlayerCardDeck "1" *-- "1" Player
 CommandCard "20" *-- "1" PlayerCardDeck
 DamageCard "*" *-- "1" PlayerCardDeck
+
+CommandCardField -down-|> "Cards"
+
+
 }
 @enduml
