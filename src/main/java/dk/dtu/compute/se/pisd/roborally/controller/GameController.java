@@ -508,13 +508,16 @@ public class GameController {
      * Executes the card from the previous register
      * @param player the affected player
      * @author Nilas Thoegersen
+     * @author Philip
      */
     public void again(Player player) {
         //Get the previous card
-        Card card = player.getProgramField(board.getStep()-1).getCard();
-
-        if(card != null){
-            card.doAction(this);
+        Card oldCard = player.getProgramField(board.getStep()-1).getCard();
+        if (oldCard != null) {
+            oldCard.doAction(this);
+            if (!oldCard.isInteractive()) {
+                incrementStep(board.getStep());
+            }
         }
     }
 
