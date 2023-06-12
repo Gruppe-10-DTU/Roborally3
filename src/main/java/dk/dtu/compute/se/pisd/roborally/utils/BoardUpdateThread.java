@@ -5,6 +5,7 @@ import dk.dtu.compute.se.pisd.roborally.controller.HttpController;
 import dk.dtu.compute.se.pisd.roborally.controller.JSONReader;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Game;
+import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import org.json.JSONObject;
 
 public class BoardUpdateThread extends Thread {
@@ -27,16 +28,19 @@ public class BoardUpdateThread extends Thread {
         while (!gameEnded) {
 
             Game result = HttpController.getGameUpdate(gameId, currentVersion);
+
             if(result == null){
 
             }
             else if (result.getState().equals("STARTED")) {
-
                 currentVersion = result.getVersion();
                 JSONObject jsonBoard = new JSONObject(result.getBoard());
                 Board newBoard = JSONReader.parseBoard(jsonBoard);
-
-                gameController.replaceBoard(newBoard, currentVersion);
+                if (gameController.board.getPhase() == Phase.PROGRAMMING && newBoard.getPhase() == Phase.PROGRAMMING) {
+                    gameController.updatePlayers(newBoard);
+                } else {
+                    gameController.replaceBoard(newBoard, currentVersion);
+                }
                 gameController.refreshView();
             }else if(result.getState().equals("ENDED")){
                 gameEnded = true;

@@ -538,4 +538,9 @@ public class GameController {
 
         return client && current;
     }
+    public  void updatePlayers (Board newBoard) {
+        board.updatePlayers(newBoard.getPlayers(), clientName);
+        board.setCurrentPlayer(board.getPlayerByName(newBoard.getCurrentPlayer().getName()));
+    }
+
 }
