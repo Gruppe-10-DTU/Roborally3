@@ -40,7 +40,7 @@ public class Player extends Subject implements Comparable<Player> {
     final public static int NO_CARDS = 8;
 
     transient public Board board;
-    private boolean isRebooting = false;
+    private boolean Rebooting = false;
     private String name;
     private String color;
 
@@ -245,10 +245,10 @@ public class Player extends Subject implements Comparable<Player> {
     }
 
     public void setRebooting(boolean rebootStatus){
-        this.isRebooting = rebootStatus;
+        this.Rebooting = rebootStatus;
     }
     public boolean getIsRebooting(){
-        return isRebooting;
+        return Rebooting;
     }
 
     public CommandCardField[] getProgram() {
