@@ -50,6 +50,10 @@ public class SpaceView extends StackPane implements ViewObserver {
 
     private final Space space;
 
+    /**
+     *
+     * @author Sandie Petersen & Ekkart Kindler
+     */
     public SpaceView(@NotNull Space space) {
         this.space = space;
 
