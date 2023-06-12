@@ -1,12 +1,18 @@
 package server.mapper;
 
+import org.springframework.stereotype.Service;
 import server.dto.GameDTO;
 import server.model.Game;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class GameDTOMapper {
+
+    public GameDTOMapper(){
+
+    }
     /**
      *
      * @param game
@@ -31,7 +37,7 @@ public class GameDTOMapper {
      *  Maps a list of games to a list of game dto's using the map method above
      * @author Sandie Petersen
      */
-    public ArrayList<GameDTO> mapList (List<Game> gameList) {
+    public List<GameDTO> mapList (List<Game> gameList) {
         ArrayList<GameDTO> gameDtoList = new ArrayList<>();
 
         for ( Game game: gameList) {

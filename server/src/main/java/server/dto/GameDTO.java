@@ -8,6 +8,8 @@ public class GameDTO {
 
     int version;
 
+    String Board;
+
     public GameDTO(){
 
     }

@@ -6,14 +6,13 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class Checkpoint extends Space implements SequenceAction {
 
     private Checkpoint previous;
 
-    private Set<Player> players;
+    private Set<String> players;
 
     private int number;
 
@@ -67,9 +66,9 @@ public class Checkpoint extends Space implements SequenceAction {
      */
     protected boolean addPlayer(Player player) {
         if (previous == null) {
-            return players.add(player);
+            return players.add(player.getName());
         } else if (previous.checkPlayer(player)) {
-            return players.add(player);
+            return players.add(player.getName());
         }
         return false;
     }
@@ -83,7 +82,7 @@ public class Checkpoint extends Space implements SequenceAction {
      * @author Nilas Thoegersen
      */
     public boolean checkPlayer(Player player) {
-        return this.players.contains(player);
+        return this.players.contains(player.getName());
     }
 
 
@@ -103,14 +102,7 @@ public class Checkpoint extends Space implements SequenceAction {
         }
     }
 
-    public void setPlayers(List<Player> players){
-        this.players.addAll(players);
-    }
 
-    public List<Player> getPlayers(){
-
-        return players.stream().toList();
-    }
     public int getNumber(){
         return this.number;
     }
@@ -122,5 +114,13 @@ public class Checkpoint extends Space implements SequenceAction {
     @Override
     public int getPrio() {
         return 8;
+    }
+
+    public Set<String> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(Set<String> players) {
+        this.players = players;
     }
 }

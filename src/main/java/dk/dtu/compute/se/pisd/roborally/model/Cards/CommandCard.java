@@ -44,6 +44,10 @@ public class CommandCard extends Subject implements Card{
     public CommandCard(@NotNull Command command) {
         this.command = command;
     }
+
+    public CommandCard() {
+
+    }
     @Override
     public String getName() {
         return command.displayName;

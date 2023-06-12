@@ -14,6 +14,10 @@ public class PlayerService {
     }
 
     public void addPlayer(Player player){
+        int count = playerRepository.countPlayerByGameIdAndName(player.getGameId(), player.getName());
+        if(count > 0){
+            player.setName(player.getName() + "["+count+"]");
+        }
         playerRepository.save(player);
     }
 
