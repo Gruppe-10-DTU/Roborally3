@@ -25,11 +25,13 @@ import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.*;
+import javafx.application.Platform;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static dk.dtu.compute.se.pisd.roborally.model.Phase.PLAYER_INTERACTION;
 
 /**
  * ...
@@ -40,12 +42,14 @@ import java.util.List;
 public class GameController {
 
     public Board board;
-    final public EndGame endGame;
+    final public AppController appController;
     private String clientName;
+    private AtomicInteger version;
 
-    public GameController(@NotNull Board board, EndGame endGame) {
+    public GameController(@NotNull Board board, AppController appController) {
         this.board = board;
-        this.endGame = endGame;
+        this.appController = appController;
+        this.version = new AtomicInteger(-1);
     }
 
 
@@ -61,7 +65,7 @@ public class GameController {
             if (!currentPlayer.getSpace().equals(space) || !space.hasWall(currentPlayer.getHeading())) {
                 board.setStep(board.getStep() + 1);
                 currentPlayer.setSpace(space);
-                board.setCurrentPlayer(board.getPlayer((board.getPlayerNumber(currentPlayer) + 1) % board.getPlayersNumber()));
+                board.setCurrentPlayer(board.getPlayer((board.getPlayerNumber(currentPlayer) + 1) % board.getNumberOfPlayers()));
             }
         }
     }
@@ -77,10 +81,10 @@ public class GameController {
             players.setRebooting(false);
         }
         board.setPhase(Phase.PROGRAMMING);
-        board.setCurrentPlayer(board.getPlayer(0));
+        board.calculatePlayerOrder();
         board.setStep(0);
 
-        for (int i = 0; i < board.getPlayersNumber(); i++) {
+        for (int i = 0; i < board.getNumberOfPlayers(); i++) {
             Player player = board.getPlayer(i);
             if (player != null) {
                 for (int j = 0; j < Player.NO_REGISTERS; j++) {
@@ -100,6 +104,8 @@ public class GameController {
                 }
             }
         }
+        board.nextPlayer();
+
     }
 
     /**
@@ -108,13 +114,19 @@ public class GameController {
      * @author Ekkart Kindler, ekki@dtu.dk
      */
     public void finishProgrammingPhase() {
-        makeProgramFieldsInvisible();
-        makeProgramFieldsVisible(0);
-        board.setPhase(Phase.ACTIVATION);
-        board.calculatePlayerOrder();
-        board.nextPlayer();
-        //board.setCurrentPlayer(board.getPlayer(0));
-        board.setStep(0);
+        if(clientName == null || !board.nextPlayer()) {
+            makeProgramFieldsInvisible();
+            makeProgramFieldsVisible(0);
+            board.setPhase(Phase.ACTIVATION);
+            board.calculatePlayerOrder();
+            board.nextPlayer();
+            //board.setCurrentPlayer(board.getPlayer(0));
+            board.setStep(0);
+            //updateBoard();
+        }
+        if(clientName != null){
+            updateBoard();
+        }
     }
 
     /**
@@ -126,7 +138,7 @@ public class GameController {
     // XXX: V2
     private void makeProgramFieldsVisible(int register) {
         if (register >= 0 && register < Player.NO_REGISTERS) {
-            for (int i = 0; i < board.getPlayersNumber(); i++) {
+            for (int i = 0; i < board.getNumberOfPlayers(); i++) {
                 Player player = board.getPlayer(i);
                 CommandCardField field = player.getProgramField(register);
                 field.setVisible(true);
@@ -140,7 +152,7 @@ public class GameController {
      * @author Ekkart Kindler, ekki@dtu.dk
      */
     private void makeProgramFieldsInvisible() {
-        for (int i = 0; i < board.getPlayersNumber(); i++) {
+        for (int i = 0; i < board.getNumberOfPlayers(); i++) {
             Player player = board.getPlayer(i);
             for (int j = 0; j < Player.NO_REGISTERS; j++) {
                 CommandCardField field = player.getProgramField(j);
@@ -178,10 +190,12 @@ public class GameController {
     private void continuePrograms() {
         do {
             executeNextStep();
-        } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode());
-    }
 
-    // XXX: V2
+        } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode());
+        if(clientName != null){
+            updateBoard();
+        }
+    }
 
     /**
      * Execute a card and then increment the step by one
@@ -200,7 +214,6 @@ public class GameController {
                 card.doAction(this);
             }
             incrementStep(step);
-
         }
     }
 
@@ -224,12 +237,11 @@ public class GameController {
                 board.calculatePlayerOrder();
                 board.nextPlayer();
                 checkIfGameIsDone();
+
             } else {
                 startProgrammingPhase();
             }
-
         }
-
     }
 
     /**
@@ -279,6 +291,7 @@ public class GameController {
         board.setPhase(Phase.ACTIVATION);
         executeCommand(board.getCurrentPlayer(), command);
         incrementStep(board.getStep());
+        updateBoard();
     }
 
     /**
@@ -448,7 +461,7 @@ public class GameController {
         for (Player player : board.getPlayers()
         ) {
             if (checkpoint.checkPlayer(player)) {
-                endGame.endGame(player);
+                appController.endGame(player);
                 board.setPhase(Phase.FINISHED);
                 return;
             }
@@ -500,15 +513,29 @@ public class GameController {
         }
     }
 
-    public void replaceBoard (Board board) {
+    public void replaceBoard (Board board, int version) {
         this.board = board;
+        this.version.set(version);
+
     }
 
-    public  void updatePlayers (Board newBoard) {
-        board.updatePlayers(newBoard.getPlayers(), clientName);
+    public void refreshView(){
+        Platform.runLater(appController::updateBoard);
     }
 
-    public Board getBoard () {
-        return this.board;
+    public void updateBoard(){
+        if(board.getPhase() == PLAYER_INTERACTION){
+            return;
+        }
+        if(clientName != null) {
+            HttpController.updateBoard(board, version.incrementAndGet());
+        }
+    }
+
+    public boolean endProgramming(Player player) {
+        boolean client = clientName != null;
+        boolean current = !player.board.getCurrentPlayer().equals(player);
+
+        return client && current;
     }
 }

@@ -250,4 +250,12 @@ public class Player extends Subject implements Comparable<Player> {
     public boolean getIsRebooting(){
         return isRebooting;
     }
+
+    public CommandCardField[] getProgram() {
+        return program;
+    }
+
+    public CommandCardField[] getCards() {
+        return cards;
+    }
 }

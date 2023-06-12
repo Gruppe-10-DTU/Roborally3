@@ -1,33 +1,18 @@
 package dk.dtu.compute.se.pisd.roborally.utils;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.controller.HttpController;
 import dk.dtu.compute.se.pisd.roborally.controller.JSONReader;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Game;
-import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import org.json.JSONObject;
-
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 
 public class BoardUpdateThread extends Thread {
 
     private int gameId;
-    private boolean gameEnded = false;
+    private volatile boolean gameEnded = false;
 
-    private static final Gson gson = new GsonBuilder().create();
-    private static final HttpClient client = HttpClient.newHttpClient();;
-    private static String serverUrl = "http://localhost:8080";
-    private static HttpResponse<String> lastResponse;
-    private static HttpResponse<String> gameResponse;
-
-    private static GameController gameController;
+    private GameController gameController;
 
 
     private Integer currentVersion =  -1;
@@ -35,7 +20,6 @@ public class BoardUpdateThread extends Thread {
     public BoardUpdateThread(int gameId, GameController gameController) {
         this.gameController = gameController;
         this.gameId = gameId;
-
     }
 
 
@@ -43,25 +27,23 @@ public class BoardUpdateThread extends Thread {
         while (!gameEnded) {
 
             Game result = HttpController.getGameUpdate(gameId, currentVersion);
+            if(result == null){
 
-            if (result != null) {
+            }
+            else if (result.getState().equals("STARTED")) {
+
                 currentVersion = result.getVersion();
                 JSONObject jsonBoard = new JSONObject(result.getBoard());
                 Board newBoard = JSONReader.parseBoard(jsonBoard);
 
-                Board currentBoard = gameController.getBoard();
-
-                if (currentBoard.getPhase() == Phase.PROGRAMMING) {
-                    gameController.updatePlayers(newBoard);
-                } else {
-                    gameController.replaceBoard(newBoard);
-                }
-
-
+                gameController.replaceBoard(newBoard, currentVersion);
+                gameController.refreshView();
+            }else if(result.getState().equals("ENDED")){
+                gameEnded = true;
             }
 
             try {
-                Thread.sleep(1000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

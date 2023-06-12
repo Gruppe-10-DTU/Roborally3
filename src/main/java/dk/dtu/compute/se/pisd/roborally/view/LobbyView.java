@@ -40,6 +40,7 @@ public class LobbyView extends VBox implements ViewObserver{
                     stage.close();
                 });
         stage.setTitle("Lobby");
+        stage.setMinWidth(300);
         stage.show();
     }
 
@@ -54,13 +55,23 @@ public class LobbyView extends VBox implements ViewObserver{
     private ButtonBar addButtons(TableColumn<Game, String> nameColumn, int maxPlayers){
         Button leave = new Button("Leave");
         leave.setOnAction(e -> leaveGame());
-
+        ButtonBar buttonBar = new ButtonBar();
         Button refresh = new Button("Refresh");
+        Button start = new Button("Start");
+        start.setVisible(false);
+        start.setOnAction(event -> {
+            System.out.println("Start Game");
+            startGame();
+        });
         refresh.setOnAction(e -> { refreshList(tableView,nameColumn, maxPlayers);
+            if(maxPlayers == tableView.getItems().size()){
+
+                start.setVisible(true);
+            }
         });
 
-        ButtonBar buttonBar = new ButtonBar();
-        buttonBar.getButtons().addAll(leave, refresh);
+
+        buttonBar.getButtons().addAll(leave, refresh, start);
         return buttonBar;
     }
 
@@ -75,7 +86,16 @@ public class LobbyView extends VBox implements ViewObserver{
             throw new RuntimeException(e);
         }
     }
-    private void getPlayerList(TableView tableView) throws Exception {
+    private void startGame(){
+        int responseCode = appController.launchGame(gameId);
+        if (responseCode < 200 || responseCode > 300) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Connection Error");
+            error.setHeaderText("Server response not OK.\nPlease try again!");
+            error.showAndWait();
+        }
+    }
+    private void getPlayerList(TableView<PlayerDTO> tableView) throws Exception {
         tableView.getItems().clear();
         List<PlayerDTO> playerList = appController.getPlayerList(gameId);
         tableView.getItems().addAll(playerList);
