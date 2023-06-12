@@ -64,7 +64,7 @@ AppController implements Observer {
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
 
     final private RoboRally roboRally;
-
+    private PlayerDTO me;
     private GamesView gamesView;
     private Gson gson = JSONReader.setupGson();
     private String selectedBoard;
@@ -297,7 +297,6 @@ AppController implements Observer {
 
     @Override
     public void update(Subject subject) {
-
     }
 
     /**
@@ -328,6 +327,7 @@ AppController implements Observer {
 
     /**
      * Adds a player to specified board.
+     * @author Asbjørn Nielsen, Nilas Thørgsen
      */
     public PlayerDTO initPlayerInfo(){
         TextInputDialog nameDialog = new TextInputDialog("");
@@ -375,14 +375,15 @@ AppController implements Observer {
 
         PlayerDTO playerDTO = initPlayerInfo();
         int gameId = HttpController.createGame(nG);
-        HttpController.joinGame(gameId, playerDTO);
+        playerDTO = HttpController.joinGame(gameId, playerDTO);
+        showLobby(gameId, gameController.board.getMaxPlayers(),playerDTO);
         gameController.setClientName(playerDTO.getName());
         try {
             board.setGameId(gameId);
         } catch (IllegalStateException e){
 
         }
-        showLobby(gameId, board.getMaxPlayers());
+        showLobby(gameId, board.getMaxPlayers(),playerDTO);
         boardUpdateThread = new BoardUpdateThread(gameId, gameController);
         boardUpdateThread.start();
     }
@@ -488,11 +489,11 @@ AppController implements Observer {
         PlayerDTO player = initPlayerInfo();
 //            System.out.println(selectedItem.getCurrentPlayers());
         if (selectedItem.getCurrentPlayers() < selectedItem.getMaxPlayers()) {
-            player = gson.fromJson(HttpController.joinGame(gameId, player), PlayerDTO.class);
+            player = HttpController.joinGame(gameId, player);
             System.out.println("Player: " + player.getName() + " trying to join " + selectedItem);
             //updateGame(gameId,player);
             if(gameController != null) gameController.setClientName(player.getName());
-            showLobby(selectedItem.getId(), selectedItem.getMaxPlayers());
+            showLobby(selectedItem.getId(), selectedItem.getMaxPlayers(),player);
             boardUpdateThread = new BoardUpdateThread(gameId, gameController);
             boardUpdateThread.start();
 
@@ -549,9 +550,9 @@ AppController implements Observer {
      * @param id
      * @param maxPlayers
      */
-    public void showLobby(int id, int maxPlayers) {
+    public void showLobby(int id, int maxPlayers,PlayerDTO playerDTO) {
         if (lobbyView == null) {
-            lobbyView = new LobbyView(this, id, maxPlayers);
+            lobbyView = new LobbyView(this, id, maxPlayers,playerDTO);
         }
     }
 
@@ -590,6 +591,22 @@ AppController implements Observer {
             gameController = new GameController(board,this);
         }else{
             gameController.replaceBoard(board, game.getVersion());
+        }
+    }
+    /**
+     * Once the player chooses to leave the game; the board is retrieved from the server and returned anew without the
+     * player present.
+     * @param gameId
+     * @param playerDTO
+     * @uahtor Asbjørn Nielsen
+     */
+    public void leaveGame(int gameId, PlayerDTO playerDTO){
+        HttpController.leaveGame(gameId,playerDTO);
+        try {
+            boardUpdateThread.interrupt();
+            boardUpdateThread.join();
+        } catch (InterruptedException | SecurityException e) {
+            throw new RuntimeException(e);
         }
     }
 
