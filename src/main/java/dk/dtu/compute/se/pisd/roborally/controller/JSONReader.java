@@ -12,10 +12,10 @@ import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.Card;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.CommandCard;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.DamageCard;
-import dk.dtu.compute.se.pisd.roborally.model.Game;
 import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import javafx.util.Pair;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -36,6 +36,11 @@ public class JSONReader {
     private JSONArray spacesArray;
     private static Gson gson = setupGson();
 
+    /**
+     * Sets up the gson to process Board objects
+     *
+     * @author Nilas Thoegersen
+     */
     public static Gson setupGson(){
         RuntimeTypeAdapterFactory<Space> spaceRuntimeTypeAdapterFactory = RuntimeTypeAdapterFactory.of(
                         Space.class)
@@ -78,11 +83,22 @@ public class JSONReader {
         }
     }
 
+    /**
+     * Converts the Board object into a string to be saved
+     *
+     * @author Nilas Thoegersen & Søren Wünsche
+     */
     public static String saveGame(Board board) {
 
         return gson.toJson(board, Board.class);
     }
 
+    /**
+     * Loads the file from the path provided and parses it into a board using the parseBoard method
+     * @param filename path to the file
+     * @return instance of Board object or null if file does not exist
+     * @author Nilas Thoegersen & Philip Astrup Cramer
+     */
     public static Board loadGame(String filename) {
         try {
             InputStream jsonStream = new FileInputStream(filename);
@@ -93,9 +109,16 @@ public class JSONReader {
             return null;
         }
     }
+
+    /**
+     * parses th provided JSON object into a board object
+     * @param object Json object to be parsed
+     * @return instance of Board object
+     * @author Nilas Thoegersen
+     */
     public static Board parseBoard(JSONObject object){
 
-        Board board = new Board(object.getInt("width"), object.getInt("height"), object.getString("boardName"), object.getInt("playerAmount"), object.getJSONArray("spaces"));
+        Board board = new Board(object.getInt("width"), object.getInt("height"), object.getString("boardName"), object.getInt("maxPlayers"), object.getJSONArray("spaces"));
 
         Checkpoint checkpoint = board.getWincondition();
         String win = object.getJSONObject("wincondition").toString();
@@ -105,18 +128,11 @@ public class JSONReader {
             checkpoint = checkpoint.getPrevious();
             savedCheckpoint = savedCheckpoint.getPrevious();
         }
-        Type token = new TypeToken<ArrayList<Player>>(){}.getType();
-        String playersString = object.getJSONArray("players").toString();
+        parsePlayers(board, object);
 
-        List<Player> players = gson.fromJson(playersString, token);
-        for (Player player : players
-        ) {
 
-            player.board = board;
-            Space space = board.getSpace(player.getSpace());
-            board.addPlayer(player);
-            space.setPlayer(player);
-            player.setPlayer();
+        if(object.has("gameId")) {
+            board.setGameId(object.getInt("gameId"));
         }
         JSONArray jsonArray = object.getJSONArray("playerOrder");
         for (int i = 0; i < jsonArray.length(); i++) {
@@ -129,7 +145,34 @@ public class JSONReader {
         board.setStep(object.getInt("step"));
         board.setPhase(Phase.valueOf(object.getString("phase")));
 
+        if(object.has("gameLog")){
+            Type token = new TypeToken<List<Pair<String, String>>>(){}.getType();
+            List<Pair<String, String>> log = gson.fromJson(object.getJSONArray("gameLog").toString(), token);
+            board.setGameLog(log);
+        }
         return board;
+    }
+
+    /**
+     * Parses the json object into a list of players and places them on the board
+     * @param board instance of Board object
+     * @param object JSON object of the players
+     * @author Nilas Thoegersen
+     */
+    private static void parsePlayers(Board board, JSONObject object){
+        Type token = new TypeToken<ArrayList<Player>>(){}.getType();
+        String playersString = object.getJSONArray("players").toString();
+        List<Player> players = gson.fromJson(playersString, token);
+        for (Player player : players
+        ) {
+
+            player.board = board;
+            Space space = board.getSpace(player.getSpace());
+            board.addPlayer(player);
+            space.setPlayer(player);
+            player.setPlayer();
+            board.nextSpawn();
+        }
     }
 
 

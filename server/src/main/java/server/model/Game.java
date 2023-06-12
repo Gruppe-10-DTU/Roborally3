@@ -1,11 +1,11 @@
 package server.model;
 
 import jakarta.persistence.*;
-import server.dto.PlayerDTO;
 
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ *
+ * @author Sandie Petersen & Nilas Thoegersen & Søren Wünsche & Asbjørn
+ */
 @Entity
 public class Game {
     @Id
@@ -31,9 +31,6 @@ public class Game {
         this.board = board;
     }
 
-
-
-
     public int getId() {
         return id;
     }
@@ -56,12 +53,6 @@ public class Game {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getGameID(){return id;}
-
-    public void setGameID(int gameID){
-        this.id = gameID;
     }
 
     public GameState getState() {
@@ -88,10 +79,5 @@ public class Game {
 
     public void setVersion(int version) {
         this.version = version;
-    }
-
-    public List<PlayerDTO> getPlayers() {
-        List<PlayerDTO> playerlst = new ArrayList<PlayerDTO>();
-        return playerlst;
     }
 }

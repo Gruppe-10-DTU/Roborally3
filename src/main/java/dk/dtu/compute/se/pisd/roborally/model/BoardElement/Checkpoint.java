@@ -7,14 +7,13 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class Checkpoint extends Space implements SequenceAction {
 
     private Checkpoint previous;
 
-    private Set<Player> players;
+    private Set<String> players;
 
     private int number;
 
@@ -28,7 +27,7 @@ public class Checkpoint extends Space implements SequenceAction {
      */
     public Checkpoint(Board board, int x, int y, int number) {
         super(board, x, y);
-        this.players = new HashSet<>(board.getPlayersNumber());
+        this.players = new HashSet<>(board.getNumberOfPlayers());
         this.number = number;
         board.addBoardActions(this);
     }
@@ -44,7 +43,7 @@ public class Checkpoint extends Space implements SequenceAction {
      */
     public Checkpoint(Board board, int x, int y, int number, Checkpoint previous) {
         super(board, x, y);
-        this.players = new HashSet<>(board.getPlayersNumber());
+        this.players = new HashSet<>(board.getNumberOfPlayers());
         this.number = number;
         this.previous = previous;
         board.addBoardActions(this);
@@ -68,9 +67,9 @@ public class Checkpoint extends Space implements SequenceAction {
      */
     public boolean addPlayer(Player player) {
         if (previous == null) {
-            return players.add(player);
+            return players.add(player.getName());
         } else if (previous.checkPlayer(player)) {
-            return players.add(player);
+            return players.add(player.getName());
         }
         return false;
     }
@@ -84,7 +83,7 @@ public class Checkpoint extends Space implements SequenceAction {
      * @author Nilas Thoegersen
      */
     public boolean checkPlayer(Player player) {
-        return this.players.contains(player);
+        return this.players.contains(player.getName());
     }
 
 
@@ -94,17 +93,17 @@ public class Checkpoint extends Space implements SequenceAction {
      */
     @Override
     public void doAction(GameController gameController) {
-
+        for (Player player : board.getPlayers()
+        ) {
+            if (player.getSpace().getClass().equals(this.getClass())) {
+                if(((Checkpoint) player.getSpace()).addPlayer(player)){
+                    gameController.board.addGameLogEntry(player, "Reached checkpoint " + ((Checkpoint) player.getSpace()).getNumber());
+                }
+            }
+        }
     }
 
-    public void setPlayers(List<Player> players){
-        this.players.addAll(players);
-    }
 
-    public List<Player> getPlayers(){
-
-        return players.stream().toList();
-    }
     public int getNumber(){
         return this.number;
     }
@@ -116,6 +115,14 @@ public class Checkpoint extends Space implements SequenceAction {
     @Override
     public int getPrio() {
         return 8;
+    }
+
+    public Set<String> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(Set<String> players) {
+        this.players = players;
     }
 
     @Override

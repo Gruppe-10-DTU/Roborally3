@@ -3,6 +3,11 @@ package dk.dtu.compute.se.pisd.roborally.model;
 public class PlayerDTO {
     private String name;
 
+    private int id;
+
+    public PlayerDTO(){
+
+    }
     public PlayerDTO(String name) {
         this.name = name;
     }
@@ -14,4 +19,12 @@ public class PlayerDTO {
     public void setName(String name) {
         this.name = name;
     }
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
 }

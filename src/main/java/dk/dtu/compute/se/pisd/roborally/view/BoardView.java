@@ -61,6 +61,10 @@ public class BoardView extends VBox implements ViewObserver {
 
     private final SpaceEventHandler spaceEventHandler;
 
+    /**
+     *
+     * @author Ekkart Kindler & Philip Astrup Cramer
+     */
     public BoardView(@NotNull GameController gameController) {
         board = gameController.board;
 
@@ -110,6 +114,13 @@ public class BoardView extends VBox implements ViewObserver {
             logPane.setContent(gameLog);
         }
     }
+
+    /**
+     * Converts the provided List of String pairs into a list of
+     * colorized JavaFX Text objects
+     *
+     * @author Philip Astrup Cramer
+     */
     private List<Text> logAsText(List<Pair<String, String>> log){
         List<Text> result = new ArrayList<>();
         for (Pair<String, String> entry : log) {
@@ -152,9 +163,9 @@ public class BoardView extends VBox implements ViewObserver {
         public SpaceEventHandler(@NotNull GameController gameController) {
             this.gameController = gameController;
         }
-
         @Override
         public void handle(MouseEvent event) {
+            /*
             Object source = event.getSource();
             if (source instanceof SpaceView spaceView) {
                 Space space = spaceView.getSpace();
@@ -165,6 +176,7 @@ public class BoardView extends VBox implements ViewObserver {
                     event.consume();
                 }
             }
+            */
         }
     }
 }

@@ -6,6 +6,10 @@ import server.repository.PlayerRepository;
 
 import java.util.List;
 
+/**
+ *
+ * @author Nilas Thoegersen & Søren Wünsche
+ */
 @Service
 public class PlayerService {
     private PlayerRepository playerRepository;
@@ -14,9 +18,15 @@ public class PlayerService {
     }
 
     public void addPlayer(Player player){
+        int count = playerRepository.countPlayerByGameIdAndName(player.getGameId(), player.getName());
+        if(count > 0){
+            player.setName(player.getName() + "["+count+"]");
+        }
         playerRepository.save(player);
     }
-
+    public void removePlayer(int playerId, int gameId) {
+        playerRepository.deletePlayerByIdAndGameId(playerId,gameId);
+    }
     public int countPlayers(int id) {
         return playerRepository.countPlayerByGameId(id);
     }

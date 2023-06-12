@@ -25,11 +25,22 @@ public class PlayerController {
         this.dtoMapper = dtoMapper;
     }
 
+    /**
+     * returns a list of players in a game
+     *
+     * @author Søren Wünsce
+     */
     @RequestMapping(value = "/games/{id}/players", method = RequestMethod.GET)
     public ResponseEntity<List<PlayerDTO>> getPlayers(@PathVariable int id) {
             List<Player> playerList = playerService.getPlayerList(id);
         return ResponseEntity.ok().body(dtoMapper.playerToPlayerDto(playerList));
     }
+
+    /**
+     * Adds the received player to the game
+     *
+     * @author Søren Wünsche
+     */
     @RequestMapping(value = "/games/{gameId}/players", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public ResponseEntity<Player> joinPlayers(@PathVariable int gameId, @RequestBody Player player) throws HttpServerErrorException.NotImplemented {
         player.setGameId(gameId);
@@ -37,5 +48,12 @@ public class PlayerController {
         int playerCount = playerService.countPlayers(gameId);
         gameService.updateCurrPlayers(gameId,playerCount);
         return ResponseEntity.ok().body(player);
+    }
+
+    @DeleteMapping("/games/{gameId}/players/{id}")
+    public ResponseEntity<String> deletePlayer(@PathVariable int gameId, @PathVariable int id) throws HttpServerErrorException.NotImplemented{
+        playerService.removePlayer(id,gameId);
+        gameService.updateCurrPlayers(gameId,playerService.countPlayers(gameId));
+        return ResponseEntity.ok().body("Player " + id + "Left the game");
     }
 }
