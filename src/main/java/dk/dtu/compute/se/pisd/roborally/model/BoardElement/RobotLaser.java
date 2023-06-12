@@ -11,36 +11,33 @@ import org.jetbrains.annotations.NotNull;
 
 
 public class RobotLaser implements SequenceAction{
-    private Board board;
-    private Player player;
-    public RobotLaser(Board board, Player player) {
-        this.player = player;
-        this.board = board;
-        board.addBoardActions(this);
+
+    public RobotLaser() {
     }
 
     /**
-     * @author Asbjørn
      * @param space
      * Space from which the laser is shot
      * @param heading
      * Direction the laser is heading
      *
      * The method returns the player that is hit by the laser shot. If it does not hit anyone, it will return null.
-     * @author AsbjørnNielsen
+     * @author Asbjørn Nielsen
      */
-    public Player shootLaser(@NotNull Space space, Heading heading){
+    public void shootLaser(Board board,@NotNull Space space, Heading heading){
         Space oSpace = space;
         while(space!=null){
             if(space.getOut(heading) || space.hasWall(heading)){
-                return null;
+                return;
             }
             if(oSpace != space && space.getPlayer() != null){
-                return space.getPlayer();
+                space.getPlayer().discardCard(new DamageCard(Damage.SPAM));
+
+                board.addGameLogEntry(space.getPlayer(), "was shot by a laser!");
+                return;
             }
             space = board.getNeighbour(space, heading);
         }
-        return null;
     }
 
     /**
@@ -51,11 +48,7 @@ public class RobotLaser implements SequenceAction{
     @Override
     public void doAction(GameController gameController) {
         gameController.board.getPlayers().parallelStream().forEach(player -> {
-            RobotLaser rblsr = new RobotLaser(gameController.board,player);
-            if(rblsr.shootLaser(player.getSpace(),player.getHeading()) != null){
-                rblsr.shootLaser(player.getSpace(),player.getHeading()).discardCard(new DamageCard(Damage.SPAM));
-                gameController.board.addGameLogEntry(rblsr.shootLaser(player.getSpace(),player.getHeading()), "Was shot by " + player.getName());
-            }
+            this.shootLaser(gameController.board,player.getSpace(),player.getHeading());
         });
     }
 
