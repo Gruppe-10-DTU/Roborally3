@@ -185,5 +185,20 @@ public class HttpController {
         String result = response.thenApply(HttpResponse::body).get();
         return gson.fromJson(result,new TypeToken<List<Game>>(){}.getType());
     }
-
+    public static String removeGame(int id) throws Exception{
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverUrl+"/games/" + id))
+                .DELETE()
+                .build();
+        CompletableFuture<HttpResponse<String>> response =
+                client.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+        try {
+            String result = response.thenApply(HttpResponse::body).get();
+            return result;
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
