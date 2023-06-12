@@ -2,6 +2,7 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Game;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.PlayerDTO;
@@ -93,10 +94,10 @@ public class HttpController {
         }
     }
 
-    public static int pushNewGameState(GameController gameController, int gameID){
+    public static int pushGameUpdate(Game game, int gameID){
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + "/games/" + gameID))
-                .PUT(HttpRequest.BodyPublishers.ofString(JSONReader.saveGame(gameController)))
+                .PUT(HttpRequest.BodyPublishers.ofString(gson.toJson(game)))
                 .build();
         try {
             lastResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -107,7 +108,7 @@ public class HttpController {
         }
         return lastResponse.statusCode();
     }
-    public static JSONObject getNewGameState(int gameID){
+    public static Game getGame(int gameID){
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + "/games/" + gameID))
                 .GET()
@@ -120,7 +121,7 @@ public class HttpController {
             return null;
         }
         if(lastResponse.statusCode() < 300 && lastResponse.statusCode() >= 200) {
-            return new JSONObject(lastResponse.body());
+            return gson.fromJson(lastResponse.body(),Game.class);
         }
         return null;
     }

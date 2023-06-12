@@ -30,15 +30,12 @@ import dk.dtu.compute.se.pisd.roborally.utils.BoardUpdateThread;
 import dk.dtu.compute.se.pisd.roborally.view.GamesView;
 import dk.dtu.compute.se.pisd.roborally.view.LobbyView;
 import javafx.scene.control.Alert;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -156,7 +153,7 @@ AppController implements Observer, EndGame {
      */
     public void saveGame() {
         String file = "";
-        String savedGameController = JSONReader.saveGame(gameController);
+        String savedGameController = JSONReader.saveGame(gameController.board);
         TextInputDialog saveNameDialog = new TextInputDialog();
         saveNameDialog.setTitle("Save game");
 
@@ -294,6 +291,11 @@ AppController implements Observer, EndGame {
     public void update(Subject subject) {
     }
 
+    /**
+     * Creates a board from the available list of board options and the user selection of aforementioned board.
+     * @return Board
+     * @author Asbjørn Nielsen
+     */
     public Board initBoardinfo(){
         ChoiceDialog boardDialog = new ChoiceDialog(BOARD_OPTIONS.get(0), BOARD_OPTIONS);
         boardDialog.setTitle("Course");
@@ -316,6 +318,10 @@ AppController implements Observer, EndGame {
         return board;
     }
 
+    /**
+     * Adds a player to specified board.
+     * @param board
+     */
     public void initPlayerInfo(Board board){
         TextInputDialog nameDialog = new TextInputDialog("");
         nameDialog.setTitle("Player name");
@@ -333,6 +339,10 @@ AppController implements Observer, EndGame {
         player.setSpace(board.getSpace(spawnSpace.getX(), spawnSpace.getY()));
     }
 
+    /**
+     * Main method for creating an online game and handling the functionality that comes with it.
+     * @author Asbjørn Nielsen
+     */
     public void hostGame() {
         Game nG = null;
         Board board = null;
@@ -359,10 +369,16 @@ AppController implements Observer, EndGame {
         PlayerDTO playerDTO = new PlayerDTO(board.getPlayer(0).getName());
         int gameId = HttpController.createGame(nG);
         HttpController.joinGame(gameId, playerDTO);
+        showLobby(gameId, gameController.board.getMaxPlayers());
         BoardUpdateThread boardUpdateThread = new BoardUpdateThread(gameId, gameController);
         boardUpdateThread.start();
     }
 
+    /**
+     * Retrieves a list of available boards and lets the player chose one of them to play.
+     * @return Board
+     * @author Asbjørn Nielsen
+     */
     public Board retrieveSavedGame(){
         File file;
         URI pathUri;
@@ -403,6 +419,7 @@ AppController implements Observer, EndGame {
      */
     public void joinGame(Game selectedItem) {
         List<PlayerDTO> playerList = new ArrayList<PlayerDTO>();
+        int gameId = selectedItem.getId();
         String playerName = playerName(0);
         if (playerName != null) {
             try {
@@ -418,8 +435,9 @@ AppController implements Observer, EndGame {
             PlayerDTO player = new PlayerDTO(playerName);
 //            System.out.println(selectedItem.getCurrentPlayers());
             if (selectedItem.getCurrentPlayers() < selectedItem.getMaxPlayers()) {
-                HttpController.joinGame(selectedItem.getId(), player);
+                HttpController.joinGame(gameId, player);
                 System.out.println("Player: " + playerName + " trying to join " + selectedItem);
+                updateGame(gameId,player);
                 showLobby(selectedItem.getId(), selectedItem.getMaxPlayers());
             }
         }
@@ -470,9 +488,35 @@ AppController implements Observer, EndGame {
         return HttpController.playersInGame(gameId);
     }
 
+    /**
+     * Lounge of players who've joined the game.
+     * @param id
+     * @param maxPlayers
+     */
     public void showLobby(int id, int maxPlayers) {
         if (lobbyView == null) {
             lobbyView = new LobbyView(this, id, maxPlayers);
         }
     }
+
+    public void updateGame(int gameId, PlayerDTO playerDTO){
+        Game game = HttpController.getGame(gameId);
+        Board board = null;
+        if (game != null) {
+            board = JSONReader.parseBoard(new JSONObject(game.getBoard()));
+            initJoinedPlayerInfo(board,playerDTO);
+            game.setBoard(gson.toJson(board));
+            int gameVersion = game.getVersion()+1;
+            game.setVersion(gameVersion);
+            HttpController.pushGameUpdate(game,gameId);
+        }
+    }
+    public void initJoinedPlayerInfo(Board board, PlayerDTO playerDTO){
+        int playerColor = board.getPlayersNumber();
+        Player player = new Player(board, PLAYER_COLORS.get(playerColor), playerDTO.getName());
+        board.addPlayer(player);
+        Space spawnSpace = board.nextSpawn();
+        player.setSpace(board.getSpace(spawnSpace.getX(), spawnSpace.getY()));
+    }
+
 }
