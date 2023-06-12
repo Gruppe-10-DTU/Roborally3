@@ -4,15 +4,15 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Game;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.PlayerDTO;
-import org.json.JSONObject;
+
 import java.net.URI;
-import java.net.http.*;
-import java.util.*;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 public class HttpController {
 
@@ -117,10 +117,28 @@ public class HttpController {
             return 418;
         }
     }
+    public static int startGame(int gameID){
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverUrl + "/games/" + gameID + "/gamestates"))
+                .PUT(HttpRequest.BodyPublishers.ofString("STARTED"))
+                .build();
+        try{
+            lastResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return lastResponse.statusCode();
+    }
+
+    public static int pushGameUpdate(Game game, Board board){
+        game.setBoard(gson.toJson(board));
+        return pushGameUpdate(game, game.getId());
+    }
 
     public static int pushGameUpdate(Game game, int gameID){
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + "/games/" + gameID))
+                .setHeader("Content-Type","application/json")
                 .PUT(HttpRequest.BodyPublishers.ofString(gson.toJson(game)))
                 .build();
         try {
@@ -131,6 +149,23 @@ public class HttpController {
             return 418;
         }
         return lastResponse.statusCode();
+    }
+
+    public static void updateBoard(Board board, int version){
+
+        Game game = new Game(JSONReader.saveGame(board), version);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverUrl + "/games/"+board.getGameId()))
+                .setHeader("Content-Type","application/json")
+                .method("PATCH", HttpRequest.BodyPublishers.ofString(gson.toJson(game)))
+                .build();
+
+        try {
+            lastResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        } catch (Exception exception){
+            exception.printStackTrace();
+        }
     }
     public static Game getGame(int gameID){
         HttpRequest request = HttpRequest.newBuilder()
@@ -201,4 +236,24 @@ public class HttpController {
             throw new RuntimeException(e);
         }
     }
+
+    public static Game getGameUpdate(int id, int version) {
+
+        Game game = null;
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverUrl + "/games/" + id + "?version=" + version ))
+                .GET()
+                .build();
+        try {
+            lastResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (!lastResponse.body().equals("")) {
+                game = gson.fromJson(lastResponse.body(), Game.class);
+            }
+        } catch (Exception exception){
+            exception.printStackTrace();
+        }
+        return game;
+    }
+
 }

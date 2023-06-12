@@ -13,4 +13,6 @@ public interface GameRepository extends CrudRepository<Game, Integer> {
     List<Game> findAll();
 
     List<Game> findAllByStateIn(List<GameState> states);
+
+    Game findGameByIdAndVersionGreaterThan(int id, int version);
 }

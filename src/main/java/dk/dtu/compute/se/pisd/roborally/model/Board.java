@@ -50,12 +50,11 @@ public class Board extends Subject {
 
     private String boardName;
 
-    private int playerAmount;
 
     private int number = 1;
 
     private Integer gameId;
-    private PriorityAntenna priorityAntenna;
+    private transient PriorityAntenna priorityAntenna;
 
     private Space[][] spaces;
 
@@ -90,7 +89,7 @@ public class Board extends Subject {
     private final TreeSet<SequenceAction> boardActions;
 
 
-    private RebootToken rebootToken;
+    private transient RebootToken rebootToken;
 
     public RebootToken getRebootToken() {
         return rebootToken;
@@ -124,7 +123,7 @@ public class Board extends Subject {
     public Board(int width, int height, @NotNull String boardName, int playerAmount, JSONArray boardArray) {
         this.boardActions = new TreeSet<>(new SequenceActionComparator());
         this.boardName = boardName;
-        this.playerAmount = playerAmount;
+        this.maxPlayers = playerAmount;
         this.width = width;
         this.height = height;
         this.gameLog = new ArrayList<>();
@@ -142,6 +141,9 @@ public class Board extends Subject {
                     break;
                 case "Burnout":
                     courseArray = new JSONReader("src/main/resources/boards/Burnout.json").getJsonSpaces();
+                    break;
+                case "Fractionation":
+                    courseArray = new JSONReader("src/main/resources/boards/Fractionation.json").getJsonSpaces();
                     break;
                 default:
                     courseArray = new JSONReader("src/main/resources/boards/RiskyCrossing.json").getJsonSpaces();
@@ -317,13 +319,7 @@ public class Board extends Subject {
     }
 
     public void setGameId(int gameId) {
-        if (this.gameId == null) {
-            this.gameId = gameId;
-        } else {
-            if (!this.gameId.equals(gameId)) {
-                throw new IllegalStateException("A game with a set id may not be assigned a new id!");
-            }
-        }
+        this.gameId = gameId;
     }
 
     public Space getSpace(Space space){
@@ -339,14 +335,13 @@ public class Board extends Subject {
         }
     }
 
-    public int getPlayersNumber() {
+    public int getNumberOfPlayers() {
         return players.size();
     }
 
     public void addPlayer(@NotNull Player player) {
         if (player.board == this && !players.contains(player)) {
             players.add(player);
-            notifyChange();
         }
     }
     public void removePlayer(@NotNull Player player){
@@ -393,6 +388,7 @@ public class Board extends Subject {
     public boolean nextPlayer() {
         if (playerOrder.size() > 0) {
             current = playerOrder.poll();
+            notifyChange();
             return true;
         } else return false;
     }
@@ -541,6 +537,9 @@ public class Board extends Subject {
     public List<Pair<String, String>> getGameLog(){
         return gameLog;
     }
+    public void setGameLog(List<Pair<String, String>> gameLog){
+        this.gameLog = gameLog;
+    }
     public void addGameLogEntry(Player player, String event){
         if(gameLog == null) return; //Allows testing without instantiating log
         if(gameLog.size() == 50) gameLog.remove(0);
@@ -552,5 +551,14 @@ public class Board extends Subject {
     }
     public void addPlayerToOder(Player player) {
         playerOrder.add(player);
+    }
+
+    public void updatePlayers(List<Player> newPlayers, String clientName) {
+        for (int i = 0; i < players.size(); i++) {
+            if (!players.get(i).getName().equals(clientName)) {
+                newPlayers.get(i).board = this;
+                players.set(i, newPlayers.get(i));
+            }
+        }
     }
 }

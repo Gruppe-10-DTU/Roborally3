@@ -95,7 +95,7 @@ public class Conveyorbelt extends Space implements SequenceAction {
         Map<Player, Space> targetSpace = new HashMap<>();
         Player player;
         Space space;
-        for (int i = 0; i < board.getPlayersNumber(); i++) {
+        for (int i = 0; i < board.getNumberOfPlayers(); i++) {
             player = board.getPlayer(i);
             space = player.getSpace();
             if (space.getClass().equals(this.getClass())) {
