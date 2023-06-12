@@ -118,7 +118,7 @@ public class Board extends Subject {
      * @param playerAmount The amount of players in the game
      * @param boardArray   Json array of the board
      *                     Loads the file of the requested board and creates all the indicidual spacess on the board
-     * @author Sandie Petersen
+     * @author Sandie Petersen & Nilas Thoegersen
      */
     public Board(int width, int height, @NotNull String boardName, int playerAmount, JSONArray boardArray) {
         this.boardActions = new TreeSet<>(new SequenceActionComparator());
@@ -273,6 +273,7 @@ public class Board extends Subject {
      * @param width     Width of the board
      * @param height    Height of the board
      * @param boardName Name of the board
+     * @author Søren Wünsche
      */
     public Board(int width, int height, @NotNull String boardName) {
         this.boardName = boardName;
@@ -540,6 +541,13 @@ public class Board extends Subject {
     public void setGameLog(List<Pair<String, String>> gameLog){
         this.gameLog = gameLog;
     }
+
+    /**
+     * Logs game events tha colors them according to the affected player
+     * @param player the target og the event
+     * @param event string description of game event
+     * @author Philip Astrup Cramer
+     */
     public void addGameLogEntry(Player player, String event){
         if(gameLog == null) return; //Allows testing without instantiating log
         if(gameLog.size() == 50) gameLog.remove(0);

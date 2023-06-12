@@ -27,6 +27,7 @@ public class RobotLaser implements SequenceAction{
      * Direction the laser is heading
      *
      * The method returns the player that is hit by the laser shot. If it does not hit anyone, it will return null.
+     * @author AsbjørnNielsen
      */
     public Player shootLaser(@NotNull Space space, Heading heading){
         Space oSpace = space;
@@ -42,6 +43,11 @@ public class RobotLaser implements SequenceAction{
         return null;
     }
 
+    /**
+     *
+     * @param gameController The main controller for the game
+     * @author Asbjørn Nielsen
+     */
     @Override
     public void doAction(GameController gameController) {
         gameController.board.getPlayers().parallelStream().forEach(player -> {
