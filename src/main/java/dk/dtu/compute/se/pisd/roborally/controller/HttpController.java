@@ -285,5 +285,7 @@ public class HttpController {
         }
         return game;
     }
-
+    public static int getLastResponseCode() {
+        return lastResponse.statusCode();
+    }
 }
