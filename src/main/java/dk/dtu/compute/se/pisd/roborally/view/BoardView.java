@@ -163,9 +163,9 @@ public class BoardView extends VBox implements ViewObserver {
         public SpaceEventHandler(@NotNull GameController gameController) {
             this.gameController = gameController;
         }
-
         @Override
         public void handle(MouseEvent event) {
+            /*
             Object source = event.getSource();
             if (source instanceof SpaceView spaceView) {
                 Space space = spaceView.getSpace();
@@ -176,6 +176,7 @@ public class BoardView extends VBox implements ViewObserver {
                     event.consume();
                 }
             }
+            */
         }
     }
 }

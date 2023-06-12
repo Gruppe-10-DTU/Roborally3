@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.Checkpoint;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElement.RobotLaser;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.*;
@@ -356,14 +357,15 @@ public class GameController {
      */
     public void pushRobot(@NotNull Player pushing, @NotNull Player pushed) {
         if (pushable(pushing)) {
-            if (board.getNeighbour(pushed.getSpace(), pushing.getHeading()) == null) {
+            Space neighbour = board.getNeighbour(pushed.getSpace(), pushing.getHeading());
+            if (neighbour == null || neighbour instanceof Pit) {
                 rebootRobot(pushed);
                 return;
             }
-            if (board.getNeighbour(pushed.getSpace(), pushing.getHeading()).getPlayer() != null) {
+            if (neighbour.getPlayer() != null) {
                 pushRobot(pushing, board.getPlayer(board.getPlayerNumber(board.getNeighbour(pushed.getSpace(), pushing.getHeading()).getPlayer())));
             }
-            pushed.setSpace(board.getNeighbour(pushed.getSpace(), pushing.getHeading()));
+            pushed.setSpace(neighbour);
         } else {
             pushed.setSpace(pushed.getSpace());
         }
