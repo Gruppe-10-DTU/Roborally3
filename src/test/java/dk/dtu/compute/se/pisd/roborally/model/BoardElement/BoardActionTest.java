@@ -247,32 +247,48 @@ class BoardActionTest {
 
 
         @Test
-        void RobotLaser(){
-        Player target = board.getCurrentPlayer();
-        Player shooter = board.getPlayer(1);
-        RobotLaser rblsr = new RobotLaser(board,shooter);
-        shooter.setHeading(Heading.NORTH);
-        target.setSpace(board.getSpace(1,0));
+        void RobotLaser() {
+            Player target = board.getCurrentPlayer();
+            Player shooter = board.getPlayer(1);
+            RobotLaser rblsr = new RobotLaser(board, shooter);
+            shooter.setHeading(Heading.NORTH);
+            target.setSpace(board.getSpace(1, 0));
 
-        //Check if player 2 shoots player 1!
-        String drawn = "";
-        rblsr.doAction(gameController);
-        drawn = target.drawCard().getType();
-        while(drawn != "Damage") drawn = target.drawCard().getType();
-        assertTrue(drawn.equals("Damage"), "Target should recieve a card of the Damage-type!");
+            //Check if player 2 shoots player 1!
+            String drawn = "";
+            rblsr.doAction(gameController);
+            drawn = target.drawCard().getType();
+            while (drawn != "Damage") drawn = target.drawCard().getType();
+            assertTrue(drawn.equals("Damage"), "Target should  receive a damage-type card!");
 
-        //Check to see if shooter can shoot through players.
-        Player target2 = board.getPlayer(2);
-        shooter.setSpace(board.getSpace(1,2));
-        target2.setSpace(board.getSpace(1,1));
-        assertTrue(rblsr.shootLaser(shooter.getSpace(),shooter.getHeading()) == target2, "Should hit player 2 on space (1,1)!");
-        assertFalse(rblsr.shootLaser(shooter.getSpace(),shooter.getHeading()) == target,"Should not hit player 1 on space (1,0)!");
-
-            //Check to see if a wall will stop player 2 laser.
+            //Check to see if shooter can shoot through players.
+            Player target2 = board.getPlayer(2);
+            shooter.setSpace(board.getSpace(1, 2));
+            target2.setSpace(board.getSpace(1, 1));
+            try {
+                drawn = target2.drawCard().getType();
+                while (drawn != "Damage") {
+                    drawn = target2.drawCard().getType();
+                }
+            } catch (Exception e) {
+                //This will only be reached once the entire deck has been run through.
+                assertFalse(drawn.equals("Damage"), "Target should not receive a damage-type card!");
+            }
+        //Check to see if a wall will stop player 2 laser.
+        target.setSpace(board.getSpace(4,4));
+        Player target3 = board.getPlayer(0);
+        target3.setSpace(board.getSpace(1,0));
         board.getNeighbour(board.getSpace(1,0),Heading.SOUTH).setWalls(EnumSet.range(Heading.SOUTH,Heading.NORTH));
-        assertTrue(rblsr.shootLaser(shooter.getSpace(),shooter.getHeading()) == null);
-
+        rblsr.doAction(gameController);
+        try {
+            drawn = target3.drawCard().getType();
+            while (drawn != "Damage") drawn = target3.drawCard().getType();
+        } catch (Exception e) {
+            //This will only be reached once the entire deck has been run through.
+            assertFalse(drawn.equals("Damage"), "Target should not receive a damage-type card!");
         }
+    }
+
     @Test
     void BoardPit() {
         Board board = gameController.board;

@@ -26,6 +26,7 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElement.RobotLaser;
 import dk.dtu.compute.se.pisd.roborally.utils.BoardUpdateThread;
 import dk.dtu.compute.se.pisd.roborally.view.GamesView;
 import dk.dtu.compute.se.pisd.roborally.view.LobbyView;
@@ -399,6 +400,7 @@ AppController implements Observer {
             Player newPlayer;
             try {
                 players = HttpController.playersInGame(id);
+
             } catch (Exception e){
                 return -1;
             }

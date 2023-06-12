@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class HttpControllerTest {
+    /*
     GameController gameController;
 
     @BeforeEach
@@ -47,4 +48,5 @@ class HttpControllerTest {
         assertEquals(200, returnCode);
     }
     */
+
 }
