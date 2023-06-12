@@ -28,6 +28,9 @@ public class GameService {
         gameRepository.deleteById(id);
     }
 
+    /**
+     * @author Asbjørn Nielsen & Sandie & Nilas Thoegersen
+     */
     public List<Game> loadGames() {
         List<GameState> states = Arrays.asList(GameState.INITIALIZING, GameState.SAVED);
         return gameRepository.findAllByStateIn(states);
@@ -41,6 +44,9 @@ public class GameService {
         return gameRepository.findGameByIdAndVersionGreaterThan(id, version);
     }
 
+    /**
+     * @author Søren Wünsche
+     */
     public void updateCurrPlayers(int gameId, int count) {
         Game game = gameRepository.findById(gameId).orElse(null);
         if (game != null) {
