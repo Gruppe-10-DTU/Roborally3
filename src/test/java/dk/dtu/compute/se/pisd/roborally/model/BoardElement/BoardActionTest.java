@@ -250,7 +250,7 @@ class BoardActionTest {
         void RobotLaser() {
             Player target = board.getCurrentPlayer();
             Player shooter = board.getPlayer(1);
-            RobotLaser rblsr = new RobotLaser(board, shooter);
+            RobotLaser rblsr = new RobotLaser();
             shooter.setHeading(Heading.NORTH);
             target.setSpace(board.getSpace(1, 0));
 

@@ -11,16 +11,11 @@ import org.jetbrains.annotations.NotNull;
 
 
 public class RobotLaser implements SequenceAction{
-    private Board board;
-    private Player player;
-    public RobotLaser(Board board, Player player) {
-        this.player = player;
-        this.board = board;
-        board.addBoardActions(this);
+
+    public RobotLaser() {
     }
 
     /**
-     * @author Asbjørn
      * @param space
      * Space from which the laser is shot
      * @param heading
@@ -29,7 +24,7 @@ public class RobotLaser implements SequenceAction{
      * The method returns the player that is hit by the laser shot. If it does not hit anyone, it will return null.
      * @author Asbjørn Nielsen
      */
-    public void shootLaser(@NotNull Space space, Heading heading){
+    public void shootLaser(Board board,@NotNull Space space, Heading heading){
         Space oSpace = space;
         while(space!=null){
             if(space.getOut(heading) || space.hasWall(heading)){
@@ -37,12 +32,12 @@ public class RobotLaser implements SequenceAction{
             }
             if(oSpace != space && space.getPlayer() != null){
                 space.getPlayer().discardCard(new DamageCard(Damage.SPAM));
-                board.addGameLogEntry(player, "was shot by a laser!");
+
+                board.addGameLogEntry(space.getPlayer(), "was shot by a laser!");
                 return;
             }
             space = board.getNeighbour(space, heading);
         }
-        return;
     }
 
     /**
@@ -53,7 +48,7 @@ public class RobotLaser implements SequenceAction{
     @Override
     public void doAction(GameController gameController) {
         gameController.board.getPlayers().parallelStream().forEach(player -> {
-            this.shootLaser(player.getSpace(),player.getHeading());
+            this.shootLaser(gameController.board,player.getSpace(),player.getHeading());
         });
     }
 
