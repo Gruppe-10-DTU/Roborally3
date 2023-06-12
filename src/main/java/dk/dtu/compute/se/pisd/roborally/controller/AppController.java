@@ -611,6 +611,10 @@ AppController implements Observer {
         game.setBoard(gson.toJson(board));
         HttpController.leaveGame(gameId,playerDTO);
         HttpController.pushGameUpdate(game,gameId);
-        boardUpdateThread.setGameEnded(true);
+        try {
+            boardUpdateThread.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
