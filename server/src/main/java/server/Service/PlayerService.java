@@ -24,7 +24,9 @@ public class PlayerService {
         }
         playerRepository.save(player);
     }
-
+    public void removePlayer(int playerId, int gameId) {
+        playerRepository.deletePlayerByIdAndGameId(playerId,gameId);
+    }
     public int countPlayers(int id) {
         return playerRepository.countPlayerByGameId(id);
     }
