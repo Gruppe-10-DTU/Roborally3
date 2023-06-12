@@ -31,6 +31,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static dk.dtu.compute.se.pisd.roborally.model.Phase.FINISHED;
 import static dk.dtu.compute.se.pisd.roborally.model.Phase.PLAYER_INTERACTION;
 
 /**
@@ -463,6 +464,7 @@ public class GameController {
             if (checkpoint.checkPlayer(player)) {
                 appController.endGame(player);
                 board.setPhase(Phase.FINISHED);
+                updateBoard();
                 return;
             }
         }
@@ -540,6 +542,9 @@ public class GameController {
      */
     public void updateBoard(){
         if(board.getPhase() == PLAYER_INTERACTION){
+            return;
+        }
+        if (board.getPhase() == FINISHED){
             return;
         }
         if(clientName != null) {

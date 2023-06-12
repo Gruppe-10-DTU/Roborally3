@@ -102,6 +102,7 @@ public class BoardView extends VBox implements ViewObserver {
         mainPane.add(logPane,1, 0);
         board.attach(this);
         update(board);
+        mainPane.toFront();
     }
 
     @Override

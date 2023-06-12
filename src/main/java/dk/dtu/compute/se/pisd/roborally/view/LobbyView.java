@@ -17,7 +17,7 @@ public class LobbyView extends VBox implements ViewObserver{
     private final TableView<Game> tableView;
 
     private final int gameId;
-    public LobbyView(AppController appController, int gameId, int maxPlayers) {
+    public LobbyView(AppController appController, int gameId, int maxPlayers, Stage stageNew) {
         this.appController = appController;
         this.gameId = gameId;
         tableView = new TableView<Game>();
@@ -32,16 +32,16 @@ public class LobbyView extends VBox implements ViewObserver{
         this.getChildren().addAll(tableView, addButtons(name, maxPlayers));
         Scene scene = new Scene(this);
 
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.setOnCloseRequest(
+//        Stage stage = new Stage();
+        stageNew.setScene(scene);
+        stageNew.setOnCloseRequest(
                 e -> {
                     appController.setLobbyView(null);
-                    stage.close();
+                    stageNew.close();
                 });
-        stage.setTitle("Lobby");
-        stage.setMinWidth(300);
-        stage.show();
+        stageNew.setTitle("Lobby");
+        stageNew.setMinWidth(300);
+        stageNew.show();
     }
 
     private String playerOnServer(int currentPlayers, int maxPlayers) {

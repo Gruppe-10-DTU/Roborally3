@@ -22,6 +22,8 @@ public class GamesView extends VBox implements ViewObserver {
     private final AppController appController;
     private final TableView<Game> tableView;
 
+    private Stage stageHolder = new Stage();
+
     /**
      * Controller for the view
      *
@@ -64,6 +66,7 @@ public class GamesView extends VBox implements ViewObserver {
                 });
         stage.setTitle("Game list");
         stage.show();
+        stageHolder = stage;
     }
 
     /**
@@ -116,4 +119,7 @@ public class GamesView extends VBox implements ViewObserver {
         tableView.getItems().addAll(games);
     }
 
+    public Stage getStageHolder() {
+        return stageHolder;
+    }
 }
