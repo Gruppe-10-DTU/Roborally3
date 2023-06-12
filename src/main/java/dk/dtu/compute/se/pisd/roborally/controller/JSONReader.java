@@ -36,6 +36,11 @@ public class JSONReader {
     private JSONArray spacesArray;
     private static Gson gson = setupGson();
 
+    /**
+     * Sets up the gson to process Board objects
+     *
+     * @author Nilas Thoegersen
+     */
     public static Gson setupGson(){
         RuntimeTypeAdapterFactory<Space> spaceRuntimeTypeAdapterFactory = RuntimeTypeAdapterFactory.of(
                         Space.class)
@@ -78,11 +83,22 @@ public class JSONReader {
         }
     }
 
+    /**
+     * Converts the Board object into a string to be saved
+     *
+     * @author Nilas Thoegersen & Søren Wünsche
+     */
     public static String saveGame(Board board) {
 
         return gson.toJson(board, Board.class);
     }
 
+    /**
+     * Loads the file from the path provided and parses it into a board using the parseBoard method
+     * @param filename path to the file
+     * @return instance of Board object or null if file does not exist
+     * @author Nilas Thoegersen & Philip Astrup Cramer
+     */
     public static Board loadGame(String filename) {
         try {
             InputStream jsonStream = new FileInputStream(filename);
@@ -93,6 +109,13 @@ public class JSONReader {
             return null;
         }
     }
+
+    /**
+     * parses th provided JSON object into a board object
+     * @param object Json object to be parsed
+     * @return instance of Board object
+     * @author Nilas Thoegersen
+     */
     public static Board parseBoard(JSONObject object){
 
         Board board = new Board(object.getInt("width"), object.getInt("height"), object.getString("boardName"), object.getInt("maxPlayers"), object.getJSONArray("spaces"));
@@ -130,6 +153,12 @@ public class JSONReader {
         return board;
     }
 
+    /**
+     * Parses the json object into a list of players and places them on the board
+     * @param board instance of Board object
+     * @param object JSON object of the players
+     * @author Nilas Thoegersen
+     */
     private static void parsePlayers(Board board, JSONObject object){
         Type token = new TypeToken<ArrayList<Player>>(){}.getType();
         String playersString = object.getJSONArray("players").toString();
