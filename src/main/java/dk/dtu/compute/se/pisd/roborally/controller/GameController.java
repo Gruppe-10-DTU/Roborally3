@@ -504,6 +504,11 @@ public class GameController {
         return this.board.getPlayerByName(this.clientName);
     }
 
+    /**
+     * Executes the card from the previous register
+     * @param player the affected player
+     * @author Nilas Thoegersen
+     */
     public void again(Player player) {
         //Get the previous card
         Card card = player.getProgramField(board.getStep()-1).getCard();
@@ -513,6 +518,12 @@ public class GameController {
         }
     }
 
+    /**
+     * Replaces the board
+     * @param board instance of board object
+     * @param version version number
+     * @author Nilas Thoegersen & Sandie Petersen
+     */
     public void replaceBoard (Board board, int version) {
         this.board = board;
         this.version.set(version);
@@ -523,6 +534,10 @@ public class GameController {
         Platform.runLater(appController::updateBoard);
     }
 
+    /**
+     * Pushed the updated board to the server using the HttpController
+     * @author Nilas Thoegersen
+     */
     public void updateBoard(){
         if(board.getPhase() == PLAYER_INTERACTION){
             return;
@@ -532,6 +547,10 @@ public class GameController {
         }
     }
 
+    /**
+     *
+     * @author Nilas Thoegersen
+     */
     public boolean endProgramming(Player player) {
         boolean client = clientName != null;
         boolean current = !player.board.getCurrentPlayer().equals(player);
