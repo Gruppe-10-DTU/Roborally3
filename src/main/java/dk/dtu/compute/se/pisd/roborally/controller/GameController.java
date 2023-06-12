@@ -460,11 +460,6 @@ public class GameController {
     public void checkIfGameIsDone() {
         Checkpoint checkpoint = board.getWincondition();
         for (Player player : board.getPlayers()) {
-            if (board.getPhase() == FINISHED){
-                appController.terminateClient();
-                return;
-            }
-
             if (checkpoint.checkPlayer(player)) {
                 board.setPhase(Phase.FINISHED);
                 updateBoard();

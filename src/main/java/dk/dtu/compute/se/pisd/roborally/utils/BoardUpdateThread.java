@@ -35,6 +35,7 @@ public class BoardUpdateThread extends Thread {
 
             Game result = HttpController.getGameUpdate(gameId, currentVersion);
 
+
             if(result == null){
 
             }
@@ -43,7 +44,7 @@ public class BoardUpdateThread extends Thread {
                 JSONObject jsonBoard = new JSONObject(result.getBoard());
                 Board newBoard = JSONReader.parseBoard(jsonBoard);
                 if (newBoard.getPhase() == Phase.FINISHED){
-                    gameController.checkIfGameIsDone();
+                    //TODO> MAKE THIS CLOSE GAME
                 }
 
                 if (gameController.board.getPhase() == Phase.PROGRAMMING && newBoard.getPhase() == Phase.PROGRAMMING) {
@@ -53,6 +54,7 @@ public class BoardUpdateThread extends Thread {
                 }
                 gameController.refreshView();
             }else if(result.getState().equals("ENDED")){
+                gameController.updateBoard();
                 gameEnded = true;
             }
 
