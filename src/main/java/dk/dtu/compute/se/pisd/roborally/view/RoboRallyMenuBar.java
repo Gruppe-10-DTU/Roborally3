@@ -53,8 +53,6 @@ public class RoboRallyMenuBar extends MenuBar {
 
     private final MenuItem hostGame;
 
-    private final MenuItem startServer;
-
     /**
      *
      * @author Ekkart Kindler & Nilas Thoegersen
@@ -99,10 +97,6 @@ public class RoboRallyMenuBar extends MenuBar {
         seeGames.setOnAction(e -> this.appController.showOnlineGames());
         multiplayerMenu.getItems().add(seeGames);
 
-        startServer = new MenuItem("Start server");
-        startServer.setOnAction(e -> this.appController.StartServer());
-        multiplayerMenu.getItems().add(startServer);
-
         multiplayerMenu.setOnShowing(e -> update());
         multiplayerMenu.setOnShown(e -> updateBounds());
 
@@ -115,11 +109,13 @@ public class RoboRallyMenuBar extends MenuBar {
             stopGame.setVisible(true);
             saveGame.setVisible(true);
             loadGame.setVisible(false);
+            multiplayerMenu.setVisible(appController.isThreadRunning());
         } else {
             newGame.setVisible(true);
             stopGame.setVisible(false);
             saveGame.setVisible(false);
             loadGame.setVisible(true);
+            multiplayerMenu.setVisible(appController.isThreadRunning());
         }
     }
 
