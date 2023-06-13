@@ -234,6 +234,25 @@ public class Player extends Subject implements Comparable<Player> {
         for (CommandCardField field : program) {
             if(field.getCard() == null) field.setCard(deck.drawCard());
         }
+        for (CommandCardField field : cards) {
+            if (field.getCard() != null){
+                this.receiveCard(field.getCard());
+                field.setCard(null);
+            }
+        }
+    }
+
+    /**
+     * Discards all of the cards in the players registers.
+     *
+     * @author Philip Astrup Cramer
+     */
+    public void discardRegisters(){
+        for (CommandCardField field : program) {
+            this.discardCard(field.getCard());
+            field.setCard(null);
+            field.setVisible(true);
+        }
     }
 
     /**
@@ -241,12 +260,11 @@ public class Player extends Subject implements Comparable<Player> {
      *
      * @author Philip Astrup Cramer
      */
-    public void tossHand(){
+    public void discardHand(){
         for (CommandCardField field : cards) {
-            if(field.getCard() != null) {
-                this.deck.discard(field.getCard());
-                field.setCard(null);
-            }
+            this.discardCard(field.getCard());
+            field.setCard(null);
+            field.setVisible(true);
         }
     }
 
