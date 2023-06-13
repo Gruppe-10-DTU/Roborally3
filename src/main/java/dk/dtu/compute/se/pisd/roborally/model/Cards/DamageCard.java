@@ -56,6 +56,10 @@ public class DamageCard extends Subject implements Card {
         }
         Card card = currentPlayer.drawCard();
         currentPlayer.getProgramField(gameController.board.getStep()).setCard(card);
+        while (card.isInteractive()){
+            currentPlayer.discardCard(card);
+            card = currentPlayer.drawCard();
+        }
         card.doAction(gameController);
     }
 
