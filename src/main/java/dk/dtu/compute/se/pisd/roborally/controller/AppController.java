@@ -443,6 +443,7 @@ AppController implements Observer {
             if (board.getPhase() == Phase.INITIALISATION) {
                 gameController.startProgrammingPhase();
             }
+            gameController.board.addGameLogEntry(null, "Game Started");
             gameController.updateBoard();
             return statusCode;
         } else {
