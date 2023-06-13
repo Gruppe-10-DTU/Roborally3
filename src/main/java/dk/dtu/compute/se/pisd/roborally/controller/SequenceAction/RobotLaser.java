@@ -47,7 +47,9 @@ public class RobotLaser implements SequenceAction{
     @Override
     public void doAction(GameController gameController) {
         gameController.board.getPlayers().parallelStream().forEach(player -> {
-            this.shootLaser(gameController.board,player.getSpace(),player.getHeading());
+            if (!player.getIsRebooting()) {
+                this.shootLaser(gameController.board,player.getSpace(),player.getHeading());
+            }
         });
     }
 
