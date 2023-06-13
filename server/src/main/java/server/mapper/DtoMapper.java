@@ -1,7 +1,6 @@
 package server.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 import server.dto.GameDTO;
 import server.dto.GamePatchDTO;
 import server.dto.PlayerDTO;
@@ -11,8 +10,12 @@ import server.model.Player;
 import java.util.List;
 
 @Mapper(
-        componentModel = "spring"
+        componentModel = "spring",
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
+        nullValueMappingStrategy = NullValueMappingStrategy.RETURN_NULL,
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
 )
+
 public interface DtoMapper {
 
     GameDTO gameToGameDto(Game game);
