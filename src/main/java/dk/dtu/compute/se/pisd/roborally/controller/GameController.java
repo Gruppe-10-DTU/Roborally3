@@ -523,6 +523,10 @@ public class GameController {
      * @author Philip
      */
     public void again(Player player) {
+        if (this.board.getStep() == 0) {
+            incrementStep(board.getStep());
+            return;
+        }
         //Get the previous card
         Card oldCard = player.getProgramField(board.getStep()-1).getCard();
         if (oldCard != null) {
