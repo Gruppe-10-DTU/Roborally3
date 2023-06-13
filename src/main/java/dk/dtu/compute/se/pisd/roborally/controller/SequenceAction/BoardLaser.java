@@ -60,7 +60,7 @@ public class BoardLaser extends Space implements SequenceAction {
                     if (!space.getOut(heading)) {
                         if (isHit(board, space, heading)) {
                             player.discardCard(new DamageCard(Damage.SPAM));
-                            board.addGameLogEntry(player, "Was hit by a laser");
+                            board.addGameLogEntry(player, "Was hit by a Board laser");
                         }
                     }
                     heading = heading.next();
