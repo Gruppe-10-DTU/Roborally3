@@ -315,6 +315,7 @@ public class GameController {
                 player.setSpace(board.getNeighbour(player.getSpace(), heading));
             }
         } else if (space == null) {
+            board.addGameLogEntry(player,"Fell of the map");
             rebootRobot(player);
         }
     }

@@ -19,7 +19,7 @@ public class Pit extends Space implements FieldAction {
 
     @Override
     public void doFieldAction(GameController gameController, Player player) {
-        gameController.rebootRobot(player);
         gameController.board.addGameLogEntry(player, "Fell into a pit");
-    }
+        gameController.rebootRobot(player);
+        }
 }
