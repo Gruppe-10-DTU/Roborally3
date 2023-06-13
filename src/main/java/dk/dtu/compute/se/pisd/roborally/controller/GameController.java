@@ -227,10 +227,9 @@ public class GameController {
 
         if (!playerIsSet) {
             step++;
-
+            //End the phase by activating the board.
+            executeBoardActions();
             if (step < Player.NO_REGISTERS) {
-                //End the phase by activating the board.
-                executeBoardActions();
                 makeProgramFieldsVisible(step);
                 board.setStep(step);
                 board.calculatePlayerOrder();
