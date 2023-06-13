@@ -5,9 +5,9 @@ Participant ":Client" as Client
 Participant ":Server" as Server
 
 autonumber
-Player -> Client : Leave Game
-Client -> Server : Remove Player
-Server -> Server : Removes Player
+Player -> Client : LeaveGame()
+Client -> Server : leaveGame(gameID, PlayerDTO)
+Server -> Server : deletePlayer(gameID, Player)
 Server --> Client : "Player removed"
 Client -> Client : Join BoardUpdateThread
 Client -> Player : Close view
