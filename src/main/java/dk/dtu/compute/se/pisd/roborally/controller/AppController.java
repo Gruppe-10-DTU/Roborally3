@@ -267,7 +267,7 @@ AppController implements Observer {
     public void updateBoard() {
         if (gameController != null) {
             roboRally.createBoardView(gameController);
-        }else {
+        } else {
             roboRally.createBoardView(null);
         }
     }
@@ -338,6 +338,7 @@ AppController implements Observer {
 
     /**
      * Adds a player to specified board.
+     *
      * @author Asbjørn Nielsen, Nilas Thørgsen
      */
     public PlayerDTO initPlayerInfo() {
@@ -347,7 +348,7 @@ AppController implements Observer {
         Optional<String> resultName;
 
         String entered = "";
-        while(entered.equals("")){
+        while (entered.equals("")) {
             resultName = nameDialog.showAndWait();
             if (resultName.isPresent()) {
                 entered = resultName.get();
@@ -392,14 +393,14 @@ AppController implements Observer {
         PlayerDTO playerDTO = initPlayerInfo();
         int gameId = HttpController.createGame(nG);
         playerDTO = HttpController.joinGame(gameId, playerDTO);
-        showLobby(gameId, gameController.board.getMaxPlayers(),playerDTO);
+        showLobby(gameId, gameController.board.getMaxPlayers(), playerDTO);
         gameController.setClientName(playerDTO.getName());
         try {
             board.setGameId(gameId);
         } catch (IllegalStateException e) {
 
         }
-        showLobby(gameId, board.getMaxPlayers(),playerDTO);
+        showLobby(gameId, board.getMaxPlayers(), playerDTO);
         boardUpdateThread = new BoardUpdateThread(gameId, gameController);
         boardUpdateThread.start();
     }
@@ -508,7 +509,7 @@ AppController implements Observer {
             System.out.println("Player: " + player.getName() + " trying to join " + selectedItem);
             //updateGame(gameId,player);
             if (gameController != null) gameController.setClientName(player.getName());
-            showLobby(selectedItem.getId(), selectedItem.getMaxPlayers(),player);
+            showLobby(selectedItem.getId(), selectedItem.getMaxPlayers(), player);
             boardUpdateThread = new BoardUpdateThread(gameId, gameController);
             boardUpdateThread.start();
 
@@ -564,15 +565,13 @@ AppController implements Observer {
      * @param id
      * @param maxPlayers
      */
-    public void showLobby(int id, int maxPlayers,PlayerDTO playerDTO) {
+    public void showLobby(int id, int maxPlayers, PlayerDTO playerDTO) {
         if (lobbyView == null) {
             if (gamesView != null) {
-                lobbyView = new LobbyView(this, id, maxPlayers, gamesView.getStageHolder());
-                lobbyView = new LobbyView(this, id, maxPlayers,gamesView.getStageHolder(), playerDTO);
+                lobbyView = new LobbyView(this, id, maxPlayers, gamesView.getStageHolder(), playerDTO);
                 return;
             }
-            lobbyView = new LobbyView(this, id, maxPlayers, new Stage());
-                lobbyView = new LobbyView(this, id, maxPlayers, new Stage(), playerDTO);
+            lobbyView = new LobbyView(this, id, maxPlayers, new Stage(), playerDTO);
         }
     }
 
@@ -613,15 +612,17 @@ AppController implements Observer {
             gameController.replaceBoard(board, game.getVersion());
         }
     }
+
     /**
      * Once the player chooses to leave the game; the board is retrieved from the server and returned anew without the
      * player present.
+     *
      * @param gameId
      * @param playerDTO
      * @uahtor Asbjørn Nielsen
      */
-    public void leaveGame(int gameId, PlayerDTO playerDTO){
-        HttpController.leaveGame(gameId,playerDTO);
+    public void leaveGame(int gameId, PlayerDTO playerDTO) {
+        HttpController.leaveGame(gameId, playerDTO);
         try {
             boardUpdateThread.interrupt();
             boardUpdateThread.join();
@@ -630,7 +631,7 @@ AppController implements Observer {
         }
     }
 
-    public boolean isThreadRunning(){
+    public boolean isThreadRunning() {
         return !(boardUpdateThread != null && boardUpdateThread.isAlive());
     }
 
