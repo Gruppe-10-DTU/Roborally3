@@ -1,5 +1,11 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
+/**
+ * Class used to send player to server when joining/leaving a game
+ *
+ * No concrete author, everybody participated.
+ * @author all
+ */
 public class PlayerDTO {
     private String name;
 

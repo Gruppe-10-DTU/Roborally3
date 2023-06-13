@@ -1,4 +1,4 @@
-package dk.dtu.compute.se.pisd.roborally.model.BoardElement;
+package dk.dtu.compute.se.pisd.roborally.controller.SequenceAction;
 
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
@@ -64,7 +64,7 @@ public class Checkpoint extends Space implements SequenceAction {
      * @return True if it was possible to add the player
      * @author Nilas
      */
-    protected boolean addPlayer(Player player) {
+    public boolean addPlayer(Player player) {
         if (previous == null) {
             return players.add(player.getName());
         } else if (previous.checkPlayer(player)) {

@@ -1,7 +1,4 @@
-package dk.dtu.compute.se.pisd.roborally.model.BoardElements;
-
-import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
+package dk.dtu.compute.se.pisd.roborally.model;
 
 public class PriorityAntenna extends Space {
 

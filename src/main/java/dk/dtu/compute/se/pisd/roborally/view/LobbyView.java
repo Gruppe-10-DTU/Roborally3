@@ -17,6 +17,15 @@ public class LobbyView extends VBox implements ViewObserver{
     private final TableView<Game> tableView;
     private final PlayerDTO playerDTO;
     private final int gameId;
+
+    /**
+     * @param appController Appcontroller
+     * @param gameId id of the game
+     * @param maxPlayers amount of players
+     * @param stageNew the stage to put the view into
+     * @param playerDTO The player
+     * @author Søren Wünsche og Asbjørn
+     */
     public LobbyView(AppController appController, int gameId, int maxPlayers, Stage stageNew, PlayerDTO playerDTO) {
         this.appController = appController;
         this.gameId = gameId;
@@ -44,6 +53,12 @@ public class LobbyView extends VBox implements ViewObserver{
         stageNew.show();
     }
 
+    /**
+     * @param currentPlayers amount of players
+     * @param maxPlayers amount of players needed to start the game
+     * @return A summary of the game state atm.
+     * @author Søren Wünsche
+     */
     private String playerOnServer(int currentPlayers, int maxPlayers) {
         return "Players: (" + currentPlayers + "/" + maxPlayers + ")";
     }
@@ -52,6 +67,15 @@ public class LobbyView extends VBox implements ViewObserver{
     public void updateView(Subject subject) {
 
     }
+
+    /**
+     * Set buttons on the lobby view
+     *
+     * @param nameColumn
+     * @param maxPlayers max aomunt of buttons
+     * @return Create buttons
+     * @author Søren Wünsche og Philip Astrup Cramer
+     */
     private ButtonBar addButtons(TableColumn<Game, String> nameColumn, int maxPlayers){
         Button leave = new Button("Leave");
         leave.setOnAction(e -> leaveGame(tableView,playerDTO));
@@ -81,7 +105,8 @@ public class LobbyView extends VBox implements ViewObserver{
      * When pressing the leave button in the game lobby, this method is called. Leaves the game from the server side,
      * updates the board and returns a board without the leaving player.
      * @param tableview
-     * @param playerDTO
+     * @param playerDTO the current player trying to leave.
+     * @author Asbjørn
      */
     private void leaveGame(TableView tableview, PlayerDTO playerDTO){
         appController.leaveGame(gameId,playerDTO);

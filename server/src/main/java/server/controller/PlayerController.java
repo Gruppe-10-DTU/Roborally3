@@ -1,6 +1,5 @@
 package server.controller;
 
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpServerErrorException;
@@ -10,14 +9,13 @@ import server.dto.PlayerDTO;
 import server.mapper.DtoMapper;
 import server.model.Player;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class PlayerController {
-    private PlayerService playerService;
-    private GameService gameService;
-    private DtoMapper dtoMapper;
+    private final PlayerService playerService;
+    private final GameService gameService;
+    private final DtoMapper dtoMapper;
 
     public PlayerController(PlayerService playerService, GameService gameService, DtoMapper dtoMapper) {
         this.playerService = playerService;
@@ -50,8 +48,14 @@ public class PlayerController {
         return ResponseEntity.ok().body(player);
     }
 
+    /**
+     * @param gameId id of the game
+     * @param id player id
+     * @return An ok status with who left.
+     * @author Asbjørn
+     */
     @DeleteMapping("/games/{gameId}/players/{id}")
-    public ResponseEntity<String> deletePlayer(@PathVariable int gameId, @PathVariable int id) throws HttpServerErrorException.NotImplemented{
+    public ResponseEntity<String> deletePlayer(@PathVariable int gameId, @PathVariable int id) {
         playerService.removePlayer(id,gameId);
         gameService.updateCurrPlayers(gameId,playerService.countPlayers(gameId));
         return ResponseEntity.ok().body("Player " + id + "Left the game");

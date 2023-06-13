@@ -1,0 +1,17 @@
+@startuml
+'Sequence Diagram for Execute Register.
+Participant ":Player" as Player
+Participant ":Client" as Client
+Participant ":Server" as Server
+
+
+autonumber
+Player -> Client : Execute Register
+Client -> Client : Execute Register
+Client -> Server : push GameState
+Server -> Server : Save state
+Client -> Server : Get Update
+Client -> Client : Update board
+Client --> Player : Display board
+
+@enduml

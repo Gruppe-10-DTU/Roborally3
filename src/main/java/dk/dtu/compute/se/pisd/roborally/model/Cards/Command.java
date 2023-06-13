@@ -66,6 +66,10 @@ public enum Command {
         this.options = Collections.unmodifiableList(Arrays.asList(options));
     }
 
+    /**
+     * @return boolean showing if the card is interactive
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
     public boolean isInteractive() {
         return !options.isEmpty();
     }

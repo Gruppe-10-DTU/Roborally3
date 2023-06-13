@@ -1,7 +1,5 @@
-package dk.dtu.compute.se.pisd.roborally.model.BoardElement;
+package dk.dtu.compute.se.pisd.roborally.model;
 
-import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
 import org.jetbrains.annotations.NotNull;
 
 public class Spawn extends Space implements Comparable<Spawn> {
@@ -15,7 +13,7 @@ public class Spawn extends Space implements Comparable<Spawn> {
 
     /**
      *
-     * @param spawn
+     * @param spawn The elemented being compared to
      * @return The priority of the spawn space
      * used to dertemind where the players should spawn
      */
