@@ -547,6 +547,9 @@ public class GameController {
      */
     public void updateBoard(){
         if(board.getPhase() == PLAYER_INTERACTION){
+            if(clientName != null) {
+                HttpController.updateBoard(board, version.incrementAndGet());
+            }
             return;
         }
         if (board.getPhase() == FINISHED){
