@@ -112,6 +112,7 @@ public class BoardView extends VBox implements ViewObserver {
             gameLog = new TextFlow();
             gameLog.getChildren().addAll(logAsText(board.getGameLog()));
             logPane.setContent(gameLog);
+            logPane.setVvalue(logPane.getVmax());
         }
     }
 
