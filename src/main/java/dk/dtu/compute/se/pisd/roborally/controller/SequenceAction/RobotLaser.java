@@ -30,7 +30,7 @@ public class RobotLaser implements SequenceAction{
                 return;
             }
             if(oSpace != space && space.getPlayer() != null){
-                space.getPlayer().receiveCard(new DamageCard(Damage.SPAM));
+                space.getPlayer().discardCard(new DamageCard(Damage.SPAM));
 
                 board.addGameLogEntry(space.getPlayer(), "was shot by " + oSpace.getPlayer().getName());
                 return;

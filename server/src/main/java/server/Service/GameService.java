@@ -22,6 +22,9 @@ public class GameService {
      * @author Nilas Thoegersen
      */
     public Game createGame(Game game) {
+        if(game.getState() == null){
+            game.setState(GameState.INITIALIZING);
+        }
         gameRepository.save(game);
         return game;
     }
