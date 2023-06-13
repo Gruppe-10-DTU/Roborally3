@@ -116,7 +116,6 @@ public class GameController {
         if(clientName == null || !board.nextPlayer()) {
             for (Player player : board.getPlayers()) {
                 player.registerChaos();
-                player.tossHand();
             }
             makeProgramFieldsInvisible();
             makeProgramFieldsVisible(0);
@@ -129,7 +128,6 @@ public class GameController {
         }
         if(clientName != null){
             this.getClient().registerChaos();
-            this.getClient().tossHand();
             updateBoard();
         }
     }
@@ -496,20 +494,8 @@ public class GameController {
     public void rebootRobot(Player player){
         player.receiveCard(new DamageCard(Damage.SPAM));
         player.receiveCard(new DamageCard(Damage.SPAM));
-        for (CommandCardField field : player.getProgram()) {
-            if (field.getCard() != null) {
-                player.discardCard(field.getCard());
-                field.setCard(null);
-                field.setVisible(true);
-            }
-        }
-        for (CommandCardField field: player.getCards()) {
-            if(field.getCard() != null) {
-                player.discardCard(field.getCard());
-                field.setCard(null);
-                field.setVisible(true);
-            }
-        }
+        player.discardRegisters();
+        player.discardHand();
         board.getRebootToken().doFieldAction(this, player);
 
     }
