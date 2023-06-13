@@ -6,12 +6,12 @@ Participant ":Server" as Server
 
 
 autonumber
-Player -> Client : Execute Register
-Client -> Client : Execute Register
-Client -> Server : push GameState
+Player --> Client : Execute Register
+Client -> Client : Executes Register
+Client -> Server : pushGameUpdate(gameID, PlayerDTO)
 Server -> Server : Save state
-Client -> Server : Get Update
-Client -> Client : Update board
+Client -->> Server : getGameUpdate(gameID,currentVersion)
+Client ->> Client : replaceBoard(board, currentVersion)
 Client --> Player : Display board
 
 @enduml
