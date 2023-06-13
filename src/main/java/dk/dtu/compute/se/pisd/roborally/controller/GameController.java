@@ -485,11 +485,17 @@ public class GameController {
      * @param player The player getting rebooted
      */
     public void rebootRobot(Player player){
-        player.discardCard(new DamageCard(Damage.SPAM));
-        player.discardCard(new DamageCard(Damage.SPAM));
-        for (int i = 0; i < 5; i++) {
-            CommandCardField field = player.getProgramField(i);
+        player.receiveCard(new DamageCard(Damage.SPAM));
+        player.receiveCard(new DamageCard(Damage.SPAM));
+        for (CommandCardField field : player.getProgram()) {
             if (field.getCard() != null) {
+                player.discardCard(field.getCard());
+                field.setCard(null);
+                field.setVisible(true);
+            }
+        }
+        for (CommandCardField field: player.getCards()) {
+            if(field.getCard() != null) {
                 player.discardCard(field.getCard());
                 field.setCard(null);
                 field.setVisible(true);
