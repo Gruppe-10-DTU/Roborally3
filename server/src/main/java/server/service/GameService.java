@@ -25,6 +25,7 @@ public class GameService {
         if(game.getState() == null){
             game.setState(GameState.INITIALIZING);
         }
+        gameRepository.save(game);
         return game;
     }
 

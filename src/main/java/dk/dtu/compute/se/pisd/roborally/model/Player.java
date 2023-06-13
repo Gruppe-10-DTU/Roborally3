@@ -232,9 +232,12 @@ public class Player extends Subject implements Comparable<Player> {
      */
     public void registerChaos(){
         for (CommandCardField field : program) {
+            field.setCanMoveCard(false);
             if(field.getCard() == null) field.setCard(deck.drawCard());
+
         }
         for (CommandCardField field : cards) {
+            field.setCanMoveCard(false);
             if (field.getCard() != null){
                 this.receiveCard(field.getCard());
                 field.setCard(null);

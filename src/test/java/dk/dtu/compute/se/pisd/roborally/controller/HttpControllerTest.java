@@ -5,7 +5,6 @@ import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Game;
 import dk.dtu.compute.se.pisd.roborally.model.PlayerDTO;
 import org.junit.jupiter.api.*;
-import org.springframework.test.context.event.annotation.AfterTestMethod;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)

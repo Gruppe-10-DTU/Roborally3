@@ -162,7 +162,9 @@ public class CardFieldView extends GridPane implements ViewObserver {
                         cardField.getCard() != null &&
                         cardField.getPlayer() != null &&
                         cardField.getPlayer().board != null &&
-                        cardField.getPlayer().board.getPhase().equals(Phase.PROGRAMMING)) {
+                        cardField.getPlayer().board.getPhase().equals(Phase.PROGRAMMING) &&
+                        cardField.getCanMoveCard()
+                ) {
                     Dragboard db = source.startDragAndDrop(TransferMode.MOVE);
                     Image image = source.snapshot(null, null);
                     db.setDragView(image);

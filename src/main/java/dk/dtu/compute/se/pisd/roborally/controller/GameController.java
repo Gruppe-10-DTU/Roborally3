@@ -88,6 +88,7 @@ public class GameController {
             if (player != null) {
                 for (int j = 0; j < Player.NO_REGISTERS; j++) {
                     CommandCardField field = player.getProgramField(j);
+                    field.setCanMoveCard(true);
                     if (field.getCard() != null) {
                         player.discardCard(field.getCard());
                         field.setCard(null);
@@ -96,6 +97,7 @@ public class GameController {
                 }
                 for (int j = 0; j < Player.NO_CARDS; j++) {
                     CommandCardField field = player.getCardField(j);
+                    field.setCanMoveCard(true);
                     if (field.getCard() == null) {
                         field.setCard(player.drawCard());
                         field.setVisible(true);
@@ -566,12 +568,13 @@ public class GameController {
         }
     }
 
+
     /**
      * Helper function to see if the player is done programming.
      *
      * @author Nilas Thoegersen
      */
-    public boolean endProgramming(Player player) {
+    public boolean showButtonsIfCurrent(Player player) {
         boolean client = clientName != null;
         boolean current = !player.board.getCurrentPlayer().equals(player);
 
