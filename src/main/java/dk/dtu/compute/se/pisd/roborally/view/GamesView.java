@@ -2,25 +2,20 @@ package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.AppController;
-import dk.dtu.compute.se.pisd.roborally.controller.JSONReader;
-import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.controller.HttpController;
 import dk.dtu.compute.se.pisd.roborally.model.Game;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.PlayerDTO;
-import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.json.JSONObject;
 
 import java.util.List;
 
 /**
  * UI to show all games currently hosted on the server
  *
- * @author Nilas
+ * @author Søren Wünsche og Nilas Thoegersen
  */
 public class GamesView extends VBox implements ViewObserver {
     private final AppController appController;
@@ -29,7 +24,7 @@ public class GamesView extends VBox implements ViewObserver {
     private Stage stageHolder;
 
     /**
-     * Controller for the view
+     * Constructor for the view
      *
      * @param appController The appcontroller
      * @author Nilas Thoegersen
@@ -107,6 +102,11 @@ public class GamesView extends VBox implements ViewObserver {
         }
     }
 
+    /**
+     * join the selected game
+     *
+     * @author Søren Wünsche
+     */
     private void joinGame() {
         Game item = tableView.getSelectionModel().getSelectedItem();
         if (item == null){
@@ -121,9 +121,16 @@ public class GamesView extends VBox implements ViewObserver {
 
     }
 
+    /**
+     * Refresh the list of games.
+     *
+     * @param tableView The table of games
+     * @throws Exception
+     * @author Søren Wünsche
+     */
     private void getGameList(TableView tableView) throws Exception {
         tableView.getItems().clear();
-        List<Game> games = appController.getGameList();
+        List<Game> games = HttpController.getGameList();
         tableView.getItems().addAll(games);
     }
 

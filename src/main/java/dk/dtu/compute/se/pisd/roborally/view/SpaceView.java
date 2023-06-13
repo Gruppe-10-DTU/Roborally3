@@ -22,13 +22,10 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElement.*;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElements.PriorityAntenna;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
-import dk.dtu.compute.se.pisd.roborally.model.Heading;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction.Pit;
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction.RebootToken;
+import dk.dtu.compute.se.pisd.roborally.controller.SequenceAction.*;
+import dk.dtu.compute.se.pisd.roborally.model.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;

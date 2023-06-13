@@ -1,11 +1,10 @@
-package dk.dtu.compute.se.pisd.roborally.model.BoardElement;
+package dk.dtu.compute.se.pisd.roborally.controller.SequenceAction;
 
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.Damage;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.DamageCard;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,7 +32,7 @@ public class RobotLaser implements SequenceAction{
             if(oSpace != space && space.getPlayer() != null){
                 space.getPlayer().discardCard(new DamageCard(Damage.SPAM));
 
-                board.addGameLogEntry(space.getPlayer(), "was shot by a laser!");
+                board.addGameLogEntry(space.getPlayer(), "was shot by " + oSpace.getPlayer().getName());
                 return;
             }
             space = board.getNeighbour(space, heading);

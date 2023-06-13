@@ -1,4 +1,4 @@
-package dk.dtu.compute.se.pisd.roborally.model.BoardElement;
+package dk.dtu.compute.se.pisd.roborally.controller.SequenceAction;
 
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
@@ -60,7 +60,7 @@ public class BoardLaser extends Space implements SequenceAction {
                     if (!space.getOut(heading)) {
                         if (isHit(board, space, heading)) {
                             player.discardCard(new DamageCard(Damage.SPAM));
-                            board.addGameLogEntry(player, "Was hit by a laser");
+                            board.addGameLogEntry(player, "Was hit by a Board laser");
                         }
                     }
                     heading = heading.next();
@@ -83,7 +83,7 @@ public class BoardLaser extends Space implements SequenceAction {
      * @return boolean saying if the player is hit
      * @author Nilas
      */
-    protected boolean isHit(Board board, Space space, Heading heading) {
+    public boolean isHit(Board board, Space space, Heading heading) {
         Space oSpace = space;
         space = board.getNeighbour(space,heading);
         while (space != null){

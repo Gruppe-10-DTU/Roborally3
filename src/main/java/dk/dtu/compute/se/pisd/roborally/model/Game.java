@@ -65,7 +65,7 @@ public class Game {
         return maxPlayers;
     }
 
-    public void IncCurrPlayer(){if(currentPlayers < maxPlayers) currentPlayers++;};
+    public void IncCurrPlayer(){if(currentPlayers < maxPlayers) currentPlayers++;}
 
     public int getVersion() {
         return version;
@@ -95,9 +95,11 @@ public class Game {
         return "Game{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", version=" + version +
                 ", currentPlayers=" + currentPlayers +
                 ", maxPlayers=" + maxPlayers +
+                ", state='" + state + '\'' +
+                ", board='" + board + '\'' +
                 '}';
     }
-
 }

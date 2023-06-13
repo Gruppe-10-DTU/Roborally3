@@ -4,17 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
-import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElement.*;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElements.PriorityAntenna;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction.Pit;
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction.RebootToken;
+import dk.dtu.compute.se.pisd.roborally.controller.SequenceAction.*;
+import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.Card;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.CommandCard;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.DamageCard;
-import dk.dtu.compute.se.pisd.roborally.model.Phase;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
 import javafx.util.Pair;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
@@ -176,6 +172,10 @@ public class JSONReader {
     }
 
 
+    /**
+     * @return A JSONArray of spaces
+     * @author Sandie Petersen
+     */
     public JSONArray getJsonSpaces() {
         return spacesArray;
     }

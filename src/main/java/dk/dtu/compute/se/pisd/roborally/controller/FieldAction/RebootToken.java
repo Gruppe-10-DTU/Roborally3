@@ -1,6 +1,5 @@
-package dk.dtu.compute.se.pisd.roborally.model.BoardElements;
+package dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 
-import dk.dtu.compute.se.pisd.roborally.controller.FieldAction.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
@@ -33,7 +32,7 @@ public class RebootToken extends Space implements FieldAction {
     }
 
     /**
-     * Set a player on the respawn token.
+     * Set a player on the respawn token. If a player already exists, they're moved out.
      *
      * @param gameController The gamecontroller
      * @param player         The player getting respawned
@@ -49,5 +48,7 @@ public class RebootToken extends Space implements FieldAction {
             gameController.movePlayer(pmove, direction);
         }
         player.setSpace(this);
+        gameController.board.addGameLogEntry(player, "was rebooted");
+
     }
 }
