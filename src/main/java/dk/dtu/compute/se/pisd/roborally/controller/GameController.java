@@ -114,10 +114,6 @@ public class GameController {
      */
     public void finishProgrammingPhase() {
         if(clientName == null || !board.nextPlayer()) {
-            for (Player player : board.getPlayers()) {
-                player.registerChaos();
-                player.tossHand();
-            }
             makeProgramFieldsInvisible();
             makeProgramFieldsVisible(0);
             board.setPhase(Phase.ACTIVATION);
@@ -127,9 +123,8 @@ public class GameController {
             board.setStep(0);
             //updateBoard();
         }
+
         if(clientName != null){
-            this.getClient().registerChaos();
-            this.getClient().tossHand();
             updateBoard();
         }
     }
@@ -233,9 +228,10 @@ public class GameController {
 
         if (!playerIsSet) {
             step++;
-            //End the phase by activating the board.
-            executeBoardActions();
+
             if (step < Player.NO_REGISTERS) {
+                //End the phase by activating the board.
+                executeBoardActions();
                 makeProgramFieldsVisible(step);
                 board.setStep(step);
                 board.calculatePlayerOrder();
@@ -493,17 +489,11 @@ public class GameController {
      * @author Philip
      */
     public void rebootRobot(Player player){
-        player.receiveCard(new DamageCard(Damage.SPAM));
-        player.receiveCard(new DamageCard(Damage.SPAM));
-        for (CommandCardField field : player.getProgram()) {
+        player.discardCard(new DamageCard(Damage.SPAM));
+        player.discardCard(new DamageCard(Damage.SPAM));
+        for (int i = 0; i < 5; i++) {
+            CommandCardField field = player.getProgramField(i);
             if (field.getCard() != null) {
-                player.discardCard(field.getCard());
-                field.setCard(null);
-                field.setVisible(true);
-            }
-        }
-        for (CommandCardField field: player.getCards()) {
-            if(field.getCard() != null) {
                 player.discardCard(field.getCard());
                 field.setCard(null);
                 field.setVisible(true);
@@ -534,10 +524,6 @@ public class GameController {
      * @author Philip
      */
     public void again(Player player) {
-        if (this.board.getStep() == 0) {
-            incrementStep(board.getStep());
-            return;
-        }
         //Get the previous card
         Card oldCard = player.getProgramField(board.getStep()-1).getCard();
         if (oldCard != null) {
@@ -594,12 +580,15 @@ public class GameController {
     /**
      * Update all players on the current board, from the new board
      *
-     * @param newBoard The new board from the server
+     * @param newBoard       The new board from the server
+     * @param currentVersion version from the thread
      * @author Sandie Petersen
      */
-    public  void updatePlayers (Board newBoard) {
+    public  void updatePlayers (Board newBoard, Integer currentVersion) {
         board.updatePlayers(newBoard.getPlayers(), clientName);
+        board.setPlayerOrder(newBoard.getPlayerOrder());
         board.setCurrentPlayer(board.getPlayerByName(newBoard.getCurrentPlayer().getName()));
+        version.set(currentVersion);
     }
 
 }
