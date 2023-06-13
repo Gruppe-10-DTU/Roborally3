@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.Checkpoint;
+import dk.dtu.compute.se.pisd.roborally.model.BoardElement.RobotLaser;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
 import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.*;
@@ -31,6 +32,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static dk.dtu.compute.se.pisd.roborally.model.Phase.FINISHED;
 import static dk.dtu.compute.se.pisd.roborally.model.Phase.PLAYER_INTERACTION;
 
 /**
@@ -457,13 +459,13 @@ public class GameController {
 
     }
 
-    private void checkIfGameIsDone() {
+    public void checkIfGameIsDone() {
         Checkpoint checkpoint = board.getWincondition();
-        for (Player player : board.getPlayers()
-        ) {
+        for (Player player : board.getPlayers()) {
             if (checkpoint.checkPlayer(player)) {
-                appController.endGame(player);
                 board.setPhase(Phase.FINISHED);
+                updateBoard();
+                appController.endGame(player);
                 return;
             }
         }
@@ -543,9 +545,6 @@ public class GameController {
      * @author Nilas Thoegersen
      */
     public void updateBoard(){
-        if(board.getPhase() == PLAYER_INTERACTION){
-            return;
-        }
         if(clientName != null) {
             HttpController.updateBoard(board, version.incrementAndGet());
         }

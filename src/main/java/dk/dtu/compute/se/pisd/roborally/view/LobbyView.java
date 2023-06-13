@@ -17,7 +17,7 @@ public class LobbyView extends VBox implements ViewObserver{
     private final TableView<Game> tableView;
     private final PlayerDTO playerDTO;
     private final int gameId;
-    public LobbyView(AppController appController, int gameId, int maxPlayers, PlayerDTO playerDTO) {
+    public LobbyView(AppController appController, int gameId, int maxPlayers, Stage stageNew, PlayerDTO playerDTO) {
         this.appController = appController;
         this.gameId = gameId;
         this.playerDTO = playerDTO;
@@ -33,16 +33,15 @@ public class LobbyView extends VBox implements ViewObserver{
         this.getChildren().addAll(tableView, addButtons(name, maxPlayers));
         Scene scene = new Scene(this);
 
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.setOnCloseRequest(
+        stageNew.setScene(scene);
+        stageNew.setOnCloseRequest(
                 e -> {
                     appController.setLobbyView(null);
-                    stage.close();
+                    stageNew.close();
                 });
-        stage.setTitle("Lobby");
-        stage.setMinWidth(300);
-        stage.show();
+        stageNew.setTitle("Lobby");
+        stageNew.setMinWidth(300);
+        stageNew.show();
     }
 
     private String playerOnServer(int currentPlayers, int maxPlayers) {
@@ -60,12 +59,13 @@ public class LobbyView extends VBox implements ViewObserver{
         ButtonBar buttonBar = new ButtonBar();
         Button refresh = new Button("Refresh");
         Button start = new Button("Start");
-        start.setVisible(false);
+        start.setVisible(maxPlayers == tableView.getItems().size());
         start.setOnAction(event -> {
             System.out.println("Start Game");
             startGame();
         });
-        refresh.setOnAction(e -> { refreshList(tableView,nameColumn, maxPlayers);
+        refresh.setOnAction(e -> {
+            refreshList(tableView,nameColumn, maxPlayers);
             if(maxPlayers == tableView.getItems().size()){
 
                 start.setVisible(true);
