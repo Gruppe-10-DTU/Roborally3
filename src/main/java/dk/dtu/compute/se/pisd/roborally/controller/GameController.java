@@ -459,14 +459,13 @@ public class GameController {
 
     }
 
-    private void checkIfGameIsDone() {
+    public void checkIfGameIsDone() {
         Checkpoint checkpoint = board.getWincondition();
-        for (Player player : board.getPlayers()
-        ) {
+        for (Player player : board.getPlayers()) {
             if (checkpoint.checkPlayer(player)) {
-                appController.endGame(player);
                 board.setPhase(Phase.FINISHED);
                 updateBoard();
+                appController.endGame(player);
                 return;
             }
         }
@@ -549,9 +548,7 @@ public class GameController {
         if(board.getPhase() == PLAYER_INTERACTION){
             return;
         }
-        if (board.getPhase() == FINISHED){
-            return;
-        }
+
         if(clientName != null) {
             HttpController.updateBoard(board, version.incrementAndGet());
         }
