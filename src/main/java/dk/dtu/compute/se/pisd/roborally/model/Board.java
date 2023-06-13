@@ -22,11 +22,10 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction.Pit;
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction.RebootToken;
 import dk.dtu.compute.se.pisd.roborally.controller.JSONReader;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElement.*;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElements.PriorityAntenna;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
+import dk.dtu.compute.se.pisd.roborally.controller.SequenceAction.*;
 import javafx.util.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -368,6 +367,13 @@ public class Board extends Subject {
         }
     }
 
+    /**
+     * Get a player by name
+     *
+     * @param name The name of the player
+     * @return The payer if found, otherwise null
+     * @author Nilas Thoegersen
+     */
     public Player getPlayerByName(String name){
         return players.stream().filter(x-> x.getName().equals(name)).findAny().orElse(null);
     }
@@ -513,6 +519,10 @@ public class Board extends Subject {
         return result;
     }
 
+    /**
+     * @return String of the game status
+     * @author Søren Wünsche
+     */
     public String getStatusMessage() {
         // this is actually a view aspect, but for making assignment V1 easy for
         // the students, this method gives a string representation of the current
@@ -569,6 +579,11 @@ public class Board extends Subject {
         playerOrder.add(player);
     }
 
+    /**
+     * @param newPlayers The new players
+     * @param clientName Name of the player currently playing
+     * @author Sandie Petersen
+     */
     public void updatePlayers(List<Player> newPlayers, String clientName) {
         for (int i = 0; i < players.size(); i++) {
             if (!players.get(i).getName().equals(clientName)) {

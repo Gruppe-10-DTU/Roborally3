@@ -1,9 +1,10 @@
-package dk.dtu.compute.se.pisd.roborally.model.BoardElement;
+package dk.dtu.compute.se.pisd.roborally.model.SequenceAction;
 
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction.Pit;
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction.RebootToken;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally.controller.SequenceAction.*;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import org.junit.jupiter.api.Assertions;

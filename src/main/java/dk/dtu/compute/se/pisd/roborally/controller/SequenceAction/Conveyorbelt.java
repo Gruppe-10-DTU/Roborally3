@@ -1,4 +1,4 @@
-package dk.dtu.compute.se.pisd.roborally.model.BoardElement;
+package dk.dtu.compute.se.pisd.roborally.controller.SequenceAction;
 
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
