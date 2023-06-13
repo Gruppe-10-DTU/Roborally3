@@ -124,6 +124,15 @@ public class GameController {
             //updateBoard();
         }
         if(clientName != null){
+            for (CommandCardField field : this.getClient().getProgram()) {
+                if(field.getCard() == null) field.setCard(this.getClient().drawCard());
+            }
+            for (CommandCardField field : this.getClient().getCards()) {
+                if(field.getCard() != null) {
+                    this.getClient().receiveCard(field.getCard());
+                    field.setCard(null);
+                }
+            }
             updateBoard();
         }
     }
