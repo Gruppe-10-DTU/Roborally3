@@ -38,7 +38,7 @@ import static dk.dtu.compute.se.pisd.roborally.model.Heading.EAST;
 public class Player extends Subject implements Comparable<Player> {
 
     final public static int NO_REGISTERS = 5;
-    final public static int NO_CARDS = 8;
+    final public static int NO_CARDS = 9;
 
     transient public Board board;
     private boolean Rebooting = false;
@@ -213,6 +213,11 @@ public class Player extends Subject implements Comparable<Player> {
     }
 
     public void discardCard(Card card) {
+        if (card == null) return;
+        if(card.getType().equals("Damage")) return;
+        this.deck.discard(card);
+    }
+    public void receiveCard(Card card){
         this.deck.discard(card);
     }
 
