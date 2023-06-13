@@ -50,7 +50,7 @@ public class BoardUpdateThread extends Thread {
                 }
 
                 if (gameController.board.getPhase() == Phase.PROGRAMMING && newBoard.getPhase() == Phase.PROGRAMMING) {
-                    gameController.updatePlayers(newBoard);
+                    gameController.updatePlayers(newBoard, currentVersion);
                 } else {
                     gameController.replaceBoard(newBoard, currentVersion);
                 }
