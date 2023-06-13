@@ -3,6 +3,8 @@ package server.dto;
 import server.model.GameState;
 
 /**
+ * DTO used for the patch method to control what can be updated.
+ *
  * @author Nilas Thoegersen
  */
 public class GamePatchDTO {

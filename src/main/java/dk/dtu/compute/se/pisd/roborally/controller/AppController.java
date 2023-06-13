@@ -26,7 +26,6 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.model.*;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElement.RobotLaser;
 import dk.dtu.compute.se.pisd.roborally.utils.BoardUpdateThread;
 import dk.dtu.compute.se.pisd.roborally.view.GamesView;
 import dk.dtu.compute.se.pisd.roborally.view.LobbyView;
@@ -44,7 +43,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -157,7 +155,6 @@ AppController implements Observer {
      * @author Nilas Thoegersen
      */
     public void saveGame() {
-        String file = "";
         String savedGameController = JSONReader.saveGame(gameController.board);
         TextInputDialog saveNameDialog = new TextInputDialog();
         saveNameDialog.setTitle("Save game");
@@ -190,7 +187,6 @@ AppController implements Observer {
      */
     public void loadGame() {
         File file;
-        URI pathUri;
         try {
             //TODO: Gør stien dynamisk.
             file = new File("src/main/java/dk/dtu/compute/se/pisd/roborally/controller/savedGames");
@@ -198,10 +194,7 @@ AppController implements Observer {
             System.out.println("No files found");
             return;
         }
-        boolean test2 = file.isDirectory();
-        String[] test = file.list();
-
-        Optional<String> gameName = new ChoiceDialog<String>("None", file.list()).showAndWait();
+        Optional<String> gameName = new ChoiceDialog<>("None", file.list()).showAndWait();
         if (!gameName.equals("None")) {
             Board board = JSONReader.loadGame(Path.of(file.getPath(), gameName.get()).toString());
             gameController = new GameController(board, this);
@@ -355,7 +348,6 @@ AppController implements Observer {
             }
         }
 
-
         PlayerDTO player = new PlayerDTO(entered);
         return player;
     }
@@ -394,6 +386,7 @@ AppController implements Observer {
         int gameId = HttpController.createGame(nG);
         playerDTO = HttpController.joinGame(gameId, playerDTO);
         showLobby(gameId, gameController.board.getMaxPlayers(), playerDTO);
+
         gameController.setClientName(playerDTO.getName());
         try {
             board.setGameId(gameId);
@@ -463,7 +456,6 @@ AppController implements Observer {
      */
     public Board retrieveSavedGame() {
         File file;
-        URI pathUri;
         try {
             //TODO: Gør stien dynamisk.
             file = new File("src/main/java/dk/dtu/compute/se/pisd/roborally/controller/savedGames");
@@ -471,8 +463,6 @@ AppController implements Observer {
             System.out.println("No files found");
             return null;
         }
-        boolean test2 = file.isDirectory();
-        String[] test = file.list();
 
         Optional<String> gameName = new ChoiceDialog<String>("None", file.list()).showAndWait();
         if (!gameName.equals("None")) {
@@ -494,6 +484,8 @@ AppController implements Observer {
     }
 
     /**
+     * Join a game
+     *
      * @param selectedItem This is the logic for when a player tries to join a server
      * @author Søren Friis Wünsche
      */
@@ -517,27 +509,11 @@ AppController implements Observer {
         }
     }
 
-
     /**
-     * @return gets the game list from the server
-     * @throws Exception
-     * @author Søren Friis Wünsche
-     */
-    public List<Game> getGameList() throws Exception {
-        return HttpController.getGameList();
-    }
-
-
-    public void StartServer() {
-        String[] args = new String[0];
-        //ServerApp.main(args);
-
-    }
-
-    /**
+     * This is the dialog box for player name
+     *
      * @param playerIndex
      * @return returns either the input or player + index
-     * This is the dialog box for player name
      * @author Søren Friis Wünsche
      */
     public String playerName(int playerIndex) {
@@ -556,6 +532,15 @@ AppController implements Observer {
         return null;
     }
 
+    /**
+     * Get a list of playres in a game
+     *
+     * @param gameId The id of the game
+     * @return A list of plyaers in the game
+     * @throws ExecutionException
+     * @throws InterruptedException
+     * @author Søren Wünsche
+     */
     public List<PlayerDTO> getPlayerList(int gameId) throws ExecutionException, InterruptedException {
         return HttpController.playersInGame(gameId);
     }
@@ -563,8 +548,10 @@ AppController implements Observer {
     /**
      * Lounge of players who've joined the game.
      *
-     * @param id
-     * @param maxPlayers
+     * @param id The id of the game
+     * @param maxPlayers Total amount of player in the game
+     * @param playerDTO The player joining
+     * @author Søren og Asbjørn
      */
     public void showLobby(int id, int maxPlayers, PlayerDTO playerDTO) {
         if (lobbyView == null) {
@@ -576,28 +563,12 @@ AppController implements Observer {
         }
     }
 
-    public void updateGame(int gameId, PlayerDTO playerDTO) {
-        Game game = HttpController.getGame(gameId);
-        Board board = null;
-        if (game != null) {
-            board = JSONReader.parseBoard(new JSONObject(game.getBoard()));
-            board.setGameId(gameId);
-            initJoinedPlayerInfo(board, playerDTO);
-            game.setBoard(gson.toJson(board));
-            int gameVersion = game.getVersion() + 1;
-            game.setVersion(gameVersion);
-            HttpController.pushGameUpdate(game, gameId);
-        }
-    }
-
-    public void initJoinedPlayerInfo(Board board, PlayerDTO playerDTO) {
-        int playerColor = board.getNumberOfPlayers();
-        Player player = new Player(board, PLAYER_COLORS.get(playerColor), playerDTO.getName());
-        board.addPlayer(player);
-        Space spawnSpace = board.nextSpawn();
-        player.setSpace(board.getSpace(spawnSpace.getX(), spawnSpace.getY()));
-    }
-
+    /**
+     * Get an game from the server and join it.
+     *
+     * @param gameID Id of the game
+     * @author Philip og Nilas Thoegersen
+     */
     public void getOnlineGame(int gameID) {
         Game game = HttpController.getGame(gameID);
         if (game == null) return;
@@ -618,9 +589,9 @@ AppController implements Observer {
      * Once the player chooses to leave the game; the board is retrieved from the server and returned anew without the
      * player present.
      *
-     * @param gameId
-     * @param playerDTO
-     * @uahtor Asbjørn Nielsen
+     * @param gameId the id of the game
+     * @param playerDTO the player leaving
+     * @author Asbjørn Nielsen
      */
     public void leaveGame(int gameId, PlayerDTO playerDTO) {
         HttpController.leaveGame(gameId, playerDTO);
@@ -634,10 +605,5 @@ AppController implements Observer {
 
     public boolean isThreadRunning() {
         return !(boardUpdateThread != null && boardUpdateThread.isAlive());
-    }
-
-    public void terminateClient() {
-        gameController = null;
-        roboRally.createBoardView(null);
     }
 }

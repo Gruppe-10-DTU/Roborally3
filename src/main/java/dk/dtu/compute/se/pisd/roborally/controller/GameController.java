@@ -21,19 +21,16 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction.Pit;
+import dk.dtu.compute.se.pisd.roborally.controller.SequenceAction.Checkpoint;
+import dk.dtu.compute.se.pisd.roborally.controller.SequenceAction.SequenceAction;
 import dk.dtu.compute.se.pisd.roborally.model.*;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElement.Checkpoint;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElement.RobotLaser;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElement.SequenceAction;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.*;
 import javafx.application.Platform;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static dk.dtu.compute.se.pisd.roborally.model.Phase.FINISHED;
-import static dk.dtu.compute.se.pisd.roborally.model.Phase.PLAYER_INTERACTION;
 
 /**
  * ...
@@ -46,7 +43,7 @@ public class GameController {
     public Board board;
     final public AppController appController;
     private String clientName;
-    private AtomicInteger version;
+    private final AtomicInteger version;
 
     public GameController(@NotNull Board board, AppController appController) {
         this.board = board;
@@ -65,7 +62,7 @@ public class GameController {
         if (space.getPlayer() == null) {
             Player currentPlayer = board.getCurrentPlayer();
             if (!currentPlayer.getSpace().equals(space) || !space.hasWall(currentPlayer.getHeading())) {
-                board.setStep(board.getStep() + 1);
+                // board.setStep(board.getStep() + 1);
                 currentPlayer.setSpace(space);
                 board.setCurrentPlayer(board.getPlayer((board.getPlayerNumber(currentPlayer) + 1) % board.getNumberOfPlayers()));
             }
@@ -253,7 +250,7 @@ public class GameController {
      * @author Søren Wünsche
      */
     private void executeCommand(@NotNull Player player, Command command) {
-        if (player != null && player.board == board && command != null) {
+        if (player.board == board && command != null) {
             switch (command) {
                 case FORWARD:
                     this.moveForward(player, 1);
@@ -288,7 +285,6 @@ public class GameController {
      * @param command The command to be executed
      * @author Ekkart Kindler, ekki@dtu.dk
      */
-    //TODO: Fjern brug af denne funktion. Denne logik burde ligge inde i playerview, hvor funktionen kaldes
     public void executeCommandOptionAndContinue(Command command) {
         board.setPhase(Phase.ACTIVATION);
         executeCommand(board.getCurrentPlayer(), command);
@@ -439,6 +435,7 @@ public class GameController {
      * @param target The target of the card
      * @return Boolean saying if the move was possible
      * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Nilas Thoegersen
      */
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
         Card sourceCard = source.getCard();
@@ -459,6 +456,11 @@ public class GameController {
 
     }
 
+    /**
+     * Check if a game is done, and if yes, end it.
+     *
+     * @author Nilas og Søren
+     */
     public void checkIfGameIsDone() {
         Checkpoint checkpoint = board.getWincondition();
         for (Player player : board.getPlayers()) {
@@ -483,6 +485,7 @@ public class GameController {
 
     /**
      * @param player The player getting rebooted
+     * @author Philip
      */
     public void rebootRobot(Player player){
         player.discardCard(new DamageCard(Damage.SPAM));
@@ -503,6 +506,12 @@ public class GameController {
         this.clientName = clientName;
     }
 
+    /**
+     * Get the clients object
+     *
+     * @return The client
+     * @author Philip
+     */
     public Player getClient(){
         return this.board.getPlayerByName(this.clientName);
     }
@@ -514,6 +523,10 @@ public class GameController {
      * @author Philip
      */
     public void again(Player player) {
+        if (this.board.getStep() == 0) {
+            incrementStep(board.getStep());
+            return;
+        }
         //Get the previous card
         Card oldCard = player.getProgramField(board.getStep()-1).getCard();
         if (oldCard != null) {
@@ -536,6 +549,11 @@ public class GameController {
 
     }
 
+    /**
+     * Refresh the board view, by creating a new one.
+     *
+     * @author Nilas Thoegersen
+     */
     public void refreshView(){
         Platform.runLater(appController::updateBoard);
     }
@@ -551,6 +569,7 @@ public class GameController {
     }
 
     /**
+     * Helper function to see if the player is done programming.
      *
      * @author Nilas Thoegersen
      */
@@ -560,6 +579,13 @@ public class GameController {
 
         return client && current;
     }
+
+    /**
+     * Update all players on the current board, from the new board
+     *
+     * @param newBoard The new board from the server
+     * @author Sandie Petersen
+     */
     public  void updatePlayers (Board newBoard) {
         board.updatePlayers(newBoard.getPlayers(), clientName);
         board.setCurrentPlayer(board.getPlayerByName(newBoard.getCurrentPlayer().getName()));

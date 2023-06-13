@@ -1,7 +1,8 @@
-package dk.dtu.compute.se.pisd.roborally.model.BoardElement;
+package dk.dtu.compute.se.pisd.roborally.controller.SequenceAction;
 
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction.Pit;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
@@ -57,7 +58,7 @@ public class FastConveyorbelt extends Conveyorbelt implements SequenceAction {
                 space = targetSpace.get(player) == null ? player.getSpace() : targetSpace.get(player);
                 if (space.getClass().equals(this.getClass())) {
                     space = board.getNeighbour(space, ((FastConveyorbelt) space).getExit());
-                    if (space == null) {
+                    if (space == null || space instanceof Pit) {
                         gameController.rebootRobot(player);
                     } else if (space.getPlayer() == null || space instanceof FastConveyorbelt) {
                         targetSpace.put(player, space);
