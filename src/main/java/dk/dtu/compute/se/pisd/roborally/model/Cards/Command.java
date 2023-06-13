@@ -36,10 +36,10 @@ public enum Command {
 
     FORWARD("Fwd", 6),
     REVERSE("Reverse", 1),
-    RIGHT("Turn Right", 1),
-    LEFT("Turn Left", 1),
+    RIGHT("Turn Right", 3),
+    LEFT("Turn Left", 3),
     UTURN("U-Turn", 1),
-    FAST_FORWARD("Fast Fwd", 6),
+    FAST_FORWARD("Fast Fwd", 4),
 
     MOVE_3("Move 3", 1),
 
