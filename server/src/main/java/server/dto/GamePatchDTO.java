@@ -12,7 +12,7 @@ public class GamePatchDTO {
 
     String board;
 
-    int version;
+    Integer version;
 
     public GamePatchDTO() {
     }
@@ -39,11 +39,11 @@ public class GamePatchDTO {
         this.board = board;
     }
 
-    public int getVersion() {
+    public Integer getVersion() {
         return version;
     }
 
-    public void setVersion(int version) {
+    public void setVersion(Integer version) {
         this.version = version;
     }
 }
