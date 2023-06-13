@@ -449,7 +449,7 @@ AppController implements Observer {
         } else {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Connection Error");
-            error.setHeaderText("Could not retrive game from server.\nPlease try again!");
+            error.setHeaderText("Could not retrieve game from server.\nPlease try again!");
             error.showAndWait();
         }
         return -1;
