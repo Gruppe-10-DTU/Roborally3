@@ -8,27 +8,27 @@ import server.model.GameState;
  * @author Nilas Thoegersen
  */
 public class GamePatchDTO {
-    GameState gameState;
+    private GameState state;
 
-    String board;
+    private String board;
 
-    Integer version;
+    private Integer version;
 
     public GamePatchDTO() {
     }
 
-    public GamePatchDTO(GameState gameState, String board, int version) {
-        this.gameState = gameState;
+    public GamePatchDTO(GameState state, String board, int version) {
+        this.state = state;
         this.board = board;
         this.version = version;
     }
 
-    public GameState getGameState() {
-        return gameState;
+    public GameState getState() {
+        return state;
     }
 
-    public void setGameState(GameState gameState) {
-        this.gameState = gameState;
+    public void setState(GameState state) {
+        this.state = state;
     }
 
     public String getBoard() {

@@ -1,14 +1,14 @@
 package server.dto;
 
 public class GameDTO {
-    int maxPlayers;
-    int currentPlayers;
-    String name;
-    int id;
+    private int maxPlayers;
+    private int currentPlayers;
+    private String name;
+    private int id;
 
-    int version;
+    private int version;
 
-    String Board;
+    private String Board;
 
     public GameDTO(){
 
