@@ -426,18 +426,15 @@ AppController implements Observer {
                     newPlayer.setSpace(spawnSpace);
                 }
             }
-            int statusCode = HttpController.startGame(id);
-            if (statusCode != 200) {
-                return statusCode;
-            }
-
             gameController.replaceBoard(board, game.getVersion());
 
             if (board.getPhase() == Phase.INITIALISATION) {
                 gameController.startProgrammingPhase();
             }
             gameController.board.addGameLogEntry(null, "Game Started");
-            gameController.updateBoard();
+
+            int statusCode = HttpController.startGame(id, board);
+
             return statusCode;
         } else {
             Alert error = new Alert(Alert.AlertType.ERROR);

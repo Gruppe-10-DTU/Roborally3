@@ -1,14 +1,14 @@
 package server.dto;
 
 public class GameDTO {
-    int maxPlayers;
-    int currentPlayers;
-    String name;
-    int id;
+    private int maxPlayers;
+    private int currentPlayers;
+    private String name;
+    private int id;
 
-    int version;
+    private int version;
 
-    String Board;
+    private String board;
 
     public GameDTO(){
 
@@ -31,16 +31,15 @@ public class GameDTO {
         this.version = version;
     }
 
-    public String getName(){
-        return name;
-    }
-    public int getId(){
-        return id;
-    }
-    public int getMaxPlayers(){
+    public int getMaxPlayers() {
         return maxPlayers;
     }
-    public int getCurrentPlayers(){
+
+    public void setMaxPlayers(int maxPlayers) {
+        this.maxPlayers = maxPlayers;
+    }
+
+    public int getCurrentPlayers() {
         return currentPlayers;
     }
 
@@ -48,25 +47,20 @@ public class GameDTO {
         this.currentPlayers = currentPlayers;
     }
 
-    public String getHostName() {
+    public String getName() {
         return name;
-    }
-
-    public void setHostName(String hostName) {
-        this.name = hostName;
-    }
-
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setMaxPlayers(int maxPlayers) {
-        this.maxPlayers = maxPlayers;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getVersion() {
@@ -75,5 +69,13 @@ public class GameDTO {
 
     public void setVersion(int version) {
         this.version = version;
+    }
+
+    public String getBoard() {
+        return board;
+    }
+
+    public void setBoard(String board) {
+        this.board = board;
     }
 }

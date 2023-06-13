@@ -3,11 +3,11 @@ package server.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpServerErrorException;
-import server.Service.GameService;
-import server.Service.PlayerService;
 import server.dto.PlayerDTO;
 import server.mapper.DtoMapper;
 import server.model.Player;
+import server.service.GameService;
+import server.service.PlayerService;
 
 import java.util.List;
 

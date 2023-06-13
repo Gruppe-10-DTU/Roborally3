@@ -4,15 +4,14 @@ import com.google.gson.Gson;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpServerErrorException;
-import server.Service.GameService;
 import server.dto.GameDTO;
 import server.dto.GamePatchDTO;
 import server.mapper.DtoMapper;
 import server.mapper.GameDTOMapper;
 import server.model.Game;
 import server.model.GameState;
+import server.service.GameService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

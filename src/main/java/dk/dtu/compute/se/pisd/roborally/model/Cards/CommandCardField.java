@@ -38,6 +38,8 @@ public class CommandCardField extends Subject {
 
     private boolean visible;
 
+    private boolean canMoveCard;
+
     public Player getPlayer() {
         return player;
     }
@@ -46,6 +48,7 @@ public class CommandCardField extends Subject {
         this.player = player;
         this.card = null;
         this.visible = true;
+        this.canMoveCard = true;
     }
 
     public CommandCardField(){
@@ -76,5 +79,13 @@ public class CommandCardField extends Subject {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public boolean getCanMoveCard() {
+        return canMoveCard;
+    }
+
+    public void setCanMoveCard(boolean canMoveCard) {
+        this.canMoveCard = canMoveCard;
     }
 }

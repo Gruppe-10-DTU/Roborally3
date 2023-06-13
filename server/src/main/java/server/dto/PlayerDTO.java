@@ -44,6 +44,7 @@ public class PlayerDTO {
     public void setName(String name) {
         this.name = name;
     }
+
     public boolean isRebooting() {
         return Rebooting;
     }

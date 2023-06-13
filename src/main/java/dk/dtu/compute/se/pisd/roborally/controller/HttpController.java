@@ -131,10 +131,13 @@ public class HttpController {
      * @return status code
      * @author Philip Astrup Cramer
      */
-    public static int startGame(int gameID){
+    public static int startGame(int gameID, Board board){
+        Game game = new Game(gson.toJson(board));
+        game.setState("STARTED");
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(serverUrl + "/games/" + gameID + "/gamestates"))
-                .PUT(HttpRequest.BodyPublishers.ofString("STARTED"))
+                .uri(URI.create(serverUrl + "/games/" + gameID))
+                .setHeader("Content-Type","application/json")
+                .method("PATCH", HttpRequest.BodyPublishers.ofString(gson.toJson(game)))
                 .build();
         try{
             lastResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
