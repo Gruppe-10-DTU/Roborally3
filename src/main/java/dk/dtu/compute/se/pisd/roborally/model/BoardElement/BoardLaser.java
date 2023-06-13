@@ -52,14 +52,14 @@ public class BoardLaser extends Space implements SequenceAction {
             Space space = player.getSpace();
             Heading heading = Heading.WEST;
             if(space instanceof BoardLaser){
-                player.discardCard(new DamageCard(Damage.SPAM));
+                player.receiveCard(new DamageCard(Damage.SPAM));
                 board.addGameLogEntry(player, "Was hit by a laser");
             }else {
                 for (int i = 0; i < 4; i++) {
                     //Set isHit in the if statement and add the dmg card inside the statement.
                     if (!space.getOut(heading)) {
                         if (isHit(board, space, heading)) {
-                            player.discardCard(new DamageCard(Damage.SPAM));
+                            player.receiveCard(new DamageCard(Damage.SPAM));
                             board.addGameLogEntry(player, "Was hit by a laser");
                         }
                     }
