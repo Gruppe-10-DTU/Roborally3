@@ -49,4 +49,11 @@ public class PlayerController {
         gameService.updateCurrPlayers(gameId,playerCount);
         return ResponseEntity.ok().body(player);
     }
+
+    @DeleteMapping("/games/{gameId}/players/{id}")
+    public ResponseEntity<String> deletePlayer(@PathVariable int gameId, @PathVariable int id) throws HttpServerErrorException.NotImplemented{
+        playerService.removePlayer(id,gameId);
+        gameService.updateCurrPlayers(gameId,playerService.countPlayers(gameId));
+        return ResponseEntity.ok().body("Player " + id + "Left the game");
+    }
 }

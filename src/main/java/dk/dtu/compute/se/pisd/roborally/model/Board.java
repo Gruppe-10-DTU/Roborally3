@@ -127,6 +127,8 @@ public class Board extends Subject {
         this.width = width;
         this.height = height;
         this.gameLog = new ArrayList<>();
+        RobotLaser rblsr = new RobotLaser();
+        addBoardActions(rblsr);
         JSONArray courseArray = new JSONArray();
 
         if(boardArray == null) {
@@ -235,6 +237,10 @@ public class Board extends Subject {
                 case "Priority":
                     this.priorityAntenna = new PriorityAntenna(this, x, y);
                     spaces[x][y] = priorityAntenna;
+                    spaces[x][y].setWall(Heading.SOUTH);
+                    spaces[x][y].setWall(Heading.NORTH);
+                    spaces[x][y].setWall(Heading.EAST);
+                    spaces[x][y].setWall(Heading.WEST);
                     break;
                 case "Reboot" :
                     Heading exit = Heading.valueOf(current.getString("direction"));
@@ -280,6 +286,8 @@ public class Board extends Subject {
         this.boardActions = new TreeSet<>(new SequenceActionComparator());
         this.width = width;
         this.height = height;
+        RobotLaser rblsr = new RobotLaser();
+        addBoardActions(rblsr);
         spaces = new Space[width][height];
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -343,6 +351,12 @@ public class Board extends Subject {
     public void addPlayer(@NotNull Player player) {
         if (player.board == this && !players.contains(player)) {
             players.add(player);
+        }
+    }
+    public void removePlayer(@NotNull Player player){
+        if(player.board == this && players.contains(player)){
+            players.remove(player);
+            notifyChange();
         }
     }
 

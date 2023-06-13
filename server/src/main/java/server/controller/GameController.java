@@ -1,5 +1,6 @@
 package server.controller;
 
+import com.google.gson.Gson;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpServerErrorException;
@@ -11,11 +12,13 @@ import server.mapper.GameDTOMapper;
 import server.model.Game;
 import server.model.GameState;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 public class GameController {
+    Gson gson = new Gson();
 
     private GameService gameService;
 

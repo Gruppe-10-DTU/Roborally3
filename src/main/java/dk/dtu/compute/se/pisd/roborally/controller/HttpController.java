@@ -38,7 +38,7 @@ public class HttpController {
      * @return
      * @author Sandie Petersen & Philip Astrup Cramer
      */
-    public static String joinGame(int gameID, PlayerDTO player){
+    public static PlayerDTO joinGame(int gameID, PlayerDTO player){
         HttpRequest postPlayerRequest = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + "/games/" + gameID + "/players"))
                 .setHeader("Content-Type","application/json")
@@ -46,12 +46,12 @@ public class HttpController {
                 .build();
         try {
             lastResponse = client.send(postPlayerRequest, HttpResponse.BodyHandlers.ofString());
-
+            return gson.fromJson(lastResponse.body(), PlayerDTO.class);
         } catch (Exception exception){
             exception.printStackTrace();
         }
         //return lastResponse.statusCode();
-        return lastResponse.body();
+        return null;
     }
 
     /**
@@ -62,6 +62,30 @@ public class HttpController {
      * @throws InterruptedException
      * @author Sandie Petersen & Søren Wünsche
      */
+    /**
+     *
+     * @param gameId
+     * @param player
+     * @return status code
+     * @author Asbjørn Nielsen
+     */
+    public static String leaveGame(int gameId, PlayerDTO player){
+        HttpRequest deletePlayerRequest = HttpRequest.newBuilder()
+                .uri(URI.create(serverUrl + "/games/" + gameId + "/players/" + player.getId()))
+                .setHeader("Content-Type","application/json")
+                .DELETE()
+                .build();
+        CompletableFuture<HttpResponse<String>> response =
+                client.sendAsync(deletePlayerRequest, HttpResponse.BodyHandlers.ofString());
+        try {
+            String result = response.thenApply(HttpResponse::body).get();
+            return result;
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public static List<PlayerDTO> playersInGame(int gameID) throws ExecutionException, InterruptedException {
         HttpRequest getPlayerRequest = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + "/games/" + gameID + "/players"))
@@ -78,7 +102,9 @@ public class HttpController {
      * Sends the game to the server for online play
      * @param game
      * @return
-     * @author Asbjørn Nielsen & Sandie Petersen & Philip Astrup Cramer
+     * @author Asbjørn Nielsen
+     * @author Sandie Petersen
+     * @author Philip Astrup Cramer
      */
     public static int createGame(Game game){
          String sGame = gson.toJson(game);
@@ -211,6 +237,30 @@ public class HttpController {
     }
 
     /**
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     * @author Asbjørn Nielsen
+     */
+    public static String removeGame(int id) throws Exception{
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverUrl+"/games/" + id))
+                .DELETE()
+                .build();
+        CompletableFuture<HttpResponse<String>> response =
+                client.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+        try {
+            String result = response.thenApply(HttpResponse::body).get();
+            return result;
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Fetches a game update if here exist a newer version on the server
      * @param id
      * @param version
@@ -235,5 +285,7 @@ public class HttpController {
         }
         return game;
     }
-
+    public static int getLastResponseCode() {
+        return lastResponse.statusCode();
+    }
 }
