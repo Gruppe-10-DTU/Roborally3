@@ -38,8 +38,6 @@ import java.util.List;
 public class CommandCard extends Subject implements Card{
 
     private Command command;
-    String type = "Command";
-
 
     public CommandCard(@NotNull Command command) {
         this.command = command;

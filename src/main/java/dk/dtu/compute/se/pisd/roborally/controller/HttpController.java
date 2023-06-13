@@ -16,11 +16,11 @@ import java.util.concurrent.ExecutionException;
 
 public class HttpController {
 
-    private static final HttpClient client = HttpClient.newHttpClient();;
+    private static final HttpClient client = HttpClient.newHttpClient();
 //    private static String serverUrl = "http://127.0.0.1";
     private static String serverUrl = "http://localhost:8080";
     private static HttpResponse<String> lastResponse;
-    private static Gson gson = JSONReader.setupGson();
+    private final static Gson gson = JSONReader.setupGson();
 
     /**
      *
@@ -34,8 +34,8 @@ public class HttpController {
     /**
      *
      * @param gameID ID of the game to be joined
-     * @param player
-     * @return
+     * @param player player joining
+     * @return the player who joined
      * @author Sandie Petersen & Philip Astrup Cramer
      */
     public static PlayerDTO joinGame(int gameID, PlayerDTO player){
@@ -55,18 +55,10 @@ public class HttpController {
     }
 
     /**
-     * Retrieves the players in a given game from the server
-     * @param gameID ID of the game
-     * @return
-     * @throws ExecutionException
-     * @throws InterruptedException
-     * @author Sandie Petersen & Søren Wünsche
-     */
-    /**
      *
-     * @param gameId
-     * @param player
-     * @return status code
+     * @param gameId id of the game
+     * @param player player who is leaving
+     * @return Body of response
      * @author Asbjørn Nielsen
      */
     public static String leaveGame(int gameId, PlayerDTO player){
@@ -86,6 +78,14 @@ public class HttpController {
             throw new RuntimeException(e);
         }
     }
+    /**
+     * Retrieves the players in a given game from the server
+     * @param gameID ID of the game
+     * @return List of players in the game
+     * @throws ExecutionException error when executing
+     * @throws InterruptedException error if interrupted
+     * @author Sandie Petersen & Søren Wünsche
+     */
     public static List<PlayerDTO> playersInGame(int gameID) throws ExecutionException, InterruptedException {
         HttpRequest getPlayerRequest = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + "/games/" + gameID + "/players"))
@@ -94,14 +94,14 @@ public class HttpController {
         CompletableFuture<HttpResponse<String>> response =
                 client.sendAsync(getPlayerRequest, HttpResponse.BodyHandlers.ofString());
         String result = response.thenApply(HttpResponse::body).get();
-        List<PlayerDTO> Player = gson.fromJson(result,new TypeToken<List<PlayerDTO>>(){}.getType());
-        return Player;
+        List<PlayerDTO> players = gson.fromJson(result,new TypeToken<List<PlayerDTO>>(){}.getType());
+        return players;
     }
 
     /**
      * Sends the game to the server for online play
-     * @param game
-     * @return
+     * @param game game to be created
+     * @return gameId
      * @author Asbjørn Nielsen
      * @author Sandie Petersen
      * @author Philip Astrup Cramer
@@ -127,8 +127,8 @@ public class HttpController {
 
     /**
      * Updates the gamestate on the server to started
-     * @param gameID
-     * @return
+     * @param gameID id of the game
+     * @return status code
      * @author Philip Astrup Cramer
      */
     public static int startGame(int gameID){
@@ -144,42 +144,14 @@ public class HttpController {
         return lastResponse.statusCode();
     }
 
-    public static int pushGameUpdate(Game game, Board board){
-        game.setBoard(gson.toJson(board));
-        return pushGameUpdate(game, game.getId());
-    }
-
-    /**
-     *
-     * @param game the game instance
-     * @param gameID Id of the online game
-     * @return HTTP status code of transaction
-     * @author Philip Astrup Cramer
-     */
-    public static int pushGameUpdate(Game game, int gameID){
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(serverUrl + "/games/" + gameID))
-                .setHeader("Content-Type","application/json")
-                .PUT(HttpRequest.BodyPublishers.ofString(gson.toJson(game)))
-                .build();
-        try {
-            lastResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-        } catch (Exception exception){
-            exception.printStackTrace();
-            return 418;
-        }
-        return lastResponse.statusCode();
-    }
-
     /**
      * sends the updated board to ther server
      * @param board instance of board object
      * @param version version number
      * @author Nilas Thoegersen
+     * @author Philip Astrup Cramer
      */
     public static void updateBoard(Board board, int version){
-
         Game game = new Game(JSONReader.saveGame(board), version);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + "/games/"+board.getGameId()))
@@ -221,8 +193,8 @@ public class HttpController {
 
     /**
      * fetches a list of available games from the server
-     * @return
-     * @throws Exception
+     * @return List of games
+     * @throws Exception error when executing
      * @author Søren Wünsche
      */
     public static List<Game> getGameList() throws Exception {
@@ -237,34 +209,10 @@ public class HttpController {
     }
 
     /**
-     *
-     * @param id
-     * @return
-     * @throws Exception
-     * @author Asbjørn Nielsen
-     */
-    public static String removeGame(int id) throws Exception{
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(serverUrl+"/games/" + id))
-                .DELETE()
-                .build();
-        CompletableFuture<HttpResponse<String>> response =
-                client.sendAsync(request, HttpResponse.BodyHandlers.ofString());
-        try {
-            String result = response.thenApply(HttpResponse::body).get();
-            return result;
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
      * Fetches a game update if here exist a newer version on the server
-     * @param id
-     * @param version
-     * @return
+     * @param id id of the game
+     * @param version The current version of the game
+     * @return The game if found
      * @author Sandie Petersen
      */
     public static Game getGameUpdate(int id, int version) {
@@ -285,6 +233,11 @@ public class HttpController {
         }
         return game;
     }
+
+    /**
+     * @return StatusCode of the last request
+     * @author Philip Astrup Cramer
+     */
     public static int getLastResponseCode() {
         return lastResponse.statusCode();
     }

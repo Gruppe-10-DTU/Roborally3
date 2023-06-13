@@ -22,7 +22,6 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElement.RobotLaser;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.Card;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.CommandCardField;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.PlayerCardDeck;
@@ -100,6 +99,11 @@ public class Player extends Subject implements Comparable<Player> {
         }
     }
 
+    /**
+     * Default constructor used with gson. Needed to create the views
+     *
+     * @author Nilas Thoegersen
+     */
     Player(){
         this.deck = new PlayerCardDeck();
         this.space = null;
@@ -224,6 +228,11 @@ public class Player extends Subject implements Comparable<Player> {
         this.priority = priority;
     }
 
+    /**
+     * Update the items given by the gson.
+     *
+     * @author Nilas Thoegersen
+     */
     public void setPlayer(){
         for (int i = 0; i < program.length; i++) {
             program[i].setPlayer(this);
