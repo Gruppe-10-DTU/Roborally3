@@ -216,11 +216,23 @@ public class Player extends Subject implements Comparable<Player> {
         return this.deck.drawCard();
     }
 
+    /**
+     * If card type is Command card then adds it to players discard pile
+     * else nothing happens.
+     *
+     * @author Philip Astrup Cramer
+     */
     public void discardCard(Card card) {
         if (card == null) return;
         if(card.getType().equals("Damage")) return;
         this.deck.discard(card);
     }
+
+    /**
+     * Adds the card to the players discard pile. No matter the type.
+     *
+     * @author Philip Astrup Cramer
+     */
     public void receiveCard(Card card){
         this.deck.discard(card);
     }
@@ -243,7 +255,7 @@ public class Player extends Subject implements Comparable<Player> {
     }
 
     /**
-     * Discards all of the cards in the players registers.
+     * Discards all the cards in the players registers.
      *
      * @author Philip Astrup Cramer
      */
