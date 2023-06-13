@@ -37,7 +37,7 @@ import static dk.dtu.compute.se.pisd.roborally.model.Heading.EAST;
 public class Player extends Subject implements Comparable<Player> {
 
     final public static int NO_REGISTERS = 5;
-    final public static int NO_CARDS = 8;
+    final public static int NO_CARDS = 9;
 
     transient public Board board;
     private boolean Rebooting = false;
@@ -216,8 +216,68 @@ public class Player extends Subject implements Comparable<Player> {
         return this.deck.drawCard();
     }
 
+    /**
+     * If card type is Command card then adds it to players discard pile
+     * else nothing happens.
+     *
+     * @author Philip Astrup Cramer
+     */
     public void discardCard(Card card) {
+        if (card == null) return;
+        if(card.getType().equals("Damage")) return;
         this.deck.discard(card);
+    }
+
+    /**
+     * Adds the card to the players discard pile. No matter the type.
+     *
+     * @author Philip Astrup Cramer
+     */
+    public void receiveCard(Card card){
+        this.deck.discard(card);
+    }
+
+    /**
+     * Fills the players empty registers with cards from the top of the deck
+     *
+     * @author Philip Astrup Cramer
+     */
+    public void registerChaos(){
+        for (CommandCardField field : program) {
+            if(field.getCard() == null) field.setCard(deck.drawCard());
+        }
+        for (CommandCardField field : cards) {
+            if (field.getCard() != null){
+                this.receiveCard(field.getCard());
+                field.setCard(null);
+            }
+        }
+    }
+
+    /**
+     * Discards all the cards in the players registers.
+     *
+     * @author Philip Astrup Cramer
+     */
+    public void discardRegisters(){
+        for (CommandCardField field : program) {
+            this.discardCard(field.getCard());
+            field.setCard(null);
+            field.setVisible(true);
+        }
+    }
+
+    /**
+     * Puts the remaining cards from the players hand in the discard pile
+     *
+     * @author Philip Astrup Cramer
+     */
+    public void discardHand(){
+        for (CommandCardField field : cards) {
+            this.discardCard(field.getCard());
+            field.setCard(null);
+            field.setVisible(true);
+        }
     }
 
     public int getPriority() {

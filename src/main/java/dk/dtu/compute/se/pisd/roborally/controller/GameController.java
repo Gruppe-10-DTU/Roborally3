@@ -114,6 +114,9 @@ public class GameController {
      */
     public void finishProgrammingPhase() {
         if(clientName == null || !board.nextPlayer()) {
+            for (Player player : board.getPlayers()) {
+                player.registerChaos();
+            }
             makeProgramFieldsInvisible();
             makeProgramFieldsVisible(0);
             board.setPhase(Phase.ACTIVATION);
@@ -124,6 +127,7 @@ public class GameController {
             //updateBoard();
         }
         if(clientName != null){
+            this.getClient().registerChaos();
             updateBoard();
         }
     }
@@ -227,10 +231,9 @@ public class GameController {
 
         if (!playerIsSet) {
             step++;
-
+            //End the phase by activating the board.
+            executeBoardActions();
             if (step < Player.NO_REGISTERS) {
-                //End the phase by activating the board.
-                executeBoardActions();
                 makeProgramFieldsVisible(step);
                 board.setStep(step);
                 board.calculatePlayerOrder();
@@ -314,6 +317,7 @@ public class GameController {
                 player.setSpace(board.getNeighbour(player.getSpace(), heading));
             }
         } else if (space == null) {
+            board.addGameLogEntry(player,"Fell of the map");
             rebootRobot(player);
         }
     }
@@ -488,16 +492,10 @@ public class GameController {
      * @author Philip
      */
     public void rebootRobot(Player player){
-        player.discardCard(new DamageCard(Damage.SPAM));
-        player.discardCard(new DamageCard(Damage.SPAM));
-        for (int i = 0; i < 5; i++) {
-            CommandCardField field = player.getProgramField(i);
-            if (field.getCard() != null) {
-                player.discardCard(field.getCard());
-                field.setCard(null);
-                field.setVisible(true);
-            }
-        }
+        player.receiveCard(new DamageCard(Damage.SPAM));
+        player.receiveCard(new DamageCard(Damage.SPAM));
+        player.discardRegisters();
+        player.discardHand();
         board.getRebootToken().doFieldAction(this, player);
 
     }

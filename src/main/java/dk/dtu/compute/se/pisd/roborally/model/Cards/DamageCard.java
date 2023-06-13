@@ -35,8 +35,8 @@ public class DamageCard extends Subject implements Card {
                 //this has no further effect
                 break;
             case TROJAN_HORSE:
-                currentPlayer.discardCard(new DamageCard(Damage.SPAM));
-                currentPlayer.discardCard(new DamageCard(Damage.SPAM));
+                currentPlayer.receiveCard(new DamageCard(Damage.SPAM));
+                currentPlayer.receiveCard(new DamageCard(Damage.SPAM));
                 gameController.board.addGameLogEntry(currentPlayer, "Took 2 Spam damage");
                 break;
             case WORM:
@@ -46,7 +46,7 @@ public class DamageCard extends Subject implements Card {
             case VIRUS:
                 ArrayList<Player> withinRange = gameController.board.playersInRange(currentPlayer, 6);
                 for (Player affectedPLayer : withinRange) {
-                    affectedPLayer.discardCard(new DamageCard(Damage.VIRUS));
+                    affectedPLayer.receiveCard(new DamageCard(Damage.VIRUS));
                     gameController.board.addGameLogEntry(affectedPLayer, "Got virus from "+ currentPlayer.getName());
                 }
                 break;
@@ -56,6 +56,10 @@ public class DamageCard extends Subject implements Card {
         }
         Card card = currentPlayer.drawCard();
         currentPlayer.getProgramField(gameController.board.getStep()).setCard(card);
+        while (card.isInteractive()){
+            currentPlayer.discardCard(card);
+            card = currentPlayer.drawCard();
+        }
         card.doAction(gameController);
     }
 
