@@ -225,6 +225,31 @@ public class Player extends Subject implements Comparable<Player> {
         this.deck.discard(card);
     }
 
+    /**
+     * Fills the players empty registers with cards from the top of the deck
+     *
+     * @author Philip Astrup Cramer
+     */
+    public void registerChaos(){
+        for (CommandCardField field : program) {
+            if(field.getCard() == null) field.setCard(deck.drawCard());
+        }
+    }
+
+    /**
+     * Puts the remaining cards from the players hand in the discard pile
+     *
+     * @author Philip Astrup Cramer
+     */
+    public void tossHand(){
+        for (CommandCardField field : cards) {
+            if(field.getCard() != null) {
+                this.deck.discard(field.getCard());
+                field.setCard(null);
+            }
+        }
+    }
+
     public int getPriority() {
         return priority;
     }

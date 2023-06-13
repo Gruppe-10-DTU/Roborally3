@@ -114,6 +114,10 @@ public class GameController {
      */
     public void finishProgrammingPhase() {
         if(clientName == null || !board.nextPlayer()) {
+            for (Player player : board.getPlayers()) {
+                player.registerChaos();
+                player.tossHand();
+            }
             makeProgramFieldsInvisible();
             makeProgramFieldsVisible(0);
             board.setPhase(Phase.ACTIVATION);
@@ -124,15 +128,8 @@ public class GameController {
             //updateBoard();
         }
         if(clientName != null){
-            for (CommandCardField field : this.getClient().getProgram()) {
-                if(field.getCard() == null) field.setCard(this.getClient().drawCard());
-            }
-            for (CommandCardField field : this.getClient().getCards()) {
-                if(field.getCard() != null) {
-                    this.getClient().receiveCard(field.getCard());
-                    field.setCard(null);
-                }
-            }
+            this.getClient().registerChaos();
+            this.getClient().tossHand();
             updateBoard();
         }
     }
