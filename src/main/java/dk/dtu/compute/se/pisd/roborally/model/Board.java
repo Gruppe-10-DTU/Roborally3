@@ -106,6 +106,14 @@ public class Board extends Subject {
 
     PriorityQueue<Player> playerOrder = new PriorityQueue<>();
 
+    public void setPlayerOrder(PriorityQueue<Player> playerOrder){
+        this.playerOrder = playerOrder;
+    }
+
+    public PriorityQueue<Player> getPlayerOrder(){
+        return this.playerOrder;
+    }
+
     public Board(){
         this.boardActions = new TreeSet<>(new SequenceActionComparator());
     }

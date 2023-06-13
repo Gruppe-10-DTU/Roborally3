@@ -1,4 +1,4 @@
-package server.Service;
+package server.service;
 
 import org.springframework.stereotype.Service;
 import server.model.Game;
@@ -22,7 +22,9 @@ public class GameService {
      * @author Nilas Thoegersen
      */
     public Game createGame(Game game) {
-        gameRepository.save(game);
+        if(game.getState() == null){
+            game.setState(GameState.INITIALIZING);
+        }
         return game;
     }
 

@@ -595,12 +595,15 @@ public class GameController {
     /**
      * Update all players on the current board, from the new board
      *
-     * @param newBoard The new board from the server
+     * @param newBoard       The new board from the server
+     * @param currentVersion version from the thread
      * @author Sandie Petersen
      */
-    public  void updatePlayers (Board newBoard) {
+    public  void updatePlayers (Board newBoard, Integer currentVersion) {
         board.updatePlayers(newBoard.getPlayers(), clientName);
+        board.setPlayerOrder(newBoard.getPlayerOrder());
         board.setCurrentPlayer(board.getPlayerByName(newBoard.getCurrentPlayer().getName()));
+        version.set(currentVersion);
     }
 
 }

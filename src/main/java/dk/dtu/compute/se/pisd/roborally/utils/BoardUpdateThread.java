@@ -43,14 +43,14 @@ public class BoardUpdateThread extends Thread {
                 currentVersion = result.getVersion();
                 JSONObject jsonBoard = new JSONObject(result.getBoard());
                 Board newBoard = JSONReader.parseBoard(jsonBoard);
+
                 if (newBoard.getPhase() == Phase.FINISHED && gameController.board.getPhase() != Phase.FINISHED){
-                    //TODO> MAKE THIS CLOSE GAME
                     gameController.replaceBoard(newBoard, currentVersion);
                     gameController.checkIfGameIsDone();
                 }
 
                 if (gameController.board.getPhase() == Phase.PROGRAMMING && newBoard.getPhase() == Phase.PROGRAMMING) {
-                    gameController.updatePlayers(newBoard);
+                    gameController.updatePlayers(newBoard, currentVersion);
                 } else {
                     gameController.replaceBoard(newBoard, currentVersion);
                 }
