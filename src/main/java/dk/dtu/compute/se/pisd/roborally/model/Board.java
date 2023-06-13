@@ -133,7 +133,7 @@ public class Board extends Subject {
         this.maxPlayers = playerAmount;
         this.width = width;
         this.height = height;
-        this.gameLog = new ArrayList<>();
+        this.gameLog = new Stack<>();
         RobotLaser rblsr = new RobotLaser();
         addBoardActions(rblsr);
         JSONArray courseArray = new JSONArray();

@@ -45,10 +45,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -149,27 +146,42 @@ AppController implements Observer {
         }
     }
 
-    /**
-     * Save a game into a file.
-     *
-     * @author Nilas Thoegersen
-     */
-    public void saveGame() {
-        String savedGameController = JSONReader.saveGame(gameController.board);
+    public void saveGame(){
+        if(gameController.getClient() != null){
+            String saveName = getSavedGameName();
+            Game savedGame = new Game().setName(saveName).setState("SAVED").setVersion(0).setMaxPlayers(gameController.board.getMaxPlayers()).setBoard(gson.toJson(gameController.board));
+            HttpController.createGame(savedGame);
+            gameController.board.addGameLogEntry(gameController.getClient(), " saved the game");
+        }else {
+            saveGameLocally();
+        }
+    }
+
+    private String getSavedGameName(){
         TextInputDialog saveNameDialog = new TextInputDialog();
         saveNameDialog.setTitle("Save game");
 
         saveNameDialog.setHeaderText("Please name your save");
         Optional<String> resultName = saveNameDialog.showAndWait();
-        while (resultName.isPresent() && Files.exists(Path.of("src/main/java/dk/dtu/compute/se/pisd/roborally/controller/savedGames", resultName.get() + ".json"))) {
-            saveNameDialog.setHeaderText("That name is taken, please write a new one");
+        return resultName.orElse(UUID.randomUUID().toString());
+    }
 
-            resultName = saveNameDialog.showAndWait();
+    /**
+     * Save a game into a file.
+     *
+     * @author Nilas Thoegersen
+     */
+    public void saveGameLocally() {
+        String savedGameController = JSONReader.saveGame(gameController.board);
+
+        String resultName = getSavedGameName();
+        while (Files.exists(Path.of("src/main/java/dk/dtu/compute/se/pisd/roborally/controller/savedGames", resultName + ".json"))) {
+            resultName = getSavedGameName();
         }
 
         try {
             //TODO: Gøre den mere dynamis. Ikke sikker på det virker med Jar
-            File newSave = new File("src/main/java/dk/dtu/compute/se/pisd/roborally/controller/savedGames/" + resultName.get() + ".json");
+            File newSave = new File("src/main/java/dk/dtu/compute/se/pisd/roborally/controller/savedGames/" + resultName + ".json");
             newSave.createNewFile();
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(newSave));
             bufferedWriter.write(savedGameController);
@@ -355,39 +367,42 @@ AppController implements Observer {
     /**
      * Main method for creating an online game and handling the functionality that comes with it.
      *
-     * @author Asbjørn Nielsen
+     * @author Asbjørn Nielsen og Nilas Thoegersen
      */
     public void hostGame() {
-        Game nG = null;
+        Game newGame = null;
         Board board = null;
-        ButtonType newGame = new ButtonType("New Game");
+        ButtonType newGameButton = new ButtonType("New Game");
         ButtonType loadGame = new ButtonType("Load Game");
-        Alert alert = new Alert(AlertType.CONFIRMATION, "Do you want to create a new game, or load an old game", newGame, loadGame);
-        alert.setTitle("Stop game");
-
+        Alert alert = new Alert(AlertType.CONFIRMATION, "Do you want to create a new game, or load an old game", newGameButton, loadGame);
+        alert.setTitle("Host game");
+        Game game;
         Optional<ButtonType> choice = alert.showAndWait();
-        if (choice.isPresent() && choice.get() == newGame) {
+        if (choice.isPresent() && choice.get() == newGameButton) {
             board = initBoardinfo();
 
-            nG = new Game(board.getBoardName(), 0, board.getMaxPlayers(), gson.toJson(board));
-            nG.setState("INITIALIZING");
+            newGame = new Game(board.getBoardName(), 0, board.getMaxPlayers(), gson.toJson(board));
+            newGame.setState("INITIALIZING");
+            gameController = new GameController(board, this);
         } else if (choice.isPresent() && choice.get() == loadGame) {
-            board = retrieveSavedGame();
-            if (board != null) {
-                nG = new Game(board.getBoardName(), 0, board.getMaxPlayers(), gson.toJson(board));
-                nG.setState("SAVED");
+            newGame = retrieveSavedGame();
+            if (newGame != null) {
+                newGame.setId(0);
+                newGame.setState("SAVED");
+                board = JSONReader.parseBoard(new JSONObject(newGame.getBoard()));
+                gameController = new GameController(board, this);
             } else {
                 return;
             }
         }
-        gameController = new GameController(board, this);
 
         PlayerDTO playerDTO = initPlayerInfo();
-        int gameId = HttpController.createGame(nG);
+        int gameId = HttpController.createGame(newGame);
         playerDTO = HttpController.joinGame(gameId, playerDTO);
         showLobby(gameId, gameController.board.getMaxPlayers(), playerDTO);
 
         gameController.setClientName(playerDTO.getName());
+
         try {
             board.setGameId(gameId);
         } catch (IllegalStateException e) {
@@ -426,6 +441,7 @@ AppController implements Observer {
                     newPlayer.setSpace(spawnSpace);
                 }
             }
+
             gameController.replaceBoard(board, game.getVersion());
 
             if (board.getPhase() == Phase.INITIALISATION) {
@@ -451,22 +467,19 @@ AppController implements Observer {
      * @return Board
      * @author Asbjørn Nielsen
      */
-    public Board retrieveSavedGame() {
-        File file;
+    public Game retrieveSavedGame() {
+        List<Game> savedGames;
         try {
-            //TODO: Gør stien dynamisk.
-            file = new File("src/main/java/dk/dtu/compute/se/pisd/roborally/controller/savedGames");
-        } catch (Exception e) {
-            System.out.println("No files found");
+            savedGames = HttpController.getGameList(Optional.of("STOPPEDGAME"));
+        }catch (Exception e){
             return null;
         }
-
-        Optional<String> gameName = new ChoiceDialog<String>("None", file.list()).showAndWait();
-        if (!gameName.equals("None")) {
-            Board board = JSONReader.loadGame(Path.of(file.getPath(), gameName.get()).toString());
-            return board;
+        if(savedGames.isEmpty()){
+            return null;
         }
-        return null;
+        Optional<Game> gameName = new ChoiceDialog<Game>(savedGames.get(0), savedGames).showAndWait();
+
+        return gameName.orElse(null);
     }
 
     /**
