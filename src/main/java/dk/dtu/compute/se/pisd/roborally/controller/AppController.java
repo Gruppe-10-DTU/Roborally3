@@ -29,6 +29,7 @@ import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.utils.BoardUpdateThread;
 import dk.dtu.compute.se.pisd.roborally.view.GamesView;
 import dk.dtu.compute.se.pisd.roborally.view.LobbyView;
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
@@ -265,6 +266,8 @@ AppController implements Observer {
     public void updateBoard() {
         if (gameController != null) {
             roboRally.createBoardView(gameController);
+        }else {
+            roboRally.createBoardView(null);
         }
     }
 
@@ -275,13 +278,19 @@ AppController implements Observer {
      * @author Nilas Thoegersen
      */
     public void endGame(Player player) {
-        Alert won = new Alert(AlertType.INFORMATION);
-        won.setTitle("We have a winner");
-        won.setHeaderText(null);
-        won.setContentText(player.getName() + " has won");
-        won.show();
         gameController = null;
-        roboRally.createBoardView(null);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                Alert won = new Alert(AlertType.INFORMATION);
+                won.setTitle("We have a winner");
+                won.setHeaderText(null);
+                won.setContentText(player.getName() + " has won");
+                won.show();
+                roboRally.createBoardView(null);
+            }
+        });
+
     }
 
     /**
