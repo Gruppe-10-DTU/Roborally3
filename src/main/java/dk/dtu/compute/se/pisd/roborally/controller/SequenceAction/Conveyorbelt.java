@@ -2,7 +2,6 @@ package dk.dtu.compute.se.pisd.roborally.controller.SequenceAction;
 
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.controller.FieldAction.Pit;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
@@ -101,7 +100,7 @@ public class Conveyorbelt extends Space implements SequenceAction {
             space = player.getSpace();
             if (space.getClass().equals(this.getClass())) {
                 space = board.getNeighbour(player.getSpace(), ((Conveyorbelt) space).getExit());
-                if (space == null || space instanceof Pit) {
+                if (space == null) {
                     gameController.rebootRobot(player);
                 } else if (space.getPlayer() == null || space.getClass().equals(this.getClass())) {
                     targetSpace.put(player, space);
