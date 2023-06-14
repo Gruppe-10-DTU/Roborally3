@@ -1,12 +1,12 @@
 package dk.dtu.compute.se.pisd.roborally.model.SequenceAction;
 
+import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.FieldAction.Pit;
 import dk.dtu.compute.se.pisd.roborally.model.FieldAction.RebootToken;
-import dk.dtu.compute.se.pisd.roborally.controller.GameController;
-import dk.dtu.compute.se.pisd.roborally.controller.SequenceAction.*;
-import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
+import dk.dtu.compute.se.pisd.roborally.model.PriorityAntenna;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,6 +33,8 @@ class BoardActionTest {
             player.setHeading(Heading.EAST);
 
         }
+        board.setPriorityAntenna(new PriorityAntenna(board, 7, 7));
+
         board.setCurrentPlayer(board.getPlayer(0));
     }
 
@@ -293,7 +295,7 @@ class BoardActionTest {
     @Test
     void BoardPit() {
         Board board = gameController.board;
-        gameController.startProgrammingPhase();
+        //gameController.startProgrammingPhase();
         Player pitFall = board.getCurrentPlayer();
         Pit pit = new Pit(board,board.getSpace(1,1).getX(),board.getSpace(1,0).getY());
         RebootToken rb = new RebootToken(board,2,2,Heading.EAST);

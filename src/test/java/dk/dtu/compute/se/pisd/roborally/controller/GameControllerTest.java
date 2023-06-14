@@ -1,9 +1,10 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
-import dk.dtu.compute.se.pisd.roborally.model.FieldAction.RebootToken;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.FieldAction.RebootToken;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
+import dk.dtu.compute.se.pisd.roborally.model.PriorityAntenna;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,6 +29,8 @@ class GameControllerTest {
             player.setSpace(board.getSpace(i, i));
             player.setHeading(Heading.values()[i % Heading.values().length]);
         }
+        //board.setSpace(new PriorityAntenna(board, 7, 7));
+        board.setPriorityAntenna(new PriorityAntenna(board, 7, 7));
         board.setCurrentPlayer(board.getPlayer(0));
     }
 

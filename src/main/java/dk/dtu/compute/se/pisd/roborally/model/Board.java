@@ -55,6 +55,9 @@ public class Board extends Subject {
     private Integer gameId;
     private transient PriorityAntenna priorityAntenna;
 
+    public void setPriorityAntenna(PriorityAntenna priorityAntenna){
+        this.priorityAntenna = priorityAntenna;
+    }
     private Space[][] spaces;
 
     private List<Player> players = new ArrayList<>();

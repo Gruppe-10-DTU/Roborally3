@@ -29,7 +29,7 @@ class HttpControllerTest {
     void createGameTest() throws Exception {
         Board testBoard = new Board();
         Gson gson = new Gson();
-        Game testGame = new Game("cTest", 1, 2, gson.toJson(testBoard));
+        Game testGame = new Game("cTest", 0, 2, gson.toJson(testBoard));
         HttpController.createGame(testGame);
         assertEquals(200, HttpController.getLastResponseCode());
         System.out.println(HttpController.getGameList(Optional.empty()));
@@ -47,6 +47,7 @@ class HttpControllerTest {
     @Order(3)
     void leaveGameTest() throws Exception {
         PlayerDTO pDTO = new PlayerDTO("TestPlayer2");
+        pDTO.setId(2);
         HttpController.joinGame(1,pDTO);
         HttpController.leaveGame(1,pDTO);
         assertEquals(200,HttpController.getLastResponseCode());

@@ -4,6 +4,8 @@ import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
+import dk.dtu.compute.se.pisd.roborally.model.PriorityAntenna;
+import dk.dtu.compute.se.pisd.roborally.model.SequenceAction.Checkpoint;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +19,8 @@ class CardTest {
     @BeforeEach
     void setUp() {
         board = new Board(TEST_WIDTH, TEST_HEIGHT);
-
+        board.setPriorityAntenna(new PriorityAntenna(board, 7, 7));
+        board.setWincondition(new Checkpoint(board, 6,6,0));
         gameController = new GameController(board, null);
 
         for (int i = 0; i < 3; i++) {
