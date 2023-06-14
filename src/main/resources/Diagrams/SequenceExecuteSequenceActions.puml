@@ -1,0 +1,9 @@
+@startuml
+
+GameController -> Board: getSequenceActions()
+Board --> GameController: List<SequenceAction> sequenceActions
+
+group foreach [sequenceAction in sequenceActions]
+    GameController -> sequenceAction: doAction(gameController)
+end
+@enduml

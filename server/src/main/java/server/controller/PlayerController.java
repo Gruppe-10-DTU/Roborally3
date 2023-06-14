@@ -1,5 +1,6 @@
 package server.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpServerErrorException;
@@ -11,6 +12,7 @@ import server.service.PlayerService;
 
 import java.util.List;
 
+@Tag(name="Players", description = "Endpoints for players in a game")
 @RestController
 public class PlayerController {
     private final PlayerService playerService;
@@ -28,7 +30,7 @@ public class PlayerController {
      *
      * @author Søren Wünsce
      */
-    @RequestMapping(value = "/games/{id}/players", method = RequestMethod.GET)
+    @RequestMapping(value = "/games/{id}/players", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<List<PlayerDTO>> getPlayers(@PathVariable int id) {
             List<Player> playerList = playerService.getPlayerList(id);
         return ResponseEntity.ok().body(dtoMapper.playerToPlayerDto(playerList));
@@ -54,7 +56,7 @@ public class PlayerController {
      * @return An ok status with who left.
      * @author Asbjørn
      */
-    @DeleteMapping("/games/{gameId}/players/{id}")
+    @DeleteMapping(value ="/games/{gameId}/players/{id}", produces = "application/text")
     public ResponseEntity<String> deletePlayer(@PathVariable int gameId, @PathVariable int id) {
         playerService.removePlayer(id,gameId);
         gameService.updateCurrPlayers(gameId,playerService.countPlayers(gameId));
