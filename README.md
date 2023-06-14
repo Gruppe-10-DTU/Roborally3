@@ -26,6 +26,10 @@ This is the second prototype of Roborally made by Group 10
   - Spawns
   - Checkpoints
   - Updated GUI (models for board actions)
+  - Online Multiplayer
+  - Action Log
+  - Move 3 card
+  - Repeat card
 
 ## How to start RoboRally
     1. Download program
