@@ -1,6 +1,6 @@
 @startuml
 'Sequence Diagram for Execute Register.
-Participant ":Player" as Player
+Actor ":Player" as Player
 Participant ":Client" as Client
 Participant ":Server" as Server
 
