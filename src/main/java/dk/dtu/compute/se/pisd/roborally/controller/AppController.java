@@ -149,7 +149,7 @@ AppController implements Observer {
     public void saveGame(){
         if(gameController.getClient() != null){
             String saveName = getSavedGameName();
-            Game savedGame = new Game().setName(saveName).setState("SAVED").setVersion(0).setMaxPlayers(gameController.board.getMaxPlayers()).setBoard(gson.toJson(gameController.board));
+            Game savedGame = new Game().setName(saveName).setState("STOPPEDGAME").setVersion(0).setMaxPlayers(gameController.board.getMaxPlayers()).setBoard(gson.toJson(gameController.board));
             HttpController.createGame(savedGame);
             gameController.board.addGameLogEntry(gameController.getClient(), " saved the game");
         }else {
@@ -235,6 +235,15 @@ AppController implements Observer {
 
             if (result.isPresent() && result.get() == ButtonType.YES) {
                 saveGame();
+            }
+
+            if(boardUpdateThread != null && boardUpdateThread.isAlive()){
+                boardUpdateThread.interrupt();
+                try {
+                    boardUpdateThread.join();
+                }catch (Exception e) {
+
+                }
             }
 
             gameController = null;

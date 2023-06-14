@@ -5,7 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpServerErrorException;
 import server.dto.PlayerDTO;
+import server.exception.CustomExceptionLobbyIsFull;
 import server.mapper.DtoMapper;
+import server.model.Game;
 import server.model.Player;
 import server.service.GameService;
 import server.service.PlayerService;
@@ -44,7 +46,15 @@ public class PlayerController {
     @RequestMapping(value = "/games/{gameId}/players", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public ResponseEntity<Player> joinPlayers(@PathVariable int gameId, @RequestBody Player player) throws HttpServerErrorException.NotImplemented {
         player.setGameId(gameId);
-        playerService.addPlayer(player);
+        Game game = gameService.getGame(player.getGameId());
+        if(game == null){
+            return ResponseEntity.notFound().build();
+        }
+        try {
+            playerService.addPlayer(player, game.getMaxPlayers());
+        } catch (CustomExceptionLobbyIsFull e){
+            return ResponseEntity.badRequest().build();
+        }
         int playerCount = playerService.countPlayers(gameId);
         gameService.updateCurrPlayers(gameId,playerCount);
         return ResponseEntity.ok().body(player);
