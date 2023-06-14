@@ -56,10 +56,13 @@ public class GameService {
         List<Game> games;
         if(state.isPresent()){
             games = gameRepository.findAllByStateIn(state.stream().toList());
+            if(games.isEmpty()){
+                throw new CustomExceptionNoSavedGames("No saved games present!");
+            }
         } else {
             games = gameRepository.findAllByStateIn(Arrays.asList(GameState.INITIALIZING, GameState.SAVED));
         }
-        
+
         return games;
     }
 

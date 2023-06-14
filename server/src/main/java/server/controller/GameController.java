@@ -37,11 +37,13 @@ public class GameController {
     public ResponseEntity<List<GameDTO>> getGameList(@RequestParam(name = "state") Optional<GameState> state){
         List<Game> games;
 
-        games = gameService.loadGames(state);
-
-        List<GameDTO> gameString = dtoMapper.gameToGameDto(games);
-        return ResponseEntity.ok().body(gameString);
-
+        try {
+            games = gameService.loadGames(state);
+            List<GameDTO> gameString = dtoMapper.gameToGameDto(games);
+            return ResponseEntity.ok().body(gameString);
+        }catch(CustomExceptionNoSavedGames e){
+            return ResponseEntity.notFound().build();
+        }
     }
 
     /**

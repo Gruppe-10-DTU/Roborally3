@@ -481,9 +481,11 @@ AppController implements Observer {
         try {
             savedGames = HttpController.getGameList(Optional.of("STOPPEDGAME"));
         }catch (Exception e){
+            System.out.println("There are no saved games on the server");
             return null;
         }
         if(savedGames.isEmpty()){
+            System.out.println("There are no saved games on the server");
             return null;
         }
         Optional<Game> gameName = new ChoiceDialog<Game>(savedGames.get(0), savedGames).showAndWait();
