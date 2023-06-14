@@ -1,4 +1,4 @@
-package dk.dtu.compute.se.pisd.roborally.controller.SequenceAction;
+package dk.dtu.compute.se.pisd.roborally.model.SequenceAction;
 
 import java.util.Comparator;
 

@@ -1,6 +1,7 @@
 package server.service;
 
 import org.springframework.stereotype.Service;
+import server.exception.CustomExceptionNoSavedGames;
 import server.model.Game;
 import server.model.GameState;
 import server.repository.GameRepository;
@@ -55,9 +56,13 @@ public class GameService {
         List<Game> games;
         if(state.isPresent()){
             games = gameRepository.findAllByStateIn(state.stream().toList());
+            if(games.isEmpty()){
+                throw new CustomExceptionNoSavedGames("No saved games present!");
+            }
         } else {
             games = gameRepository.findAllByStateIn(Arrays.asList(GameState.INITIALIZING, GameState.SAVED));
         }
+
         return games;
     }
 
@@ -77,7 +82,7 @@ public class GameService {
      * @author Sandie Petersen og Nilas Thoegersen
      */
     public Game getGameWithVersion(int id, int version){
-        return gameRepository.findGameByIdAndVersionGreaterThan(id, version);
+        return gameRepository.findGameByIdAndVersionGreaterThanOrderByVersionDesc(id, version);
     }
 
     /**

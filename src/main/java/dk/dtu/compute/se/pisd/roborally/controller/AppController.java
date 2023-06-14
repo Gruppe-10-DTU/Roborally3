@@ -149,7 +149,7 @@ AppController implements Observer {
     public void saveGame(){
         if(gameController.getClient() != null){
             String saveName = getSavedGameName();
-            Game savedGame = new Game().setName(saveName).setState("SAVED").setVersion(0).setMaxPlayers(gameController.board.getMaxPlayers()).setBoard(gson.toJson(gameController.board));
+            Game savedGame = new Game().setName(saveName).setState("STOPPEDGAME").setVersion(0).setMaxPlayers(gameController.board.getMaxPlayers()).setBoard(gson.toJson(gameController.board));
             HttpController.createGame(savedGame);
             gameController.board.addGameLogEntry(gameController.getClient(), " saved the game");
         }else {
@@ -175,7 +175,7 @@ AppController implements Observer {
         String savedGameController = JSONReader.saveGame(gameController.board);
 
         String resultName = getSavedGameName();
-        while (Files.exists(Path.of("src/main/java/dk/dtu/compute/se/pisd/roborally/controller/savedGames", resultName + ".json"))) {
+        while (Files.exists(Path.of("src/main/java/dk/dtu/compute/se/pisd/roborally/controller/savedGames/", resultName + ".json"))) {
             resultName = getSavedGameName();
         }
 
@@ -235,6 +235,15 @@ AppController implements Observer {
 
             if (result.isPresent() && result.get() == ButtonType.YES) {
                 saveGame();
+            }
+
+            if(boardUpdateThread != null && boardUpdateThread.isAlive()){
+                boardUpdateThread.interrupt();
+                try {
+                    boardUpdateThread.join();
+                }catch (Exception e) {
+
+                }
             }
 
             gameController = null;
@@ -462,19 +471,21 @@ AppController implements Observer {
     }
 
     /**
-     * Retrieves a list of available boards and lets the player chose one of them to play.
+     * Retrieves a list of available games on the server and lets the player chose one of them to play.
      *
-     * @return Board
-     * @author Asbjørn Nielsen
+     * @return Game
+     * @author Asbjørn Nielsen og Nilas Thoegersen
      */
     public Game retrieveSavedGame() {
         List<Game> savedGames;
         try {
             savedGames = HttpController.getGameList(Optional.of("STOPPEDGAME"));
         }catch (Exception e){
+            System.out.println("There are no saved games on the server");
             return null;
         }
         if(savedGames.isEmpty()){
+            System.out.println("There are no saved games on the server");
             return null;
         }
         Optional<Game> gameName = new ChoiceDialog<Game>(savedGames.get(0), savedGames).showAndWait();

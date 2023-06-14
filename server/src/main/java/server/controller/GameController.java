@@ -1,11 +1,11 @@
 package server.controller;
 
-import com.google.gson.Gson;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpServerErrorException;
 import server.dto.GameDTO;
 import server.dto.GamePatchDTO;
+import server.exception.CustomExceptionNoSavedGames;
 import server.mapper.DtoMapper;
 import server.mapper.GameDTOMapper;
 import server.model.Game;
@@ -16,13 +16,13 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@Tag(name="Games", description = "Games endpoint")
 public class GameController {
-    Gson gson = new Gson();
 
-    private GameService gameService;
+    private final GameService gameService;
 
-    private DtoMapper dtoMapper;
-    private GameDTOMapper gameDTOMapper;
+    private final DtoMapper dtoMapper;
+    private final GameDTOMapper gameDTOMapper;
 
     public GameController(DtoMapper dtoMapper, GameService gameService, GameDTOMapper gameDTOMapper){
         this.dtoMapper = dtoMapper;
@@ -33,21 +33,23 @@ public class GameController {
     /**
      * @author Nilas Thoegersen & Asbjørn Nielsen
      */
-    @RequestMapping(value = "/games", method = RequestMethod.GET)
+    @RequestMapping(value = "/games", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<List<GameDTO>> getGameList(@RequestParam(name = "state") Optional<GameState> state){
         List<Game> games;
 
-        games = gameService.loadGames(state);
-
-        List<GameDTO> gameString = dtoMapper.gameToGameDto(games);
-        return ResponseEntity.ok().body(gameString);
-
+        try {
+            games = gameService.loadGames(state);
+            List<GameDTO> gameString = dtoMapper.gameToGameDto(games);
+            return ResponseEntity.ok().body(gameString);
+        }catch(CustomExceptionNoSavedGames e){
+            return ResponseEntity.notFound().build();
+        }
     }
 
     /**
      * @author Nilas Thoegersen & Sandie Petersen & Søren Wünsche
      */
-    @RequestMapping(value = "/games/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/games/{id}", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<GameDTO> getSpecificGame(@RequestParam(name = "version") Optional<Integer> version, @PathVariable int id) {
         Game game;
         if(version.isPresent()){
@@ -67,7 +69,7 @@ public class GameController {
     /**
      * @author Nilas Thoegersen
      */
-    @PostMapping("/games")
+    @PostMapping(value = "/games", produces = "application/json")
     public ResponseEntity<GameDTO> createGame(@RequestBody Game game) {
         game = gameService.createGame(game);
         GameDTO gameDTO = dtoMapper.gameToGameDto(game);
@@ -86,29 +88,11 @@ public class GameController {
     /**
      * @author Søren Wünsche
      */
-    @RequestMapping(value = "/games/{id}", method = RequestMethod.PUT)
-    public ResponseEntity updateGame(@RequestBody Game game) {
+    @RequestMapping(value = "/games/{id}", method = RequestMethod.PUT, produces = "application/json")
+    public ResponseEntity<GameDTO> updateGame(@RequestBody Game game) {
         gameService.updateGame(game);
-        return ResponseEntity.ok().body(game);
-    }
-
-    //This SHOULD be a patch request but our http client doesn't support that method.
-
-    /**
-     * @author Nilas Thoegersen
-     */
-    @RequestMapping(value = "/games/{id}/gamestates", method = RequestMethod.PUT)
-    public ResponseEntity updateState(@PathVariable int id, @RequestBody String state) throws HttpServerErrorException.NotImplemented {
-        Game requestedGame = gameService.getGame(id);
-        try {
-            requestedGame.setState(GameState.valueOf(state));
-            requestedGame.setVersion(requestedGame.getVersion() + 1);
-            gameService.updateGame(requestedGame);
-            return ResponseEntity.ok().build();
-        }
-        catch (IllegalArgumentException illegalArgumentException) {
-            return ResponseEntity.badRequest().build();
-        }
+        GameDTO gameDTO = dtoMapper.gameToGameDto(game);
+        return ResponseEntity.ok().body(gameDTO);
     }
 
     /**
@@ -117,12 +101,14 @@ public class GameController {
     @PatchMapping(value = "games/{id}")
     public ResponseEntity patchGame(@PathVariable int id, @RequestBody GamePatchDTO gamePatch){
         Game game = gameService.getGame(id);
-
+        if(game == null) {
+            return ResponseEntity.notFound().build();
+        }
         dtoMapper.updateGameFromDto(gamePatch, game);
 
         gameService.updateGame(game);
 
-        return ResponseEntity.status(204).build();
+        return ResponseEntity.noContent().build();
     }
 
 }

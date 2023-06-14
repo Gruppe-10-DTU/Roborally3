@@ -21,9 +21,9 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
-import dk.dtu.compute.se.pisd.roborally.controller.FieldAction.Pit;
-import dk.dtu.compute.se.pisd.roborally.controller.SequenceAction.Checkpoint;
-import dk.dtu.compute.se.pisd.roborally.controller.SequenceAction.SequenceAction;
+import dk.dtu.compute.se.pisd.roborally.model.FieldAction.Pit;
+import dk.dtu.compute.se.pisd.roborally.model.SequenceAction.Checkpoint;
+import dk.dtu.compute.se.pisd.roborally.model.SequenceAction.SequenceAction;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.*;
 import javafx.application.Platform;

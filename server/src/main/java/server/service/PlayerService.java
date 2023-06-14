@@ -1,6 +1,7 @@
 package server.service;
 
 import org.springframework.stereotype.Service;
+import server.exception.CustomExceptionLobbyIsFull;
 import server.model.Player;
 import server.repository.PlayerRepository;
 
@@ -21,12 +22,18 @@ public class PlayerService {
      * Validate the players name is unique, and if it already exists, add a number to it.
      *
      * @param player The player to be added
-     * @author Søren Wünsche og Nilas Thoegersen
+     * @author Søren Wünsche og Nilas Thoegersen og Asbjørn
      */
-    public void addPlayer(Player player){
-        int count = playerRepository.countPlayerByGameIdAndNameLike(player.getGameId(), player.getName());
-        if(count > 0){
-            player.setName(player.getName() + "["+count+"]");
+    public void addPlayer(Player player, int gameMaxPlayers) {
+        int playerCount = playerRepository.countPlayerByGameId(player.getGameId());
+        int nameCount = playerRepository.countPlayerByGameIdAndNameLike(player.getGameId(), player.getName());
+
+        if(playerCount >= gameMaxPlayers){
+            throw new CustomExceptionLobbyIsFull("Lobby is full");
+        }
+
+        if(nameCount > 0){
+            player.setName(player.getName() + "["+nameCount+"]");
         }
         playerRepository.save(player);
     }

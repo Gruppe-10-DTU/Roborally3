@@ -47,6 +47,10 @@ public class HttpController {
                 .build();
         try {
             lastResponse = client.send(postPlayerRequest, HttpResponse.BodyHandlers.ofString());
+            if(getLastResponseCode() == 400){
+                System.out.println("The game is full");
+                return null;
+            }
             return gson.fromJson(lastResponse.body(), PlayerDTO.class);
         } catch (Exception exception){
             exception.printStackTrace();

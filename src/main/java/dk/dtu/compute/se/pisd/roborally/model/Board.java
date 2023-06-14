@@ -22,10 +22,10 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.controller.FieldAction.Pit;
-import dk.dtu.compute.se.pisd.roborally.controller.FieldAction.RebootToken;
 import dk.dtu.compute.se.pisd.roborally.controller.JSONReader;
-import dk.dtu.compute.se.pisd.roborally.controller.SequenceAction.*;
+import dk.dtu.compute.se.pisd.roborally.model.FieldAction.Pit;
+import dk.dtu.compute.se.pisd.roborally.model.FieldAction.RebootToken;
+import dk.dtu.compute.se.pisd.roborally.model.SequenceAction.*;
 import javafx.util.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;

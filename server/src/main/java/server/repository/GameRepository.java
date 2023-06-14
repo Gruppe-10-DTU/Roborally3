@@ -33,5 +33,5 @@ public interface GameRepository extends CrudRepository<Game, Integer> {
      * @return game with a newer version than specified
      * @author Sandie Petersen og Nilas Thøgersen
      */
-    Game findGameByIdAndVersionGreaterThan(int id, int version);
+    Game findGameByIdAndVersionGreaterThanOrderByVersionDesc(int id, int version);
 }
