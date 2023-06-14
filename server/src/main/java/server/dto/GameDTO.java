@@ -1,5 +1,7 @@
 package server.dto;
 
+import server.model.GameState;
+
 public class GameDTO {
     private int maxPlayers;
     private int currentPlayers;
@@ -9,6 +11,8 @@ public class GameDTO {
     private int version;
 
     private String board;
+
+    private GameState state;
 
     public GameDTO(){
 
@@ -77,5 +81,13 @@ public class GameDTO {
 
     public void setBoard(String board) {
         this.board = board;
+    }
+
+    public GameState getState() {
+        return state;
+    }
+
+    public void setState(GameState state) {
+        this.state = state;
     }
 }

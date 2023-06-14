@@ -11,6 +11,10 @@ public class Game {
     private String state;
     private String board;
 
+    public Game(){
+
+    }
+
     public Game(String board){
         this.board = board;
     }
@@ -45,61 +49,71 @@ public class Game {
         this.version = version;
     }
 
-    public int getId(){
+    public int getId() {
         return id;
+    }
+
+    public Game setId(int id) {
+        this.id = id;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
+    public Game setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public Game setVersion(int version) {
+        this.version = version;
+        return this;
+    }
+
     public int getCurrentPlayers() {
         return currentPlayers;
     }
 
-    public void setCurrentPlayers(int currentPlayers) {
+    public Game setCurrentPlayers(int currentPlayers) {
         this.currentPlayers = currentPlayers;
+        return this;
     }
 
     public int getMaxPlayers() {
         return maxPlayers;
     }
 
-    public void IncCurrPlayer(){if(currentPlayers < maxPlayers) currentPlayers++;}
-
-    public int getVersion() {
-        return version;
-    }
-
-    public void setVersion(int version) {
-        this.version = version;
-    }
-
-    public String getBoard() {
-        return board;
-    }
-    public void setBoard(String board){
-        this.board = board;
+    public Game setMaxPlayers(int maxPlayers) {
+        this.maxPlayers = maxPlayers;
+        return this;
     }
 
     public String getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public Game setState(String state) {
         this.state = state;
+        return this;
+    }
+
+    public String getBoard() {
+        return board;
+    }
+
+    public Game setBoard(String board) {
+        this.board = board;
+        return this;
     }
 
     @Override
     public String toString() {
-        return "Game{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", version=" + version +
-                ", currentPlayers=" + currentPlayers +
-                ", maxPlayers=" + maxPlayers +
-                ", state='" + state + '\'' +
-                ", board='" + board + '\'' +
-                '}';
+        return this.name;
     }
 }

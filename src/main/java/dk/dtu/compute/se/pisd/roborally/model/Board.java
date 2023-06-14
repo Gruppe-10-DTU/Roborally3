@@ -417,7 +417,7 @@ public class Board extends Subject {
     }
 
     /**
-     * @Auther Sandie Petersen
+     * @author Sandie Petersen
      * @return The next available spawn space
      */
     public Spawn nextSpawn() {

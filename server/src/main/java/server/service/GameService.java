@@ -7,6 +7,7 @@ import server.repository.GameRepository;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GameService {
@@ -50,9 +51,14 @@ public class GameService {
      *
      * @author Asbjørn Nielsen & Sandie & Nilas Thoegersen
      */
-    public List<Game> loadGames() {
-        List<GameState> states = Arrays.asList(GameState.INITIALIZING, GameState.SAVED);
-        return gameRepository.findAllByStateIn(states);
+    public List<Game> loadGames(Optional<GameState> state) {
+        List<Game> games;
+        if(state.isPresent()){
+            games = gameRepository.findAllByStateIn(state.stream().toList());
+        } else {
+            games = gameRepository.findAllByStateIn(Arrays.asList(GameState.INITIALIZING, GameState.SAVED));
+        }
+        return games;
     }
 
     /**

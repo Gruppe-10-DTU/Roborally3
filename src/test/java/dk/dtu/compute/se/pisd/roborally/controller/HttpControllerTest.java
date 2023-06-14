@@ -6,6 +6,8 @@ import dk.dtu.compute.se.pisd.roborally.model.Game;
 import dk.dtu.compute.se.pisd.roborally.model.PlayerDTO;
 import org.junit.jupiter.api.*;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class HttpControllerTest {
@@ -19,7 +21,7 @@ class HttpControllerTest {
 
     @Test
     void getAvailableGamesTest() throws Exception {
-        Object returnedObj = HttpController.getGameList();
+        Object returnedObj = HttpController.getGameList(Optional.empty());
         assertEquals(200, HttpController.getLastResponseCode());
     }
     @Test
@@ -30,7 +32,7 @@ class HttpControllerTest {
         Game testGame = new Game("cTest", 1, 2, gson.toJson(testBoard));
         HttpController.createGame(testGame);
         assertEquals(200, HttpController.getLastResponseCode());
-        System.out.println(HttpController.getGameList());
+        System.out.println(HttpController.getGameList(Optional.empty()));
         assertEquals(testGame.getName(),HttpController.getGame(1).getName());
     }
     @Test

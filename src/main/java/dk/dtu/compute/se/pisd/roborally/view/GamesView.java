@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * UI to show all games currently hosted on the server
@@ -130,7 +131,7 @@ public class GamesView extends VBox implements ViewObserver {
      */
     private void getGameList(TableView tableView) throws Exception {
         tableView.getItems().clear();
-        List<Game> games = HttpController.getGameList();
+        List<Game> games = HttpController.getGameList(Optional.empty());
         tableView.getItems().addAll(games);
     }
 

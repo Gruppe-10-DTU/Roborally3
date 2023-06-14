@@ -34,17 +34,21 @@ public class GameController {
      * @author Nilas Thoegersen & Asbjørn Nielsen
      */
     @RequestMapping(value = "/games", method = RequestMethod.GET)
-    public ResponseEntity<List<GameDTO>> getGameList(){
-        List<Game> games = gameService.loadGames();
-        List<GameDTO> gameString = gameDTOMapper.mapList(games);
+    public ResponseEntity<List<GameDTO>> getGameList(@RequestParam(name = "state") Optional<GameState> state){
+        List<Game> games;
+
+        games = gameService.loadGames(state);
+
+        List<GameDTO> gameString = dtoMapper.gameToGameDto(games);
         return ResponseEntity.ok().body(gameString);
+
     }
 
     /**
      * @author Nilas Thoegersen & Sandie Petersen & Søren Wünsche
      */
     @RequestMapping(value = "/games/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Game> getSpecificGame(@RequestParam(name = "version") Optional<Integer> version, @PathVariable int id) {
+    public ResponseEntity<GameDTO> getSpecificGame(@RequestParam(name = "version") Optional<Integer> version, @PathVariable int id) {
         Game game;
         if(version.isPresent()){
             game = gameService.getGameWithVersion(id, version.get());
@@ -53,8 +57,8 @@ public class GameController {
         }
 
         if(game != null){
-            //GameDTO gameDTO = dtoMapper.gameToGameDto(game);
-            return ResponseEntity.ok().body(game);
+            GameDTO gameDTO = dtoMapper.gameToGameDto(game);
+            return ResponseEntity.ok().body(gameDTO);
         }
         return ResponseEntity.notFound().build();
    }
