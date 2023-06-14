@@ -35,14 +35,14 @@ public class DamageCard extends Subject implements Card {
                 //this has no further effect
                 break;
             case TROJAN_HORSE:
-                currentPlayer.receiveCard(new DamageCard(Damage.SPAM));
-                currentPlayer.receiveCard(new DamageCard(Damage.SPAM));
                 gameController.board.addGameLogEntry(currentPlayer, "Took 2 Spam damage");
+                currentPlayer.receiveCard(new DamageCard(Damage.SPAM));
+                currentPlayer.receiveCard(new DamageCard(Damage.SPAM));
                 break;
             case WORM:
-                gameController.rebootRobot(currentPlayer);
                 gameController.board.addGameLogEntry(currentPlayer, "Rebooted");
-                break;
+                gameController.rebootRobot(currentPlayer);
+                return;
             case VIRUS:
                 ArrayList<Player> withinRange = gameController.board.playersInRange(currentPlayer, 6);
                 for (Player affectedPLayer : withinRange) {
