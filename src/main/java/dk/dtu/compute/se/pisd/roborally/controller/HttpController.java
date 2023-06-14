@@ -11,6 +11,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -200,9 +201,13 @@ public class HttpController {
      * @throws Exception error when executing
      * @author Søren Wünsche
      */
-    public static List<Game> getGameList() throws Exception {
+    public static List<Game> getGameList(Optional<String> state) throws Exception {
+        String url = "/games";
+        if(state.isPresent()){
+            url += "?state="+state.get();
+        }
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(serverUrl + "/games"))
+                .uri(URI.create(serverUrl + url))
                 .GET()
                 .build();
         CompletableFuture<HttpResponse<String>> response =

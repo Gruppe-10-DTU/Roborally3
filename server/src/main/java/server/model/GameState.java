@@ -8,5 +8,7 @@ public enum GameState {
     INITIALIZING,
     SAVED,
     STARTED,
-    ENDED
+    ENDED,
+    STOPPEDGAME
+
 }
