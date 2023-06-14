@@ -1,7 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally.model.SequenceAction;
 
-import dk.dtu.compute.se.pisd.roborally.controller.FieldAction.Pit;
-import dk.dtu.compute.se.pisd.roborally.controller.FieldAction.RebootToken;
+import dk.dtu.compute.se.pisd.roborally.model.FieldAction.Pit;
+import dk.dtu.compute.se.pisd.roborally.model.FieldAction.RebootToken;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.controller.SequenceAction.*;
 import dk.dtu.compute.se.pisd.roborally.model.Board;

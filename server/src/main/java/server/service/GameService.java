@@ -77,7 +77,7 @@ public class GameService {
      * @author Sandie Petersen og Nilas Thoegersen
      */
     public Game getGameWithVersion(int id, int version){
-        return gameRepository.findGameByIdAndVersionGreaterThan(id, version);
+        return gameRepository.findGameByIdAndVersionGreaterThanOrderByVersionDesc(id, version);
     }
 
     /**

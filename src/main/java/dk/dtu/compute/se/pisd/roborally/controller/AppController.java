@@ -175,7 +175,7 @@ AppController implements Observer {
         String savedGameController = JSONReader.saveGame(gameController.board);
 
         String resultName = getSavedGameName();
-        while (Files.exists(Path.of("src/main/java/dk/dtu/compute/se/pisd/roborally/controller/savedGames", resultName + ".json"))) {
+        while (Files.exists(Path.of("src/main/java/dk/dtu/compute/se/pisd/roborally/controller/savedGames/", resultName + ".json"))) {
             resultName = getSavedGameName();
         }
 
@@ -462,10 +462,10 @@ AppController implements Observer {
     }
 
     /**
-     * Retrieves a list of available boards and lets the player chose one of them to play.
+     * Retrieves a list of available games on the server and lets the player chose one of them to play.
      *
-     * @return Board
-     * @author Asbjørn Nielsen
+     * @return Game
+     * @author Asbjørn Nielsen og Nilas Thoegersen
      */
     public Game retrieveSavedGame() {
         List<Game> savedGames;
