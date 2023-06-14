@@ -1,0 +1,92 @@
+@startuml
+'https://plantuml.com/class-diagram
+skinparam linetype ortho
+package "Server"{
+package "Model"{
+
+
+class Game{
+    - id : Integer
+    - maxPlayer : int
+    - name : String
+    + getBoard()
+    + setBoard()
+}
+
+class Player{
+    - id : int
+    - name : String
+}
+
+enum GameState{
+    INITIALISING
+    SAVED
+    STARTED
+    ENDED
+}
+}
+
+package "Controller"{
+class GameController{
+    + getGameList()
+    + createGame()
+    + removeGame()
+}
+class GameStateController{
+    +updateState()
+}
+class PlayerController{
+    +joinPlayers()
+}
+}
+
+package "DTO"{
+class GameDTO{
+    - maxPlayers : int
+    - currentPlayers : int
+    - name : String
+    - gameId : int
+}
+}
+package "Mapper"{
+interface DtoMapper{
+
+}
+class GameDTOMapper{
+}
+}
+
+package "Repository"{
+
+}
+
+package "Service"{
+class GameService{
+    +createGame()
+    +getGameById()
+    +saveGame()
+    +updateGame()
+    +deleteGame()
+    +loadGames()
+}
+class PlayerService{
+    + addPlayer()
+}
+}
+
+Game --> GameState
+Player --> Game
+
+GameController --> GameService
+GameController --> "Mapper"
+
+GameDTOMapper --|> DtoMapper
+
+GameStateController --> GameService
+GameStateController --> GameDTOMapper
+
+PlayerController "1 " -->" *" Player
+
+"Service" --> "Repository"
+}
+@enduml

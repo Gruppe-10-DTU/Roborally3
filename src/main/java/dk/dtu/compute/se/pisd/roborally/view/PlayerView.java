@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally.model.Cards.Card;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.Command;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.CommandCard;
 import dk.dtu.compute.se.pisd.roborally.model.Cards.CommandCardField;
@@ -96,7 +97,9 @@ public class PlayerView extends Tab implements ViewObserver {
         //      refactored.
 
         finishButton = new Button("Finish Programming");
-        finishButton.setOnAction(e -> gameController.finishProgrammingPhase());
+        finishButton.setOnAction(e -> {
+            gameController.finishProgrammingPhase();
+        });
 
         executeButton = new Button("Execute Program");
         executeButton.setOnAction(e -> gameController.executePrograms());
@@ -151,7 +154,7 @@ public class PlayerView extends Tab implements ViewObserver {
                         } else if (i == player.board.getStep()) {
                             if (player.board.getCurrentPlayer() == player) {
                                 cardFieldView.setBackground(CardFieldView.BG_ACTIVE);
-                            } else if (player.board.getPlayerNumber(player.board.getCurrentPlayer()) > player.board.getPlayerNumber(player)) {
+                            } else if (!player.board.getPlayerOrder().contains(player)) {
                                 cardFieldView.setBackground(CardFieldView.BG_DONE);
                             } else {
                                 cardFieldView.setBackground(CardFieldView.BG_DEFAULT);
@@ -163,6 +166,7 @@ public class PlayerView extends Tab implements ViewObserver {
                 }
             }
 
+
             if (player.board.getPhase() != Phase.PLAYER_INTERACTION) {
                 if (!programPane.getChildren().contains(buttonPanel)) {
                     programPane.getChildren().remove(playerInteractionPanel);
@@ -173,20 +177,20 @@ public class PlayerView extends Tab implements ViewObserver {
                         finishButton.setDisable(true);
                         // XXX just to make sure that there is a way for the player to get
                         //     from the initialization phase to the programming phase somehow!
-                        executeButton.setDisable(false);
+                        executeButton.setDisable(!player.board.getCurrentPlayer().equals(player));
                         stepButton.setDisable(true);
                         break;
 
                     case PROGRAMMING:
-                        finishButton.setDisable(false);
+                        finishButton.setDisable(gameController.showButtonsIfCurrent(player));
                         executeButton.setDisable(true);
                         stepButton.setDisable(true);
                         break;
 
                     case ACTIVATION:
                         finishButton.setDisable(true);
-                        executeButton.setDisable(false);
-                        stepButton.setDisable(false);
+                        executeButton.setDisable(!player.board.getCurrentPlayer().equals(player));
+                        stepButton.setDisable(!player.board.getCurrentPlayer().equals(player));
                         break;
 
                     default:
@@ -209,7 +213,11 @@ public class PlayerView extends Tab implements ViewObserver {
                     //      the player's choices of the interactive command card. The
                     //      following is just a mockup showing two options
                     Button optionButton;
-                    List<Command> commands = ((CommandCard) player.board.getCurrentPlayer().getProgramField(player.board.getStep()).getCard()).getOptions();
+                    Card card = player.board.getCurrentPlayer().getProgramField(player.board.getStep()).getCard();
+                    if(card.getName().equals("Repeat")){
+                        card = player.board.getCurrentPlayer().getProgramField(player.board.getStep()-1).getCard();
+                    }
+                    List<Command> commands = ((CommandCard) card).getOptions();
                     for (Command command : commands) {
                         optionButton = new Button(command.displayName);
                         optionButton.setOnAction(e -> gameController.executeCommandOptionAndContinue(command));

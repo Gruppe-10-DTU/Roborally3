@@ -32,20 +32,27 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
  */
 public class CommandCardField extends Subject {
 
-    public transient Player player;
+    private transient Player player;
 
     private Card card;
 
     private boolean visible;
 
-    public CommandCardField(){
+    private boolean canMoveCard;
 
+    public Player getPlayer() {
+        return player;
     }
 
     public CommandCardField(Player player) {
         this.player = player;
         this.card = null;
         this.visible = true;
+        this.canMoveCard = true;
+    }
+
+    public CommandCardField(){
+
     }
 
     public Card getCard() {
@@ -68,5 +75,17 @@ public class CommandCardField extends Subject {
             this.visible = visible;
             notifyChange();
         }
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public boolean getCanMoveCard() {
+        return canMoveCard;
+    }
+
+    public void setCanMoveCard(boolean canMoveCard) {
+        this.canMoveCard = canMoveCard;
     }
 }

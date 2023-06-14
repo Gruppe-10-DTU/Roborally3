@@ -100,17 +100,17 @@ public class CardFieldView extends GridPane implements ViewObserver {
     }
 
     private String cardFieldRepresentation(CommandCardField cardField) {
-        if (cardField.player != null) {
+        if (cardField.getPlayer() != null) {
 
             for (int i = 0; i < Player.NO_REGISTERS; i++) {
-                CommandCardField other = cardField.player.getProgramField(i);
+                CommandCardField other = cardField.getPlayer().getProgramField(i);
                 if (other == cardField) {
                     return "P," + i;
                 }
             }
 
             for (int i = 0; i < Player.NO_CARDS; i++) {
-                CommandCardField other = cardField.player.getCardField(i);
+                CommandCardField other = cardField.getPlayer().getCardField(i);
                 if (other == cardField) {
                     return "C," + i;
                 }
@@ -121,17 +121,17 @@ public class CardFieldView extends GridPane implements ViewObserver {
     }
 
     private CommandCardField cardFieldFromRepresentation(String rep) {
-        if (rep != null && field.player != null) {
+        if (rep != null && field.getPlayer() != null) {
             String[] strings = rep.split(",");
             if (strings.length == 2) {
                 int i = Integer.parseInt(strings[1]);
                 if ("P".equals(strings[0])) {
                     if (i < Player.NO_REGISTERS) {
-                        return field.player.getProgramField(i);
+                        return field.getPlayer().getProgramField(i);
                     }
                 } else if ("C".equals(strings[0])) {
                     if (i < Player.NO_CARDS) {
-                        return field.player.getCardField(i);
+                        return field.getPlayer().getCardField(i);
                     }
                 }
             }
@@ -160,9 +160,11 @@ public class CardFieldView extends GridPane implements ViewObserver {
                 CommandCardField cardField = source.field;
                 if (cardField != null &&
                         cardField.getCard() != null &&
-                        cardField.player != null &&
-                        cardField.player.board != null &&
-                        cardField.player.board.getPhase().equals(Phase.PROGRAMMING)) {
+                        cardField.getPlayer() != null &&
+                        cardField.getPlayer().board != null &&
+                        cardField.getPlayer().board.getPhase().equals(Phase.PROGRAMMING) &&
+                        cardField.getCanMoveCard()
+                ) {
                     Dragboard db = source.startDragAndDrop(TransferMode.MOVE);
                     Image image = source.snapshot(null, null);
                     db.setDragView(image);
@@ -188,8 +190,8 @@ public class CardFieldView extends GridPane implements ViewObserver {
                 CommandCardField cardField = target.field;
                 if (cardField != null &&
                         (cardField.getCard() == null || event.getGestureSource() == target) &&
-                        cardField.player != null &&
-                        cardField.player.board != null) {
+                        cardField.getPlayer() != null &&
+                        cardField.getPlayer().board != null) {
                     if (event.getDragboard().hasContent(ROBO_RALLY_CARD)) {
                         event.acceptTransferModes(TransferMode.MOVE);
                     }
@@ -209,8 +211,8 @@ public class CardFieldView extends GridPane implements ViewObserver {
                 CommandCardField cardField = target.field;
                 if (cardField != null &&
                         cardField.getCard() == null &&
-                        cardField.player != null &&
-                        cardField.player.board != null) {
+                        cardField.getPlayer() != null &&
+                        cardField.getPlayer().board != null) {
                     if (event.getGestureSource() != target &&
                             event.getDragboard().hasContent(ROBO_RALLY_CARD)) {
                         target.setBackground(BG_DROP);
@@ -231,8 +233,8 @@ public class CardFieldView extends GridPane implements ViewObserver {
                 CommandCardField cardField = target.field;
                 if (cardField != null &&
                         cardField.getCard() == null &&
-                        cardField.player != null &&
-                        cardField.player.board != null) {
+                        cardField.getPlayer() != null &&
+                        cardField.getPlayer().board != null) {
                     if (event.getGestureSource() != target &&
                             event.getDragboard().hasContent(ROBO_RALLY_CARD)) {
                         target.setBackground(BG_DEFAULT);
@@ -256,8 +258,8 @@ public class CardFieldView extends GridPane implements ViewObserver {
                 boolean success = false;
                 if (cardField != null &&
                         cardField.getCard() == null &&
-                        cardField.player != null &&
-                        cardField.player.board != null) {
+                        cardField.getPlayer() != null &&
+                        cardField.getPlayer().board != null) {
                     if (event.getGestureSource() != target &&
                             db.hasContent(ROBO_RALLY_CARD)) {
                         Object object = db.getContent(ROBO_RALLY_CARD);

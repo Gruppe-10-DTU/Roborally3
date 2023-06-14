@@ -36,18 +36,20 @@ public enum Command {
 
     FORWARD("Fwd", 6),
     REVERSE("Reverse", 1),
-    RIGHT("Turn Right", 1),
-    LEFT("Turn Left", 1),
+    RIGHT("Turn Right", 3),
+    LEFT("Turn Left", 3),
     UTURN("U-Turn", 1),
-    FAST_FORWARD("Fast Fwd", 6),
+    FAST_FORWARD("Fast Fwd", 4),
+
+    MOVE_3("Move 3", 1),
 
     // XXX Assignment P3
-    OPTION_LEFT_RIGHT("Left OR Right", 1, LEFT, RIGHT);
+    OPTION_LEFT_RIGHT("Left OR Right", 1, LEFT, RIGHT),
+    AGAIN("Repeat", 1, OPTION_LEFT_RIGHT);
 
+    public final String displayName;
 
-    public String displayName;
-
-    int cardAmount;
+    final int cardAmount;
 
     // XXX Assignment P3
     // Command(String displayName) {
@@ -64,6 +66,10 @@ public enum Command {
         this.options = Collections.unmodifiableList(Arrays.asList(options));
     }
 
+    /**
+     * @return boolean showing if the card is interactive
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
     public boolean isInteractive() {
         return !options.isEmpty();
     }

@@ -23,10 +23,10 @@ package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.JSONReader;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElement.*;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElements.PriorityAntenna;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
+import dk.dtu.compute.se.pisd.roborally.model.FieldAction.Pit;
+import dk.dtu.compute.se.pisd.roborally.model.FieldAction.RebootToken;
+import dk.dtu.compute.se.pisd.roborally.model.SequenceAction.*;
+import javafx.util.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -41,30 +41,36 @@ import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public class Board extends Subject {
-    public int width;
+    private int width;
 
-    public int height;
+    private int maxPlayers;
 
-    public String boardName;
+    private int height;
 
-    public int playerAmount;
+    private String boardName;
+
+
     private int number = 1;
 
     private Integer gameId;
-    public PriorityAntenna priorityAntenna;
+    private transient PriorityAntenna priorityAntenna;
 
-    public Space[][] spaces;
+    public void setPriorityAntenna(PriorityAntenna priorityAntenna){
+        this.priorityAntenna = priorityAntenna;
+    }
+    private Space[][] spaces;
 
-    public List<Player> players = new ArrayList<>();
+    private List<Player> players = new ArrayList<>();
 
-    public Player current;
+    private Player current;
 
-    public Phase phase = INITIALISATION;
+    private Phase phase = INITIALISATION;
 
-    public int step = 0;
+    private int step = 0;
 
-    public boolean stepMode;
-    public Checkpoint wincondition;
+    private boolean stepMode;
+    private Checkpoint wincondition;
+    private List<Pair<String, String>> gameLog;
 
     private PriorityQueue<Spawn> spawnPriority = new PriorityQueue<>();
 
@@ -85,7 +91,7 @@ public class Board extends Subject {
     private final TreeSet<SequenceAction> boardActions;
 
 
-    private RebootToken rebootToken;
+    private transient RebootToken rebootToken;
 
     public RebootToken getRebootToken() {
         return rebootToken;
@@ -103,6 +109,14 @@ public class Board extends Subject {
 
     PriorityQueue<Player> playerOrder = new PriorityQueue<>();
 
+    public void setPlayerOrder(PriorityQueue<Player> playerOrder){
+        this.playerOrder = playerOrder;
+    }
+
+    public PriorityQueue<Player> getPlayerOrder(){
+        return this.playerOrder;
+    }
+
     public Board(){
         this.boardActions = new TreeSet<>(new SequenceActionComparator());
     }
@@ -114,14 +128,17 @@ public class Board extends Subject {
      * @param playerAmount The amount of players in the game
      * @param boardArray   Json array of the board
      *                     Loads the file of the requested board and creates all the indicidual spacess on the board
-     * @author Sandie Petersen
+     * @author Sandie Petersen & Nilas Thoegersen
      */
     public Board(int width, int height, @NotNull String boardName, int playerAmount, JSONArray boardArray) {
         this.boardActions = new TreeSet<>(new SequenceActionComparator());
         this.boardName = boardName;
-        this.playerAmount = playerAmount;
+        this.maxPlayers = playerAmount;
         this.width = width;
         this.height = height;
+        this.gameLog = new ArrayList<>();
+        RobotLaser rblsr = new RobotLaser();
+        addBoardActions(rblsr);
         JSONArray courseArray = new JSONArray();
 
         if(boardArray == null) {
@@ -136,6 +153,9 @@ public class Board extends Subject {
                     break;
                 case "Burnout":
                     courseArray = new JSONReader("src/main/resources/boards/Burnout.json").getJsonSpaces();
+                    break;
+                case "Fractionation":
+                    courseArray = new JSONReader("src/main/resources/boards/Fractionation.json").getJsonSpaces();
                     break;
                 default:
                     courseArray = new JSONReader("src/main/resources/boards/RiskyCrossing.json").getJsonSpaces();
@@ -227,6 +247,10 @@ public class Board extends Subject {
                 case "Priority":
                     this.priorityAntenna = new PriorityAntenna(this, x, y);
                     spaces[x][y] = priorityAntenna;
+                    spaces[x][y].setWall(Heading.SOUTH);
+                    spaces[x][y].setWall(Heading.NORTH);
+                    spaces[x][y].setWall(Heading.EAST);
+                    spaces[x][y].setWall(Heading.WEST);
                     break;
                 case "Reboot" :
                     Heading exit = Heading.valueOf(current.getString("direction"));
@@ -265,12 +289,15 @@ public class Board extends Subject {
      * @param width     Width of the board
      * @param height    Height of the board
      * @param boardName Name of the board
+     * @author Søren Wünsche
      */
     public Board(int width, int height, @NotNull String boardName) {
         this.boardName = boardName;
         this.boardActions = new TreeSet<>(new SequenceActionComparator());
         this.width = width;
         this.height = height;
+        RobotLaser rblsr = new RobotLaser();
+        addBoardActions(rblsr);
         spaces = new Space[width][height];
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -282,7 +309,7 @@ public class Board extends Subject {
     }
 
     public void setSpace(Space space) {
-        spaces[space.x][space.y] = space;
+        spaces[space.getX()][space.getY()] = space;
     }
 
 
@@ -311,17 +338,11 @@ public class Board extends Subject {
     }
 
     public void setGameId(int gameId) {
-        if (this.gameId == null) {
-            this.gameId = gameId;
-        } else {
-            if (!this.gameId.equals(gameId)) {
-                throw new IllegalStateException("A game with a set id may not be assigned a new id!");
-            }
-        }
+        this.gameId = gameId;
     }
 
     public Space getSpace(Space space){
-        return getSpace(space.x, space.y);
+        return getSpace(space.getX(), space.getY());
     }
 
     public Space getSpace(int x, int y) {
@@ -333,13 +354,18 @@ public class Board extends Subject {
         }
     }
 
-    public int getPlayersNumber() {
+    public int getNumberOfPlayers() {
         return players.size();
     }
 
     public void addPlayer(@NotNull Player player) {
         if (player.board == this && !players.contains(player)) {
             players.add(player);
+        }
+    }
+    public void removePlayer(@NotNull Player player){
+        if(player.board == this && players.contains(player)){
+            players.remove(player);
             notifyChange();
         }
     }
@@ -352,6 +378,13 @@ public class Board extends Subject {
         }
     }
 
+    /**
+     * Get a player by name
+     *
+     * @param name The name of the player
+     * @return The payer if found, otherwise null
+     * @author Nilas Thoegersen
+     */
     public Player getPlayerByName(String name){
         return players.stream().filter(x-> x.getName().equals(name)).findAny().orElse(null);
     }
@@ -368,7 +401,7 @@ public class Board extends Subject {
 
         for (Player player : players) {
             Space playerSpace = player.getSpace();
-            player.setPriority(Math.abs((playerSpace.x - start[0])) + Math.abs(playerSpace.y - start[1]));
+            player.setPriority(Math.abs((playerSpace.getX() - start[0])) + Math.abs(playerSpace.getY() - start[1]));
             playerOrder.add(player);
         }
     }
@@ -381,12 +414,13 @@ public class Board extends Subject {
     public boolean nextPlayer() {
         if (playerOrder.size() > 0) {
             current = playerOrder.poll();
+            notifyChange();
             return true;
         } else return false;
     }
 
     /**
-     * @Auther Sandie Petersen
+     * @author Sandie Petersen
      * @return The next available spawn space
      */
     public Spawn nextSpawn() {
@@ -456,8 +490,8 @@ public class Board extends Subject {
      * @return the space in the given direction; null if there is no (reachable) neighbour
      */
     public Space getNeighbour(@NotNull Space space, @NotNull Heading heading) {
-        int x = space.x;
-        int y = space.y;
+        int x = space.getX();
+        int y = space.getY();
         switch (heading) {
             case SOUTH:
                 y = (y + 1);
@@ -486,8 +520,8 @@ public class Board extends Subject {
     public ArrayList<Player> playersInRange(Player centerPlayer, int range) {
         ArrayList<Player> result = new ArrayList<>();
         for (Player otherPLayer : this.players) {
-            int distX = Math.abs((centerPlayer.getSpace().x - otherPLayer.getSpace().x));
-            int distY = Math.abs((centerPlayer.getSpace().y - otherPLayer.getSpace().y));
+            int distX = Math.abs((centerPlayer.getSpace().getX() - otherPLayer.getSpace().getX()));
+            int distY = Math.abs((centerPlayer.getSpace().getY() - otherPLayer.getSpace().getY()));
             if (distX + distY <= range) {
                 result.add(otherPLayer);
             }
@@ -496,6 +530,10 @@ public class Board extends Subject {
         return result;
     }
 
+    /**
+     * @return String of the game status
+     * @author Søren Wünsche
+     */
     public String getStatusMessage() {
         // this is actually a view aspect, but for making assignment V1 easy for
         // the students, this method gives a string representation of the current
@@ -505,6 +543,65 @@ public class Board extends Subject {
         return "Phase: " + getPhase().name() +
                 ", Player = " + getCurrentPlayer().getName() +
                 ", Step: " + getStep();
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public String getBoardName(){
+        return boardName;
+    }
+
+    public int getMaxPlayers(){
+        return this.maxPlayers;
+    }
+    public void setMaxPlayers(int maxPlayers){
+        this.maxPlayers = maxPlayers;
+    }
+
+    public List<Pair<String, String>> getGameLog(){
+        return gameLog;
+    }
+    public void setGameLog(List<Pair<String, String>> gameLog){
+        this.gameLog = gameLog;
+    }
+
+    /**
+     * Logs game events tha colors them according to the affected player
+     * @param player the target og the event
+     * @param event string description of game event
+     * @author Philip Astrup Cramer
+     */
+    public void addGameLogEntry(Player player, String event){
+        if(gameLog == null) return; //Allows testing without instantiating log
+        if(gameLog.size() == 50) gameLog.remove(0);
+        if(player == null){
+            gameLog.add(new Pair<>("black", event + "\n"));
+        } else {
+            gameLog.add(new Pair<>(player.getColor(), player.getName() + ": "+ event + "\n"));
+        }
+    }
+    public void addPlayerToOder(Player player) {
+        playerOrder.add(player);
+    }
+
+    /**
+     * @param newPlayers The new players
+     * @param clientName Name of the player currently playing
+     * @author Sandie Petersen
+     */
+    public void updatePlayers(List<Player> newPlayers, String clientName) {
+        for (int i = 0; i < players.size(); i++) {
+            if (!players.get(i).getName().equals(clientName)) {
+                newPlayers.get(i).board = this;
+                players.set(i, newPlayers.get(i));
+            }
+        }
     }
 
 

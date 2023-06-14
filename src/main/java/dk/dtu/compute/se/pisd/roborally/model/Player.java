@@ -37,10 +37,10 @@ import static dk.dtu.compute.se.pisd.roborally.model.Heading.EAST;
 public class Player extends Subject implements Comparable<Player> {
 
     final public static int NO_REGISTERS = 5;
-    final public static int NO_CARDS = 8;
+    final public static int NO_CARDS = 9;
 
     transient public Board board;
-
+    private boolean Rebooting = false;
     private String name;
     private String color;
 
@@ -99,20 +99,19 @@ public class Player extends Subject implements Comparable<Player> {
         }
     }
 
+    /**
+     * Default constructor used with gson. Needed to create the views
+     *
+     * @author Nilas Thoegersen
+     */
     Player(){
         this.deck = new PlayerCardDeck();
         this.space = null;
         this.energy = 0;
 
         program = new CommandCardField[NO_REGISTERS];
-        for (int i = 0; i < program.length; i++) {
-            program[i] = new CommandCardField(this);
-        }
-
         cards = new CommandCardField[NO_CARDS];
-        for (int i = 0; i < cards.length; i++) {
-            cards[i] = new CommandCardField(this);
-        }
+
     }
 
     public String getName() {
@@ -217,8 +216,71 @@ public class Player extends Subject implements Comparable<Player> {
         return this.deck.drawCard();
     }
 
+    /**
+     * If card type is Command card then adds it to players discard pile
+     * else nothing happens.
+     *
+     * @author Philip Astrup Cramer
+     */
     public void discardCard(Card card) {
+        if (card == null) return;
+        if(card.getType().equals("Damage")) return;
         this.deck.discard(card);
+    }
+
+    /**
+     * Adds the card to the players discard pile. No matter the type.
+     *
+     * @author Philip Astrup Cramer
+     */
+    public void receiveCard(Card card){
+        this.deck.discard(card);
+    }
+
+    /**
+     * Fills the players empty registers with cards from the top of the deck
+     *
+     * @author Philip Astrup Cramer
+     */
+    public void registerChaos(){
+        for (CommandCardField field : program) {
+            field.setCanMoveCard(false);
+            if(field.getCard() == null) field.setCard(deck.drawCard());
+
+        }
+        for (CommandCardField field : cards) {
+            field.setCanMoveCard(false);
+            if (field.getCard() != null){
+                this.receiveCard(field.getCard());
+                field.setCard(null);
+            }
+        }
+    }
+
+    /**
+     * Discards all the cards in the players registers.
+     *
+     * @author Philip Astrup Cramer
+     */
+    public void discardRegisters(){
+        for (CommandCardField field : program) {
+            this.discardCard(field.getCard());
+            field.setCard(null);
+            field.setVisible(true);
+        }
+    }
+
+    /**
+     * Puts the remaining cards from the players hand in the discard pile
+     *
+     * @author Philip Astrup Cramer
+     */
+    public void discardHand(){
+        for (CommandCardField field : cards) {
+            this.discardCard(field.getCard());
+            field.setCard(null);
+            field.setVisible(true);
+        }
     }
 
     public int getPriority() {
@@ -230,6 +292,21 @@ public class Player extends Subject implements Comparable<Player> {
     }
 
     /**
+     * Update the items given by the gson.
+     *
+     * @author Nilas Thoegersen
+     */
+    public void setPlayer(){
+        for (int i = 0; i < program.length; i++) {
+            program[i].setPlayer(this);
+        }
+
+        for (int i = 0; i < cards.length; i++) {
+            cards[i].setPlayer(this);
+        }
+    }
+
+    /**
      * @author Sandie Petersen
      * @param o the object to be compared.
      * @return The priority of the object
@@ -238,5 +315,20 @@ public class Player extends Subject implements Comparable<Player> {
     @Override
     public int compareTo(@NotNull Player o) {
         return Integer.compare(this.priority, o.priority);
+    }
+
+    public void setRebooting(boolean rebootStatus){
+        this.Rebooting = rebootStatus;
+    }
+    public boolean getIsRebooting(){
+        return Rebooting;
+    }
+
+    public CommandCardField[] getProgram() {
+        return program;
+    }
+
+    public CommandCardField[] getCards() {
+        return cards;
     }
 }

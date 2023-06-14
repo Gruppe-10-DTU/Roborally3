@@ -38,14 +38,13 @@ import java.util.List;
 public class CommandCard extends Subject implements Card{
 
     private Command command;
-    String type = "Command";
-
-    public CommandCard(){
-
-    }
 
     public CommandCard(@NotNull Command command) {
         this.command = command;
+    }
+
+    public CommandCard() {
+
     }
     @Override
     public String getName() {
@@ -62,7 +61,7 @@ public class CommandCard extends Subject implements Card{
         Player player = gameController.board.getCurrentPlayer();
         switch (command) {
             case FORWARD:
-                gameController.moveForward(player);
+                gameController.moveForward(player, 1);
                 break;
             case RIGHT:
                 gameController.turnRight(player);
@@ -71,7 +70,10 @@ public class CommandCard extends Subject implements Card{
                 gameController.turnLeft(player);
                 break;
             case FAST_FORWARD:
-                gameController.fastForward(player);
+                gameController.moveForward(player,2);
+                break;
+            case MOVE_3:
+                gameController.moveForward(player,3);
                 break;
             case REVERSE:
                 gameController.reverse(player);
@@ -79,8 +81,12 @@ public class CommandCard extends Subject implements Card{
             case UTURN:
                 gameController.uTurn(player);
                 break;
+            case AGAIN:
+                gameController.again(player);
+                break;
             case OPTION_LEFT_RIGHT:
                 gameController.board.setPhase(Phase.PLAYER_INTERACTION);
+                break;
             default:
                 // DO NOTHING (for now)
         }

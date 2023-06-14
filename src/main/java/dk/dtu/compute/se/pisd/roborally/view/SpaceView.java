@@ -22,13 +22,10 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElement.*;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElements.Pit;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElements.PriorityAntenna;
-import dk.dtu.compute.se.pisd.roborally.model.BoardElements.RebootToken;
-import dk.dtu.compute.se.pisd.roborally.model.Heading;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.FieldAction.Pit;
+import dk.dtu.compute.se.pisd.roborally.model.FieldAction.RebootToken;
+import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.model.SequenceAction.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -48,8 +45,12 @@ public class SpaceView extends StackPane implements ViewObserver {
     final public static int SPACE_HEIGHT = 60; // 75;
     final public static int SPACE_WIDTH = 60; // 75;
 
-    public final Space space;
+    private final Space space;
 
+    /**
+     *
+     * @author Sandie Petersen & Ekkart Kindler
+     */
     public SpaceView(@NotNull Space space) {
         this.space = space;
 
@@ -276,4 +277,7 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
     }
 
+    public Space getSpace() {
+        return space;
+    }
 }

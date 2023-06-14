@@ -1,0 +1,23 @@
+@startuml
+'Sequence Diagram for Execute Register.
+Actor ":Player" as Player
+Participant ":Client" as Client
+Participant ":Server" as Server
+
+
+autonumber
+Player --> Client : Execute Register
+activate Client #808080
+Client -> Client : Executes Register
+Client -> Server : pushGameUpdate(gameID, PlayerDTO)
+Server -> Server : Save state
+
+activate Client
+Client ->> Server : getGameUpdate(gameID,currentVersion)
+activate Server
+Server --> Client : Updated Game
+deactivate Server
+Client ->> Client : replaceBoard(board, currentVersion)
+Client --> Player : Display board
+deactivate Client
+@enduml
