@@ -1,6 +1,7 @@
 package server.service;
 
 import org.springframework.stereotype.Service;
+import server.exception.CustomExceptionNoSavedGames;
 import server.model.Game;
 import server.model.GameState;
 import server.repository.GameRepository;
@@ -58,6 +59,7 @@ public class GameService {
         } else {
             games = gameRepository.findAllByStateIn(Arrays.asList(GameState.INITIALIZING, GameState.SAVED));
         }
+        
         return games;
     }
 

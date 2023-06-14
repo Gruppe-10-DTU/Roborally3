@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.dto.GameDTO;
 import server.dto.GamePatchDTO;
+import server.exception.CustomExceptionNoSavedGames;
 import server.mapper.DtoMapper;
 import server.mapper.GameDTOMapper;
 import server.model.Game;
