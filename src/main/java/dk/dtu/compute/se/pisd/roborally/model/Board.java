@@ -133,7 +133,7 @@ public class Board extends Subject {
         this.maxPlayers = playerAmount;
         this.width = width;
         this.height = height;
-        this.gameLog = new Stack<>();
+        this.gameLog = new ArrayList<>();
         RobotLaser rblsr = new RobotLaser();
         addBoardActions(rblsr);
         JSONArray courseArray = new JSONArray();
@@ -417,7 +417,7 @@ public class Board extends Subject {
     }
 
     /**
-     * @Auther Sandie Petersen
+     * @author Sandie Petersen
      * @return The next available spawn space
      */
     public Spawn nextSpawn() {
