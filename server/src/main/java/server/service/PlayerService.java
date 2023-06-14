@@ -1,6 +1,7 @@
 package server.service;
 
 import org.springframework.stereotype.Service;
+import server.exception.CustomExceptionLobbyIsFull;
 import server.model.Player;
 import server.repository.PlayerRepository;
 
