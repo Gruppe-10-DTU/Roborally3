@@ -1,0 +1,1675 @@
+{
+  "width": 11,
+  "maxPlayers": 2,
+  "height": 8,
+  "boardName": "Risky Crossing",
+  "number": 1,
+  "spaces": [
+    [
+      {
+        "type": "Space",
+        "x": 0,
+        "y": 0,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 0,
+        "y": 1,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 0,
+        "y": 2,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Priority",
+        "x": 0,
+        "y": 3,
+        "background": "Empty",
+        "walls": [
+          "SOUTH",
+          "WEST",
+          "NORTH",
+          "EAST"
+        ]
+      },
+      {
+        "type": "Space",
+        "x": 0,
+        "y": 4,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 0,
+        "y": 5,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 0,
+        "y": 6,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 0,
+        "y": 7,
+        "background": "Empty",
+        "walls": []
+      }
+    ],
+    [
+      {
+        "type": "Spawn",
+        "number": 1,
+        "x": 1,
+        "y": 0,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 1,
+        "y": 1,
+        "background": "Empty",
+        "walls": [
+          "NORTH"
+        ]
+      },
+      {
+        "type": "Space",
+        "x": 1,
+        "y": 2,
+        "background": "Empty",
+        "walls": [
+          "EAST"
+        ]
+      },
+      {
+        "type": "Space",
+        "x": 1,
+        "y": 3,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 1,
+        "y": 4,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 1,
+        "y": 5,
+        "background": "Empty",
+        "walls": [
+          "EAST"
+        ]
+      },
+      {
+        "type": "Space",
+        "x": 1,
+        "y": 6,
+        "background": "Empty",
+        "walls": [
+          "SOUTH"
+        ]
+      },
+      {
+        "type": "Spawn",
+        "number": 2,
+        "x": 1,
+        "y": 7,
+        "background": "Empty",
+        "walls": []
+      }
+    ],
+    [
+      {
+        "type": "Space",
+        "x": 2,
+        "y": 0,
+        "background": "Empty",
+        "walls": [
+          "EAST"
+        ]
+      },
+      {
+        "type": "Space",
+        "x": 2,
+        "y": 1,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 2,
+        "y": 2,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 2,
+        "y": 3,
+        "background": "Empty",
+        "walls": [
+          "EAST"
+        ]
+      },
+      {
+        "type": "Space",
+        "x": 2,
+        "y": 4,
+        "background": "Empty",
+        "walls": [
+          "EAST"
+        ]
+      },
+      {
+        "type": "Space",
+        "x": 2,
+        "y": 5,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 2,
+        "y": 6,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 2,
+        "y": 7,
+        "background": "Empty",
+        "walls": [
+          "EAST"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Space",
+        "x": 3,
+        "y": 0,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "FastConveyorbelt",
+        "number": 2,
+        "direction": "WEST",
+        "x": 3,
+        "y": 1,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 3,
+        "y": 2,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 3,
+        "y": 3,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 3,
+        "y": 4,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 3,
+        "y": 5,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "FastConveyorbelt",
+        "number": 2,
+        "direction": "EAST",
+        "x": 3,
+        "y": 6,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Checkpoint",
+        "previous": {
+          "previous": {
+            "players": [
+              "Player2"
+            ],
+            "number": 1,
+            "x": 10,
+            "y": 5,
+            "background": "Empty",
+            "walls": []
+          },
+          "players": [
+            "Player2"
+          ],
+          "number": 2,
+          "x": 4,
+          "y": 2,
+          "background": "Empty",
+          "walls": []
+        },
+        "players": [],
+        "number": 3,
+        "x": 3,
+        "y": 7,
+        "background": "Empty",
+        "walls": []
+      }
+    ],
+    [
+      {
+        "type": "FastConveyorbelt",
+        "number": 2,
+        "direction": "SOUTH",
+        "x": 4,
+        "y": 0,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "FastConveyorbelt",
+        "number": 2,
+        "direction": "SOUTH",
+        "turn": "WEST",
+        "x": 4,
+        "y": 1,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Checkpoint",
+        "previous": {
+          "players": [
+            "Player2"
+          ],
+          "number": 1,
+          "x": 10,
+          "y": 5,
+          "background": "Empty",
+          "walls": []
+        },
+        "players": [
+          "Player2"
+        ],
+        "number": 2,
+        "x": 4,
+        "y": 2,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Conveyor",
+        "direction": "WEST",
+        "turn": "EAST",
+        "x": 4,
+        "y": 3,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Conveyor",
+        "direction": "SOUTH",
+        "x": 4,
+        "y": 4,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Conveyor",
+        "direction": "SOUTH",
+        "turn": "EAST",
+        "x": 4,
+        "y": 5,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "FastConveyorbelt",
+        "number": 2,
+        "direction": "EAST",
+        "turn": "WEST",
+        "x": 4,
+        "y": 6,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "FastConveyorbelt",
+        "number": 2,
+        "direction": "SOUTH",
+        "x": 4,
+        "y": 7,
+        "background": "Empty",
+        "walls": []
+      }
+    ],
+    [
+      {
+        "type": "Space",
+        "x": 5,
+        "y": 0,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Conveyor",
+        "direction": "WEST",
+        "turn": "EAST",
+        "x": 5,
+        "y": 1,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Conveyor",
+        "direction": "SOUTH",
+        "x": 5,
+        "y": 2,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Conveyor",
+        "direction": "SOUTH",
+        "turn": "WEST",
+        "x": 5,
+        "y": 3,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Energy",
+        "energy": false,
+        "x": 5,
+        "y": 4,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Conveyor",
+        "direction": "EAST",
+        "x": 5,
+        "y": 5,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 5,
+        "y": 6,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 5,
+        "y": 7,
+        "background": "Empty",
+        "walls": []
+      }
+    ],
+    [
+      {
+        "type": "Space",
+        "x": 6,
+        "y": 0,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Conveyor",
+        "direction": "WEST",
+        "x": 6,
+        "y": 1,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Energy",
+        "energy": true,
+        "x": 6,
+        "y": 2,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 6,
+        "y": 3,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 6,
+        "y": 4,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Conveyor",
+        "direction": "EAST",
+        "turn": "WEST",
+        "x": 6,
+        "y": 5,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Conveyor",
+        "direction": "SOUTH",
+        "turn": "EAST",
+        "x": 6,
+        "y": 6,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 6,
+        "y": 7,
+        "background": "Empty",
+        "walls": []
+      }
+    ],
+    [
+      {
+        "type": "Space",
+        "x": 7,
+        "y": 0,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Conveyor",
+        "direction": "NORTH",
+        "turn": "EAST",
+        "x": 7,
+        "y": 1,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Conveyor",
+        "direction": "WEST",
+        "turn": "WEST",
+        "x": 7,
+        "y": 2,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 7,
+        "y": 3,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 7,
+        "y": 4,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Energy",
+        "energy": true,
+        "x": 7,
+        "y": 5,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Conveyor",
+        "direction": "EAST",
+        "x": 7,
+        "y": 6,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 7,
+        "y": 7,
+        "background": "Empty",
+        "walls": []
+      }
+    ],
+    [
+      {
+        "type": "Space",
+        "x": 8,
+        "y": 0,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 8,
+        "y": 1,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Conveyor",
+        "direction": "WEST",
+        "x": 8,
+        "y": 2,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Energy",
+        "energy": true,
+        "x": 8,
+        "y": 3,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Conveyor",
+        "direction": "NORTH",
+        "turn": "WEST",
+        "x": 8,
+        "y": 4,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Conveyor",
+        "direction": "NORTH",
+        "x": 8,
+        "y": 5,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Conveyor",
+        "direction": "EAST",
+        "turn": "EAST",
+        "x": 8,
+        "y": 6,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 8,
+        "y": 7,
+        "background": "Empty",
+        "walls": []
+      }
+    ],
+    [
+      {
+        "type": "FastConveyorbelt",
+        "number": 2,
+        "direction": "NORTH",
+        "x": 9,
+        "y": 0,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "FastConveyorbelt",
+        "number": 2,
+        "direction": "WEST",
+        "turn": "WEST",
+        "x": 9,
+        "y": 1,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Conveyor",
+        "direction": "NORTH",
+        "turn": "EAST",
+        "x": 9,
+        "y": 2,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Conveyor",
+        "direction": "NORTH",
+        "x": 9,
+        "y": 3,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Conveyor",
+        "direction": "EAST",
+        "turn": "EAST",
+        "x": 9,
+        "y": 4,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 9,
+        "y": 5,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "FastConveyorbelt",
+        "number": 2,
+        "direction": "NORTH",
+        "turn": "WEST",
+        "x": 9,
+        "y": 6,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "FastConveyorbelt",
+        "number": 2,
+        "direction": "NORTH",
+        "x": 9,
+        "y": 7,
+        "background": "Empty",
+        "walls": []
+      }
+    ],
+    [
+      {
+        "type": "Reboot",
+        "direction": "SOUTH",
+        "x": 10,
+        "y": 0,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "FastConveyorbelt",
+        "number": 2,
+        "direction": "WEST",
+        "x": 10,
+        "y": 1,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 10,
+        "y": 2,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 10,
+        "y": 3,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 10,
+        "y": 4,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Checkpoint",
+        "players": [
+          "Player2"
+        ],
+        "number": 1,
+        "x": 10,
+        "y": 5,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "FastConveyorbelt",
+        "number": 2,
+        "direction": "EAST",
+        "x": 10,
+        "y": 6,
+        "background": "Empty",
+        "walls": []
+      },
+      {
+        "type": "Space",
+        "x": 10,
+        "y": 7,
+        "background": "Empty",
+        "walls": []
+      }
+    ]
+  ],
+  "players": [
+    {
+      "Rebooting": false,
+      "name": "Player1",
+      "color": "red",
+      "space": {
+        "type": "Reboot",
+        "direction": "SOUTH",
+        "x": 10,
+        "y": 0,
+        "background": "Empty",
+        "walls": []
+      },
+      "priority": 13,
+      "heading": "SOUTH",
+      "deck": {
+        "deck": [
+          {
+            "cardtype": "CommandCard",
+            "command": "FORWARD"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "FAST_FORWARD"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "LEFT"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "LEFT"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "FAST_FORWARD"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "FORWARD"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "FAST_FORWARD"
+          },
+          {
+            "cardtype": "DamageCard",
+            "damage": "SPAM"
+          }
+        ],
+        "discards": [
+          {
+            "cardtype": "CommandCard",
+            "command": "FORWARD"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "OPTION_LEFT_RIGHT"
+          },
+          {
+            "cardtype": "DamageCard",
+            "damage": "SPAM"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "RIGHT"
+          },
+          {
+            "cardtype": "DamageCard",
+            "damage": "SPAM"
+          },
+          {
+            "cardtype": "DamageCard",
+            "damage": "SPAM"
+          },
+          {
+            "cardtype": "DamageCard",
+            "damage": "SPAM"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "RIGHT"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "FAST_FORWARD"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "UTURN"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "LEFT"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "FORWARD"
+          }
+        ]
+      },
+      "energy": 1,
+      "program": [
+        {
+          "card": {
+            "cardtype": "CommandCard",
+            "command": "MOVE_3"
+          },
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "card": {
+            "cardtype": "CommandCard",
+            "command": "FORWARD"
+          },
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "card": {
+            "cardtype": "CommandCard",
+            "command": "AGAIN"
+          },
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "card": {
+            "cardtype": "DamageCard",
+            "damage": "SPAM"
+          },
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "card": {
+            "cardtype": "DamageCard",
+            "damage": "SPAM"
+          },
+          "visible": true,
+          "canMoveCard": true
+        }
+      ],
+      "cards": [
+        {
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "card": {
+            "cardtype": "CommandCard",
+            "command": "REVERSE"
+          },
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "card": {
+            "cardtype": "CommandCard",
+            "command": "FORWARD"
+          },
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "card": {
+            "cardtype": "CommandCard",
+            "command": "RIGHT"
+          },
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "card": {
+            "cardtype": "DamageCard",
+            "damage": "SPAM"
+          },
+          "visible": true,
+          "canMoveCard": true
+        }
+      ]
+    },
+    {
+      "Rebooting": false,
+      "name": "Player2",
+      "color": "green",
+      "space": {
+        "type": "Checkpoint",
+        "previous": {
+          "players": [
+            "Player2"
+          ],
+          "number": 1,
+          "x": 10,
+          "y": 5,
+          "background": "Empty",
+          "walls": []
+        },
+        "players": [
+          "Player2"
+        ],
+        "number": 2,
+        "x": 4,
+        "y": 2,
+        "background": "Empty",
+        "walls": []
+      },
+      "priority": 5,
+      "heading": "WEST",
+      "deck": {
+        "deck": [
+          {
+            "cardtype": "CommandCard",
+            "command": "UTURN"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "FORWARD"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "LEFT"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "FORWARD"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "FAST_FORWARD"
+          }
+        ],
+        "discards": [
+          {
+            "cardtype": "CommandCard",
+            "command": "RIGHT"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "LEFT"
+          },
+          {
+            "cardtype": "DamageCard",
+            "damage": "SPAM"
+          },
+          {
+            "cardtype": "DamageCard",
+            "damage": "SPAM"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "MOVE_3"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "LEFT"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "FORWARD"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "FAST_FORWARD"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "AGAIN"
+          }
+        ]
+      },
+      "energy": 0,
+      "program": [
+        {
+          "card": {
+            "cardtype": "CommandCard",
+            "command": "FORWARD"
+          },
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "card": {
+            "cardtype": "CommandCard",
+            "command": "LEFT"
+          },
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "card": {
+            "cardtype": "CommandCard",
+            "command": "MOVE_3"
+          },
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "card": {
+            "cardtype": "CommandCard",
+            "command": "FAST_FORWARD"
+          },
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "card": {
+            "cardtype": "CommandCard",
+            "command": "LEFT"
+          },
+          "visible": true,
+          "canMoveCard": true
+        }
+      ],
+      "cards": [
+        {
+          "card": {
+            "cardtype": "CommandCard",
+            "command": "FORWARD"
+          },
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "card": {
+            "cardtype": "CommandCard",
+            "command": "RIGHT"
+          },
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "card": {
+            "cardtype": "CommandCard",
+            "command": "RIGHT"
+          },
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "card": {
+            "cardtype": "CommandCard",
+            "command": "REVERSE"
+          },
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "visible": true,
+          "canMoveCard": true
+        }
+      ]
+    }
+  ],
+  "current": {
+    "Rebooting": false,
+    "name": "Player2",
+    "color": "green",
+    "space": {
+      "type": "Checkpoint",
+      "previous": {
+        "players": [
+          "Player2"
+        ],
+        "number": 1,
+        "x": 10,
+        "y": 5,
+        "background": "Empty",
+        "walls": []
+      },
+      "players": [
+        "Player2"
+      ],
+      "number": 2,
+      "x": 4,
+      "y": 2,
+      "background": "Empty",
+      "walls": []
+    },
+    "priority": 5,
+    "heading": "WEST",
+    "deck": {
+      "deck": [
+        {
+          "cardtype": "CommandCard",
+          "command": "UTURN"
+        },
+        {
+          "cardtype": "CommandCard",
+          "command": "FORWARD"
+        },
+        {
+          "cardtype": "CommandCard",
+          "command": "LEFT"
+        },
+        {
+          "cardtype": "CommandCard",
+          "command": "FORWARD"
+        },
+        {
+          "cardtype": "CommandCard",
+          "command": "FAST_FORWARD"
+        }
+      ],
+      "discards": [
+        {
+          "cardtype": "CommandCard",
+          "command": "RIGHT"
+        },
+        {
+          "cardtype": "CommandCard",
+          "command": "LEFT"
+        },
+        {
+          "cardtype": "DamageCard",
+          "damage": "SPAM"
+        },
+        {
+          "cardtype": "DamageCard",
+          "damage": "SPAM"
+        },
+        {
+          "cardtype": "CommandCard",
+          "command": "MOVE_3"
+        },
+        {
+          "cardtype": "CommandCard",
+          "command": "LEFT"
+        },
+        {
+          "cardtype": "CommandCard",
+          "command": "FORWARD"
+        },
+        {
+          "cardtype": "CommandCard",
+          "command": "FAST_FORWARD"
+        },
+        {
+          "cardtype": "CommandCard",
+          "command": "AGAIN"
+        }
+      ]
+    },
+    "energy": 0,
+    "program": [
+      {
+        "card": {
+          "cardtype": "CommandCard",
+          "command": "FORWARD"
+        },
+        "visible": true,
+        "canMoveCard": true
+      },
+      {
+        "card": {
+          "cardtype": "CommandCard",
+          "command": "OPTION_LEFT_RIGHT"
+        },
+        "visible": true,
+        "canMoveCard": true
+      },
+      {
+        "card": {
+          "cardtype": "CommandCard",
+          "command": "FAST_FORWARD"
+        },
+        "visible": true,
+        "canMoveCard": true
+      },
+      {
+        "card": {
+          "cardtype": "CommandCard",
+          "command": "FORWARD"
+        },
+        "visible": true,
+        "canMoveCard": true
+      },
+      {
+        "card": {
+          "cardtype": "CommandCard",
+          "command": "FAST_FORWARD"
+        },
+        "visible": true,
+        "canMoveCard": true
+      }
+    ],
+    "cards": [
+      {
+        "card": {
+          "cardtype": "CommandCard",
+          "command": "FORWARD"
+        },
+        "visible": true,
+        "canMoveCard": true
+      },
+      {
+        "visible": true,
+        "canMoveCard": true
+      },
+      {
+        "card": {
+          "cardtype": "CommandCard",
+          "command": "RIGHT"
+        },
+        "visible": true,
+        "canMoveCard": true
+      },
+      {
+        "visible": true,
+        "canMoveCard": true
+      },
+      {
+        "visible": true,
+        "canMoveCard": true
+      },
+      {
+        "card": {
+          "cardtype": "CommandCard",
+          "command": "RIGHT"
+        },
+        "visible": true,
+        "canMoveCard": true
+      },
+      {
+        "visible": true,
+        "canMoveCard": true
+      },
+      {
+        "card": {
+          "cardtype": "CommandCard",
+          "command": "REVERSE"
+        },
+        "visible": true,
+        "canMoveCard": true
+      },
+      {
+        "visible": true,
+        "canMoveCard": true
+      }
+    ]
+  },
+  "phase": "PROGRAMMING",
+  "step": 0,
+  "stepMode": true,
+  "wincondition": {
+    "previous": {
+      "previous": {
+        "players": [
+          "Player2"
+        ],
+        "number": 1,
+        "x": 10,
+        "y": 5,
+        "background": "Empty",
+        "walls": []
+      },
+      "players": [
+        "Player2"
+      ],
+      "number": 2,
+      "x": 4,
+      "y": 2,
+      "background": "Empty",
+      "walls": []
+    },
+    "players": [],
+    "number": 3,
+    "x": 3,
+    "y": 7,
+    "background": "Empty",
+    "walls": []
+  },
+  "gameLog": [
+    {
+      "key": "black",
+      "value": "Game started\n"
+    },
+    {
+      "key": "red",
+      "value": "Player1: was shot by Player2\n"
+    },
+    {
+      "key": "green",
+      "value": "Player2: was shot by Player1\n"
+    },
+    {
+      "key": "red",
+      "value": "Player1: was shot by Player2\n"
+    },
+    {
+      "key": "green",
+      "value": "Player2: was shot by Player1\n"
+    },
+    {
+      "key": "red",
+      "value": "Player1: Picked up energy\n"
+    },
+    {
+      "key": "green",
+      "value": "Player2: Reached checkpoint 1\n"
+    },
+    {
+      "key": "red",
+      "value": "Player1: Fell of the map\n"
+    },
+    {
+      "key": "red",
+      "value": "Player1: was rebooted\n"
+    },
+    {
+      "key": "red",
+      "value": "Player1: was shot by Player2\n"
+    },
+    {
+      "key": "red",
+      "value": "Player1: was shot by Player2\n"
+    },
+    {
+      "key": "red",
+      "value": "Player1: Fell of the map\n"
+    },
+    {
+      "key": "red",
+      "value": "Player1: was rebooted\n"
+    },
+    {
+      "key": "green",
+      "value": "Player2: Reached checkpoint 2\n"
+    }
+  ],
+  "spawnPriority": [],
+  "boardActions": [
+    {
+      "number": 2,
+      "direction": "WEST",
+      "x": 3,
+      "y": 1,
+      "background": "Empty",
+      "walls": []
+    },
+    {
+      "direction": "WEST",
+      "turn": "EAST",
+      "x": 4,
+      "y": 3,
+      "background": "Empty",
+      "walls": []
+    },
+    {},
+    {
+      "energy": false,
+      "x": 5,
+      "y": 4,
+      "background": "Empty",
+      "walls": []
+    },
+    {
+      "players": [
+        "Player2"
+      ],
+      "number": 1,
+      "x": 10,
+      "y": 5,
+      "background": "Empty",
+      "walls": []
+    }
+  ],
+  "playerOrder": [
+    {
+      "Rebooting": false,
+      "name": "Player1",
+      "color": "red",
+      "space": {
+        "type": "Reboot",
+        "direction": "SOUTH",
+        "x": 10,
+        "y": 0,
+        "background": "Empty",
+        "walls": []
+      },
+      "priority": 13,
+      "heading": "SOUTH",
+      "deck": {
+        "deck": [
+          {
+            "cardtype": "CommandCard",
+            "command": "FORWARD"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "FAST_FORWARD"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "LEFT"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "LEFT"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "FAST_FORWARD"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "FORWARD"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "FAST_FORWARD"
+          },
+          {
+            "cardtype": "DamageCard",
+            "damage": "SPAM"
+          }
+        ],
+        "discards": [
+          {
+            "cardtype": "CommandCard",
+            "command": "FORWARD"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "OPTION_LEFT_RIGHT"
+          },
+          {
+            "cardtype": "DamageCard",
+            "damage": "SPAM"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "RIGHT"
+          },
+          {
+            "cardtype": "DamageCard",
+            "damage": "SPAM"
+          },
+          {
+            "cardtype": "DamageCard",
+            "damage": "SPAM"
+          },
+          {
+            "cardtype": "DamageCard",
+            "damage": "SPAM"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "RIGHT"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "FAST_FORWARD"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "UTURN"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "LEFT"
+          },
+          {
+            "cardtype": "CommandCard",
+            "command": "FORWARD"
+          }
+        ]
+      },
+      "energy": 1,
+      "program": [
+        {
+          "card": {
+            "cardtype": "CommandCard",
+            "command": "MOVE_3"
+          },
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "card": {
+            "cardtype": "CommandCard",
+            "command": "FORWARD"
+          },
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "card": {
+            "cardtype": "CommandCard",
+            "command": "AGAIN"
+          },
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "card": {
+            "cardtype": "DamageCard",
+            "damage": "SPAM"
+          },
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "card": {
+            "cardtype": "DamageCard",
+            "damage": "SPAM"
+          },
+          "visible": true,
+          "canMoveCard": true
+        }
+      ],
+      "cards": [
+        {
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "card": {
+            "cardtype": "CommandCard",
+            "command": "REVERSE"
+          },
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "card": {
+            "cardtype": "CommandCard",
+            "command": "FORWARD"
+          },
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "card": {
+            "cardtype": "CommandCard",
+            "command": "RIGHT"
+          },
+          "visible": true,
+          "canMoveCard": true
+        },
+        {
+          "card": {
+            "cardtype": "DamageCard",
+            "damage": "SPAM"
+          },
+          "visible": true,
+          "canMoveCard": true
+        }
+      ]
+    }
+  ]
+}
